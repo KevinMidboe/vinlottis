@@ -41,10 +41,6 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname + "/public/index.html"));
-});
-
 app.use("/", loginApi);
 app.use("/api/", updateApi);
 app.use("/api/", retrieveApi);

@@ -4,11 +4,16 @@ const User = require(path.join(__dirname + "/../schemas/User"));
 const router = require("express").Router();
 
 router.get("/", function(req, res) {
-  res.render("index", { user: req.user });
+  console.log("here", req.isAuthenticated());
+  if (!req.isAuthenticated()) {
+    res.sendFile(path.join(__dirname + "/../public/login.html"));
+    return;
+  }
+  res.sendFile(path.join(__dirname + "/../public/index.html"));
 });
 
 router.get("/register", function(req, res) {
-  res.render("register", {});
+  res.sendFile(path.join(__dirname + "/../public/register.html"));
 });
 
 router.post("/register", function(req, res, next) {
@@ -30,14 +35,13 @@ router.post("/register", function(req, res, next) {
 });
 
 router.get("/login", function(req, res) {
-  res.render("login", { user: req.user, message: req.flash("error") });
+  res.sendFile(path.join(__dirname + "/../public/login.html"));
 });
 
 router.post(
   "/login",
   passport.authenticate("local", {
-    failureRedirect: "/login",
-    failureFlash: true
+    failureRedirect: "/login"
   }),
   function(req, res) {
     res.redirect("/");
