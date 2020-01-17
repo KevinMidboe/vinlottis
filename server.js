@@ -10,6 +10,7 @@ const loginApi = require(path.join(__dirname + "/api/login"));
 const bodyParser = require("body-parser");
 
 const mongoose = require("mongoose");
+const MongoStore = require("connect-mongo")(session);
 mongoose.promise = global.Promise;
 mongoose.connect("mongodb://localhost/vinlottis");
 mongoose.set("debug", true);
@@ -23,9 +24,12 @@ app.use(bodyParser.json());
 app.use(
   session({
     secret: "passport-tutorial",
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 86400 * 24 * 24 },
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection
+    })
   })
 );
 
