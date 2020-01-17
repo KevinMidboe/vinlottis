@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const Highscore = new Schema({
   name: String,
-  Wins: [
+  wins: [
     {
       color: String,
       date: Date,
@@ -15,4 +15,4 @@ const Highscore = new Schema({
   ]
 });
 
-module.exports = Highscore;
+module.exports = mongoose.model("Highscore", Highscore);

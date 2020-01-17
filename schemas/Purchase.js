@@ -6,7 +6,13 @@ const Purchase = new Schema({
   blue: Number,
   red: Number,
   yellow: Number,
-  green: Number
+  green: Number,
+  wines: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Wine"
+    }
+  ]
 });
 
-module.exports = Purchase;
+module.exports = mongoose.model("Purchase", Purchase);

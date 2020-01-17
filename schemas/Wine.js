@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const Wine = new Schema({
   name: String,
   vivinoLink: String,
-  rating: Number
+  rating: Number,
+  occurences: Number
 });
 
-module.exports = Wine;
+module.exports = mongoose.model("Wine", Wine);
