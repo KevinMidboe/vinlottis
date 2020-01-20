@@ -30,7 +30,7 @@ router.post("/register", function(req, res, next) {
 });
 
 router.get("/login", function(req, res) {
-  res.sendFile(path.join(__dirname + "/../public/login.html"));
+  res.sendFile(path.join(__dirname + "/../public/index.html"));
 });
 
 router.post(
