@@ -6,6 +6,10 @@ const routes = [
     component: VinlottisPage
   },
   {
+    path: "/generate",
+    component: resolve => require(["@/components/GeneratePage"], resolve)
+  },
+  {
     path: "/login",
     component: resolve => require(["@/components/LoginPage"], resolve)
   },

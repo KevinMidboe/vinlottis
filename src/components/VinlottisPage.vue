@@ -1,7 +1,10 @@
 <template>
   <div class="outer">
     <div class="container">
-      <h2>Knowit Vinlottis</h2>
+      <h1>Knowit Vinlottis</h1>
+      <router-link to="generate" class="generate-link"
+        >Klarer du ikke velge lodd-farger?</router-link
+      >
       <div class="chart-container">
         <PurchaseGraph class="purchase" />
         <WinGraph class="win" />
@@ -37,10 +40,22 @@ export default {
   align-items: center;
   flex-direction: column;
 }
-h2 {
+h1 {
   width: 100vw;
   text-align: center;
   font-family: sans-serif;
+}
+
+.generate-link {
+  color: white;
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 5px;
+  margin: auto;
+  width: fit-content;
+  display: block;
+  text-decoration: none;
+  background: orange;
 }
 
 .purchase {
