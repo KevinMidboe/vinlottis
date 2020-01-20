@@ -16,7 +16,7 @@ export default {
   },
   async mounted() {
     let _response = await fetch(
-      "http://localhost:30030/api/highscore/statistics"
+      "/api/highscore/statistics"
     );
     let response = await _response.json();
     this.highscore = response;
