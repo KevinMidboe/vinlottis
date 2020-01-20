@@ -4,19 +4,19 @@
     <div class="color-container">
       <div class="label-div">
         <label for="blue">Blå</label>
-        <input id="blue" type="number" :value="blue" />
+        <input id="blue" type="number" v-model="blue" />
       </div>
       <div class="label-div">
         <label for="red">Rød</label>
-        <input id="red" type="number" :value.sync="red" />
+        <input id="red" type="number" v-model="red" />
       </div>
       <div class="label-div">
         <label for="green">Grønn</label>
-        <input id="green" type="number" :value="green" />
+        <input id="green" type="number" v-model="green" />
       </div>
       <div class="label-div">
         <label for="yellow">Gul</label>
-        <input id="yellow" type="number" :value="yellow" />
+        <input id="yellow" type="number" v-model="yellow" />
       </div>
     </div>
     <div class="button-container">
@@ -39,17 +39,25 @@
           </select>
         </div>
         <div class="label-div">
-          <input type="text" :value="winner.wine.name" placeholder="Vin-navn" />
+          <input
+            type="text"
+            v-model="winner.wine.name"
+            placeholder="Vin-navn"
+          />
         </div>
         <div class="label-div">
           <input
             type="text"
-            :value="winner.wine.vivinoLink"
+            v-model="winner.wine.vivinoLink"
             placeholder="Vivino-link"
           />
         </div>
         <div class="label-div">
-          <input type="text" :value="winner.wine.rating" placeholder="Rating" />
+          <input
+            type="text"
+            v-model="winner.wine.rating"
+            placeholder="Rating"
+          />
         </div>
         <hr />
       </div>
