@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="highscore.length > 0">
     <h3>Highscore</h3>
     <ol>
       <li v-for="person in highscore">
