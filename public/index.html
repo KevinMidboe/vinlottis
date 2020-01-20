@@ -1,59 +1,13 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Vinlottis</title>
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
-      rel="stylesheet"
-    />
-  </head>
+  <link href=/dist/css/vinlottis.f85cf34.css rel=stylesheet></head>
   <body>
-    <h1>Official vin lottis homepage</h1>
-    <code id="purchase"></code>
-    <code id="wines"></code>
-    <code id="colors"></code>
-    <code id="highscores"></code>
+    <div id=app></div>
 
-    <script>
-      (async function() {
-        var _purchase = await fetch("/api/purchase/statistics");
-        var purchase = await _purchase.json();
-
-        var _wines = await fetch("/api/wines/statistics");
-        var wines = await _wines.json();
-
-        var _colors = await fetch("/api/purchase/statistics/color");
-        var color = await _colors.json();
-
-        var _highscores = await fetch("/api/highscore/statistics");
-        var highscore = await _highscores.json();
-
-        document.getElementById("purchase").innerHTML = JSON.stringify(
-          purchase,
-          null,
-          2
-        );
-        document.getElementById("wines").innerHTML = JSON.stringify(
-          wines,
-          null,
-          2
-        );
-        document.getElementById("colors").innerHTML = JSON.stringify(
-          color,
-          null,
-          2
-        );
-        document.getElementById("highscores").innerHTML = JSON.stringify(
-          highscore,
-          null,
-          2
-        );
-      })();
-    </script>
-  </body>
-
-  <style>
-    body {
-      font-family: "Roboto", sans-serif;
-    }
-  </style>
+    
+    <script src=/dist/js/vinlottis.bundle.f85cf34.js></script>
+    
+  <script type=text/javascript src=/dist/js/vinlottis.bundle.f85cf34.js></script></body>
 </html>

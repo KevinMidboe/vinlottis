@@ -16,6 +16,7 @@ router.use((req, res, next) => {
 
 router.route("/log").post(async (req, res) => {
   if (!req.isAuthenticated()) {
+    res.send(false);
     return;
   }
   const purchaseBody = req.body.purchase;

@@ -1,0 +1,108 @@
+<template>
+  <div class="bought-container">
+    <div class="red-container">
+      <div>
+        <span class="red">{{ red.total }}</span> kjøpt
+      </div>
+      <div>{{ red.win }} vinn</div>
+      <div>{{ redPercentage }}% vinn</div>
+    </div>
+    <div class="blue-container">
+      <div>
+        <span class="blue">{{ blue.total }}</span> kjøpt
+      </div>
+      <div>{{ blue.win }} vinn</div>
+      <div>{{ bluePercentage }}% vinn</div>
+    </div>
+    <div class="yellow-container">
+      <div>
+        <span class="yellow">{{ yellow.total }}</span> kjøpt
+      </div>
+      <div>{{ yellow.win }} vinn</div>
+      <div>{{ yellowPercentage }}% vinn</div>
+    </div>
+    <div class="green-container">
+      <div>
+        <span class="green">{{ green.total }}</span> kjøpt
+      </div>
+      <div>{{ green.win }} vinn</div>
+      <div>{{ greenPercentage }}% vinn</div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      red: 0,
+      blue: 0,
+      yellow: 0,
+      green: 0,
+      total: 0,
+      totalWin: 0,
+      wins: 0,
+      redPercentage: 0,
+      yellowPercentage: 0,
+      greenPercentage: 0,
+      bluePercentage: 0
+    };
+  },
+  async mounted() {
+    let _response = await fetch(
+      "http://localhost:30030/api/purchase/statistics/color"
+    );
+    let response = await _response.json();
+    this.red = response.red;
+    this.blue = response.blue;
+    this.green = response.green;
+    this.yellow = response.yellow;
+    this.total = response.total;
+    this.totalWin =
+      this.red.win + this.yellow.win + this.blue.win + this.green.win;
+
+    this.redPercentage =
+      this.red.win == 0 ? 0 : (this.totalWin / this.red.win) * 100;
+    this.greenPercentage =
+      this.green.win == 0 ? 0 : (this.totalWin / this.green.win) * 100;
+    this.bluePercentage =
+      this.blue.win == 0 ? 0 : (this.totalWin / this.blue.win) * 100;
+    this.yellowPercentage =
+      this.yellow.win == 0 ? 0 : (this.totalWin / this.yellow.win) * 100;
+    console.log(response);
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.bought-container {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  justify-content: space-around;
+  font-family: sans-serif;
+}
+
+.green,
+.blue,
+.yellow,
+.red {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.green {
+  color: #0be881;
+}
+
+.red {
+  color: #ef5777;
+}
+
+.yellow {
+  color: #ffdd59;
+}
+
+.blue {
+  color: #4bcffa;
+}
+</style>

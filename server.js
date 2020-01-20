@@ -11,6 +11,9 @@ const bodyParser = require("body-parser");
 
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo")(session);
+const cors = require("cors");
+
+app.use(cors());
 mongoose.promise = global.Promise;
 mongoose.connect("mongodb://localhost/vinlottis");
 mongoose.set("debug", true);
@@ -21,6 +24,7 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+
 app.use(
   session({
     secret: "passport-tutorial",
@@ -45,6 +49,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use("/dist", express.static(path.join(__dirname, "public/dist")));
 app.use("/", loginApi);
 app.use("/api/", updateApi);
 app.use("/api/", retrieveApi);

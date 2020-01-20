@@ -4,16 +4,11 @@ const User = require(path.join(__dirname + "/../schemas/User"));
 const router = require("express").Router();
 
 router.get("/", function(req, res) {
-  console.log("here", req.isAuthenticated());
-  if (!req.isAuthenticated()) {
-    res.sendFile(path.join(__dirname + "/../public/login.html"));
-    return;
-  }
   res.sendFile(path.join(__dirname + "/../public/index.html"));
 });
 
 router.get("/register", function(req, res) {
-  res.sendFile(path.join(__dirname + "/../public/register.html"));
+  res.sendFile(path.join(__dirname + "/../public/index.html"));
 });
 
 router.post("/register", function(req, res, next) {
@@ -41,10 +36,10 @@ router.get("/login", function(req, res) {
 router.post(
   "/login",
   passport.authenticate("local", {
-    failureRedirect: "/login"
+    failureRedirect: "#/login"
   }),
   function(req, res) {
-    res.redirect("/");
+    res.redirect("/#/update");
   }
 );
 
