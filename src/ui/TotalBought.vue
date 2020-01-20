@@ -49,7 +49,7 @@ export default {
   },
   async mounted() {
     let _response = await fetch(
-      "http://localhost:30030/api/purchase/statistics/color"
+      "/api/purchase/statistics/color"
     );
     let response = await _response.json();
     this.red = response.red;
