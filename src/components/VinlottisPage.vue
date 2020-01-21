@@ -2,9 +2,7 @@
   <div class="outer">
     <div class="container">
       <h1>Knowit Vinlottis</h1>
-      <router-link to="generate" class="generate-link"
-        >Klarer du ikke velge lodd-farger?</router-link
-      >
+      <router-link to="generate" class="generate-link">Klarer du ikke velge lodd-farger?</router-link>
       <div class="chart-container">
         <PurchaseGraph class="purchase" />
         <WinGraph class="win" />
@@ -66,5 +64,23 @@ h1 {
 .win {
   width: 45vw;
   display: inline-block;
+}
+
+@media only screen and (max-width: 768px) {
+  .purchase,
+  .win {
+    width: 100vw;
+  }
+
+  .chart-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .outer {
+    justify-content: flex-start;
+  }
 }
 </style>
