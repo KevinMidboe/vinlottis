@@ -66,16 +66,16 @@ export default {
       this.red.win + this.yellow.win + this.blue.win + this.green.win;
 
     this.redPercentage = this.round(
-      this.red.win == 0 ? 0 : (this.totalWin / this.red.win) * 100
+      this.red.win == 0 ? 0 : (this.red.win / this.totalWin) * 100
     );
     this.greenPercentage = this.round(
-      this.green.win == 0 ? 0 : (this.totalWin / this.green.win) * 100
+      this.green.win == 0 ? 0 : (this.green.win / this.totalWin) * 100
     );
     this.bluePercentage = this.round(
-      this.blue.win == 0 ? 0 : (this.totalWin / this.blue.win) * 100
+      this.blue.win == 0 ? 0 : (this.blue.win / this.totalWin) * 100
     );
     this.yellowPercentage = this.round(
-      this.yellow.win == 0 ? 0 : (this.totalWin / this.yellow.win) * 100
+      this.yellow.win == 0 ? 0 : (this.yellow.win / this.totalWin) * 100
     );
   },
   methods: {
