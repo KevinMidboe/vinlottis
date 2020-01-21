@@ -99,7 +99,7 @@ h1 {
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 50vh;
+  padding: 50px 0;
 }
 
 .wine-and-highscore-container {

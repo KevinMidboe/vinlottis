@@ -16,25 +16,25 @@ export default {
     let blue = {
       label: "Blå",
       borderColor: "#57d2fb",
-      backgroundColor: "#d4f2fe10",
+      backgroundColor: "#d4f2fe",
       data: []
     };
     let yellow = {
       label: "Gul",
       borderColor: "#ffde5d",
-      backgroundColor: "#fff6d610",
+      backgroundColor: "#fff6d6",
       data: []
     };
     let red = {
       label: "Rød",
       borderColor: "#ef5878",
-      backgroundColor: "#fbd7de10",
+      backgroundColor: "#fbd7de",
       data: []
     };
     let green = {
       label: "Grønn",
       borderColor: "#10e783",
-      backgroundColor: "#c8f9df10",
+      backgroundColor: "#c8f9df",
       data: []
     };
 
@@ -61,6 +61,7 @@ export default {
       labels: labels,
       datasets: datasets
     };
+    console.log(datasets);
     let chart = new Chart(canvas, {
       type: "bar",
       data: chartdata,
