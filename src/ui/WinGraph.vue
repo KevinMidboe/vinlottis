@@ -15,26 +15,26 @@ export default {
     let labels = ["Vunnet"];
     let blue = {
       label: "Blå",
-      borderColor: "#fbd7de",
-      backgroundColor: "#fbd7de42",
+      borderColor: "#57d2fb",
+      backgroundColor: "#fbd7de10",
       data: []
     };
     let yellow = {
       label: "Gul",
-      borderColor: "#fff6d6",
-      backgroundColor: "#fff6d642",
+      borderColor: "#ffde5d",
+      backgroundColor: "#fff6d610",
       data: []
     };
     let red = {
       label: "Rød",
-      borderColor: "#fbd7de",
-      backgroundColor: "#fbd7de42",
+      borderColor: "#ef5878",
+      backgroundColor: "#fbd7de10",
       data: []
     };
     let green = {
       label: "Grønn",
-      borderColor: "#c8f9df",
-      backgroundColor: "#c8f9df42",
+      borderColor: "#10e783",
+      backgroundColor: "#c8f9df10",
       data: []
     };
 
