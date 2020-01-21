@@ -16,7 +16,7 @@ export default {
     let _response = await fetch("/api/highscore/statistics");
     let response = await _response.json();
     response.sort((a, b) => {
-      return a.wins.length > b.wins.length ? 1 : -1;
+      return a.wins.length > b.wins.length ? -1 : 1;
     });
     this.highscore = response;
   }
