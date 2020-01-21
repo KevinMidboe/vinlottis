@@ -112,18 +112,18 @@ export default {
 }
 
 .green {
-  color: #c8f9df;
+  color: #10e783;
 }
 
 .red {
-  color: #fbd7de;
+  color: #ef5878;
 }
 
 .yellow {
-  color: #fff6d6;
+  color: #ffde5d;
 }
 
 .blue {
-  color: #fbd7de;
+  color: #57d2fb;
 }
 </style>
