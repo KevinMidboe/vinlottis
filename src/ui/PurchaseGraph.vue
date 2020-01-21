@@ -12,33 +12,31 @@ export default {
     let canvas = this.$refs["purchase-chart"].getContext("2d");
 
     console.log(canvas);
-    let _response = await fetch(
-      "/api/purchase/statistics"
-    );
+    let _response = await fetch("/api/purchase/statistics");
     let response = await _response.json();
     let labels = [];
     let blue = {
       label: "Blå",
       borderColor: "#4bcffa",
-      backgroundColor: "#4bcffa42",
+      backgroundColor: "#4bcffa10",
       data: []
     };
     let yellow = {
       label: "Gul",
       borderColor: "#ffdd59",
-      backgroundColor: "#ffdd5942",
+      backgroundColor: "#ffdd5910",
       data: []
     };
     let red = {
       label: "Rød",
       borderColor: "#ef5777",
-      backgroundColor: "#ef577742",
+      backgroundColor: "#ef577710",
       data: []
     };
     let green = {
       label: "Grønn",
       borderColor: "#0be881",
-      backgroundColor: "#0be88142",
+      backgroundColor: "#0be88110",
       data: []
     };
 

@@ -28,6 +28,13 @@
       <div>{{ green.win }} vinn</div>
       <div>{{ greenPercentage }}% vinn</div>
     </div>
+    <div class="total-container">
+      <div>
+        totalt&nbsp;
+        <span class="total">{{ total }}</span> kjøpt
+      </div>
+      <div>{{ totalWin }} vinn</div>
+    </div>
   </div>
 </template>
 <script>
@@ -48,9 +55,7 @@ export default {
     };
   },
   async mounted() {
-    let _response = await fetch(
-      "/api/purchase/statistics/color"
-    );
+    let _response = await fetch("/api/purchase/statistics/color");
     let response = await _response.json();
     this.red = response.red;
     this.blue = response.blue;
@@ -60,15 +65,23 @@ export default {
     this.totalWin =
       this.red.win + this.yellow.win + this.blue.win + this.green.win;
 
-    this.redPercentage =
-      this.red.win == 0 ? 0 : (this.totalWin / this.red.win) * 100;
-    this.greenPercentage =
-      this.green.win == 0 ? 0 : (this.totalWin / this.green.win) * 100;
-    this.bluePercentage =
-      this.blue.win == 0 ? 0 : (this.totalWin / this.blue.win) * 100;
-    this.yellowPercentage =
-      this.yellow.win == 0 ? 0 : (this.totalWin / this.yellow.win) * 100;
-    console.log(response);
+    this.redPercentage = this.round(
+      this.red.win == 0 ? 0 : (this.totalWin / this.red.win) * 100
+    );
+    this.greenPercentage = this.round(
+      this.green.win == 0 ? 0 : (this.totalWin / this.green.win) * 100
+    );
+    this.bluePercentage = this.round(
+      this.blue.win == 0 ? 0 : (this.totalWin / this.blue.win) * 100
+    );
+    this.yellowPercentage = this.round(
+      this.yellow.win == 0 ? 0 : (this.totalWin / this.yellow.win) * 100
+    );
+  },
+  methods: {
+    round: function(number) {
+      return Math.round(number * 100) / 100;
+    }
   }
 };
 </script>
@@ -85,7 +98,8 @@ export default {
 .green,
 .blue,
 .yellow,
-.red {
+.red,
+.total {
   font-size: 2rem;
   font-weight: bold;
 }
