@@ -192,7 +192,7 @@ button {
 }
 
 .blue {
-  background-color: #fbd7de;
+  background-color: #d4f2fe;
 }
 
 @media only screen and (max-width: 768px) {
