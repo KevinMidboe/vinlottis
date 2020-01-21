@@ -18,6 +18,9 @@ export default {
     response.sort((a, b) => {
       return a.wins.length > b.wins.length ? -1 : 1;
     });
+    response = response.filter(
+      person => person.name != null && person.name != ""
+    );
     this.highscore = response;
   }
 };
@@ -26,11 +29,7 @@ export default {
 <style lang="scss" scoped>
 div {
   font-family: sans-serif;
-  width: 70vw;
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: inline-flex;
   flex-direction: column;
 }
 </style>

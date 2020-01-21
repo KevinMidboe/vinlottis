@@ -8,7 +8,10 @@
         <WinGraph class="win" />
       </div>
       <TotalBought />
-      <Highscore />
+      <div class="wine-and-highscore-container">
+        <Highscore />
+        <Wines />
+      </div>
     </div>
   </div>
 </template>
@@ -18,13 +21,15 @@ import PurchaseGraph from "@/ui/PurchaseGraph";
 import TotalBought from "@/ui/TotalBought";
 import Highscore from "@/ui/Highscore";
 import WinGraph from "@/ui/WinGraph";
+import Wines from "@/ui/Wines";
 
 export default {
   components: {
     PurchaseGraph,
     TotalBought,
     Highscore,
-    WinGraph
+    WinGraph,
+    Wines
   }
 };
 </script>
@@ -56,14 +61,26 @@ h1 {
   background: orange;
 }
 
+.win,
 .purchase {
-  width: 50vw;
+  width: 48%;
   display: inline-block;
 }
 
-.win {
-  width: 45vw;
-  display: inline-block;
+.chart-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 50vh;
+}
+
+.wine-and-highscore-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: baseline;
 }
 
 @media only screen and (max-width: 768px) {
@@ -81,6 +98,10 @@ h1 {
 
   .outer {
     justify-content: flex-start;
+  }
+
+  .wine-and-highscore-container {
+    flex-direction: column;
   }
 }
 </style>
