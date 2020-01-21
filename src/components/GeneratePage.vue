@@ -180,19 +180,19 @@ button {
   justify-content: space-around;
 }
 .green {
-  background-color: #0be881;
+  background-color: #c8f9df;
 }
 
 .red {
-  background-color: #ef5777;
+  background-color: #fbd7de;
 }
 
 .yellow {
-  background-color: #ffdd59;
+  background-color: #fff6d6;
 }
 
 .blue {
-  background-color: #4bcffa;
+  background-color: #fbd7de;
 }
 
 @media only screen and (max-width: 768px) {

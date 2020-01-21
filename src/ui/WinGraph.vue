@@ -10,33 +10,31 @@ export default {
     let canvas = this.$refs["win-chart"].getContext("2d");
 
     console.log(canvas);
-    let _response = await fetch(
-      "/api/purchase/statistics/color"
-    );
+    let _response = await fetch("/api/purchase/statistics/color");
     let response = await _response.json();
     let labels = ["Vunnet"];
     let blue = {
       label: "Blå",
-      borderColor: "#4bcffa",
-      backgroundColor: "#4bcffa42",
+      borderColor: "#fbd7de",
+      backgroundColor: "#fbd7de42",
       data: []
     };
     let yellow = {
       label: "Gul",
-      borderColor: "#ffdd59",
-      backgroundColor: "#ffdd5942",
+      borderColor: "#fff6d6",
+      backgroundColor: "#fff6d642",
       data: []
     };
     let red = {
       label: "Rød",
-      borderColor: "#ef5777",
-      backgroundColor: "#ef577742",
+      borderColor: "#fbd7de",
+      backgroundColor: "#fbd7de42",
       data: []
     };
     let green = {
       label: "Grønn",
-      borderColor: "#0be881",
-      backgroundColor: "#0be88142",
+      borderColor: "#c8f9df",
+      backgroundColor: "#c8f9df42",
       data: []
     };
 

@@ -17,26 +17,26 @@ export default {
     let labels = [];
     let blue = {
       label: "Blå",
-      borderColor: "#4bcffa",
-      backgroundColor: "#4bcffa10",
+      borderColor: "#57d2fb",
+      backgroundColor: "#fbd7de10",
       data: []
     };
     let yellow = {
       label: "Gul",
-      borderColor: "#ffdd59",
-      backgroundColor: "#ffdd5910",
+      borderColor: "#ffde5d",
+      backgroundColor: "#fff6d610",
       data: []
     };
     let red = {
       label: "Rød",
-      borderColor: "#ef5777",
-      backgroundColor: "#ef577710",
+      borderColor: "#ef5878",
+      backgroundColor: "#fbd7de10",
       data: []
     };
     let green = {
       label: "Grønn",
-      borderColor: "#0be881",
-      backgroundColor: "#0be88110",
+      borderColor: "#10e783",
+      backgroundColor: "#c8f9df10",
       data: []
     };
 
