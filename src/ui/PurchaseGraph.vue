@@ -18,7 +18,7 @@ export default {
     let blue = {
       label: "Blå",
       borderColor: "#57d2fb",
-      backgroundColor: "#fbd7de10",
+      backgroundColor: "#d4f2fe10",
       data: []
     };
     let yellow = {
