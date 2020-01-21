@@ -48,7 +48,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 // use static serialize and deserialize of model for passport session support
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
+app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/dist", express.static(path.join(__dirname, "public/dist")));
 app.use("/", loginApi);
 app.use("/api/", updateApi);

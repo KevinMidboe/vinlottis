@@ -1,17 +1,22 @@
 <template>
   <div class="outer">
+    <h1 class="top-banner">knowit</h1>
     <div class="container">
-      <h1>Knowit Vinlottis</h1>
-      <router-link to="generate" class="generate-link">Klarer du ikke velge lodd-farger?</router-link>
+      <h1>Vinlotteri</h1>
+      <router-link to="generate" class="generate-link">
+        Klarer du ikke velge lodd-farger?
+        <span class="generator-link">Prøv loddgeneratoren</span>
+      </router-link>
       <div class="chart-container">
         <PurchaseGraph class="purchase" />
         <WinGraph class="win" />
       </div>
       <TotalBought />
-      <div class="wine-and-highscore-container">
+      <img src="/images/vipps.png" class="vipps-image" />
+      <!--<div class="wine-and-highscore-container">
         <Highscore />
         <Wines />
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -33,13 +38,18 @@ export default {
   }
 };
 </script>
-
+<style lang="scss">
+body {
+  margin: 0;
+  color: #333333;
+  font-family: sans-serif;
+}
+</style>
 <style lang="scss" scoped>
 .outer {
   height: 100vh;
   width: 100vw;
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
 }
@@ -49,16 +59,32 @@ h1 {
   font-family: sans-serif;
 }
 
+.top-banner {
+  margin-top: 0px;
+  padding: 20px 0;
+  background-color: #dbeede;
+  box-shadow: 0 0 10px 0px #0000003a;
+}
+
 .generate-link {
-  color: white;
-  text-align: center;
-  font-size: 1.2rem;
-  padding: 5px;
-  margin: auto;
-  width: fit-content;
-  display: block;
+  color: #333333;
   text-decoration: none;
-  background: orange;
+  display: block;
+  width: 100vw;
+  text-align: center;
+  margin-bottom: 0px;
+}
+
+.vipps-image {
+  width: 250px;
+  margin: auto;
+  display: block;
+  margin-top: 30px;
+}
+
+.generator-link {
+  font-weight: bold;
+  border-bottom: 1px solid #ff5fff;
 }
 
 .win,
@@ -87,6 +113,10 @@ h1 {
   .purchase,
   .win {
     width: 100vw;
+  }
+
+  .generate-link {
+    margin-bottom: 30px;
   }
 
   .chart-container {

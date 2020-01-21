@@ -1,26 +1,30 @@
 <template>
   <div class="container">
-    <h2>What to buy?</h2>
-    <input
-      type="number"
-      placeholder="Antall lodd"
-      @keyup.enter="generateColors"
-      v-model="numberOfBallots"
-    />
-    <button @click="generateColors">Generer</button>
-    <div class="colors-text">
+    <router-link to="/" class="header-link">
+      <h1 class="top-banner">knowit</h1>
+    </router-link>
+    <h1>Loddgenerator</h1>
+    <p>Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'</p>
+    <div class="input-line">
+      <input
+        type="number"
+        placeholder="Antall lodd"
+        @keyup.enter="generateColors"
+        v-model="numberOfBallots"
+      />
+      <button @click="generateColors">Generer</button>
+    </div>
+    <!--<div class="colors-text">
       <p>Blå: {{ blue }}</p>
       <p>Rød: {{ red }}</p>
       <p>Grønn: {{ green }}</p>
       <p>Gul: {{ yellow }}</p>
-    </div>
+    </div>-->
     <div class="colors">
-      <div
-        v-for="color in colors"
-        :class="getColorClass(color)"
-        class="color-box"
-      ></div>
+      <div v-for="color in colors" :class="getColorClass(color)" class="color-box"></div>
     </div>
+
+    <img src="/images/vipps.png" class="vipps-image" />
   </div>
 </template>
 
@@ -92,17 +96,57 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h2 {
+.header-link {
+  color: #333333;
+  text-decoration: none;
+}
+h1 {
   text-align: center;
+}
+h1 {
+  width: 100vw;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+p {
+  text-align: center;
+  margin-bottom: 35px;
+  margin-top: 0px;
+}
+
+.input-line {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.top-banner {
+  margin-top: 0px;
+  padding: 20px 0;
+  background-color: #dbeede;
+  box-shadow: 0 0 10px 0px #0000003a;
+}
+
+.vipps-image {
+  width: 250px;
+  margin: auto;
+  display: block;
+  margin-top: 30px;
 }
 input,
 button {
-  margin: 10px;
   font-size: 1.5rem;
+}
+
+input {
+  font-size: 1.5rem;
+  padding: 8px;
 }
 .container {
   font-family: sans-serif;
-  width: 80vw;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -121,11 +165,13 @@ button {
 
 button {
   border: none;
-  background: orange;
-  color: white;
-  padding: 10px;
+  background: #b7debd;
+  color: #333333;
+  padding: 10px 30px;
   width: fit-content;
   margin: auto;
+  font-size: 1.3rem;
+  height: 48px;
 }
 
 .colors-text {
@@ -147,5 +193,11 @@ button {
 
 .blue {
   background-color: #4bcffa;
+}
+
+@media only screen and (max-width: 768px) {
+  input {
+    border: 1px solid #333333;
+  }
 }
 </style>
