@@ -39,25 +39,13 @@
           </select>
         </div>
         <div class="label-div">
-          <input
-            type="text"
-            v-model="winner.wine.name"
-            placeholder="Vin-navn"
-          />
+          <input type="text" v-model="winner.wine.name" placeholder="Vin-navn" />
         </div>
         <div class="label-div">
-          <input
-            type="text"
-            v-model="winner.wine.vivinoLink"
-            placeholder="Vivino-link"
-          />
+          <input type="text" v-model="winner.wine.vivinoLink" placeholder="Vivino-link" />
         </div>
         <div class="label-div">
-          <input
-            type="text"
-            v-model="winner.wine.rating"
-            placeholder="Rating"
-          />
+          <input type="text" v-model="winner.wine.rating" placeholder="Rating" />
         </div>
         <hr />
       </div>
@@ -136,7 +124,7 @@ export default {
         }
       }
 
-      let _response = await fetch("http://localhost:30030/api/log/", {
+      let _response = await fetch("/api/log/", {
         headers: {
           "Content-Type": "application/json"
           // 'Content-Type': 'application/x-www-form-urlencoded',
