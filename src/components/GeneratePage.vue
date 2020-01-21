@@ -21,7 +21,12 @@
       <p>Gul: {{ yellow }}</p>
     </div>-->
     <div class="colors">
-      <div v-for="color in colors" :class="getColorClass(color)" class="color-box"></div>
+      <div
+        v-for="color in colors"
+        :class="getColorClass(color)"
+        class="color-box"
+        :style="{ transform: 'rotate(' + getRotation() + 'deg)' }"
+      ></div>
     </div>
 
     <img src="/images/vipps.png" class="vipps-image" />
@@ -76,6 +81,12 @@ export default {
       this.colorTimeout = setTimeout(() => {
         this.generateColors(event, time + 1);
       }, 50);
+    },
+    getRotation: function() {
+      let num = Math.floor(Math.random() * 15);
+      let neg = Math.floor(Math.random() * 2);
+      console.log(neg);
+      return neg == 0 ? -num : num;
     },
     getColorClass: function(number) {
       if (number == 1) {
@@ -160,7 +171,7 @@ input {
 .color-box {
   width: 150px;
   height: 150px;
-  margin: 10px;
+  margin: 20px;
 }
 
 button {
