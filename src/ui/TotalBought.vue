@@ -28,13 +28,13 @@
       <div>{{ green.win }} vinn</div>
       <div>{{ greenPercentage }}% vinn</div>
     </div>
-    <div class="total-container inner-bought-container">
+    <!--<div class="total-container inner-bought-container">
       <div>
         totalt&nbsp;
         <span class="total">{{ total }}</span> kjøpt
       </div>
       <div>{{ totalWin }} vinn</div>
-    </div>
+    </div>-->
   </div>
 </template>
 <script>
