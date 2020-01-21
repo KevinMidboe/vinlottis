@@ -1,34 +1,34 @@
 <template>
   <div class="bought-container">
-    <div class="red-container">
+    <div class="red-container inner-bought-container">
       <div>
         <span class="red">{{ red.total }}</span> kjøpt
       </div>
       <div>{{ red.win }} vinn</div>
       <div>{{ redPercentage }}% vinn</div>
     </div>
-    <div class="blue-container">
+    <div class="blue-container inner-bought-container">
       <div>
         <span class="blue">{{ blue.total }}</span> kjøpt
       </div>
       <div>{{ blue.win }} vinn</div>
       <div>{{ bluePercentage }}% vinn</div>
     </div>
-    <div class="yellow-container">
+    <div class="yellow-container inner-bought-container">
       <div>
         <span class="yellow">{{ yellow.total }}</span> kjøpt
       </div>
       <div>{{ yellow.win }} vinn</div>
       <div>{{ yellowPercentage }}% vinn</div>
     </div>
-    <div class="green-container">
+    <div class="green-container inner-bought-container">
       <div>
         <span class="green">{{ green.total }}</span> kjøpt
       </div>
       <div>{{ green.win }} vinn</div>
       <div>{{ greenPercentage }}% vinn</div>
     </div>
-    <div class="total-container">
+    <div class="total-container inner-bought-container">
       <div>
         totalt&nbsp;
         <span class="total">{{ total }}</span> kjøpt
@@ -87,6 +87,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.inner-bought-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .bought-container {
   display: flex;
   flex-direction: row;
