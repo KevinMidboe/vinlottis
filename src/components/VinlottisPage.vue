@@ -196,11 +196,8 @@ h1 {
     flex-direction: column;
   }
 
-  .vipps-container {
-    margin-left: 0px;
-  }
-
-  .wines-container {
+  .wines-container,
+  .vipps-outer-container {
     margin-left: 0px;
   }
 }
