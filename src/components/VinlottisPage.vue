@@ -1,10 +1,10 @@
 <template>
   <div class="outer">
     <div class="container">
-      <h1>Vinlotteri</h1>
+      <h1 class="title">Vinlotteri</h1>
       <router-link to="generate" class="generate-link">
         Klarer du ikke velge lodd-farger?
-        <span class="generator-link">Prøv loddgeneratoren</span>
+        <span class="subtext generator-link">Prøv loddgeneratoren</span>
       </router-link>
       <div class="chart-container">
         <PurchaseGraph class="purchase" />
@@ -60,6 +60,7 @@ body {
 }
 </style>
 <style lang="scss" scoped>
+@import '../styles/global.scss';
 @import '../styles/media-queries.scss';
 
 .bottom-container {
