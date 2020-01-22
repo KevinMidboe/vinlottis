@@ -92,7 +92,6 @@ export default {
         scales: {
           yAxes: [
             {
-              stacked: true,
               ticks: {
                 beginAtZero: true,
                 suggestedMax: highestNumber + 5
