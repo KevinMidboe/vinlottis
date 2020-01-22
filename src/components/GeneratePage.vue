@@ -178,7 +178,7 @@ h1 {
 }
 
 .title {
-  margin-top: 4rem;
+  margin-top: 2rem;
 }
 
 p {

@@ -70,7 +70,6 @@ h1 {
   width: 100vw;
   text-align: center;
   font-family: "knowit";
-  font-weight: 300;
 }
 
 .generate-link {
