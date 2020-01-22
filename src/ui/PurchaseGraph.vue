@@ -1,6 +1,7 @@
 <template>
   <div>
     <canvas ref="purchase-chart" width="100" height="50"></canvas>
+    <div ref="chartjsLegend" class="chartjsLegend"></div>
   </div>
 </template>
 
@@ -105,4 +106,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.chartjsLegend li span {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+  border-radius: 25px;
+}
+</style>
