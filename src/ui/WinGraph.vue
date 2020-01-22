@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <canvas ref="win-chart" width="100" height="50"></canvas>
+  <div class="chart">
+    <canvas ref="win-chart"></canvas>
   </div>
 </template>
 
@@ -64,6 +64,7 @@ export default {
       type: "bar",
       data: chartdata,
       options: {
+        maintainAspectRatio: false,
         title: {
           display: true,
           text: "Antall vinn"
@@ -94,9 +95,14 @@ export default {
 <style lang="scss" scoped>
 @import "../styles/media-queries.scss";
 
-@include mobile {
-  canvas {
+.chart {
+  height: 40vh;
+
+  @include mobile {
+    position: relative;
+    width: 90vw !important;
     height: 50vh;
+    margin-bottom: 2rem;
   }
 }
 </style>

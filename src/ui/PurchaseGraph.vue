@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="chart">
     <canvas ref="purchase-chart" width="100" height="50"></canvas>
     <div ref="chartjsLegend" class="chartjsLegend"></div>
   </div>
@@ -74,6 +74,7 @@ export default {
       type: "line",
       data: chartdata,
       options: {
+        maintainAspectRatio: false,
         title: {
           display: true,
           text: "Antall kjøp"
@@ -121,9 +122,14 @@ export default {
   border-radius: 25px;
 }
 
-@include mobile {
-  canvas {
+.chart {
+  height: 40vh;
+
+  @include mobile {
+    position: relative;
+    width: 90vw !important;
     height: 50vh;
+    margin-bottom: 2rem;
   }
 }
 </style>
