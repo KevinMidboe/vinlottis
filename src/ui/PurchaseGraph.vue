@@ -12,7 +12,13 @@ export default {
   async mounted() {
     let canvas = this.$refs["purchase-chart"].getContext("2d");
 
-    let _response = await fetch("/api/purchase/statistics");
+    let _response = undefined
+    if (process.env.NODE_ENV == 'development') {
+      _response = await fetch("http://localhost:30030/api/purchase/statistics");
+    }
+    else {
+      _response = await fetch("/api/purchase/statistics");
+    }
     let response = await _response.json();
     let labels = [];
     let blue = {
