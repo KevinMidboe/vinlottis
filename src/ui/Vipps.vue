@@ -24,7 +24,7 @@
   flex-direction: column;
   color: white;
   text-align: center;
-  padding: 25px 30px 25px 25px;
+  padding: 25px;
   width: 250px;
   margin: auto 0;
 }
