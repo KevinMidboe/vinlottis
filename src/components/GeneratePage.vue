@@ -107,6 +107,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+body {
+  margin: 0;
+  color: #333333;
+  font-family: sans-serif;
+  max-width: 1400px;
+  padding-bottom: 30px;
+}
 .header-link {
   color: #333333;
   text-decoration: none;
@@ -209,6 +216,18 @@ button {
 @media only screen and (max-width: 768px) {
   input {
     border: 1px solid #333333;
+  }
+  input,
+  button {
+    font-size: 1rem;
+  }
+
+  button {
+    height: calc(2rem + 6px);
+  }
+
+  p {
+    padding: 0 15px;
   }
 }
 </style>

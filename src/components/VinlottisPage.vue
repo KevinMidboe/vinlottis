@@ -43,6 +43,8 @@ body {
   margin: 0;
   color: #333333;
   font-family: sans-serif;
+  max-width: 1400px;
+  padding-bottom: 30px;
 }
 </style>
 <style lang="scss" scoped>
