@@ -98,6 +98,8 @@ export default {
   display: flex;
   flex-direction: row;
   width: 100vw;
+  max-width: 1400px;
+  margin: auto;
   justify-content: space-around;
   font-family: sans-serif;
 }

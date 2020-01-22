@@ -43,7 +43,6 @@ body {
   margin: 0;
   color: #333333;
   font-family: sans-serif;
-  max-width: 1400px;
   padding-bottom: 30px;
 }
 </style>
@@ -101,6 +100,8 @@ h1 {
   justify-content: center;
   align-items: center;
   width: 100vw;
+  max-width: 1400px;
+  margin: auto;
   padding: 50px 0;
 }
 

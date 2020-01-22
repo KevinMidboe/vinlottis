@@ -85,7 +85,6 @@ export default {
     getRotation: function() {
       let num = Math.floor(Math.random() * 15);
       let neg = Math.floor(Math.random() * 2);
-      console.log(neg);
       return neg == 0 ? -num : num;
     },
     getColorClass: function(number) {
@@ -111,7 +110,6 @@ body {
   margin: 0;
   color: #333333;
   font-family: sans-serif;
-  max-width: 1400px;
   padding-bottom: 30px;
 }
 .header-link {
@@ -174,6 +172,8 @@ input {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  max-width: 1400px;
+  margin: auto;
 }
 .color-box {
   width: 150px;

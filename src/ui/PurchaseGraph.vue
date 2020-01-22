@@ -11,7 +11,6 @@ export default {
   async mounted() {
     let canvas = this.$refs["purchase-chart"].getContext("2d");
 
-    console.log(canvas);
     let _response = await fetch("/api/purchase/statistics");
     let response = await _response.json();
     let labels = [];

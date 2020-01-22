@@ -9,7 +9,6 @@ export default {
   async mounted() {
     let canvas = this.$refs["win-chart"].getContext("2d");
 
-    console.log(canvas);
     let _response = await fetch("/api/purchase/statistics/color");
     let response = await _response.json();
     let labels = ["Vunnet"];
@@ -61,7 +60,6 @@ export default {
       labels: labels,
       datasets: datasets
     };
-    console.log(datasets);
     let chart = new Chart(canvas, {
       type: "bar",
       data: chartdata,

@@ -66,8 +66,6 @@ export default {
   },
   methods: {
     addWinner: function(event) {
-      console.log("clicked");
-
       this.winners.push({
         name: "",
         color: "",
@@ -133,7 +131,6 @@ export default {
         body: JSON.stringify(sendObject)
       });
       let response = await _response.json();
-      console.log(response);
       if (response == true) {
         alert("Sendt!");
         window.location.reload();
