@@ -79,6 +79,10 @@ export default {
           text: "Antall kjøp"
         },
         legend: {
+          display: true,
+          boxWidth: 3,
+          usePointStyle: true,
+          borderRadius: 10,
           labels: {
             // This more specific font property overrides the global property
             defaultFontFamily: (Chart.defaults.global.defaultFontFamily =
@@ -88,6 +92,7 @@ export default {
         scales: {
           yAxes: [
             {
+              stacked: true,
               ticks: {
                 beginAtZero: true,
                 suggestedMax: highestNumber + 5

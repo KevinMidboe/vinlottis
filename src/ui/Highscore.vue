@@ -28,6 +28,7 @@ export default {
 
 <style lang="scss" scoped>
 div {
+  margin: auto 0;
   font-family: "knowit";
   display: inline-flex;
   flex-direction: column;

@@ -3,8 +3,14 @@
     <h3>Viner</h3>
     <ol>
       <li v-for="wine in wines">
-          <span v-if="wine.vivinoLink == '' || wine.vivinoLink == null">{{ wine.name }} - sett {{ wine.occurences }} ganger, {{ wine.rating }} i rating</span>
-          <a :href="wine.vivinoLink" v-if="wine.vivinoLink != '' && wine.vivinoLink != null">{{ wine.name }} - sett {{ wine.occurences }} ganger, {{ wine.rating }} i rating</a></li>
+        <span
+          v-if="wine.vivinoLink == '' || wine.vivinoLink == null"
+        >{{ wine.name }} - sett {{ wine.occurences }} ganger, {{ wine.rating }} i rating</span>
+        <a
+          :href="wine.vivinoLink"
+          v-if="wine.vivinoLink != '' && wine.vivinoLink != null"
+        >{{ wine.name }} - sett {{ wine.occurences }} ganger, {{ wine.rating }} i rating</a>
+      </li>
     </ol>
   </div>
 </template>
@@ -19,11 +25,9 @@ export default {
     let response = await _response.json();
 
     response.sort();
-    response = response.filter(
-      wine => wine.name != null && wine.name != ""
-    ).sort((a, b) => 
-      a.occurences > b.occurences ? -1 : 1
-    );
+    response = response
+      .filter(wine => wine.name != null && wine.name != "")
+      .sort((a, b) => (a.occurences > b.occurences ? -1 : 1));
     this.wines = response;
   }
 };
@@ -31,16 +35,17 @@ export default {
 
 <style lang="scss" scoped>
 h3 {
-    text-align:center;
+  text-align: center;
 }
 div {
+  margin: auto 0;
   font-family: "knowit";
   display: inline-flex;
   flex-direction: column;
 }
 
 a {
-    text-decoration: none;
-    color: orange;
+  text-decoration: none;
+  color: orange;
 }
 </style>

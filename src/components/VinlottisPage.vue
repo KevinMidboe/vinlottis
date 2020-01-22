@@ -11,11 +11,13 @@
         <WinGraph class="win" />
       </div>
       <TotalBought />
-      <img src="/public/assets/images/vipps.png" class="vipps-image" />
-      <!--<div class="wine-and-highscore-container">
+      <!-- <img src="/public/assets/images/vipps.png" class="vipps-image" /> -->
+
+      <div class="wine-and-highscore-container">
+        <Vipps class="vipps-container" />
         <Highscore />
         <Wines />
-      </div>-->
+      </div>
     </div>
   </div>
 </template>
@@ -27,6 +29,7 @@ import Highscore from "@/ui/Highscore";
 import WinGraph from "@/ui/WinGraph";
 import Banner from "@/ui/Banner";
 import Wines from "@/ui/Wines";
+import Vipps from "@/ui/Vipps";
 
 export default {
   components: {
@@ -35,7 +38,8 @@ export default {
     Highscore,
     WinGraph,
     Banner,
-    Wines
+    Wines,
+    Vipps
   }
 };
 </script>
@@ -99,6 +103,10 @@ h1 {
   display: inline-block;
 }
 
+.vipps-container {
+  margin-top: 25px;
+}
+
 .chart-container {
   display: flex;
   flex-direction: row;
@@ -115,6 +123,9 @@ h1 {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: baseline;
+  padding-bottom: 25px;
+  max-width: 1400px;
+  margin: auto;
 }
 
 @media only screen and (max-width: 768px) {

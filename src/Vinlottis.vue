@@ -15,7 +15,7 @@ export default {
     return {};
   },
   mounted() {
-    console.log("moutned");
+    console.log("SNEAKY PETE!");
   },
   computed: {},
 

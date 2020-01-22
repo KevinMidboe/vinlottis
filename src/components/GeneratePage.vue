@@ -56,16 +56,19 @@
       ></div>
     </div>
 
-    <img src="/public/assets/images/vipps.png" class="vipps-image" />
+    <!-- <img src="/public/assets/images/vipps.png" class="vipps-image" /> -->
+    <Vipps />
   </div>
 </template>
 
 <script>
+import Vipps from "@/ui/Vipps";
 import Banner from "@/ui/Banner";
 
 export default {
   components: {
-    Banner
+    Banner,
+    Vipps
   },
   data() {
     return {
@@ -109,7 +112,7 @@ export default {
         randomArray.push(4);
       }
       if (randomArray.length == 0) {
-        alert("Du må velge MINST 1 farge..");
+        alert("Du må velge MINST 1 farge");
         return;
       }
       if (this.numberOfBallots > 0) {
