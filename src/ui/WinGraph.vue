@@ -90,3 +90,11 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+@media only screen and (max-width: 768px) {
+  canvas {
+    height: 50vh;
+  }
+}
+</style>

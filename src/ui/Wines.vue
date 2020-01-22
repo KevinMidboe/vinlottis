@@ -1,6 +1,6 @@
 <template>
   <div v-if="wines.length > 0">
-    <h3>Viner</h3>
+    <h3>Topp viner</h3>
     <ol>
       <li v-for="wine in wines">
         <span v-if="wine.vivinoLink == '' || wine.vivinoLink == null"
@@ -38,7 +38,7 @@ export default {
 
 <style lang="scss" scoped>
 h3 {
-  text-align: center;
+  text-align: left;
 }
 div {
   margin: 15px 0 0 0;
@@ -50,5 +50,10 @@ div {
 a {
   text-decoration: none;
   color: orange;
+}
+
+ol {
+  padding-left: 1rem;
+  margin-left: 0;
 }
 </style>

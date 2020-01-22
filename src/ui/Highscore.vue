@@ -1,5 +1,5 @@
 <template>
-  <div v-if="highscore.length > 0">
+  <div class="highscores" v-if="highscore.length > 0">
     <h3>Highscore</h3>
     <ol>
       <li v-for="person in highscore">
@@ -29,10 +29,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.highscores {
+  padding-right: 50px;
+}
 div {
   margin: 15px 0 0 0;
-  font-family: "knowit";
+  font-family: Arial;
   display: inline-flex;
   flex-direction: column;
+}
+ol {
+  padding-left: 1rem;
+  margin-left: 0;
 }
 </style>
