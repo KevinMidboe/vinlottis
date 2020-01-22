@@ -47,7 +47,7 @@ export default {
 body {
   margin: 0;
   color: #333333;
-  font-family: "knowit";
+  font-family: sans-serif;
   padding-bottom: 30px;
 }
 </style>

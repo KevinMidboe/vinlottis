@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <h1 class="title">Loddgenerator</h1>
-    <p class="subtext">Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'</p>
+    <p class="subtext">
+      Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'
+    </p>
     <div class="input-line">
       <label for="redCheckbox">
         <input type="checkbox" id="redCheckbox" v-model="redCheckbox" />
@@ -57,7 +59,7 @@
     </div>
 
     <!-- <img src="/public/assets/images/vipps.png" class="vipps-image" /> -->
-    <Vipps />
+    <Vipps class="vipps" />
   </div>
 </template>
 
@@ -166,8 +168,12 @@ export default {
 body {
   margin: 0;
   color: #333333;
-  font-family: Knowit;
+  font-family: sans-serif;
   padding-bottom: 30px;
+}
+
+.vipps {
+  margin: 20px auto auto auto;
 }
 .header-link {
   color: #333333;
@@ -177,7 +183,7 @@ h1 {
   text-align: center;
   width: 100vw;
   text-align: center;
-  font-family: Knowit;
+  font-family: knowit;
 }
 
 .title {
@@ -186,7 +192,7 @@ h1 {
 }
 
 .subtext {
-  margin-top: 0.50rem;
+  margin-top: 0.5rem;
   font-size: 1.22rem;
 }
 
@@ -297,12 +303,14 @@ label .text {
 button {
   border: none;
   background: #b7debd;
-  color: #333333;
+  color: #333;
   padding: 10px 30px;
   width: fit-content;
-  margin: 0;
   font-size: 1.3rem;
-  height: 3rem;
+  display: block;
+  height: calc(3rem + 18px);
+  display: inline-flex;
+  max-height: calc(3rem + 18px);
 }
 
 .colors-text {
@@ -379,6 +387,15 @@ button {
 
   p {
     padding: 0 15px;
+  }
+
+  .input-line {
+    flex-wrap: wrap;
+
+    label {
+      width: 40%;
+      margin-top: 15px;
+    }
   }
 }
 </style>
