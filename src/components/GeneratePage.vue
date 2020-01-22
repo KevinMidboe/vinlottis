@@ -43,12 +43,7 @@
       />
       <button @click="generateColors">Generer</button>
     </div>
-    <!--<div class="colors-text">
-      <p>Blå: {{ blue }}</p>
-      <p>Rød: {{ red }}</p>
-      <p>Grønn: {{ green }}</p>
-      <p>Gul: {{ yellow }}</p>
-    </div>-->
+
     <div class="colors">
       <div
         v-for="color in colors"
@@ -58,7 +53,6 @@
       ></div>
     </div>
 
-    <!-- <img src="/public/assets/images/vipps.png" class="vipps-image" /> -->
     <Vipps class="vipps" />
   </div>
 </template>
