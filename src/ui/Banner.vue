@@ -6,7 +6,9 @@
   </router-link>
 </template>
 
-<style>
+<style lang="scss" scoped>
+@import "../styles/media-queries.scss";
+
 .top-banner {
   text-align: center;
   width: 100vw;
@@ -16,5 +18,13 @@
   -webkit-box-shadow: 0px 0px 22px -8px rgba(0,0,0,0.65);
   -moz-box-shadow: 0px 0px 22px -8px rgba(0,0,0,0.65);
   box-shadow: 0px 0px 22px -8px rgba(0,0,0,0.65);
+
+  @include mobile {
+    padding: 20px 0;
+
+    > img {
+      height: 23px;
+    }
+  }
 }
 </style>
