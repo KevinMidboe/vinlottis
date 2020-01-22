@@ -12,7 +12,7 @@ steps:
   image: node:13.6.0
   commands:
     - node -v
-    - yarn --version¨
+    - yarn --version
 - name: deploy
   image: appleboy/drone-ssh
   pull: true
