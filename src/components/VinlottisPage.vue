@@ -10,13 +10,20 @@
         <PurchaseGraph class="purchase" />
         <WinGraph class="win" />
       </div>
-      <TotalBought />
-      <!-- <img src="/public/assets/images/vipps.png" class="vipps-image" /> -->
 
-      <div class="wine-and-highscore-container">
-        <Vipps class="vipps-container" />
-        <Highscore />
-        <Wines />
+      <!-- <img src="/public/assets/images/vipps.png" class="vipps-image" /> -->
+      <div class="bottom-container">
+        <div class="left-bottom">
+          <TotalBought />
+          <hr class="bought-and-highscore-separator" />
+          <div class="highscore-and-wines">
+            <Highscore />
+            <Wines class="wines-container" />
+          </div>
+        </div>
+        <div class="vipps-outer-container">
+          <Vipps class="vipps-container" />
+        </div>
       </div>
     </div>
   </div>
@@ -52,6 +59,41 @@ body {
 }
 </style>
 <style lang="scss" scoped>
+.bottom-container {
+  display: flex;
+  flex-direction: row;
+  max-width: 1350px;
+  margin: auto;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.left-bottom {
+  width: 75%;
+}
+
+.bought-and-highscore-separator {
+  border: none;
+  border-bottom: 1px solid rgb(237, 237, 237);
+}
+
+.highscore-and-wines {
+  display: flex;
+  flex-direction: row;
+  padding-top: 1.5rem;
+}
+
+.wines-container {
+  margin-left: 30px;
+}
+
+.vipps-outer-container {
+  border-left: 1px solid rgb(237, 237, 237);
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+}
+
 @font-face {
   font-family: "knowit";
   font-weight: 600;
@@ -104,7 +146,9 @@ h1 {
 }
 
 .vipps-container {
-  margin-top: 25px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  margin-left: 30px;
 }
 
 .chart-container {
@@ -120,12 +164,10 @@ h1 {
 
 .wine-and-highscore-container {
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: baseline;
+  flex-direction: column;
+  align-items: flex-start;
   padding-bottom: 25px;
-  max-width: 1400px;
-  margin: auto;
+  border-right: 1px solid #333;
 }
 
 @media only screen and (max-width: 768px) {
@@ -149,8 +191,14 @@ h1 {
     justify-content: flex-start;
   }
 
-  .wine-and-highscore-container {
+  .bottom-container,
+  .highscore-and-wines {
     flex-direction: column;
+  }
+
+  .wines-container,
+  .vipps-outer-container {
+    margin-left: 0px;
   }
 }
 </style>

@@ -1,52 +1,51 @@
 <template>
-  <div class="bought-container">
-    <div class="red-container inner-bought-container">
-      <div class="number-container">
-        <span class="red bought-number-span">{{ red.total }}</span>
-        <div class="inner-text-container">
+  <div class="outer-bought">
+    <h3>Loddstatistikk</h3>
+    <div class="bought-container">
+      <div class="red-container inner-bought-container">
+        <div class="number-container">
+          <span class="red bought-number-span">{{ red.total }}</span>
           <span> kjøpte</span>
-          <div>{{ red.win }} vinn</div>
-          <div>{{ redPercentage }}% vinn</div>
+        </div>
+        <div class="inner-text-container">
+          <div>{{ red.win }} vinn - {{ redPercentage }}% vinn</div>
         </div>
       </div>
-    </div>
-    <div class="blue-container inner-bought-container">
-      <div class="number-container">
-        <span class="blue bought-number-span">{{ blue.total }}</span>
-        <div class="inner-text-container">
+      <div class="blue-container inner-bought-container">
+        <div class="number-container">
+          <span class="blue bought-number-span">{{ blue.total }}</span>
           <span> kjøpte</span>
-          <div>{{ blue.win }} vinn</div>
-          <div>{{ bluePercentage }}% vinn</div>
+        </div>
+        <div class="inner-text-container">
+          <div>{{ blue.win }} vinn - {{ bluePercentage }}% vinn</div>
         </div>
       </div>
-    </div>
-    <div class="yellow-container inner-bought-container">
-      <div class="number-container">
-        <span class="yellow bought-number-span">{{ yellow.total }}</span>
-        <div class="inner-text-container">
+      <div class="yellow-container inner-bought-container">
+        <div class="number-container">
+          <span class="yellow bought-number-span">{{ yellow.total }}</span>
           <span> kjøpte</span>
-          <div>{{ yellow.win }} vinn</div>
-          <div>{{ yellowPercentage }}% vinn</div>
+        </div>
+        <div class="inner-text-container">
+          <div>{{ yellow.win }} vinn - {{ yellowPercentage }}% vinn</div>
         </div>
       </div>
-    </div>
-    <div class="green-container inner-bought-container">
-      <div class="number-container">
-        <span class="green bought-number-span">{{ green.total }}</span>
-        <div class="inner-text-container">
+      <div class="green-container inner-bought-container">
+        <div class="number-container">
+          <span class="green bought-number-span">{{ green.total }}</span>
           <span> kjøpte</span>
-          <div>{{ green.win }} vinn</div>
-          <div>{{ greenPercentage }}% vinn</div>
+        </div>
+        <div class="inner-text-container">
+          <div>{{ green.win }} vinn - {{ greenPercentage }}% vinn</div>
         </div>
       </div>
-    </div>
-    <!--<div class="total-container inner-bought-container">
-      <div>
-        totalt&nbsp;
-        <span class="total">{{ total }}</span> kjøpt
+      <div class="total-container inner-bought-container">
+        <div>
+          Totalt&nbsp;
+          <span class="total">{{ total }}</span> kjøpt
+        </div>
+        <div>{{ totalWin }} vinn</div>
       </div>
-      <div>{{ totalWin }} vinn</div>
-    </div>-->
+    </div>
   </div>
 </template>
 <script>
@@ -103,15 +102,20 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .number-container {
   display: flex;
+  align-items: flex-end;
+
+  & span:last-child {
+    padding-bottom: 5px;
+    padding-left: 5px;
+  }
 }
 
 .inner-text-container {
-  margin-top: 0.8rem;
   padding-left: 5px;
 }
 
@@ -122,11 +126,12 @@ export default {
 .bought-container {
   display: flex;
   flex-direction: row;
-  width: 100vw;
+  width: 100%;
+  padding-bottom: 3rem;
   max-width: 1400px;
   margin: auto;
-  justify-content: space-around;
-  font-family: "knowit";
+  justify-content: space-between;
+  font-family: Arial;
 }
 
 .green,
@@ -152,5 +157,11 @@ export default {
 
 .blue {
   color: #57d2fb;
+}
+@media only screen and (max-width: 768px) {
+  .bought-container {
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
 }
 </style>
