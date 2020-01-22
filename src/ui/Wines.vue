@@ -3,13 +3,16 @@
     <h3>Viner</h3>
     <ol>
       <li v-for="wine in wines">
-        <span
-          v-if="wine.vivinoLink == '' || wine.vivinoLink == null"
-        >{{ wine.name }} - sett {{ wine.occurences }} ganger, {{ wine.rating }} i rating</span>
+        <span v-if="wine.vivinoLink == '' || wine.vivinoLink == null"
+          >{{ wine.name }} - sett {{ wine.occurences }} ganger,
+          {{ wine.rating }} i rating</span
+        >
         <a
           :href="wine.vivinoLink"
           v-if="wine.vivinoLink != '' && wine.vivinoLink != null"
-        >{{ wine.name }} - sett {{ wine.occurences }} ganger, {{ wine.rating }} i rating</a>
+          >{{ wine.name }} - sett {{ wine.occurences }} ganger,
+          {{ wine.rating }} i rating</a
+        >
       </li>
     </ol>
   </div>
@@ -38,7 +41,7 @@ h3 {
   text-align: center;
 }
 div {
-  margin: auto 0;
+  margin: 15px 0 0 0;
   font-family: "knowit";
   display: inline-flex;
   flex-direction: column;

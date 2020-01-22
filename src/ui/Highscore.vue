@@ -2,7 +2,9 @@
   <div v-if="highscore.length > 0">
     <h3>Highscore</h3>
     <ol>
-      <li v-for="person in highscore">{{ person.name }} - {{ person.wins.length }}</li>
+      <li v-for="person in highscore">
+        {{ person.name }} - {{ person.wins.length }}
+      </li>
     </ol>
   </div>
 </template>
@@ -28,7 +30,7 @@ export default {
 
 <style lang="scss" scoped>
 div {
-  margin: auto 0;
+  margin: 15px 0 0 0;
   font-family: "knowit";
   display: inline-flex;
   flex-direction: column;
