@@ -41,7 +41,7 @@ export default {
   },
   data() {
     return {
-      numberOfBallots: 0,
+      numberOfBallots: 4,
       colors: [],
       blue: 0,
       red: 0,
