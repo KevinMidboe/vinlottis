@@ -307,28 +307,59 @@ button {
   flex-direction: row;
   justify-content: space-around;
 }
+
 .green,
-.input-line label:hover input#greenCheckbox ~ .border .checkmark,
 .input-line label input#greenCheckbox:checked ~ .border .checkmark {
   background-color: #c8f9df;
 }
 
+.input-line label:hover input#greenCheckbox ~ .border .checkmark {
+  background-color: #10e783;
+}
+
+.input-line label:focus input#greenCheckbox ~ .border .checkmark,
+.input-line label:active input#greenCheckbox ~ .border .checkmark {
+  background-color: #0ed277;
+}
+
 .red,
-.input-line label:hover input#redCheckbox ~ .border .checkmark,
 .input-line label input#redCheckbox:checked ~ .border .checkmark {
   background-color: #fbd7de;
 }
 
+.input-line label:hover input#redCheckbox ~ .border .checkmark {
+  background-color: #ef5878;
+}
+
+.input-line label:focus input#redCheckbox ~ .border .checkmark,
+.input-line label:active input#redCheckbox ~ .border .checkmark {
+  background-color: #ec3b61;
+}
+
 .yellow,
-.input-line label:hover input#yellowCheckbox ~ .border .checkmark,
 .input-line label input#yellowCheckbox:checked ~ .border .checkmark {
   background-color: #fff6d6;
 }
 
+.input-line label:hover input#yellowCheckbox ~ .border .checkmark {
+  background-color: #ffde5d;
+}
+.input-line label:focus input#yellowCheckbox ~ .border .checkmark,
+.input-line label:active input#yellowCheckbox ~ .border .checkmark {
+  background-color: #ecc31d;
+}
+
 .blue,
-.input-line label:hover input#blueCheckbox ~ .border .checkmark,
 .input-line label input#blueCheckbox:checked ~ .border .checkmark {
   background-color: #d4f2fe;
+}
+.input-line label:hover input#blueCheckbox ~ .border .checkmark {
+  background-color: #57d2fb;
+}
+
+.input-line label:focus input#blueCheckbox ~ .border .checkmark,
+.input-line label:active input#blueCheckbox ~ .border .checkmark {
+  background-color: #24acda;
 }
 
 @media only screen and (max-width: 768px) {
