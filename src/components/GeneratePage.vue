@@ -165,6 +165,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/global.scss';
+@import '../styles/media-queries.scss';
+
 body {
   margin: 0;
   color: #333333;
@@ -179,22 +182,6 @@ body {
   color: #333333;
   text-decoration: none;
 }
-h1 {
-  text-align: center;
-  width: 100vw;
-  text-align: center;
-  font-family: knowit;
-}
-
-.title {
-  margin-top: 3.8rem;
-  font-weight: 600;
-}
-
-.subtext {
-  margin-top: 0.5rem;
-  font-size: 1.22rem;
-}
 
 p {
   text-align: center;
@@ -207,6 +194,10 @@ p {
   justify-content: space-around;
   align-items: center;
   margin-top: 2.4rem;
+
+  @include mobile {
+    margin-top: 1.2rem;
+  }
 }
 
 .input-line label {
@@ -227,16 +218,17 @@ p {
   box-shadow: 0 0 10px 0px #0000003a;
 }
 
-.vipps-image {
-  width: 250px;
-  margin: auto;
-  display: block;
-  margin-top: 30px;
+.vipps {
+  margin-top: 8rem;
+
+  @include mobile {
+    margin-top: 2rem;
+  }
 }
+
 input,
 button {
   font-size: 1.5rem;
-  font-family: "knowit";
 }
 
 input {
@@ -276,7 +268,6 @@ label .text {
 }
 
 .container {
-  font-family: Knowit;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -287,7 +278,11 @@ label .text {
   flex-wrap: wrap;
   justify-content: center;
   max-width: 1400px;
-  margin: auto;
+  margin: 3rem auto 0;
+
+  @include mobile {
+    margin: 1.8rem auto 0;
+  }
 }
 .color-box {
   width: 150px;
@@ -298,6 +293,12 @@ label .text {
   mask-image: url(/../../public/assets/images/lodd.svg);
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
+
+  @include mobile {
+    width: 60px;
+    height: 60px;
+    margin: 10px;
+  }
 }
 
 button {
@@ -325,7 +326,7 @@ button {
 }
 
 .input-line label:hover input#greenCheckbox ~ .border .checkmark {
-  background-color: #10e783;
+  background-color: #0be881;
 }
 
 .input-line label:focus input#greenCheckbox ~ .border .checkmark,
@@ -365,7 +366,7 @@ button {
   background-color: #d4f2fe;
 }
 .input-line label:hover input#blueCheckbox ~ .border .checkmark {
-  background-color: #57d2fb;
+  background-color: #4bcffa;
 }
 
 .input-line label:focus input#blueCheckbox ~ .border .checkmark,
@@ -373,7 +374,7 @@ button {
   background-color: #24acda;
 }
 
-@media only screen and (max-width: 768px) {
+@include mobile {
   input,
   button {
     font-size: 1.4rem;
@@ -393,8 +394,9 @@ button {
     flex-wrap: wrap;
 
     label {
-      width: 40%;
+      width: 30%;
       margin-top: 15px;
+      justify-content: flex-start;
     }
   }
 }
