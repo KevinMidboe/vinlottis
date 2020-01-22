@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <banner />
-    <h1>Loddgenerator</h1>
+
+    <h1 class="title">Loddgenerator</h1>
     <p>Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'</p>
     <div class="input-line">
       <input
@@ -121,11 +122,13 @@ body {
 }
 h1 {
   text-align: center;
-}
-h1 {
   width: 100vw;
   text-align: center;
   font-family: Knowit;
+}
+
+.title {
+  margin-top: 4rem;
 }
 
 p {
