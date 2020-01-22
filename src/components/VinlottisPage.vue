@@ -1,8 +1,6 @@
 <template>
   <div class="outer">
-    <h1 class="top-banner">
-      <img src="/public/assets/images/knowit.svg" />
-    </h1>
+    <banner />
     <div class="container">
       <h1>Vinlotteri</h1>
       <router-link to="generate" class="generate-link">
@@ -28,6 +26,7 @@ import PurchaseGraph from "@/ui/PurchaseGraph";
 import TotalBought from "@/ui/TotalBought";
 import Highscore from "@/ui/Highscore";
 import WinGraph from "@/ui/WinGraph";
+import Banner from "@/ui/Banner";
 import Wines from "@/ui/Wines";
 
 export default {
@@ -36,6 +35,7 @@ export default {
     TotalBought,
     Highscore,
     WinGraph,
+    Banner,
     Wines
   }
 };
@@ -74,12 +74,6 @@ h1 {
   font-weight: 300;
 }
 
-.top-banner {
-  margin-top: 0px;
-  padding: 20px 0;
-  background-color: #dbeede;
-  box-shadow: 0 0 10px 0px #0000003a;
-}
 
 .generate-link {
   color: #333333;

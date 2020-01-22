@@ -1,8 +1,6 @@
 <template>
   <div class="container">
-    <router-link to="/" class="header-link">
-      <h1 class="top-banner">knowit</h1>
-    </router-link>
+    <banner />
     <h1>Loddgenerator</h1>
     <p>Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'</p>
     <div class="input-line">
@@ -34,7 +32,12 @@
 </template>
 
 <script>
+import Banner from "@/ui/Banner";
+
 export default {
+  components: {
+    Banner
+  },
   data() {
     return {
       numberOfBallots: 0,
