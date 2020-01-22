@@ -168,7 +168,7 @@ input {
   font-size: 1.5rem;
   padding: 8px;
   margin: 0;
-  height: 3rem;
+  max-height: 3rem;
 }
 .container {
   font-family: Knowit;
