@@ -1,35 +1,35 @@
 <template>
   <div class="container">
     <h1 class="title">Loddgenerator</h1>
-    <p>Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'</p>
+    <p class="subtext">Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'</p>
     <div class="input-line">
       <label for="redCheckbox">
         <input type="checkbox" id="redCheckbox" v-model="redCheckbox" />
         <span class="border">
           <span class="checkmark"></span>
         </span>
-        Rød
-      </label>
-      <label for="yellowCheckbox">
-        <input type="checkbox" id="yellowCheckbox" v-model="yellowCheckbox" />
-        <span class="border">
-          <span class="checkmark"></span>
-        </span>
-        Gul
+        <span class="text">Rød</span>
       </label>
       <label for="blueCheckbox">
         <input type="checkbox" id="blueCheckbox" v-model="blueCheckbox" />
         <span class="border">
           <span class="checkmark"></span>
         </span>
-        Blå
+        <span class="text">Blå</span>
+      </label>
+      <label for="yellowCheckbox">
+        <input type="checkbox" id="yellowCheckbox" v-model="yellowCheckbox" />
+        <span class="border">
+          <span class="checkmark"></span>
+        </span>
+        <span class="text">Gul</span>
       </label>
       <label for="greenCheckbox">
         <input type="checkbox" id="greenCheckbox" v-model="greenCheckbox" />
         <span class="border">
           <span class="checkmark"></span>
         </span>
-        Grønn
+        <span class="text">Grønn</span>
       </label>
     </div>
     <div class="input-line">
@@ -181,29 +181,37 @@ h1 {
 }
 
 .title {
-  margin-top: 2rem;
+  margin-top: 3.8rem;
+  font-weight: 600;
+}
+
+.subtext {
+  margin-top: 0.50rem;
+  font-size: 1.22rem;
 }
 
 p {
   text-align: center;
-  margin-bottom: 15px;
-  margin-top: 0px;
+  margin: 0;
 }
 
 .input-line {
   margin: auto;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  margin-bottom: 25px;
+  margin-top: 2.4rem;
 }
 
 .input-line label {
-  padding: 0 8px;
+  padding: 0 6px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+
+  font-size: 1.22rem;
+  margin: 0 0.6rem;
 }
 
 .top-banner {
@@ -229,7 +237,9 @@ input {
   font-size: 1.5rem;
   padding: 8px;
   margin: 0;
+  height: 3rem;
   max-height: 3rem;
+  border: 1px solid rgba(#333333, 0.3);
 }
 
 input[type="checkbox"] {
@@ -237,21 +247,26 @@ input[type="checkbox"] {
 }
 
 label .border {
-  border: 1px solid #333333;
+  border: 1px solid rgba(#333333, 0.3);
   border-spacing: 2px;
   margin-right: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2px;
+  padding: 1px;
 }
 
 label .checkmark {
   background: none;
   display: inline-block;
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   padding: 2px;
+}
+
+label .text {
+  margin-left: 0.15rem;
+  margin-top: auto;
 }
 
 .container {
@@ -287,7 +302,7 @@ button {
   width: fit-content;
   margin: 0;
   font-size: 1.3rem;
-  height: calc(3rem + 1.8px);
+  height: 3rem;
 }
 
 .colors-text {
@@ -353,11 +368,13 @@ button {
 @media only screen and (max-width: 768px) {
   input,
   button {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
+    line-height: 1.4rem;
   }
 
   input {
     width: 45vw;
+    height: 3rem;
   }
 
   p {
