@@ -21,6 +21,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "extract-text-webpack-plugin": "^3.0.2",
+    "favicon-emoji": "^2.3.0",
     "moment": "^2.24.0",
     "mongoose": "^5.8.7",
     "node-fetch": "^2.6.0",
