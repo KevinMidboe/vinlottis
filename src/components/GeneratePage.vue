@@ -87,6 +87,11 @@ export default {
       blueCheckbox: true
     };
   },
+  watch: {
+    numberOfBallots: function() {
+      this.generateColors()
+    }
+  },
   methods: {
     generateColors: function(event, time) {
       if (time == 5) {
