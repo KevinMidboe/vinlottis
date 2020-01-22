@@ -92,7 +92,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@media only screen and (max-width: 768px) {
+@import "../styles/media-queries.scss";
+
+@include mobile {
   canvas {
     height: 50vh;
   }

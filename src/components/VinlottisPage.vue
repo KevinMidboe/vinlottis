@@ -179,7 +179,7 @@ h1 {
   border-right: 1px solid #333;
 }
 
-@media only screen and (max-width: 768px) {
+@include mobile {
   .purchase,
   .win {
     width: 100vw;

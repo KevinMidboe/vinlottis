@@ -111,6 +111,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../styles/media-queries.scss";
+
 .chartjsLegend li span {
   display: inline-block;
   width: 12px;
@@ -119,7 +121,7 @@ export default {
   border-radius: 25px;
 }
 
-@media only screen and (max-width: 768px) {
+@include mobile {
   canvas {
     height: 50vh;
   }

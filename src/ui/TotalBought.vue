@@ -98,6 +98,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../styles/media-queries.scss";
+
 .inner-bought-container {
   display: flex;
   flex-direction: column;
@@ -158,7 +160,8 @@ export default {
 .blue {
   color: #57d2fb;
 }
-@media only screen and (max-width: 768px) {
+
+@include mobile {
   .bought-container {
     flex-wrap: wrap;
     flex-direction: column;
