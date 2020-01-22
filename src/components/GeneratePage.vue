@@ -6,6 +6,36 @@
     <h1>Loddgenerator</h1>
     <p>Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'</p>
     <div class="input-line">
+      <label for="redCheckbox">
+        <input type="checkbox" id="redCheckbox" v-model="redCheckbox" />
+        <span class="border">
+          <span class="checkmark"></span>
+        </span>
+        Rød
+      </label>
+      <label for="yellowCheckbox">
+        <input type="checkbox" id="yellowCheckbox" v-model="yellowCheckbox" />
+        <span class="border">
+          <span class="checkmark"></span>
+        </span>
+        Gul
+      </label>
+      <label for="blueCheckbox">
+        <input type="checkbox" id="blueCheckbox" v-model="blueCheckbox" />
+        <span class="border">
+          <span class="checkmark"></span>
+        </span>
+        Blå
+      </label>
+      <label for="greenCheckbox">
+        <input type="checkbox" id="greenCheckbox" v-model="greenCheckbox" />
+        <span class="border">
+          <span class="checkmark"></span>
+        </span>
+        Grønn
+      </label>
+    </div>
+    <div class="input-line">
       <input
         type="number"
         placeholder="Antall lodd"
@@ -43,7 +73,11 @@ export default {
       red: 0,
       green: 0,
       yellow: 0,
-      colorTimeout: null
+      colorTimeout: null,
+      redCheckbox: true,
+      greenCheckbox: true,
+      yellowCheckbox: true,
+      blueCheckbox: true
     };
   },
   methods: {
@@ -59,9 +93,27 @@ export default {
       this.red = 0;
       this.green = 0;
       this.yellow = 0;
+      let randomArray = [];
+      if (this.redCheckbox) {
+        randomArray.push(1);
+      }
+      if (this.greenCheckbox) {
+        randomArray.push(2);
+      }
+      if (this.yellowCheckbox) {
+        randomArray.push(3);
+      }
+      if (this.blueCheckbox) {
+        randomArray.push(4);
+      }
+      if (randomArray.length == 0) {
+        alert("Du må velge MINST 1 farge..");
+        return;
+      }
       if (this.numberOfBallots > 0) {
         for (let i = 0; i < this.numberOfBallots; i++) {
-          let color = Math.floor(Math.random() * 4) + 1;
+          let color =
+            randomArray[Math.floor(Math.random() * randomArray.length)];
           this.colors.push(color);
           if (color == 1) {
             this.red += 1;
@@ -127,7 +179,7 @@ h1 {
 
 p {
   text-align: center;
-  margin-bottom: 35px;
+  margin-bottom: 15px;
   margin-top: 0px;
 }
 
@@ -136,7 +188,15 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
+}
+
+.input-line label {
+  padding: 0 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .top-banner {
@@ -162,6 +222,29 @@ input {
   font-size: 1.5rem;
   padding: 8px;
 }
+
+input[type="checkbox"] {
+  display: none;
+}
+
+label .border {
+  border: 1px solid #333333;
+  border-spacing: 2px;
+  margin-right: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+}
+
+label .checkmark {
+  background: none;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  padding: 2px;
+}
+
 .container {
   font-family: Knowit;
   margin: auto;
@@ -180,6 +263,11 @@ input {
   width: 150px;
   height: 150px;
   margin: 20px;
+  -webkit-mask-image: url(/../../public/assets/images/lodd.svg);
+  background-repeat: no-repeat;
+  mask-image: url(/../../public/assets/images/lodd.svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 button {
@@ -198,19 +286,27 @@ button {
   flex-direction: row;
   justify-content: space-around;
 }
-.green {
+.green,
+.input-line label:hover input#greenCheckbox ~ .border .checkmark,
+.input-line label input#greenCheckbox:checked ~ .border .checkmark {
   background-color: #c8f9df;
 }
 
-.red {
+.red,
+.input-line label:hover input#redCheckbox ~ .border .checkmark,
+.input-line label input#redCheckbox:checked ~ .border .checkmark {
   background-color: #fbd7de;
 }
 
-.yellow {
+.yellow,
+.input-line label:hover input#yellowCheckbox ~ .border .checkmark,
+.input-line label input#yellowCheckbox:checked ~ .border .checkmark {
   background-color: #fff6d6;
 }
 
-.blue {
+.blue,
+.input-line label:hover input#blueCheckbox ~ .border .checkmark,
+.input-line label input#blueCheckbox:checked ~ .border .checkmark {
   background-color: #d4f2fe;
 }
 
