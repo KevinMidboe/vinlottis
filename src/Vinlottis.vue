@@ -1,13 +1,15 @@
 <template>
   <div class="container">
+    <banner />
     <router-view />
   </div>
 </template>
 
 <script>
+import banner from "@/ui/Banner";
 export default {
   name: "vinlottis",
-  components: {},
+  components: { banner },
   props: {},
   data() {
     return {};

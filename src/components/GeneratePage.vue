@@ -1,9 +1,37 @@
 <template>
   <div class="container">
-    <banner />
-
     <h1 class="title">Loddgenerator</h1>
-    <p>Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'</p>
+    <p class="subtext">Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'</p>
+    <div class="input-line">
+      <label for="redCheckbox">
+        <input type="checkbox" id="redCheckbox" v-model="redCheckbox" />
+        <span class="border">
+          <span class="checkmark"></span>
+        </span>
+        <span class="text">Rød</span>
+      </label>
+      <label for="blueCheckbox">
+        <input type="checkbox" id="blueCheckbox" v-model="blueCheckbox" />
+        <span class="border">
+          <span class="checkmark"></span>
+        </span>
+        <span class="text">Blå</span>
+      </label>
+      <label for="yellowCheckbox">
+        <input type="checkbox" id="yellowCheckbox" v-model="yellowCheckbox" />
+        <span class="border">
+          <span class="checkmark"></span>
+        </span>
+        <span class="text">Gul</span>
+      </label>
+      <label for="greenCheckbox">
+        <input type="checkbox" id="greenCheckbox" v-model="greenCheckbox" />
+        <span class="border">
+          <span class="checkmark"></span>
+        </span>
+        <span class="text">Grønn</span>
+      </label>
+    </div>
     <div class="input-line">
       <input
         type="number"
@@ -47,7 +75,11 @@ export default {
       red: 0,
       green: 0,
       yellow: 0,
-      colorTimeout: null
+      colorTimeout: null,
+      redCheckbox: true,
+      greenCheckbox: true,
+      yellowCheckbox: true,
+      blueCheckbox: true
     };
   },
   methods: {
@@ -63,9 +95,27 @@ export default {
       this.red = 0;
       this.green = 0;
       this.yellow = 0;
+      let randomArray = [];
+      if (this.redCheckbox) {
+        randomArray.push(1);
+      }
+      if (this.greenCheckbox) {
+        randomArray.push(2);
+      }
+      if (this.yellowCheckbox) {
+        randomArray.push(3);
+      }
+      if (this.blueCheckbox) {
+        randomArray.push(4);
+      }
+      if (randomArray.length == 0) {
+        alert("Du må velge MINST 1 farge..");
+        return;
+      }
       if (this.numberOfBallots > 0) {
         for (let i = 0; i < this.numberOfBallots; i++) {
-          let color = Math.floor(Math.random() * 4) + 1;
+          let color =
+            randomArray[Math.floor(Math.random() * randomArray.length)];
           this.colors.push(color);
           if (color == 1) {
             this.red += 1;
@@ -128,21 +178,37 @@ h1 {
 }
 
 .title {
-  margin-top: 4rem;
+  margin-top: 3.8rem;
+  font-weight: 600;
+}
+
+.subtext {
+  margin-top: 0.50rem;
+  font-size: 1.22rem;
 }
 
 p {
   text-align: center;
-  margin-bottom: 35px;
-  margin-top: 0px;
+  margin: 0;
 }
 
 .input-line {
   margin: auto;
   display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 2.4rem;
+}
+
+.input-line label {
+  padding: 0 6px;
+  display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-bottom: 15px;
+
+  font-size: 1.22rem;
+  margin: 0 0.6rem;
 }
 
 .top-banner {
@@ -168,8 +234,38 @@ input {
   font-size: 1.5rem;
   padding: 8px;
   margin: 0;
+  height: 3rem;
   max-height: 3rem;
+  border: 1px solid rgba(#333333, 0.3);
 }
+
+input[type="checkbox"] {
+  display: none;
+}
+
+label .border {
+  border: 1px solid rgba(#333333, 0.3);
+  border-spacing: 2px;
+  margin-right: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1px;
+}
+
+label .checkmark {
+  background: none;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  padding: 2px;
+}
+
+label .text {
+  margin-left: 0.15rem;
+  margin-top: auto;
+}
+
 .container {
   font-family: Knowit;
   margin: auto;
@@ -188,6 +284,11 @@ input {
   width: 150px;
   height: 150px;
   margin: 20px;
+  -webkit-mask-image: url(/../../public/assets/images/lodd.svg);
+  background-repeat: no-repeat;
+  mask-image: url(/../../public/assets/images/lodd.svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 button {
@@ -198,7 +299,7 @@ button {
   width: fit-content;
   margin: 0;
   font-size: 1.3rem;
-  height: calc(3rem + 1.8px);
+  height: 3rem;
 }
 
 .colors-text {
@@ -206,30 +307,40 @@ button {
   flex-direction: row;
   justify-content: space-around;
 }
-.green {
+.green,
+.input-line label:hover input#greenCheckbox ~ .border .checkmark,
+.input-line label input#greenCheckbox:checked ~ .border .checkmark {
   background-color: #c8f9df;
 }
 
-.red {
+.red,
+.input-line label:hover input#redCheckbox ~ .border .checkmark,
+.input-line label input#redCheckbox:checked ~ .border .checkmark {
   background-color: #fbd7de;
 }
 
-.yellow {
+.yellow,
+.input-line label:hover input#yellowCheckbox ~ .border .checkmark,
+.input-line label input#yellowCheckbox:checked ~ .border .checkmark {
   background-color: #fff6d6;
 }
 
-.blue {
+.blue,
+.input-line label:hover input#blueCheckbox ~ .border .checkmark,
+.input-line label input#blueCheckbox:checked ~ .border .checkmark {
   background-color: #d4f2fe;
 }
 
 @media only screen and (max-width: 768px) {
   input,
   button {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
+    line-height: 1.4rem;
   }
 
   input {
     width: 45vw;
+    height: 3rem;
   }
 
   p {
