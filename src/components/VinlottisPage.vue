@@ -1,6 +1,5 @@
 <template>
   <div class="outer">
-    <banner />
     <div class="container">
       <h1>Vinlotteri</h1>
       <router-link to="generate" class="generate-link">
@@ -73,7 +72,6 @@ h1 {
   font-family: "knowit";
   font-weight: 300;
 }
-
 
 .generate-link {
   color: #333333;

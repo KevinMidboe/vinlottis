@@ -1,7 +1,5 @@
 <template>
   <div class="container">
-    <banner />
-
     <h1 class="title">Loddgenerator</h1>
     <p>Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'</p>
     <div class="input-line">
