@@ -1,9 +1,8 @@
 <template>
   <div class="container">
-    <router-link to="/" class="header-link">
-      <h1 class="top-banner">knowit</h1>
-    </router-link>
-    <h1>Loddgenerator</h1>
+    <banner />
+
+    <h1 class="title">Loddgenerator</h1>
     <p>Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'</p>
     <div class="input-line">
       <label for="redCheckbox">
@@ -64,10 +63,15 @@
 </template>
 
 <script>
+import Banner from "@/ui/Banner";
+
 export default {
+  components: {
+    Banner
+  },
   data() {
     return {
-      numberOfBallots: 0,
+      numberOfBallots: 4,
       colors: [],
       blue: 0,
       red: 0,
@@ -170,11 +174,13 @@ body {
 }
 h1 {
   text-align: center;
-}
-h1 {
   width: 100vw;
   text-align: center;
   font-family: Knowit;
+}
+
+.title {
+  margin-top: 4rem;
 }
 
 p {
@@ -221,6 +227,8 @@ button {
 input {
   font-size: 1.5rem;
   padding: 8px;
+  margin: 0;
+  max-height: 3rem;
 }
 
 input[type="checkbox"] {
@@ -276,9 +284,9 @@ button {
   color: #333333;
   padding: 10px 30px;
   width: fit-content;
-  margin: auto;
+  margin: 0;
   font-size: 1.3rem;
-  height: 48px;
+  height: calc(3rem + 1.8px);
 }
 
 .colors-text {
@@ -311,16 +319,13 @@ button {
 }
 
 @media only screen and (max-width: 768px) {
-  input {
-    border: 1px solid #333333;
-  }
   input,
   button {
-    font-size: 1rem;
+    font-size: 1.3rem;
   }
 
-  button {
-    height: calc(2rem + 6px);
+  input {
+    width: 45vw;
   }
 
   p {
