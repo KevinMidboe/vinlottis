@@ -51,6 +51,7 @@ export default {
 };
 </script>
 <style lang="scss">
+
 body {
   margin: 0;
   color: #333333;
@@ -59,6 +60,8 @@ body {
 }
 </style>
 <style lang="scss" scoped>
+@import '../styles/media-queries.scss';
+
 .bottom-container {
   display: flex;
   flex-direction: row;
@@ -74,7 +77,10 @@ body {
 
 .bought-and-highscore-separator {
   border: none;
-  border-bottom: 1px solid rgb(237, 237, 237);
+
+  @include desktop {
+    border-bottom: 1px solid rgb(237, 237, 237);
+  }
 }
 
 .highscore-and-wines {
@@ -88,10 +94,13 @@ body {
 }
 
 .vipps-outer-container {
-  border-left: 1px solid rgb(237, 237, 237);
-  margin-left: 20px;
   display: flex;
   align-items: center;
+
+  @include desktop {
+    margin-left: 20px;
+    border-left: 1px solid rgb(237, 237, 237);
+  }
 }
 
 @font-face {
