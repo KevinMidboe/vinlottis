@@ -305,6 +305,7 @@ button {
   background: #b7debd;
   color: #333;
   padding: 10px 30px;
+  margin: 0;
   width: fit-content;
   font-size: 1.3rem;
   display: block;
