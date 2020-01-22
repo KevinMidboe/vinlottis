@@ -167,6 +167,8 @@ button {
 input {
   font-size: 1.5rem;
   padding: 8px;
+  margin: 0;
+  height: 3rem;
 }
 .container {
   font-family: Knowit;
@@ -194,9 +196,9 @@ button {
   color: #333333;
   padding: 10px 30px;
   width: fit-content;
-  margin: auto;
+  margin: 0;
   font-size: 1.3rem;
-  height: 48px;
+  height: calc(3rem + 1.8px);
 }
 
 .colors-text {
@@ -221,16 +223,13 @@ button {
 }
 
 @media only screen and (max-width: 768px) {
-  input {
-    border: 1px solid #333333;
-  }
   input,
   button {
-    font-size: 1rem;
+    font-size: 1.3rem;
   }
 
-  button {
-    height: calc(2rem + 6px);
+  input {
+    width: 45vw;
   }
 
   p {
