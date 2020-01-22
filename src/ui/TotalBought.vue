@@ -1,32 +1,44 @@
 <template>
   <div class="bought-container">
     <div class="red-container inner-bought-container">
-      <div>
-        <span class="red">{{ red.total }}</span> kjøpt
+      <div class="number-container">
+        <span class="red bought-number-span">{{ red.total }}</span>
+        <div class="inner-text-container">
+          <span> kjøpte</span>
+          <div>{{ red.win }} vinn</div>
+          <div>{{ redPercentage }}% vinn</div>
+        </div>
       </div>
-      <div>{{ red.win }} vinn</div>
-      <div>{{ redPercentage }}% vinn</div>
     </div>
     <div class="blue-container inner-bought-container">
-      <div>
-        <span class="blue">{{ blue.total }}</span> kjøpt
+      <div class="number-container">
+        <span class="blue bought-number-span">{{ blue.total }}</span>
+        <div class="inner-text-container">
+          <span> kjøpte</span>
+          <div>{{ blue.win }} vinn</div>
+          <div>{{ bluePercentage }}% vinn</div>
+        </div>
       </div>
-      <div>{{ blue.win }} vinn</div>
-      <div>{{ bluePercentage }}% vinn</div>
     </div>
     <div class="yellow-container inner-bought-container">
-      <div>
-        <span class="yellow">{{ yellow.total }}</span> kjøpt
+      <div class="number-container">
+        <span class="yellow bought-number-span">{{ yellow.total }}</span>
+        <div class="inner-text-container">
+          <span> kjøpte</span>
+          <div>{{ yellow.win }} vinn</div>
+          <div>{{ yellowPercentage }}% vinn</div>
+        </div>
       </div>
-      <div>{{ yellow.win }} vinn</div>
-      <div>{{ yellowPercentage }}% vinn</div>
     </div>
     <div class="green-container inner-bought-container">
-      <div>
-        <span class="green">{{ green.total }}</span> kjøpt
+      <div class="number-container">
+        <span class="green bought-number-span">{{ green.total }}</span>
+        <div class="inner-text-container">
+          <span> kjøpte</span>
+          <div>{{ green.win }} vinn</div>
+          <div>{{ greenPercentage }}% vinn</div>
+        </div>
       </div>
-      <div>{{ green.win }} vinn</div>
-      <div>{{ greenPercentage }}% vinn</div>
     </div>
     <!--<div class="total-container inner-bought-container">
       <div>
@@ -92,6 +104,19 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.number-container {
+  display: flex;
+}
+
+.inner-text-container {
+  margin-top: 0.8rem;
+  padding-left: 5px;
+}
+
+.bought-number-span {
+  display: inline-flex;
 }
 
 .bought-container {
