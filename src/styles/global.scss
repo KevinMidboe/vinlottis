@@ -1,0 +1,29 @@
+@import './media-queries.scss';
+
+body {
+  font-family: Arial;
+}
+
+.title {
+  text-align: center;
+  width: 100vw;
+  text-align: center;
+  font-family: knowit;
+  margin-top: 3.8rem;
+  font-weight: 600;
+
+  @include mobile {
+    margin-top: 1.5rem;
+    font-size: 1.6rem;
+  }
+}
+
+.subtext {
+  margin-top: 0.5rem;
+  font-size: 1.22rem;
+
+  @include mobile {
+    margin-top: 0;
+    font-size: 1.15rem;
+  }
+}
