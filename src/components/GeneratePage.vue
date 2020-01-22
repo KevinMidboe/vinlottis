@@ -29,7 +29,7 @@
       ></div>
     </div>
 
-    <img src="/images/vipps.png" class="vipps-image" />
+    <img src="/public/assets/images/vipps.png" class="vipps-image" />
   </div>
 </template>
 
@@ -109,7 +109,7 @@ export default {
 body {
   margin: 0;
   color: #333333;
-  font-family: sans-serif;
+  font-family: Knowit;
   padding-bottom: 30px;
 }
 .header-link {
@@ -122,7 +122,7 @@ h1 {
 h1 {
   width: 100vw;
   text-align: center;
-  font-family: sans-serif;
+  font-family: Knowit;
 }
 
 p {
@@ -155,6 +155,7 @@ p {
 input,
 button {
   font-size: 1.5rem;
+  font-family: "knowit";
 }
 
 input {
@@ -162,7 +163,7 @@ input {
   padding: 8px;
 }
 .container {
-  font-family: sans-serif;
+  font-family: Knowit;
   margin: auto;
   display: flex;
   flex-direction: column;

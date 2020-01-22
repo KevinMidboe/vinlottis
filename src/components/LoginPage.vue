@@ -16,7 +16,7 @@ export default {};
 
 <style lang="scss" scoped>
 div {
-  font-family: sans-serif;
+  font-family: "knowit";
 }
 .outer {
   display: flex;

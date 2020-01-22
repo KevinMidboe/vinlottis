@@ -1,6 +1,8 @@
 <template>
   <div class="outer">
-    <h1 class="top-banner">knowit</h1>
+    <h1 class="top-banner">
+      <img src="/public/assets/images/knowit.svg" />
+    </h1>
     <div class="container">
       <h1>Vinlotteri</h1>
       <router-link to="generate" class="generate-link">
@@ -12,7 +14,7 @@
         <WinGraph class="win" />
       </div>
       <TotalBought />
-      <img src="/images/vipps.png" class="vipps-image" />
+      <img src="/public/assets/images/vipps.png" class="vipps-image" />
       <!--<div class="wine-and-highscore-container">
         <Highscore />
         <Wines />
@@ -42,11 +44,22 @@ export default {
 body {
   margin: 0;
   color: #333333;
-  font-family: sans-serif;
+  font-family: "knowit";
   padding-bottom: 30px;
 }
 </style>
 <style lang="scss" scoped>
+@font-face {
+  font-family: "knowit";
+  font-weight: 600;
+  src: url("/../../public/assets/fonts/bold.eot");
+}
+
+@font-face {
+  font-family: "knowit";
+  font-weight: 300;
+  src: url("/../../public/assets/fonts/regular.eot");
+}
 .outer {
   height: 100vh;
   width: 100vw;
@@ -57,7 +70,8 @@ body {
 h1 {
   width: 100vw;
   text-align: center;
-  font-family: sans-serif;
+  font-family: "knowit";
+  font-weight: 300;
 }
 
 .top-banner {

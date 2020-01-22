@@ -77,6 +77,13 @@ export default {
           display: true,
           text: "Antall kjøp"
         },
+        legend: {
+          labels: {
+            // This more specific font property overrides the global property
+            defaultFontFamily: (Chart.defaults.global.defaultFontFamily =
+              "'knowit'")
+          }
+        },
         scales: {
           yAxes: [
             {

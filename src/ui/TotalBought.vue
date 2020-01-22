@@ -101,7 +101,7 @@ export default {
   max-width: 1400px;
   margin: auto;
   justify-content: space-around;
-  font-family: sans-serif;
+  font-family: "knowit";
 }
 
 .green,

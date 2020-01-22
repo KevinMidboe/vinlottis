@@ -34,7 +34,7 @@ h3 {
     text-align:center;
 }
 div {
-  font-family: sans-serif;
+  font-family: "knowit";
   display: inline-flex;
   flex-direction: column;
 }

@@ -28,7 +28,7 @@ export default {
 
 <style lang="scss" scoped>
 div {
-  font-family: sans-serif;
+  font-family: "knowit";
   display: inline-flex;
   flex-direction: column;
 }

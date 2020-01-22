@@ -13,10 +13,17 @@
 <script>
 export default {};
 </script>
-
+<style lang="scss">
+body {
+  margin: 0;
+  color: #333333;
+  font-family: "knowit";
+  padding-bottom: 30px;
+}
+</style>
 <style lang="scss" scoped>
 div {
-  font-family: sans-serif;
+  font-family: "knowit";
 }
 .outer {
   display: flex;
