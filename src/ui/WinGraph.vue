@@ -23,24 +23,28 @@ export default {
       label: "Blå",
       borderColor: "#57d2fb",
       backgroundColor: "#d4f2fe",
+      borderWidth: 2,
       data: []
     };
     let yellow = {
       label: "Gul",
       borderColor: "#ffde5d",
       backgroundColor: "#fff6d6",
+      borderWidth: 2,
       data: []
     };
     let red = {
       label: "Rød",
       borderColor: "#ef5878",
       backgroundColor: "#fbd7de",
+      borderWidth: 2,
       data: []
     };
     let green = {
       label: "Grønn",
       borderColor: "#10e783",
       backgroundColor: "#c8f9df",
+      borderWidth: 2,
       data: []
     };
 
