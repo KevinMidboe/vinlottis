@@ -82,7 +82,8 @@ export default {
         maintainAspectRatio: false,
         title: {
           display: true,
-          text: "Antall kjøp"
+          text: "Antall vinn",
+          fontSize: 20,
         },
         legend: {
           display: true,
@@ -90,9 +91,9 @@ export default {
           usePointStyle: true,
           borderRadius: 10,
           labels: {
-            // This more specific font property overrides the global property
-            defaultFontFamily: (Chart.defaults.global.defaultFontFamily =
-              "'knowit'")
+            padding: 12,
+            boxWidth: 20,
+            usePointStyle: true
           }
         },
         scales: {

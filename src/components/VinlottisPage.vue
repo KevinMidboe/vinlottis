@@ -176,10 +176,12 @@ h1 {
   }
 
   .chart-container {
-    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    padding-top: 0;
+    margin-top: 30px;
   }
 
   .outer {
