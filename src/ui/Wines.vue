@@ -3,22 +3,25 @@
     <h3>Topp viner</h3>
     <ol>
       <li v-for="wine in wines">
-        <span v-if="wine.vivinoLink == '' || wine.vivinoLink == null"
-          >{{ wine.name }} - sett {{ wine.occurences }} ganger,
-          {{ wine.rating }} i rating</span
-        >
+        <span v-if="wine.vivinoLink == '' || wine.vivinoLink == null">
+          {{ wine.name }} - sett {{ wine.occurences }} ganger,
+          {{ wine.rating }} i rating
+        </span>
         <a
           :href="wine.vivinoLink"
           v-if="wine.vivinoLink != '' && wine.vivinoLink != null"
-          >{{ wine.name }} - sett {{ wine.occurences }} ganger,
-          {{ wine.rating }} i rating</a
+          @click="wineClick(wine)"
         >
+          {{ wine.name }} - sett {{ wine.occurences }} ganger,
+          {{ wine.rating }} i rating
+        </a>
       </li>
     </ol>
   </div>
 </template>
 
 <script>
+import { event } from "vue-analytics";
 export default {
   data() {
     return { wines: [] };
@@ -32,6 +35,18 @@ export default {
       .filter(wine => wine.name != null && wine.name != "")
       .sort((a, b) => (a.occurences > b.occurences ? -1 : 1));
     this.wines = response;
+  },
+  methods: {
+    wineClick: function(wine) {
+      if (window.location.hostname == "localhost") {
+        return;
+      }
+      this.$ga.event({
+        eventCategory: "Wines",
+        eventAction: "click",
+        eventValue: `${wine.name} - ${wine.vivinoLink}`
+      });
+    }
   }
 };
 </script>

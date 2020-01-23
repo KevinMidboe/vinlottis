@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { page, event } from "vue-analytics";
 import PurchaseGraph from "@/ui/PurchaseGraph";
 import TotalBought from "@/ui/TotalBought";
 import Highscore from "@/ui/Highscore";
@@ -45,6 +46,17 @@ export default {
     Banner,
     Wines,
     Vipps
+  },
+  mounted() {
+    if (window.location.hostname == "localhost") {
+      return;
+    }
+    this.track();
+  },
+  methods: {
+    track() {
+      this.$ga.page("/");
+    }
   }
 };
 </script>

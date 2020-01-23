@@ -1,9 +1,7 @@
 <template>
   <div class="container">
     <h1 class="title">Loddgenerator</h1>
-    <p class="subtext">
-      Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'
-    </p>
+    <p class="subtext">Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'</p>
     <div class="input-line">
       <label for="redCheckbox">
         <input type="checkbox" id="redCheckbox" v-model="redCheckbox" />
@@ -58,6 +56,7 @@
 </template>
 
 <script>
+import { page, event } from "vue-analytics";
 import Vipps from "@/ui/Vipps";
 import Banner from "@/ui/Banner";
 
@@ -86,9 +85,23 @@ export default {
       this.generateColors();
     }
   },
+  mounted() {
+    if (window.location.hostname == "localhost") {
+      return;
+    }
+    this.track();
+  },
   methods: {
     generateColors: function(event, time) {
       if (time == 5) {
+        if (window.location.hostname == "localhost") {
+          return;
+        }
+        this.$ga.event({
+          eventCategory: "Ballots",
+          eventAction: "Generate",
+          eventValue: JSON.stringify(this.colors)
+        });
         return;
       }
       if (time == undefined) {
@@ -158,6 +171,9 @@ export default {
       if (number == 4) {
         return "blue";
       }
+    },
+    track() {
+      this.$ga.page("/generate");
     }
   }
 };
