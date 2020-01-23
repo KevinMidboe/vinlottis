@@ -65,6 +65,11 @@ export default {
 
 .left-bottom {
   width: 75%;
+
+  @include mobile {
+    padding: 0 1.25rem;
+    width: 100%;
+  }
 }
 
 .bought-and-highscore-separator {
@@ -180,7 +185,7 @@ h1 {
     justify-content: center;
     align-items: center;
 
-    padding-top: 0;
+    padding: 0;
     margin-top: 30px;
   }
 

@@ -106,6 +106,12 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+
+  @include mobile {
+    flex-direction: row;
+    justify-content: unset;
+    align-items: center;
+  }
 }
 
 .number-container {
@@ -120,6 +126,12 @@ export default {
 
 .inner-text-container {
   padding-left: 5px;
+
+  // TODO fix styling for displaying in columns
+  @include mobile {
+    margin-top: auto;
+    padding-bottom: 5px;
+  }
 }
 
 .bought-number-span {
