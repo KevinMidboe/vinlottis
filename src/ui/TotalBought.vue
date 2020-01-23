@@ -134,6 +134,16 @@ export default {
   }
 }
 
+@include mobile {
+  .total-container {
+    > div:nth-of-type(2) {
+      margin-top: auto;
+      padding-bottom: 4px;
+      padding-left: 5px;
+    }
+  }
+}
+
 .bought-number-span {
   display: inline-flex;
 }
