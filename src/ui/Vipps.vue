@@ -13,8 +13,10 @@
 </template>
 
 <style lang="scss" scoped>
+@import "../styles/global.scss";
+@import "../styles/media-queries.scss";
 .vipps-container {
-  font-family: sans-serif;
+  font-family: Arial;
 }
 
 .vipps-container {
@@ -56,5 +58,11 @@
 .mark-with {
   font-weight: 600;
   font-size: 1rem;
+}
+
+@include mobile {
+  .vipps-container {
+    margin-left: 0px;
+  }
 }
 </style>

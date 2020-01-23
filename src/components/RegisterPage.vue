@@ -39,13 +39,25 @@
           </select>
         </div>
         <div class="label-div">
-          <input type="text" v-model="winner.wine.name" placeholder="Vin-navn" />
+          <input
+            type="text"
+            v-model="winner.wine.name"
+            placeholder="Vin-navn"
+          />
         </div>
         <div class="label-div">
-          <input type="text" v-model="winner.wine.vivinoLink" placeholder="Vivino-link" />
+          <input
+            type="text"
+            v-model="winner.wine.vivinoLink"
+            placeholder="Vivino-link"
+          />
         </div>
         <div class="label-div">
-          <input type="text" v-model="winner.wine.rating" placeholder="Rating" />
+          <input
+            type="text"
+            v-model="winner.wine.rating"
+            placeholder="Rating"
+          />
         </div>
         <hr />
       </div>
@@ -143,12 +155,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../styles/global.scss";
+@import "../styles/media-queries.scss";
 h1 {
   width: 100vw;
   text-align: center;
+  font-family: knowit;
 }
 div {
   font-size: 2rem;
+  font-family: Arial;
 }
 input {
   font-size: 1.5rem;

@@ -98,6 +98,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../styles/variables.scss";
 @import "../styles/media-queries.scss";
 
 .inner-bought-container {
@@ -134,6 +135,10 @@ export default {
   margin: auto;
   justify-content: space-between;
   font-family: Arial;
+
+  @include mobile {
+    padding-bottom: 0px;
+  }
 }
 
 .green,
@@ -146,19 +151,19 @@ export default {
 }
 
 .green {
-  color: #10e783;
+  color: $green;
 }
 
 .red {
-  color: #ef5878;
+  color: $red;
 }
 
 .yellow {
-  color: #ffde5d;
+  color: $yellow;
 }
 
 .blue {
-  color: #57d2fb;
+  color: $blue;
 }
 
 @include mobile {

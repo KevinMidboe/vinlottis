@@ -42,7 +42,7 @@ h3 {
 }
 div {
   margin: 15px 0 0 0;
-  font-family: "knowit";
+  font-family: arial;
   display: inline-flex;
   flex-direction: column;
 }

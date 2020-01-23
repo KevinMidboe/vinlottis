@@ -15,8 +15,10 @@ export default {};
 </script>
 
 <style lang="scss" scoped>
+@import "../styles/global.scss";
+@import "../styles/media-queries.scss";
 div {
-  font-family: "knowit";
+  font-family: Arial;
 }
 .outer {
   display: flex;
@@ -30,6 +32,7 @@ h2 {
   width: 100vw;
   text-align: center;
   font-size: 3rem;
+  font-family: knowit;
 }
 
 form {
