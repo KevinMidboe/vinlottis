@@ -369,7 +369,7 @@ button {
 
   &:focus input,
   &:active input {
-    &#greenCHeckbox ~ .border .checkmark {
+    &#greenCheckbox ~ .border .checkmark {
       background-color: $dark-green;
     }
 
