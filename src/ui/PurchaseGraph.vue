@@ -12,11 +12,10 @@ export default {
   async mounted() {
     let canvas = this.$refs["purchase-chart"].getContext("2d");
 
-    let _response = undefined
-    if (process.env.NODE_ENV == 'development') {
+    let _response = undefined;
+    if (process.env.NODE_ENV == "development") {
       _response = await fetch("http://localhost:30030/api/purchase/statistics");
-    }
-    else {
+    } else {
       _response = await fetch("/api/purchase/statistics");
     }
     let response = await _response.json();
@@ -112,7 +111,15 @@ export default {
   },
   methods: {
     getPrettierDateString(date) {
-      return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+      return `${this.pad(date.getDate())}.${this.pad(
+        date.getMonth() + 1
+      )}.${this.pad(date.getYear() - 100)}`;
+    },
+    pad(num) {
+      if (num < 10) {
+        return `0${num}`;
+      }
+      return num;
     }
   }
 };
@@ -120,14 +127,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "../styles/media-queries.scss";
-
-.chartjsLegend li span {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  margin-right: 5px;
-  border-radius: 25px;
-}
 
 .chart {
   height: 40vh;

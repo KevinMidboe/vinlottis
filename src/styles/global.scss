@@ -1,7 +1,20 @@
-@import './media-queries.scss';
+@import "./media-queries.scss";
+
+@font-face {
+  font-family: "knowit";
+  font-weight: 600;
+  src: url("/../../public/assets/fonts/bold.eot");
+}
+
+@font-face {
+  font-family: "knowit";
+  font-weight: 300;
+  src: url("/../../public/assets/fonts/regular.eot");
+}
 
 body {
   font-family: Arial;
+  margin: 0;
 }
 
 .title {

@@ -83,7 +83,7 @@ export default {
   },
   watch: {
     numberOfBallots: function() {
-      this.generateColors()
+      this.generateColors();
     }
   },
   methods: {
@@ -164,15 +164,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/global.scss';
-@import '../styles/media-queries.scss';
-
-body {
-  margin: 0;
-  color: #333333;
-  font-family: sans-serif;
-  padding-bottom: 30px;
-}
+@import "../styles/variables.scss";
+@import "../styles/global.scss";
+@import "../styles/media-queries.scss";
 
 .vipps {
   margin: 20px auto auto auto;
@@ -320,58 +314,77 @@ button {
   justify-content: space-around;
 }
 
-.green,
-.input-line label input#greenCheckbox:checked ~ .border .checkmark {
-  background-color: #c8f9df;
+.green {
+  background-color: $light-green;
 }
 
-.input-line label:hover input#greenCheckbox ~ .border .checkmark {
-  background-color: #0be881;
+.blue {
+  background-color: $light-blue;
 }
 
-.input-line label:focus input#greenCheckbox ~ .border .checkmark,
-.input-line label:active input#greenCheckbox ~ .border .checkmark {
-  background-color: #0ed277;
+.yellow {
+  background-color: $light-yellow;
 }
 
-.red,
-.input-line label input#redCheckbox:checked ~ .border .checkmark {
-  background-color: #fbd7de;
+.red {
+  background-color: $light-red;
 }
 
-.input-line label:hover input#redCheckbox ~ .border .checkmark {
-  background-color: #ef5878;
-}
+.input-line label {
+  & input {
+    &#greenCheckbox:checked ~ .border .checkmark {
+      background-color: $light-green;
+    }
 
-.input-line label:focus input#redCheckbox ~ .border .checkmark,
-.input-line label:active input#redCheckbox ~ .border .checkmark {
-  background-color: #ec3b61;
-}
+    &#redCheckbox:checked ~ .border .checkmark {
+      background-color: $light-red;
+    }
 
-.yellow,
-.input-line label input#yellowCheckbox:checked ~ .border .checkmark {
-  background-color: #fff6d6;
-}
+    &#yellowCheckbox:checked ~ .border .checkmark {
+      background-color: $light-yellow;
+    }
 
-.input-line label:hover input#yellowCheckbox ~ .border .checkmark {
-  background-color: #ffde5d;
-}
-.input-line label:focus input#yellowCheckbox ~ .border .checkmark,
-.input-line label:active input#yellowCheckbox ~ .border .checkmark {
-  background-color: #ecc31d;
-}
+    &#blueCheckbox:checked ~ .border .checkmark {
+      background-color: $light-blue;
+    }
+  }
 
-.blue,
-.input-line label input#blueCheckbox:checked ~ .border .checkmark {
-  background-color: #d4f2fe;
-}
-.input-line label:hover input#blueCheckbox ~ .border .checkmark {
-  background-color: #4bcffa;
-}
+  &:hover input {
+    &#greenCheckbox ~ .border .checkmark {
+      background-color: $green;
+    }
 
-.input-line label:focus input#blueCheckbox ~ .border .checkmark,
-.input-line label:active input#blueCheckbox ~ .border .checkmark {
-  background-color: #24acda;
+    &#redCheckbox ~ .border .checkmark {
+      background-color: $red;
+    }
+
+    &#yellowCheckbox ~ .border .checkmark {
+      background-color: $yellow;
+    }
+
+    &#blueCheckbox ~ .border .checkmark {
+      background-color: $blue;
+    }
+  }
+
+  &:focus input,
+  &:active input {
+    &#greenCHeckbox ~ .border .checkmark {
+      background-color: $dark-green;
+    }
+
+    &#redCheckbox ~ .border .checkmark {
+      background-color: $dark-red;
+    }
+
+    &#yellowCheckbox ~ .border .checkmark {
+      background-color: $dark-yellow;
+    }
+
+    &#blueCheckbox ~ .border .checkmark {
+      background-color: $dark-blue;
+    }
+  }
 }
 
 @include mobile {

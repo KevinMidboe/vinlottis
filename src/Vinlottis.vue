@@ -24,6 +24,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import "./styles/global.scss";
 @font-face {
   font-family: "knowit";
   font-weight: 600;

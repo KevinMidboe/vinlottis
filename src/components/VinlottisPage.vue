@@ -10,8 +10,6 @@
         <PurchaseGraph class="purchase" />
         <WinGraph class="win" />
       </div>
-
-      <!-- <img src="/public/assets/images/vipps.png" class="vipps-image" /> -->
       <div class="bottom-container">
         <div class="left-bottom">
           <TotalBought />
@@ -50,18 +48,10 @@ export default {
   }
 };
 </script>
-<style lang="scss">
 
-body {
-  margin: 0;
-  color: #333333;
-  font-family: sans-serif;
-  padding-bottom: 30px;
-}
-</style>
 <style lang="scss" scoped>
-@import '../styles/global.scss';
-@import '../styles/media-queries.scss';
+@import "../styles/global.scss";
+@import "../styles/media-queries.scss";
 
 .bottom-container {
   display: flex;
@@ -70,6 +60,7 @@ body {
   margin: auto;
   justify-content: space-evenly;
   align-items: center;
+  padding: 0 25px;
 }
 
 .left-bottom {
@@ -104,17 +95,6 @@ body {
   }
 }
 
-@font-face {
-  font-family: "knowit";
-  font-weight: 600;
-  src: url("/../../public/assets/fonts/bold.eot");
-}
-
-@font-face {
-  font-family: "knowit";
-  font-weight: 300;
-  src: url("/../../public/assets/fonts/regular.eot");
-}
 .outer {
   height: 100vh;
   width: 100vw;
@@ -135,6 +115,11 @@ h1 {
   width: 100vw;
   text-align: center;
   margin-bottom: 0px;
+
+  @include mobile {
+    width: 60vw;
+    margin: auto;
+  }
 }
 
 .vipps-image {
@@ -209,7 +194,8 @@ h1 {
   }
 
   .wines-container,
-  .vipps-outer-container {
+  .vipps-outer-container,
+  .vipps-container {
     margin-left: 0px;
   }
 }
