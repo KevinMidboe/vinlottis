@@ -94,6 +94,10 @@ export default {
   methods: {
     generateColors: function(event, time) {
       if (time == 5) {
+        if (new Set(this.colors).size == 1) {
+          alert('BINGO')
+        }
+
         if (window.location.hostname == "localhost") {
           return;
         }
