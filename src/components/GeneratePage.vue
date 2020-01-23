@@ -94,7 +94,7 @@ export default {
   methods: {
     generateColors: function(event, time) {
       if (time == 5) {
-        if (new Set(this.colors).size == 1) {
+        if (this.numberOfBallots > 1 && new Set(this.colors).size == 1) {
           alert('BINGO')
         }
 
