@@ -5,7 +5,12 @@
       kr.
       <span class="big-money">{{ amount * 10 }},- (10,- pr. lodd)</span>
     </span>
-    <img :src="qrImage" class="qr-logo" />
+    <ing
+      src="/public/assets/images/vipps-qr.png"
+      class="qr-logo"
+      v-if="qrFailed"
+    />
+    <canvas v-if="!qrFailed" ref="canvas" class="qr-logo"></canvas>
     <span class="phone-number">977 40 427</span>
     <span class="name">Kasper Rynning-Tønnesen</span>
     <span class="mark-with">Merk med: Vinlodd/🍾</span>
@@ -24,7 +29,8 @@ export default {
   },
   data() {
     return {
-      qrImage: null
+      qrImage: null,
+      qrFailed: false
     };
   },
   watch: {
@@ -43,12 +49,16 @@ export default {
   },
   methods: {
     calculateQr: function() {
-      QRCode.toDataURL(
+      let canvas = this.$refs["canvas"];
+      QRCode.toCanvas(
+        canvas,
         "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾&a=" +
           this.price,
-        { errorCorrectionLevel: "H" },
+        { errorCorrectionLevel: "Q" },
         (err, url) => {
-          this.qrImage = url;
+          if (err != null) {
+            this.qrFailed = true;
+          }
         }
       );
     },
