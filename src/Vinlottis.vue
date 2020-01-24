@@ -40,4 +40,14 @@ export default {
   src: url("/../public/assets/fonts/regular.eot"),
     url("/../public/assets/fonts/regular.woff") format("woff");
 }
+
+body {
+  background-color: #dbeede;
+}
+</style>
+
+<style scoped>
+.container {
+  background-color: white;
+}
 </style>
