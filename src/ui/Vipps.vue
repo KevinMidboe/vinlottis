@@ -1,14 +1,16 @@
 <template>
   <div class="vipps-container">
-    <img src="/public/assets/images/vipps-logo.svg" class="vipps-logo" />
-    <span>
-      kr.
-      <span class="big-money">10,-</span> pr. lodd
-    </span>
-    <img src="/public/assets/images/vipps-qr.png" class="qr-logo" />
-    <span class="phone-number">977 40 427</span>
-    <span class="name">Kasper Rynning-Tønnesen</span>
-    <span class="mark-with">Merk med: Vinlodd/🍾</span>
+    <a href="https://qr.vipps.no/28/2/01/031/4797740427?v=1">
+      <img src="/public/assets/images/vipps-logo.svg" class="vipps-logo" />
+      <span>
+        kr.
+        <span class="big-money">10,-</span> pr. lodd
+      </span>
+      <img src="/public/assets/images/vipps-qr.png" class="qr-logo" />
+      <span class="phone-number">977 40 427</span>
+      <span class="name">Kasper Rynning-Tønnesen</span>
+      <span class="mark-with">Merk med: Vinlodd/🍾</span>
+    </a>
   </div>
 </template>
 
