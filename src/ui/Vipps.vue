@@ -17,7 +17,7 @@ export default {
   props: {
     amount: {
       type: Number,
-      default: 10
+      default: 1
     }
   },
   computed: {
