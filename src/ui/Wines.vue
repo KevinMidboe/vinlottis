@@ -8,12 +8,13 @@
           {{ wine.rating }} i rating
         </span>
         <a
+          class="wine-link"
           :href="wine.vivinoLink"
           v-if="wine.vivinoLink != '' && wine.vivinoLink != null"
           @click="wineClick(wine)"
         >
-          {{ wine.name }} - sett {{ wine.occurences }} ganger,
-          {{ wine.rating }} i rating
+          <span class="truncate">{{ wine.name }}</span> - {{ wine.rating }} i
+          rating - {{ wine.occurences }} gang(er)
         </a>
       </li>
     </ol>
@@ -34,7 +35,7 @@ export default {
     response = response
       .filter(wine => wine.name != null && wine.name != "")
       .sort((a, b) => (a.occurences > b.occurences ? -1 : 1));
-    this.wines = response;
+    this.wines = response.slice(0, 5);
   },
   methods: {
     wineClick: function(wine) {
@@ -64,11 +65,26 @@ div {
 
 a {
   text-decoration: none;
-  color: orange;
+  color: #ff5b23;
+  padding: 2.5px 0;
 }
 
 ol {
   padding-left: 1rem;
   margin-left: 0;
+}
+
+.wine-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.truncate {
+  display: inline-block;
+  max-width: 250px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 </style>

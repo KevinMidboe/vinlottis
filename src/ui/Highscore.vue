@@ -23,7 +23,7 @@ export default {
     response = response.filter(
       person => person.name != null && person.name != ""
     );
-    this.highscore = response;
+    this.highscore = response.slice(0, 5);
   }
 };
 </script>
@@ -41,5 +41,10 @@ div {
 ol {
   padding-left: 1rem;
   margin-left: 0;
+
+  li {
+    padding: 2.5px 0;
+    width: max-content;
+  }
 }
 </style>

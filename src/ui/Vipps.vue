@@ -5,7 +5,7 @@
       kr.
       <span class="big-money">{{ amount * 10 }},- (10,- pr. lodd)</span>
     </span>
-    <img :src="qrLink" class="qr-logo" />
+    <img :src="qrImage" class="qr-logo" />
     <span class="phone-number">977 40 427</span>
     <span class="name">Kasper Rynning-Tønnesen</span>
     <span class="mark-with">Merk med: Vinlodd/🍾</span>
@@ -13,22 +13,49 @@
 </template>
 
 <script>
+import QRCode from "qrcode";
+
 export default {
   props: {
-    amount: Number
+    amount: {
+      type: Number,
+      default: 1
+    }
   },
   data() {
     return {
-      qrLink:
-        "https://chart.googleapis.com/chart?chs=221x221&cht=qr&choe=UTF-8&chld=L|1&chl=https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri🍾&a=" +
-        100 * this.amount
+      qrImage: null
     };
   },
+  watch: {
+    amount: function(price) {
+      console.log("price is updated", price);
+      this.calculateQr();
+    }
+  },
+  mounted() {
+    this.calculateQr();
+  },
+  computed: {
+    price: function() {
+      return this.amount * 1000;
+    }
+  },
   methods: {
-    openVipps: () => {
+    calculateQr: function() {
+      QRCode.toDataURL(
+        "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾&a=" +
+          this.price,
+        { errorCorrectionLevel: "H" },
+        (err, url) => {
+          this.qrImage = url;
+        }
+      );
+    },
+    openVipps: function() {
       window.location.assign(
-        "https://chart.googleapis.com/chart?chs=221x221&cht=qr&choe=UTF-8&chld=L|1&chl=https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri🍾&a=" +
-          100 * this.amount
+        "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾&a=" +
+          this.price
       );
     }
   }
