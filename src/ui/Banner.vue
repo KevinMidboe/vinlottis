@@ -110,7 +110,7 @@ export default {
   align-items: center;
   width: calc(100% - 80px);
   margin-top: 0px;
-  padding: 33px 40px;
+  padding: 0px 40px;
   background-color: #dbeede;
   -webkit-box-shadow: 0px 0px 22px -8px rgba(0, 0, 0, 0.65);
   -moz-box-shadow: 0px 0px 22px -8px rgba(0, 0, 0, 0.65);
