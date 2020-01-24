@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="app-container">
     <banner />
     <router-view />
   </div>
@@ -45,7 +45,7 @@ body {
 </style>
 
 <style scoped>
-.container {
+.app-container {
   background-color: white;
   min-height: 100vh;
 }

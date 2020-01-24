@@ -53,7 +53,7 @@
       ></div>
     </div>
 
-    <Vipps class="vipps" />
+    <Vipps class="vipps" :amount="numberOfBallots" />
     <Countdown :hardEnable="hardStart" @countdown="changeEnabled" />
   </div>
 </template>
