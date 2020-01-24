@@ -3,12 +3,13 @@
     <div class="clock" v-if="enabled">
       <h2 cv-if="distance > 0">
         <span v-if="days > 0">{{ days }} dager,&nbsp;</span>
-        <span>{{pad(hours)}}</span>:
-        <span>{{pad(minutes)}}</span>:
-        <span>{{pad(seconds)}}</span>
+        <span>{{ pad(hours) }}</span
+        >: <span>{{ pad(minutes) }}</span
+        >:
+        <span>{{ pad(seconds) }}</span>
       </h2>
       <div class="cross" @click="stopClock">X</div>
-      <h2 v-if="distance = 0">Lotteriet har begynt!</h2>
+      <h2 v-if="(distance = 0)">Lotteriet har begynt!</h2>
     </div>
   </div>
 </template>
@@ -41,7 +42,7 @@ export default {
     },
     listenerFunction: function(event) {
       this.codeDone += event.keyCode;
-´      if (this.code.substring(0, this.codeDone.length) == this.codeDone) {
+      if (this.code.substring(0, this.codeDone.length) == this.codeDone) {
         if (this.code == this.codeDone && !this.enabled) {
           this.enabled = true;
           this.initialize();
