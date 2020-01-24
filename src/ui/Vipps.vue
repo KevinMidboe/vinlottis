@@ -1,6 +1,5 @@
 <template>
-  <div class="vipps-container">
-    <a href="https://qr.vipps.no/28/2/01/031/4797740427?v=1">
+  <div class="vipps-container" @click="openVipps">
       <img src="/public/assets/images/vipps-logo.svg" class="vipps-logo" />
       <span>
         kr.
@@ -10,9 +9,18 @@
       <span class="phone-number">977 40 427</span>
       <span class="name">Kasper Rynning-Tønnesen</span>
       <span class="mark-with">Merk med: Vinlodd/🍾</span>
-    </a>
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    openVipps: () => {
+      window.location.assign('https://qr.vipps.no/28/2/01/031/4797740427?v=1')
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 @import "../styles/global.scss";
@@ -31,6 +39,7 @@
   padding: 25px;
   width: 250px;
   margin: auto 0;
+  cursor: pointer;
 }
 
 .big-money {
