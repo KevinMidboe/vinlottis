@@ -22,7 +22,7 @@ export default {
   },
   computed: {
     price: function() {
-      return this.amount * 100
+      return this.amount * 1000
     }
   },
   methods: {
