@@ -113,7 +113,7 @@ export default {
 }
 .cross {
   top: 15px;
-  right: 15px;
+  right: 23px;
   font-size: 2rem;
   position: absolute;
   cursor: pointer;
