@@ -108,7 +108,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 100vw;
+  width: calc(100% - 80px);
   margin-top: 0px;
   padding: 33px 40px;
   background-color: #dbeede;
@@ -118,8 +118,6 @@ export default {
 
   @include mobile {
     padding: 0px 40px;
-
-    width: calc(100% - 80px);
 
     > img {
       height: 23px;
