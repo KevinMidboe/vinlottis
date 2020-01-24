@@ -114,7 +114,6 @@ export default {
 
 .outer {
   height: 100vh;
-  width: 100vw;
   display: flex;
   align-items: center;
   flex-direction: column;
