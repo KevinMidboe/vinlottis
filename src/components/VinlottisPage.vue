@@ -1,7 +1,7 @@
 <template>
   <div class="outer">
     <div class="container">
-      <h1 class="title">Vinlotteri</h1>
+      <h1 class="title" @click="startCountdown">Vinlotteri</h1>
       <router-link to="generate" class="generate-link">
         Klarer du ikke velge lodd-farger?
         <span class="subtext generator-link">Prøv loddgeneratoren</span>
@@ -24,6 +24,7 @@
         </div>
       </div>
     </div>
+    <Countdown :hardEnable="hardStart" @countdown="changeEnabled" />
   </div>
 </template>
 
@@ -36,6 +37,7 @@ import WinGraph from "@/ui/WinGraph";
 import Banner from "@/ui/Banner";
 import Wines from "@/ui/Wines";
 import Vipps from "@/ui/Vipps";
+import Countdown from "@/ui/Countdown";
 
 export default {
   components: {
@@ -45,7 +47,13 @@ export default {
     WinGraph,
     Banner,
     Wines,
-    Vipps
+    Vipps,
+    Countdown
+  },
+  data() {
+    return {
+      hardStart: false
+    };
   },
   mounted() {
     if (window.location.hostname == "localhost") {
@@ -54,8 +62,14 @@ export default {
     this.track();
   },
   methods: {
+    changeEnabled(way) {
+      this.hardStart = way;
+    },
     track() {
       this.$ga.page("/");
+    },
+    startCountdown() {
+      this.hardStart = true;
     }
   }
 };
@@ -73,6 +87,10 @@ export default {
   justify-content: space-evenly;
   align-items: center;
   padding: 0 25px;
+}
+
+.title {
+  cursor: pointer;
 }
 
 .left-bottom {

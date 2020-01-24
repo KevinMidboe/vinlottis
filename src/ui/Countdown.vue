@@ -16,6 +16,12 @@
 
 <script>
 export default {
+  props: {
+    hardEnable: {
+      type: Boolean,
+      required: false
+    }
+  },
   data() {
     return {
       nextLottery: null,
@@ -29,6 +35,15 @@ export default {
       codeDone: "",
       interval: null
     };
+  },
+  watch: {
+    hardEnable: function(hardEnable) {
+      if (hardEnable) {
+        this.enabled = true;
+        this.initialize();
+        this.countdown();
+      }
+    }
   },
   mounted() {
     window.addEventListener("keydown", this.listenerFunction);
@@ -74,6 +89,7 @@ export default {
       this.enabled = false;
       document.querySelector("body").style.overflow = "auto";
       document.querySelector("body").style.height = "initial";
+      this.$emit("countdown", false);
     },
     countdown: function() {
       // Get today's date and time
@@ -103,6 +119,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../styles/media-queries.scss";
 .clock {
   width: 100vw;
   height: 100vh;
@@ -110,6 +127,11 @@ export default {
   background: white;
   top: 0;
   left: 0;
+
+  @include mobile {
+    width: 105vw;
+    height: 110vh;
+  }
 }
 .cross {
   top: 15px;
@@ -117,6 +139,10 @@ export default {
   font-size: 2rem;
   position: absolute;
   cursor: pointer;
+
+  @include mobile {
+    right: 45px;
+  }
 }
 
 h2 {

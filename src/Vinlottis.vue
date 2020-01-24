@@ -2,16 +2,14 @@
   <div class="container">
     <banner />
     <router-view />
-    <Countdown />
   </div>
 </template>
 
 <script>
 import banner from "@/ui/Banner";
-import Countdown from "@/ui/Countdown";
 export default {
   name: "vinlottis",
-  components: { banner, Countdown },
+  components: { banner },
   props: {},
   data() {
     return {};
