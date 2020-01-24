@@ -1,14 +1,14 @@
 <template>
   <div class="vipps-container" @click="openVipps">
-      <img src="/public/assets/images/vipps-logo.svg" class="vipps-logo" />
-      <span>
-        kr.
-        <span class="big-money">{{ amount * 10 }},- (10,- pr. lodd)</span>
-      </span>
-      <img src="/public/assets/images/vipps-qr.png" class="qr-logo" />
-      <span class="phone-number">977 40 427</span>
-      <span class="name">Kasper Rynning-Tønnesen</span>
-      <span class="mark-with">Merk med: Vinlodd/🍾</span>
+    <img src="/public/assets/images/vipps-logo.svg" class="vipps-logo" />
+    <span>
+      kr.
+      <span class="big-money">{{ amount * 10 }},- (10,- pr. lodd)</span>
+    </span>
+    <img :src="qrLink" class="qr-logo" />
+    <span class="phone-number">977 40 427</span>
+    <span class="name">Kasper Rynning-Tønnesen</span>
+    <span class="mark-with">Merk med: Vinlodd/🍾</span>
   </div>
 </template>
 
@@ -17,12 +17,22 @@ export default {
   props: {
     amount: Number
   },
+  data() {
+    return {
+      qrLink:
+        "https://chart.googleapis.com/chart?chs=221x221&cht=qr&choe=UTF-8&chld=L|1&chl=https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri🍾&a=" +
+        100 * this.amount
+    };
+  },
   methods: {
     openVipps: () => {
-      window.location.assign('https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri🍾&a=' + 100 * this.amount)
+      window.location.assign(
+        "https://chart.googleapis.com/chart?chs=221x221&cht=qr&choe=UTF-8&chld=L|1&chl=https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri🍾&a=" +
+          100 * this.amount
+      );
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

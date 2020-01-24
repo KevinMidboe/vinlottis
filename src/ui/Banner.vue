@@ -4,8 +4,8 @@
       <img src="/public/assets/images/knowit.svg" />
       <div class="clock">
         <h2 cv-if="distance > 0">
-          <span v-if="days > 0">{{ pad(days) }}</span>
-          <span>{{ pad(hours) }}</span
+          <span v-if="days > 0">{{ pad(days) }}</span
+          >: <span>{{ pad(hours) }}</span
           >: <span>{{ pad(minutes) }}</span
           >:
           <span>{{ pad(seconds) }}</span>
@@ -58,9 +58,11 @@ export default {
     initialize: function() {
       let d = new Date();
       let dayOfLottery = 5;
-      let nextDayOfLottery = new Date(
-        d.setDate(d.getDate() + ((5 + 7 - d.getDay()) % 7))
-      );
+      let dayDifference = (dayOfLottery + 7 - d.getDay()) % 7;
+      if (dayDifference == 0) {
+        dayDifference = 7;
+      }
+      let nextDayOfLottery = new Date(d.setDate(d.getDate() + dayDifference));
       nextDayOfLottery = new Date(nextDayOfLottery.setHours(15));
       nextDayOfLottery = new Date(nextDayOfLottery.setMinutes(0));
       nextDayOfLottery = new Date(nextDayOfLottery.setSeconds(0));
@@ -130,5 +132,8 @@ export default {
   color: #333333;
   display: flex;
   font-family: Arial;
+  h2 {
+    display: flex;
+  }
 }
 </style>
