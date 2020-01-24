@@ -1,7 +1,9 @@
 <template>
   <div class="container">
-    <h1 class="title">Loddgenerator</h1>
-    <p class="subtext">Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'</p>
+    <h1 class="title" @click="startCountdown">Loddgenerator</h1>
+    <p class="subtext">
+      Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'
+    </p>
     <div class="input-line">
       <label for="redCheckbox">
         <input type="checkbox" id="redCheckbox" v-model="redCheckbox" />
@@ -52,6 +54,7 @@
     </div>
 
     <Vipps class="vipps" />
+    <Countdown :hardEnable="hardStart" @countdown="changeEnabled" />
   </div>
 </template>
 
@@ -59,11 +62,13 @@
 import { page, event } from "vue-analytics";
 import Vipps from "@/ui/Vipps";
 import Banner from "@/ui/Banner";
+import Countdown from "@/ui/Countdown";
 
 export default {
   components: {
     Banner,
-    Vipps
+    Vipps,
+    Countdown
   },
   data() {
     return {
@@ -77,7 +82,8 @@ export default {
       redCheckbox: true,
       greenCheckbox: true,
       yellowCheckbox: true,
-      blueCheckbox: true
+      blueCheckbox: true,
+      hardStart: false
     };
   },
   watch: {
@@ -92,10 +98,16 @@ export default {
     this.track();
   },
   methods: {
+    changeEnabled: function(way) {
+      this.hardStart = way;
+    },
+    startCountdown: function() {
+      this.hardStart = true;
+    },
     generateColors: function(event, time) {
       if (time == 5) {
         if (this.numberOfBallots > 1 && new Set(this.colors).size == 1) {
-          alert('BINGO')
+          alert("BINGO");
         }
 
         if (window.location.hostname == "localhost") {
@@ -187,7 +199,9 @@ export default {
 @import "../styles/variables.scss";
 @import "../styles/global.scss";
 @import "../styles/media-queries.scss";
-
+h1 {
+  cursor: pointer;
+}
 .vipps {
   margin: 20px auto auto auto;
 }

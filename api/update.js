@@ -8,10 +8,34 @@ mongoose.connect("mongodb://localhost:27017/vinlottis", {
 
 const Purchase = require(path.join(__dirname + "/../schemas/Purchase"));
 const Wine = require(path.join(__dirname + "/../schemas/Wine"));
+const PreLotteryWine = require(path.join(
+  __dirname + "/../schemas/PreLotteryWine"
+));
 const Highscore = require(path.join(__dirname + "/../schemas/Highscore"));
 
 router.use((req, res, next) => {
   next();
+});
+
+router.route("/log/wines").post(async (req, res) => {
+  if (!req.isAuthenticated()) {
+    res.send(false);
+    return;
+  }
+  console.log(req.body);
+  const wines = req.body;
+  console.log(wines);
+  for (let i = 0; i < wines.length; i++) {
+    let wine = wines[i];
+    let newWonWine = new PreLotteryWine({
+      name: wine.name,
+      vivinoLink: wine.vivinoLink,
+      rating: wine.rating
+    });
+    await newWonWine.save();
+  }
+
+  res.send(true);
 });
 
 router.route("/log").post(async (req, res) => {
@@ -19,6 +43,9 @@ router.route("/log").post(async (req, res) => {
     res.send(false);
     return;
   }
+
+  await PreLotteryWine.deleteMany();
+
   const purchaseBody = req.body.purchase;
   const winnersBody = req.body.winners;
 
@@ -35,7 +62,7 @@ router.route("/log").post(async (req, res) => {
 
     let wonWine = await Wine.findOne({ name: currentWinner.wine.name });
     if (wonWine == undefined) {
-      const newWonWine = new Wine({
+      let newWonWine = new Wine({
         name: currentWinner.wine.name,
         vivinoLink: currentWinner.wine.vivinoLink,
         rating: currentWinner.wine.rating,
