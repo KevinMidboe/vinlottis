@@ -202,9 +202,6 @@ export default {
 h1 {
   cursor: pointer;
 }
-.vipps {
-  margin: 20px auto auto auto;
-}
 .header-link {
   color: #333333;
   text-decoration: none;
@@ -246,7 +243,7 @@ p {
 }
 
 .vipps {
-  margin-top: 8rem;
+  margin: 8rem auto 2.5rem auto;
 
   @include mobile {
     margin-top: 2rem;
