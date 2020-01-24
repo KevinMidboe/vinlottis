@@ -9,9 +9,17 @@ mongoose.connect("mongodb://localhost:27017/vinlottis", {
 const Purchase = require(path.join(__dirname + "/../schemas/Purchase"));
 const Wine = require(path.join(__dirname + "/../schemas/Wine"));
 const Highscore = require(path.join(__dirname + "/../schemas/Highscore"));
+const PreLotteryWine = require(path.join(
+  __dirname + "/../schemas/PreLotteryWine"
+));
 
 router.use((req, res, next) => {
   next();
+});
+
+router.route("/wines/prelottery").get(async (req, res) => {
+  let wines = await PreLotteryWine.find();
+  res.json(wines);
 });
 
 router.route("/purchase/statistics").get(async (req, res) => {

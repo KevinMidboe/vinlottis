@@ -62,6 +62,30 @@
         <hr />
       </div>
     </div>
+    <div class="button-container">
+      <button @click="addWine">Legg til en vin</button>
+      <button @click="sendWines">Send inn viner</button>
+    </div>
+    <div class="wines-container" v-if="wines.length > 0">
+      Viner
+      <div v-for="wine in wines" class="wine-element">
+        <hr />
+        <div class="label-div">
+          <input type="text" v-model="wine.name" placeholder="Vin-navn" />
+        </div>
+        <div class="label-div">
+          <input
+            type="text"
+            v-model="wine.vivinoLink"
+            placeholder="Vivino-link"
+          />
+        </div>
+        <div class="label-div">
+          <input type="text" v-model="wine.rating" placeholder="Rating" />
+        </div>
+        <hr />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -73,10 +97,51 @@ export default {
       blue: 0,
       green: 0,
       yellow: 0,
-      winners: []
+      winners: [],
+      wines: []
     };
   },
+  async mounted() {
+    const _wines = await fetch("/api/wines/prelottery");
+    const wines = await _wines.json();
+    for (let i = 0; i < wines.length; i++) {
+      let wine = wines[i];
+      this.winners.push({
+        name: "",
+        color: "",
+        wine: {
+          name: wine.name,
+          vivinoLink: wine.vivinoLink,
+          rating: wine.rating
+        }
+      });
+    }
+  },
   methods: {
+    addWine: function(event) {
+      this.wines.push({
+        name: "",
+        vivinoLink: "",
+        rating: ""
+      });
+    },
+    sendWines: async function() {
+      let _response = await fetch("/api/log/wines", {
+        headers: {
+          "Content-Type": "application/json"
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        method: "POST",
+        body: JSON.stringify(this.wines)
+      });
+      let response = await _response.json();
+      if (response == true) {
+        alert("Sendt!");
+        window.location.reload();
+      } else {
+        alert("Noe gikk galt under innsending");
+      }
+    },
     addWinner: function(event) {
       this.winners.push({
         name: "",
@@ -180,7 +245,8 @@ hr {
   width: 50vw;
 }
 
-.winner-container {
+.winner-container,
+.wine-container {
   width: 50vw;
   display: flex;
   flex-direction: column;
@@ -190,6 +256,7 @@ hr {
 }
 
 .winner-element,
+.wine-element,
 .color-container,
 .button-container {
   width: 100%;
