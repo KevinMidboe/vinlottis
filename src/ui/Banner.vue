@@ -4,7 +4,7 @@
       <img src="/public/assets/images/knowit.svg" />
       <div class="clock">
         <h2 cv-if="distance > 0">
-          <span v-if="days > 0">{{ days }} dager,&nbsp;</span>
+          <span v-if="days > 0">{{ pad(days) }}</span>
           <span>{{ pad(hours) }}</span
           >: <span>{{ pad(minutes) }}</span
           >:
@@ -128,6 +128,7 @@ export default {
 .clock {
   text-decoration: none;
   color: #333333;
+  display: flex;
   font-family: Arial;
 }
 </style>
