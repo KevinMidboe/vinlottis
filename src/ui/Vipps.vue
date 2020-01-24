@@ -18,7 +18,7 @@ export default {
     amount: Number
   },
   methods: {
-    openVipps: () => {
+    openVipps: function() {
       window.location.assign('https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri🍾&a=' + 100 * this.amount)
     }
   }
