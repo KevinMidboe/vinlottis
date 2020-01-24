@@ -24,7 +24,6 @@
         </div>
       </div>
     </div>
-    <Countdown />
   </div>
 </template>
 
@@ -37,7 +36,6 @@ import WinGraph from "@/ui/WinGraph";
 import Banner from "@/ui/Banner";
 import Wines from "@/ui/Wines";
 import Vipps from "@/ui/Vipps";
-import Countdown from "@/ui/Countdown";
 
 export default {
   components: {
@@ -47,8 +45,7 @@ export default {
     WinGraph,
     Banner,
     Wines,
-    Vipps,
-    Countdown
+    Vipps
   },
   mounted() {
     if (window.location.hostname == "localhost") {
