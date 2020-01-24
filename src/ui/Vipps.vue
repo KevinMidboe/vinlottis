@@ -3,7 +3,7 @@
       <img src="/public/assets/images/vipps-logo.svg" class="vipps-logo" />
       <span>
         kr.
-        <span class="big-money">{{ price * 10 }},- (10,- pr. lodd)</span>
+        <span class="big-money">{{ amount * 10 }},- (10,- pr. lodd)</span>
       </span>
       <img src="/public/assets/images/vipps-qr.png" class="qr-logo" />
       <span class="phone-number">977 40 427</span>
