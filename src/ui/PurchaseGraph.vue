@@ -86,7 +86,7 @@ export default {
         maintainAspectRatio: false,
         title: {
           display: true,
-          text: "Antall vinn",
+          text: "Antall kjøpt",
           fontSize: 20,
         },
         legend: {
