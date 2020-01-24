@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     openVipps: function() {
-      window.location.assign('https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri🍾&a=' + this.price)
+      window.location.assign('https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾&a=' + this.price)
     }
   }
 }
