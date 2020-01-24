@@ -49,5 +49,6 @@ body {
 <style scoped>
 .container {
   background-color: white;
+  min-height: 100vh;
 }
 </style>
