@@ -86,7 +86,7 @@ export default {
         maintainAspectRatio: false,
         title: {
           display: true,
-          text: "Antall vinn",
+          text: "Antall kjøpt",
           fontSize: 20,
         },
         legend: {
@@ -134,10 +134,12 @@ export default {
 
 .chart {
   height: 40vh;
+  max-height: 364px;
 
   @include mobile {
     position: relative;
     width: 90vw !important;
+    max-height: unset;
     height: 50vh;
     margin-bottom: 2rem;
   }
