@@ -3,7 +3,7 @@
       <img src="/public/assets/images/vipps-logo.svg" class="vipps-logo" />
       <span>
         kr.
-        <span class="big-money">{{ amount * 10 }},-</span> pr. lodd
+        <span class="big-money">{{ amount * 10 }},- (10,- pr. lodd)</span>
       </span>
       <img src="/public/assets/images/vipps-qr.png" class="qr-logo" />
       <span class="phone-number">977 40 427</span>
@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     openVipps: () => {
-      window.location.assign('https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri🍾&a=' + 100 * amount)
+      window.location.assign('https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri🍾&a=' + 100 * this.amount)
     }
   }
 }
