@@ -97,7 +97,6 @@ export default {
   width: 75%;
 
   @include mobile {
-    padding: 0 1.25rem;
     width: 100%;
   }
 }
