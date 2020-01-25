@@ -337,6 +337,9 @@ button {
   height: calc(3rem + 18px);
   display: inline-flex;
   max-height: calc(3rem + 18px);
+
+  // disable-dbl-tap-zoom
+  touch-action: manipulation;
 }
 
 .colors-text {
