@@ -39,7 +39,7 @@ div {
   flex-direction: column;
 }
 ol {
-  padding-left: 1rem;
+  padding-left: 1.375rem !important;
   margin-left: 0;
 
   li {

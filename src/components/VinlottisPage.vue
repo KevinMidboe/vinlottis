@@ -129,6 +129,10 @@ export default {
   }
 }
 
+.container {
+  margin-bottom: 2.5rem;
+}
+
 .outer {
   width: 100vw;
   display: flex;
