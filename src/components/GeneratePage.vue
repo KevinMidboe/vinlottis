@@ -403,20 +403,22 @@ button {
 
   &:focus input,
   &:active input {
-    &#greenCheckbox ~ .border .checkmark {
-      background-color: $dark-green;
-    }
+    @include desktop {
+      &#greenCheckbox ~ .border .checkmark {
+        background-color: $dark-green;
+      }
 
-    &#redCheckbox ~ .border .checkmark {
-      background-color: $dark-red;
-    }
+      &#redCheckbox ~ .border .checkmark {
+        background-color: $dark-red;
+      }
 
-    &#yellowCheckbox ~ .border .checkmark {
-      background-color: $dark-yellow;
-    }
+      &#yellowCheckbox ~ .border .checkmark {
+        background-color: $dark-yellow;
+      }
 
-    &#blueCheckbox ~ .border .checkmark {
-      background-color: $dark-blue;
+      &#blueCheckbox ~ .border .checkmark {
+        background-color: $dark-blue;
+      }
     }
   }
 }
