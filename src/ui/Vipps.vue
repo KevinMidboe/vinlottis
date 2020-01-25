@@ -61,6 +61,23 @@ export default {
           }
         }
       );
+
+      this.drawLogoOverCanvas(canvas)
+    },
+    drawLogoOverCanvas(canvas) {
+      const context = canvas.getContext("2d")
+      const centerX = canvas.width / 2
+      const centerY = canvas.height / 2
+      context.font = "40px Arial"
+      context.textAlign = "center"
+      context.textBaseline = "middle"
+      context.arc(centerX, centerY, 35, 0, 2 * Math.PI, false)
+      context.fillStyle = 'white'
+      context.fill()
+      context.lineWidth = 4
+      context.strokeStyle = '#fe5b23'
+      context.stroke()
+      context.fillText("🍾", centerX, centerY)
     },
     openVipps: function() {
       window.location.assign(
