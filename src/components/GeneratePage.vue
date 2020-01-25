@@ -383,27 +383,27 @@ button {
     }
   }
 
-  &:hover input {
-    &#greenCheckbox ~ .border .checkmark {
-      background-color: $green;
+  @include desktop {
+    &:hover input {
+      &#greenCheckbox ~ .border .checkmark {
+        background-color: $green;
+      }
+
+      &#redCheckbox ~ .border .checkmark {
+        background-color: $red;
+      }
+
+      &#yellowCheckbox ~ .border .checkmark {
+        background-color: $yellow;
+      }
+
+      &#blueCheckbox ~ .border .checkmark {
+        background-color: $blue;
+      }
     }
 
-    &#redCheckbox ~ .border .checkmark {
-      background-color: $red;
-    }
-
-    &#yellowCheckbox ~ .border .checkmark {
-      background-color: $yellow;
-    }
-
-    &#blueCheckbox ~ .border .checkmark {
-      background-color: $blue;
-    }
-  }
-
-  &:focus input,
-  &:active input {
-    @include desktop {
+    &:focus input,
+    &:active input {
       &#greenCheckbox ~ .border .checkmark {
         background-color: $dark-green;
       }
