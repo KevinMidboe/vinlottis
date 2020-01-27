@@ -70,7 +70,7 @@ a {
 }
 
 ol {
-  padding-left: 1rem;
+  padding-left: 0;
   margin-left: 0;
 }
 

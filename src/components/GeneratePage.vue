@@ -337,6 +337,9 @@ button {
   height: calc(3rem + 18px);
   display: inline-flex;
   max-height: calc(3rem + 18px);
+
+  // disable-dbl-tap-zoom
+  touch-action: manipulation;
 }
 
 .colors-text {
@@ -380,40 +383,42 @@ button {
     }
   }
 
-  &:hover input {
-    &#greenCheckbox ~ .border .checkmark {
-      background-color: $green;
+  @include desktop {
+    &:hover input {
+      &#greenCheckbox ~ .border .checkmark {
+        background-color: $green;
+      }
+
+      &#redCheckbox ~ .border .checkmark {
+        background-color: $red;
+      }
+
+      &#yellowCheckbox ~ .border .checkmark {
+        background-color: $yellow;
+      }
+
+      &#blueCheckbox ~ .border .checkmark {
+        background-color: $blue;
+      }
     }
 
-    &#redCheckbox ~ .border .checkmark {
-      background-color: $red;
-    }
+    &:focus input,
+    &:active input {
+      &#greenCheckbox ~ .border .checkmark {
+        background-color: $dark-green;
+      }
 
-    &#yellowCheckbox ~ .border .checkmark {
-      background-color: $yellow;
-    }
+      &#redCheckbox ~ .border .checkmark {
+        background-color: $dark-red;
+      }
 
-    &#blueCheckbox ~ .border .checkmark {
-      background-color: $blue;
-    }
-  }
+      &#yellowCheckbox ~ .border .checkmark {
+        background-color: $dark-yellow;
+      }
 
-  &:focus input,
-  &:active input {
-    &#greenCheckbox ~ .border .checkmark {
-      background-color: $dark-green;
-    }
-
-    &#redCheckbox ~ .border .checkmark {
-      background-color: $dark-red;
-    }
-
-    &#yellowCheckbox ~ .border .checkmark {
-      background-color: $dark-yellow;
-    }
-
-    &#blueCheckbox ~ .border .checkmark {
-      background-color: $dark-blue;
+      &#blueCheckbox ~ .border .checkmark {
+        background-color: $dark-blue;
+      }
     }
   }
 }

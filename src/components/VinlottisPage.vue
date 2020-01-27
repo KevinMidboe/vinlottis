@@ -97,7 +97,6 @@ export default {
   width: 75%;
 
   @include mobile {
-    padding: 0 1.25rem;
     width: 100%;
   }
 }
@@ -128,6 +127,10 @@ export default {
     margin-left: 20px;
     border-left: 1px solid rgb(237, 237, 237);
   }
+}
+
+.container {
+  margin-bottom: 2.5rem;
 }
 
 .outer {
