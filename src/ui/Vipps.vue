@@ -5,11 +5,7 @@
       kr.
       <span class="big-money">{{ amount * 10 }},- (10,- pr. lodd)</span>
     </span>
-    <ing
-      src="/public/assets/images/vipps-qr.png"
-      class="qr-logo"
-      v-if="qrFailed"
-    />
+    <ing src="/public/assets/images/vipps-qr.png" class="qr-logo" v-if="qrFailed" />
     <canvas v-if="!qrFailed" ref="canvas" class="qr-logo"></canvas>
     <span class="phone-number">977 40 427</span>
     <span class="name">Kasper Rynning-Tønnesen</span>
@@ -52,8 +48,8 @@ export default {
       let canvas = this.$refs["canvas"];
       QRCode.toCanvas(
         canvas,
-        "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾&a=" +
-          this.price,
+        "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾" /*&a=" +
+          this.price*/,
         { errorCorrectionLevel: "Q" },
         (err, url) => {
           if (err != null) {
@@ -62,27 +58,27 @@ export default {
         }
       );
 
-      this.drawLogoOverCanvas(canvas)
+      this.drawLogoOverCanvas(canvas);
     },
     drawLogoOverCanvas(canvas) {
-      const context = canvas.getContext("2d")
-      const centerX = canvas.width / 2
-      const centerY = canvas.height / 2
-      context.font = "30px Arial"
-      context.textAlign = "center"
-      context.textBaseline = "middle"
-      context.arc(centerX, centerY, 25, 0, 2 * Math.PI, false)
-      context.fillStyle = 'white'
-      context.fill()
-      context.lineWidth = 3
-      context.strokeStyle = '#fe5b23'
-      context.stroke()
-      context.fillText("🍾", centerX, centerY)
+      const context = canvas.getContext("2d");
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      context.font = "30px Arial";
+      context.textAlign = "center";
+      context.textBaseline = "middle";
+      context.arc(centerX, centerY, 25, 0, 2 * Math.PI, false);
+      context.fillStyle = "white";
+      context.fill();
+      context.lineWidth = 3;
+      context.strokeStyle = "#fe5b23";
+      context.stroke();
+      context.fillText("🍾", centerX, centerY);
     },
     openVipps: function() {
       window.location.assign(
-        "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾&a=" +
-          this.price
+        "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾" /*&a=" +
+          this.price*/
       );
     }
   }
