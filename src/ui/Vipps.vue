@@ -68,13 +68,13 @@ export default {
       const context = canvas.getContext("2d")
       const centerX = canvas.width / 2
       const centerY = canvas.height / 2
-      context.font = "40px Arial"
+      context.font = "30px Arial"
       context.textAlign = "center"
       context.textBaseline = "middle"
-      context.arc(centerX, centerY, 35, 0, 2 * Math.PI, false)
+      context.arc(centerX, centerY, 25, 0, 2 * Math.PI, false)
       context.fillStyle = 'white'
       context.fill()
-      context.lineWidth = 4
+      context.lineWidth = 3
       context.strokeStyle = '#fe5b23'
       context.stroke()
       context.fillText("🍾", centerX, centerY)
