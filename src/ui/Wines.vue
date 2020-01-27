@@ -34,7 +34,7 @@ export default {
     response.sort();
     response = response
       .filter(wine => wine.name != null && wine.name != "")
-      .sort((a, b) => (a.occurences > b.occurences ? -1 : 1));
+      .sort((a, b) => (a.rating > b.rating ? -1 : 1));
     this.wines = response.slice(0, 5);
   },
   methods: {
