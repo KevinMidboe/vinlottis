@@ -2,42 +2,30 @@
   <div class="outer-bought">
     <h3>Loddstatistikk</h3>
     <div class="bought-container">
-      <div class="red-container inner-bought-container">
+      <div
+        v-for="color in colors"
+        :class="color.name + '-container inner-bought-container'"
+        :key="color.name"
+      >
         <div class="number-container">
-          <span class="red bought-number-span">{{ red.total }}</span>
+          <span :class="color.name + ' bought-number-span'">{{
+            color.total
+          }}</span>
           <span> kjøpte</span>
         </div>
         <div class="inner-text-container">
-          <div>{{ red.win }} vinn - {{ redPercentage }}% vinn</div>
+          <div>
+            {{ color.win }} vinn -
+            <span class="small">{{ color.totalPercentage }}</span
+            >%
+          </div>
+          <div>
+            <span :class="color.name + ' small'">{{ color.percentage }}</span
+            >% vinn
+          </div>
         </div>
       </div>
-      <div class="blue-container inner-bought-container">
-        <div class="number-container">
-          <span class="blue bought-number-span">{{ blue.total }}</span>
-          <span> kjøpte</span>
-        </div>
-        <div class="inner-text-container">
-          <div>{{ blue.win }} vinn - {{ bluePercentage }}% vinn</div>
-        </div>
-      </div>
-      <div class="yellow-container inner-bought-container">
-        <div class="number-container">
-          <span class="yellow bought-number-span">{{ yellow.total }}</span>
-          <span> kjøpte</span>
-        </div>
-        <div class="inner-text-container">
-          <div>{{ yellow.win }} vinn - {{ yellowPercentage }}% vinn</div>
-        </div>
-      </div>
-      <div class="green-container inner-bought-container">
-        <div class="number-container">
-          <span class="green bought-number-span">{{ green.total }}</span>
-          <span> kjøpte</span>
-        </div>
-        <div class="inner-text-container">
-          <div>{{ green.win }} vinn - {{ greenPercentage }}% vinn</div>
-        </div>
-      </div>
+
       <div class="total-container inner-bought-container">
         <div>
           Totalt&nbsp;
@@ -52,6 +40,7 @@
 export default {
   data() {
     return {
+      colors: [],
       red: 0,
       blue: 0,
       yellow: 0,
@@ -88,8 +77,42 @@ export default {
     this.yellowPercentage = this.round(
       this.yellow.win == 0 ? 0 : (this.yellow.win / this.totalWin) * 100
     );
+
+    this.colors.push({
+      name: "red",
+      total: this.red.total,
+      win: this.red.win,
+      totalPercentage: this.getPercentage(this.red.win, this.totalWin),
+      percentage: this.getPercentage(this.red.win, this.red.total)
+    });
+    this.colors.push({
+      name: "blue",
+      total: this.blue.total,
+      win: this.blue.win,
+      totalPercentage: this.getPercentage(this.blue.win, this.totalWin),
+      percentage: this.getPercentage(this.blue.win, this.blue.total)
+    });
+    this.colors.push({
+      name: "yellow",
+      total: this.yellow.total,
+      win: this.yellow.win,
+      totalPercentage: this.getPercentage(this.yellow.win, this.totalWin),
+      percentage: this.getPercentage(this.yellow.win, this.yellow.total)
+    });
+    this.colors.push({
+      name: "green",
+      total: this.green.total,
+      win: this.green.win,
+      totalPercentage: this.getPercentage(this.green.win, this.totalWin),
+      percentage: this.getPercentage(this.green.win, this.green.total)
+    });
+
+    this.colors = this.colors.sort((a, b) => (a.win > b.win ? -1 : 1));
   },
   methods: {
+    getPercentage: function(win, total) {
+      return this.round(win == 0 ? 0 : (win / total) * 100);
+    },
     round: function(number) {
       return Math.round(number * 100) / 100;
     }
@@ -170,6 +193,12 @@ export default {
 .total {
   font-size: 2rem;
   font-weight: bold;
+}
+
+.small {
+  font-weight: bold;
+  font-size: 1.25rem;
+  display: inline-block;
 }
 
 .green {

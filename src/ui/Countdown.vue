@@ -9,7 +9,7 @@
         <span>{{ pad(seconds) }}</span>
       </h2>
       <div class="cross" @click="stopClock">X</div>
-      <h2 v-if="(distance = 0)">Lotteriet har begynt!</h2>
+      <h2 v-if="distance <= 0">Lotteriet har begynt!</h2>
     </div>
   </div>
 </template>

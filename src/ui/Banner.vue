@@ -10,7 +10,7 @@
           >:
           <span>{{ pad(seconds) }}</span>
         </h2>
-        <h2 v-if="(distance = 0)">Lotteriet har begynt!</h2>
+        <h2 v-if="distance <= 0">Lotteriet har begynt!</h2>
       </div>
     </div>
   </router-link>
