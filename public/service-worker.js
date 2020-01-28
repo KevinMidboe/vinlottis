@@ -20,7 +20,7 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener("install", event => {
-  console.log("Service Worker installing.");
+  console.log("Arbeids arbeideren installerer seg.");
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_CACHE_URLS))
   );
@@ -28,25 +28,22 @@ self.addEventListener("install", event => {
 
 self.addEventListener("fetch", event => {
   event.respondWith(
-    fetch(event.request).catch(function() {
-      return caches.match(event.request);
-    })
-  );
-  event.waitUntil(
     fetch(event.request)
-      .then(function(response) {
-        cache(event.request, response);
+      .then(response => cache(event.request, response))
+      .catch(function() {
+        return caches.match(event.request);
       })
-      .catch(error => {})
   );
 });
 
 function cache(request, response) {
+  //console.log(response.type === "error" || response.type === "opaque", request);
   if (response.type === "error" || response.type === "opaque") {
-    return Promise.resolve(); // do not put in cache network errors
+    return response;
   }
 
-  return caches
-    .open(CACHE_NAME)
-    .then(cache => cache.put(request, response.clone()));
+  return caches.open(CACHE_NAME).then(cache => {
+    cache.put(request, response.clone());
+    return response;
+  });
 }
