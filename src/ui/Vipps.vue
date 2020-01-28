@@ -55,7 +55,7 @@ export default {
       let canvas = this.$refs["canvas"];
       QRCode.toCanvas(
         canvas,
-        this.vippsUrlBasedOnUserAgent
+        this.vippsUrlBasedOnUserAgent,
         { errorCorrectionLevel: "Q" },
         (err, url) => {
           if (err != null) {
