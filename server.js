@@ -17,6 +17,9 @@ const referrerPolicy = require("referrer-policy");
 const helmet = require("helmet");
 const featurePolicy = require("feature-policy");
 
+const compression = require("compression");
+app.use(compression());
+
 app.use(
   featurePolicy({
     features: {
