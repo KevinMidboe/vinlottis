@@ -156,7 +156,7 @@ export default {
     padding-bottom: 5px;
     display: flex;
 
-    & .div {
+    & div {
       padding: 0 5px;
     }
   }
