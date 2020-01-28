@@ -31,12 +31,9 @@ app.use(
     }
   })
 );
-app.use(
-  helmet({
-    frameguard: false
-  })
-);
-app.use(referrerPolicy({ policy: "origin-when-cross-origin" }));
+app.use(helmet());
+app.use(helmet.frameguard({ action: "sameorigin" }));
+app.use(referrerPolicy({ policy: "origin" }));
 
 app.use(cors());
 mongoose.promise = global.Promise;
