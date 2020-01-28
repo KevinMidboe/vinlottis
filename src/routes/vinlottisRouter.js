@@ -1,4 +1,5 @@
 import VinlottisPage from "@/components/VinlottisPage";
+import GeneratePage from "@/components/GeneratePage"; 
 
 const routes = [
   {
@@ -7,7 +8,7 @@ const routes = [
   },
   {
     path: "/generate",
-    component: resolve => require(["@/components/GeneratePage"], resolve)
+    component: GeneratePage
   },
   {
     path: "/login",
