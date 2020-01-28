@@ -41,6 +41,13 @@ export default {
   computed: {
     price: function() {
       return this.amount * 1000;
+    },
+    vippsUrlBasedOnUserAgent: function() {
+      if (navigator.userAgent.includes('iPhone')) {
+        return vippsUrl = "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾&a=" + this.price
+      }
+
+      return "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾"
     }
   },
   methods: {
@@ -48,8 +55,7 @@ export default {
       let canvas = this.$refs["canvas"];
       QRCode.toCanvas(
         canvas,
-        "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾" /*&a=" +
-          this.price*/,
+        this.vippsUrlBasedOnUserAgent
         { errorCorrectionLevel: "Q" },
         (err, url) => {
           if (err != null) {
@@ -76,10 +82,7 @@ export default {
       context.fillText("🍾", centerX, centerY);
     },
     openVipps: function() {
-      window.location.assign(
-        "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾" /*&a=" +
-          this.price*/
-      );
+      window.location.assign(this.vippsUrlBasedOnUserAgent);
     }
   }
 };
