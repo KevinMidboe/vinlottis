@@ -13,6 +13,31 @@ const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo")(session);
 const cors = require("cors");
 
+const referrerPolicy = require("referrer-policy");
+const helmet = require("helmet");
+const featurePolicy = require("feature-policy");
+
+app.use(
+  featurePolicy({
+    features: {
+      fullscreen: ["*"],
+      //vibrate: ["'none'"],
+      payment: ["'none'"],
+      microphone: ["'none'"],
+      camera: ["'none'"],
+      speaker: ["*"],
+      syncXhr: ["'self'"]
+      //notifications: ["'self'"]
+    }
+  })
+);
+app.use(
+  helmet({
+    frameguard: false
+  })
+);
+app.use(referrerPolicy({ policy: "origin-when-cross-origin" }));
+
 app.use(cors());
 mongoose.promise = global.Promise;
 mongoose.connect("mongodb://localhost/vinlottis");
