@@ -44,10 +44,10 @@ export default {
     },
     vippsUrlBasedOnUserAgent: function() {
       if (navigator.userAgent.includes('iPhone')) {
-        return vippsUrl = "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾&a=" + this.price
+        return "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾&a=" + this.price
       }
 
-      return "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾"
+      return vippsUrl = "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾"
     }
   },
   methods: {
