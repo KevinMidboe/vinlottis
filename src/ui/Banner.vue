@@ -1,7 +1,7 @@
 <template>
   <router-link to="/" class="link">
     <div class="top-banner">
-      <img src="/public/assets/images/knowit.svg" />
+      <img src="/public/assets/images/knowit.svg" alt="knowit logo"/>
       <div class="clock">
         <h2 cv-if="distance > 0">
           <span v-if="days > 0">{{ pad(days) }}</span

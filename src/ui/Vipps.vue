@@ -1,6 +1,6 @@
 <template>
   <div class="vipps-container" @click="openVipps">
-    <img src="/public/assets/images/vipps-logo.svg" class="vipps-logo" />
+    <img src="/public/assets/images/vipps-logo.svg" class="vipps-logo" alt="vipps logo" />
     <span>
       kr.
       <span class="big-money">{{ amount * 10 }},- (10,- pr. lodd)</span>
