@@ -154,6 +154,11 @@ export default {
   @include mobile {
     margin-top: auto;
     padding-bottom: 5px;
+    display: flex;
+
+    & .div {
+      padding: 0 5px;
+    }
   }
 }
 
