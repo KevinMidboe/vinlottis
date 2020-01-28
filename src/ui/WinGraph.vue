@@ -79,7 +79,7 @@ export default {
         title: {
           display: true,
           text: "Antall vinn",
-          fontSize: 20,
+          fontSize: 20
         },
         legend: {
           labels: {

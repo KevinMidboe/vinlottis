@@ -13,7 +13,8 @@
           v-if="wine.vivinoLink != '' && wine.vivinoLink != null"
           @click="wineClick(wine)"
         >
-          <span class="truncate">{{ wine.name }}</span> - {{ wine.rating }} i
+          <span class="truncate">{{ wine.name }}</span>
+          - {{ wine.rating }} i
           rating - {{ wine.occurences }} gang(er)
         </a>
       </li>

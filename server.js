@@ -48,10 +48,15 @@ passport.use(new LocalStrategy(User.authenticate()));
 // use static serialize and deserialize of model for passport session support
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/dist", express.static(path.join(__dirname, "public/dist")));
 app.use("/", loginApi);
 app.use("/api/", updateApi);
 app.use("/api/", retrieveApi);
+
+app.use("/service-worker.js", function(req, res) {
+  res.sendFile(path.join(__dirname, "public/service-worker.js"));
+});
 
 app.listen(30030);

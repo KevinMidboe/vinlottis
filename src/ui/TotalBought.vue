@@ -8,20 +8,20 @@
         :key="color.name"
       >
         <div class="number-container">
-          <span :class="color.name + ' bought-number-span'">{{
+          <span :class="color.name + ' bought-number-span'">
+            {{
             color.total
-          }}</span>
-          <span> kjøpte</span>
+            }}
+          </span>
+          <span>kjøpte</span>
         </div>
         <div class="inner-text-container">
           <div>
             {{ color.win }} vinn -
-            <span class="small">{{ color.totalPercentage }}</span
-            >%
+            <span class="small">{{ color.totalPercentage }}</span>%
           </div>
           <div>
-            <span :class="color.name + ' small'">{{ color.percentage }}</span
-            >% vinn
+            <span :class="color.name + ' small'">{{ color.percentage }}</span>% vinn
           </div>
         </div>
       </div>

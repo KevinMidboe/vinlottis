@@ -1,8 +1,11 @@
 {
   "author": "Kasper Rynning-Tønnesen og Kevin Midbøe",
   "name": "Vinlotteri Knowit",
+  "description": "Knowits ukentlige vinlotteri-statistikk-side.",
   "short_name": "Vinlottis",
-  "start_url": "/#/",
+  "start_url": "/",
+  "dir": "ltr",
+  "lang": "nb-NO",
   "icons": [
     {
       "src": "/public/assets/images/android-chrome-144x144.png",

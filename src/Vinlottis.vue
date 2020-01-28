@@ -16,6 +16,18 @@ export default {
   },
   mounted() {
     console.log("SNEAKY PETE!");
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/service-worker.js")
+        .then(serviceWorker => {
+          console.log(
+            "Arbeids arbeideren din er installert. Du kan nå gå offline frem til neste trekning."
+          );
+        })
+        .catch(error => {
+          console.error("Arbeids arbeideren klarer ikke arbeide.", error);
+        });
+    }
   },
   computed: {},
 
