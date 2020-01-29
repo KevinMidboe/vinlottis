@@ -4,11 +4,11 @@
     <div class="bought-container">
       <div
         v-for="color in colors"
-        :class="color.name + '-container inner-bought-container'"
+        :class="color.name + '-container ' + color.name + '-ballot inner-bought-container ballot-element'"
         :key="color.name"
       >
         <div class="number-container">
-          <span :class="color.name + ' bought-number-span'">
+          <span class="color-total bought-number-span">
             {{
             color.total
             }}
@@ -16,22 +16,19 @@
           <span>kjøpte</span>
         </div>
         <div class="inner-text-container">
-          <div>
-            {{ color.win }} vinn -
-            <span class="small">{{ color.totalPercentage }}</span>%
-          </div>
-          <div>
-            <span :class="color.name + ' small'">{{ color.percentage }}</span>% vinn
-          </div>
+          <div>{{ color.win }} vinn</div>
+          <div>{{ color.totalPercentage }}% vinn</div>
         </div>
       </div>
 
-      <div class="total-container inner-bought-container">
-        <div>
+      <div class="inner-bought-container total-ballots">
+        <div class="total-container">
           Totalt&nbsp;
-          <span class="total">{{ total }}</span> kjøpt
+          <div>
+            <span class="total">{{ total }}</span> kjøpte
+          </div>
+          <div>{{ totalWin }} vinn</div>
         </div>
-        <div>{{ totalWin }} vinn</div>
       </div>
     </div>
   </div>
@@ -128,12 +125,34 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+}
 
-  @include mobile {
-    flex-direction: row;
-    justify-content: unset;
-    align-items: center;
+.ballot-element {
+  width: 140px;
+  height: 150px;
+  margin: 20px 0;
+  -webkit-mask-image: url(/../../public/assets/images/lodd.svg);
+  background-repeat: no-repeat;
+  mask-image: url(/../../public/assets/images/lodd.svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  color: #333333;
+
+  &.green-ballot {
+    background-color: $light-green;
+  }
+
+  &.blue-ballot {
+    background-color: $light-blue;
+  }
+
+  &.yellow-ballot {
+    background-color: $light-yellow;
+  }
+
+  &.red-ballot {
+    background-color: $light-red;
   }
 }
 
@@ -148,18 +167,27 @@ export default {
 }
 
 .inner-text-container {
-  padding-left: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   // TODO fix styling for displaying in columns
   @include mobile {
-    margin-top: auto;
-    padding-bottom: 5px;
-    display: flex;
-
     & div {
       padding: 0 5px;
     }
   }
+}
+
+.total-ballots {
+  width: 150px;
+  height: 150px;
+  margin: 20px 0;
+}
+
+.total-container {
+  align-items: flex-start;
 }
 
 @include mobile {
@@ -179,6 +207,7 @@ export default {
 .bought-container {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   width: 100%;
   padding-bottom: 3rem;
   max-width: 1400px;
@@ -191,10 +220,7 @@ export default {
   }
 }
 
-.green,
-.blue,
-.yellow,
-.red,
+.color-total,
 .total {
   font-size: 2rem;
   font-weight: bold;
@@ -206,26 +232,9 @@ export default {
   display: inline-block;
 }
 
-.green {
-  color: $green;
-}
-
-.red {
-  color: $red;
-}
-
-.yellow {
-  color: $yellow;
-}
-
-.blue {
-  color: $blue;
-}
-
 @include mobile {
   .bought-container {
     flex-wrap: wrap;
-    flex-direction: column;
   }
 }
 </style>

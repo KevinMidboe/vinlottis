@@ -1,15 +1,26 @@
 <template>
-  <div class="vipps-container" @click="openVipps">
-    <img src="/public/assets/images/vipps-logo.svg" class="vipps-logo" alt="vipps logo" />
-    <span>
-      kr.
-      <span class="big-money">{{ amount * 10 }},- (10,- pr. lodd)</span>
-    </span>
-    <ing src="/public/assets/images/vipps-qr.png" class="qr-logo" v-if="qrFailed" />
-    <canvas v-if="!qrFailed" ref="canvas" class="qr-logo"></canvas>
-    <span class="phone-number">977 40 427</span>
-    <span class="name">Kasper Rynning-Tønnesen</span>
-    <span class="mark-with">Merk med: Vinlodd/🍾</span>
+  <div>
+    <div class="vipps-container" :class="isMobile ? 'clickable': null" @click="openVipps">
+      <img src="/public/assets/images/vipps-logo.svg" class="vipps-logo" alt="vipps logo" />
+      <span v-if="amount * 10 > 10">
+        kr.
+        <span class="big-money">{{ amount * 10 }},-</span>
+        (10,- pr. lodd)
+      </span>
+      <span v-if="amount * 10 == 10">
+        kr.
+        <span class="big-money">{{ amount * 10 }},-</span>
+        pr. lodd
+      </span>
+      <ing src="/public/assets/images/vipps-qr.png" class="qr-logo" v-if="qrFailed" />
+      <canvas v-if="!qrFailed" ref="canvas" class="qr-logo"></canvas>
+      <span class="phone-number">977 40 427</span>
+      <span class="name">Kasper Rynning-Tønnesen</span>
+      <span class="mark-with">Merk med: Vinlodd/🍾</span>
+    </div>
+    <p class="click-to-open-text" v-if="isMobile">
+      <i>Du kan også klikke på QR-koden for å åpne i Vipps</i>
+    </p>
   </div>
 </template>
 
@@ -31,7 +42,6 @@ export default {
   },
   watch: {
     amount: function(price) {
-      console.log("price is updated", price);
       this.calculateQr();
     }
   },
@@ -39,6 +49,9 @@ export default {
     this.calculateQr();
   },
   computed: {
+    isMobile: function() {
+      return this.isMobileFunction();
+    },
     price: function() {
       return this.amount * 1000;
     },
@@ -85,7 +98,25 @@ export default {
       context.fillText("🍾", centerX, centerY);
     },
     openVipps: function() {
+      if (!this.isMobileFunction()) {
+        return;
+      }
       window.location.assign(this.vippsUrlBasedOnUserAgent);
+    },
+    isMobileFunction: function() {
+      if (
+        navigator.userAgent.match(/Android/i) ||
+        navigator.userAgent.match(/webOS/i) ||
+        navigator.userAgent.match(/iPhone/i) ||
+        navigator.userAgent.match(/iPad/i) ||
+        navigator.userAgent.match(/iPod/i) ||
+        navigator.userAgent.match(/BlackBerry/i) ||
+        navigator.userAgent.match(/Windows Phone/i)
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 };
@@ -96,9 +127,6 @@ export default {
 @import "../styles/media-queries.scss";
 .vipps-container {
   font-family: Arial;
-}
-
-.vipps-container {
   border-radius: 10px;
   background-color: #ff5b23;
   display: flex;
@@ -108,6 +136,9 @@ export default {
   padding: 25px;
   width: 250px;
   margin: auto 0;
+}
+
+.clickable {
   cursor: pointer;
 }
 
@@ -143,6 +174,14 @@ export default {
 @include mobile {
   .vipps-container {
     margin-left: 0px;
+    margin: auto;
+  }
+
+  .click-to-open-text {
+    width: 65%;
+    padding-top: 10px;
+    margin: auto;
+    text-align: center;
   }
 }
 </style>

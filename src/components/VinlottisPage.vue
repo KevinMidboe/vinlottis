@@ -15,12 +15,12 @@
           <TotalBought />
           <hr class="bought-and-highscore-separator" />
           <div class="highscore-and-wines">
-            <Highscore />
+            <Highscore class="highscore-container" />
             <Wines class="wines-container" />
           </div>
         </div>
         <div class="vipps-outer-container">
-          <Vipps class="vipps-container" />
+          <Vipps class="vipps-inner-container" />
         </div>
       </div>
     </div>
@@ -86,7 +86,11 @@ export default {
   margin: auto;
   justify-content: space-evenly;
   align-items: center;
-  padding: 0 25px;
+  padding: 0 30px;
+
+  @include mobile {
+    padding: 0 20px;
+  }
 }
 
 .title {
@@ -113,10 +117,27 @@ export default {
   display: flex;
   flex-direction: row;
   padding-top: 1.5rem;
-}
+  justify-content: space-between;
 
-.wines-container {
-  margin-left: 30px;
+  @include mobile {
+    padding: 0 20px;
+  }
+
+  .highscore-container {
+    width: 35%;
+
+    @include mobile {
+      width: 100%;
+    }
+  }
+
+  .wines-container {
+    width: 65%;
+
+    @include mobile {
+      width: 100%;
+    }
+  }
 }
 
 .vipps-outer-container {
@@ -177,10 +198,14 @@ h1 {
   display: inline-block;
 }
 
-.vipps-container {
+.vipps-inner-container {
   margin-top: 15px;
   margin-bottom: 15px;
   margin-left: 30px;
+
+  @include mobile {
+    margin: auto;
+  }
 }
 
 .chart-container {
@@ -188,7 +213,7 @@ h1 {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 99vw;
   max-width: 1400px;
   margin: auto;
   padding: 50px 0;

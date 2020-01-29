@@ -134,13 +134,13 @@ export default {
 
 .chart {
   height: 40vh;
-  max-height: 364px;
+  max-height: 500px;
 
   @include mobile {
     position: relative;
     width: 90vw !important;
     max-height: unset;
-    height: 50vh;
+    height: 30vh;
     margin-bottom: 2rem;
   }
 }

@@ -7,16 +7,16 @@
           {{ wine.name }} - sett {{ wine.occurences }} ganger,
           {{ wine.rating }} i rating
         </span>
+        <div class="inline-wine-name">
+          <span class="truncate">{{ wine.name }}</span>
+        </div>
+        - {{ wine.occurences }} gang(er)
         <a
           class="wine-link"
           :href="wine.vivinoLink"
           v-if="wine.vivinoLink != '' && wine.vivinoLink != null"
           @click="wineClick(wine)"
-        >
-          <span class="truncate">{{ wine.name }}</span>
-          - {{ wine.rating }} i
-          rating - {{ wine.occurences }} gang(er)
-        </a>
+        >Les mer</a>
       </li>
     </ol>
   </div>
@@ -54,31 +54,52 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../styles/media-queries.scss";
 h3 {
   text-align: left;
 }
 div {
-  margin: 15px 0 0 0;
+  margin: 0;
   font-family: arial;
   display: inline-flex;
   flex-direction: column;
 }
 
-a {
-  text-decoration: none;
-  color: #ff5b23;
-  padding: 2.5px 0;
+ol {
+  padding-left: 1.375rem !important;
+  margin-left: 0;
+  margin: 0 0 1.5em;
+  padding: 0;
+  counter-reset: item;
+  & > li {
+    margin: 0 0 0 -1.25rem;
+    padding: 0;
+    list-style-type: none;
+    counter-increment: item;
+    &:before {
+      display: inline-block;
+      width: 1em;
+      font-weight: bold;
+      text-align: right;
+      content: counter(item) ".";
+    }
+
+    @include mobile {
+      padding: 5px 0;
+    }
+  }
 }
 
-ol {
-  padding-left: 0;
-  margin-left: 0;
+.inline-wine-name {
+  display: inline-flex;
+  padding: 0;
 }
 
 .wine-link {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  color: #333333;
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom: 1px solid #ff5fff;
 }
 
 .truncate {

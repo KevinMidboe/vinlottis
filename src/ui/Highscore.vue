@@ -27,22 +27,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.highscores {
-  padding-right: 50px;
-}
+@import "../styles/media-queries.scss";
 div {
-  margin: 15px 0 0 0;
+  margin: 0;
   font-family: Arial;
   display: inline-flex;
   flex-direction: column;
 }
+
 ol {
   padding-left: 1.375rem !important;
   margin-left: 0;
-
-  li {
+  margin: 0 0 1.5em;
+  padding: 0;
+  counter-reset: item;
+  & > li {
     padding: 2.5px 0;
     width: max-content;
+    margin: 0 0 0 -1.25rem;
+    padding: 0;
+    list-style-type: none;
+    counter-increment: item;
+    &:before {
+      display: inline-block;
+      width: 1em;
+      padding-right: 0.5rem;
+      font-weight: bold;
+      text-align: right;
+      content: counter(item) ".";
+    }
+
+    @include mobile {
+      padding: 5px 0;
+    }
   }
 }
 </style>
