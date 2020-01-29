@@ -85,7 +85,9 @@ export default {
       context.fillText("🍾", centerX, centerY);
     },
     openVipps: function() {
-      window.location.assign(this.vippsUrlBasedOnUserAgent);
+      if (window.innerWidth <= 768) {
+        window.location.assign(this.vippsUrlBasedOnUserAgent);
+      }
     }
   }
 };
@@ -108,7 +110,6 @@ export default {
   padding: 25px;
   width: 250px;
   margin: auto 0;
-  cursor: pointer;
 }
 
 .big-money {
