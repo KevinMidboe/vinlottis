@@ -124,8 +124,6 @@ export default {
   }
 
   .highscore-container {
-    width: 35%;
-
     @include mobile {
       width: 100%;
     }
@@ -223,7 +221,7 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-bottom: 25px;
+  padding-bottom: 20vw;
   border-right: 1px solid #333;
 }
 

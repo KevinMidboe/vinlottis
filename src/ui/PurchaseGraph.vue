@@ -84,6 +84,9 @@ export default {
       data: chartdata,
       options: {
         maintainAspectRatio: false,
+        animation: {
+          duration: 0 // general animation time
+        },
         title: {
           display: true,
           text: "Antall kjøpt",
