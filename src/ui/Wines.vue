@@ -104,9 +104,13 @@ ol {
 
 .truncate {
   display: inline-block;
-  max-width: 250px;
+  max-width: 20vw;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+
+  @include mobile {
+    max-width: calc(75vw - 90px - 62px);
+  }
 }
 </style>
