@@ -30,17 +30,16 @@ self.addEventListener("fetch", event => {
   event.respondWith(
     fetch(event.request)
       .then(response => cache(event.request, response))
-      .catch(() => caches.match(event.request))
+      .catch(function() {
+        return caches.match(event.request);
+      })
   );
 });
 
 function cache(request, response) {
-  if (
-    response.type === "error" ||
-    !(response.url.includes("http:") && response.url.includes("https:")) ||
-    response.url == ""
-  ) {
-    return Promise.resolve(response);
+  //console.log(response.type === "error" || response.type === "opaque", request);
+  if (response.type === "error" || response.type === "opaque") {
+    return response;
   }
 
   return caches.open(CACHE_NAME).then(cache => {
