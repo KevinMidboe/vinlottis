@@ -42,6 +42,7 @@ export default {
   font-weight: 600;
   src: url("/../public/assets/fonts/bold.eot"),
     url("/../public/assets/fonts/bold.woff") format("woff");
+  font-display: swap;
 }
 
 @font-face {
@@ -49,6 +50,7 @@ export default {
   font-weight: 300;
   src: url("/../public/assets/fonts/regular.eot"),
     url("/../public/assets/fonts/regular.woff") format("woff");
+  font-display: swap;
 }
 
 body {
