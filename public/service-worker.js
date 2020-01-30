@@ -18,6 +18,19 @@ self.addEventListener("activate", event => {
         )
       )
   );
+  event.waitUntil(
+    caches
+      .keys()
+      .then(keys => keys.filter(key => key !== CACHE_NAME_API))
+      .then(keys =>
+        Promise.all(
+          keys.map(key => {
+            console.log(`Deleting cache ${key}`);
+            return caches.delete(key);
+          })
+        )
+      )
+  );
 });
 
 self.addEventListener("install", event => {
