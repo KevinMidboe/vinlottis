@@ -1,9 +1,10 @@
-var version = "v1.0";
-var cacheName = "::vinlottis";
-var CACHE_NAME = version + cacheName;
-var CACHE_NAME_API = version + cacheName + "::api";
+var version = "v1.0" + __DATE__;
+var cacheName = "vinlottis";
+var CACHE_NAME = cacheName;
+var CACHE_NAME_API = cacheName + "::api";
 var STATIC_CACHE_URLS = ["/"];
 
+console.log("Nåværende versjon:", version);
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches
@@ -12,7 +13,7 @@ self.addEventListener("activate", event => {
       .then(keys =>
         Promise.all(
           keys.map(key => {
-            console.log(`Deleting cache ${key}`);
+            console.log(`Sletter mellom-lager på nøkkel ${key}`);
             return caches.delete(key);
           })
         )
@@ -25,18 +26,29 @@ self.addEventListener("activate", event => {
       .then(keys =>
         Promise.all(
           keys.map(key => {
-            console.log(`Deleting cache ${key}`);
+            console.log(`Sletter mellom-lager på nøkkel ${key}`);
             return caches.delete(key);
           })
         )
       )
   );
+
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      console.log("Legger til cache", cache);
+      return cache.addAll(STATIC_CACHE_URLS);
+    })
+  );
 });
 
 self.addEventListener("install", event => {
   console.log("Arbeids arbeideren installerer seg.");
+  self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_CACHE_URLS))
+    caches.open(CACHE_NAME).then(cache => {
+      console.log("Legger til cache", cache);
+      return cache.addAll(STATIC_CACHE_URLS);
+    })
   );
 });
 

@@ -81,7 +81,7 @@ app.use("/api/", updateApi);
 app.use("/api/", retrieveApi);
 
 app.use("/service-worker.js", function(req, res) {
-  res.sendFile(path.join(__dirname, "public/service-worker.js"));
+  res.sendFile(path.join(__dirname, "public/sw/serviceWorker.js"));
 });
 
 app.listen(30030);

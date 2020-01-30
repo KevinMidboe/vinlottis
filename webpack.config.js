@@ -9,6 +9,7 @@ if (environment === "development") {
   let prodConfig = require("./config/webpack.config.prod");
 
   prodConfig = merge(prodConfig, require("./config/vinlottis.config.js"));
+  let serviceWorkerConfig = require("./config/service-worker.config.js");
 
-  module.exports = prodConfig;
+  module.exports = [prodConfig, serviceWorkerConfig];
 }

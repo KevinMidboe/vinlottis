@@ -1,6 +1,7 @@
 "use strict";
 
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const path = require("path");
 const webpack = require("webpack");
 const merge = require("webpack-merge");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
@@ -19,7 +20,7 @@ const webpackConfig = merge(commonConfig(false), {
     path: helpers.root("public/dist"),
     publicPath: "/dist/",
     filename: "js/[name].bundle.[hash:7].js"
-    //filename: 'js/[name].bundle.js'
+    //filename: "js/[name].bundle.js"
   },
   optimization: {
     splitChunks: {
@@ -50,6 +51,7 @@ const webpackConfig = merge(commonConfig(false), {
     new webpack.EnvironmentPlugin(environment),
     new MiniCSSExtractPlugin({
       filename: "css/[name].[hash:7].css"
+      //filename: "css/[name].css"
     })
   ]
 });
