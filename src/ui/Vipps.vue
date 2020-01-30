@@ -1,7 +1,15 @@
 <template>
   <div>
-    <div class="vipps-container" :class="isMobile ? 'clickable': null" @click="openVipps">
-      <img src="/public/assets/images/vipps-logo.svg" class="vipps-logo" alt="vipps logo" />
+    <div
+      class="vipps-container"
+      :class="isMobile ? 'clickable' : null"
+      @click="openVipps"
+    >
+      <img
+        src="/public/assets/images/vipps-logo.svg"
+        class="vipps-logo"
+        alt="vipps logo"
+      />
       <span v-if="amount * 10 > 10">
         kr.
         <span class="big-money">{{ amount * 10 }},-</span>
@@ -12,11 +20,15 @@
         <span class="big-money">{{ amount * 10 }},-</span>
         pr. lodd
       </span>
-      <ing src="/public/assets/images/vipps-qr.png" class="qr-logo" v-if="qrFailed" />
+      <ing
+        src="/public/assets/images/vipps-qr.png"
+        class="qr-logo"
+        v-if="qrFailed"
+      />
       <canvas v-if="!qrFailed" ref="canvas" class="qr-logo"></canvas>
-      <span class="phone-number">977 40 427</span>
-      <span class="name">Kasper Rynning-Tønnesen</span>
-      <span class="mark-with">Merk med: Vinlodd/🍾</span>
+      <span class="phone-number">{{ phone }}</span>
+      <span class="name">{{ name }}</span>
+      <span class="mark-with">Merk med: {{ message }}</span>
     </div>
     <p class="click-to-open-text" v-if="isMobile">
       <i>Du kan også klikke på QR-koden for å åpne i Vipps</i>
@@ -37,7 +49,10 @@ export default {
   data() {
     return {
       qrImage: null,
-      qrFailed: false
+      qrFailed: false,
+      phone: __PHONE__,
+      name: __NAME__,
+      message: __MESSAGE__
     };
   },
   watch: {
@@ -53,17 +68,27 @@ export default {
       return this.isMobileFunction();
     },
     price: function() {
-      return this.amount * 1000;
+      return this.amount * (__PRICE * 100);
     },
     vippsUrlBasedOnUserAgent: function() {
+      console.log(this.phone, __PHONE__);
       if (navigator.userAgent.includes("iPhone")) {
         return (
-          "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾&a=" +
+          "https://qr.vipps.no/28/2/01/031/47" +
+          this.phone +
+          "?v=1&m=" +
+          this.message +
+          "&a=" +
           this.price
         );
       }
 
-      return "https://qr.vipps.no/28/2/01/031/4797740427?v=1&m=Vinlotteri%20🍾";
+      return (
+        "https://qr.vipps.no/28/2/01/031/47" +
+        this.phone +
+        "?v=1&m=" +
+        this.message
+      );
     }
   },
   methods: {

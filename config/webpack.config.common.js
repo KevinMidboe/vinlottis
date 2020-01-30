@@ -1,5 +1,7 @@
 "use strict";
 
+const env = require("./env/lottery.config.js");
+const webpack = require("webpack");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const HtmlPlugin = require("html-webpack-plugin");
@@ -68,7 +70,17 @@ const webpackConfig = function(isDev) {
         }
       ]
     },
-    plugins: [new VueLoaderPlugin()]
+    plugins: [
+      new VueLoaderPlugin(),
+      new webpack.DefinePlugin({
+        __NAME__: JSON.stringify(env.name),
+        __PHONE__: JSON.stringify(env.phone),
+        __PRICE__: env.price,
+        __MESSAGE__: JSON.stringify(env.message),
+        __DATE__: env.date,
+        __HOURS__: env.hours
+      })
+    ]
   };
 };
 

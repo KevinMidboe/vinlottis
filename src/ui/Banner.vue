@@ -1,7 +1,7 @@
 <template>
   <router-link to="/" class="link">
     <div class="top-banner">
-      <img src="/public/assets/images/knowit.svg" alt="knowit logo"/>
+      <img src="/public/assets/images/knowit.svg" alt="knowit logo" />
       <div class="clock">
         <h2 cv-if="distance > 0">
           <span v-if="days > 0">{{ pad(days) }}</span
@@ -57,13 +57,13 @@ export default {
     },
     initialize: function() {
       let d = new Date();
-      let dayOfLottery = 5;
+      let dayOfLottery = __DATE__;
       let dayDifference = (dayOfLottery + 7 - d.getDay()) % 7;
       if (dayDifference == 0) {
         dayDifference = 7;
       }
       let nextDayOfLottery = new Date(d.setDate(d.getDate() + dayDifference));
-      nextDayOfLottery = new Date(nextDayOfLottery.setHours(15));
+      nextDayOfLottery = new Date(nextDayOfLottery.setHours(__HOURS__));
       nextDayOfLottery = new Date(nextDayOfLottery.setMinutes(0));
       nextDayOfLottery = new Date(nextDayOfLottery.setSeconds(0));
       this.nextLottery = nextDayOfLottery;
