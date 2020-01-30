@@ -16,7 +16,8 @@
           :href="wine.vivinoLink"
           v-if="wine.vivinoLink != '' && wine.vivinoLink != null"
           @click="wineClick(wine)"
-        >Les mer</a>
+          >Les mer</a
+        >
       </li>
     </ol>
   </div>
@@ -104,13 +105,17 @@ ol {
 
 .truncate {
   display: inline-block;
-  max-width: 20vw;
+  max-width: 350px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 
+  &:hover {
+    max-width: initial;
+  }
+
   @include mobile {
-    max-width: calc(75vw - 90px - 62px);
+    max-width: calc(75vw - 177px);
   }
 }
 </style>

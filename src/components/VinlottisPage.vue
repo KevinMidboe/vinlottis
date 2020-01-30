@@ -89,7 +89,7 @@ export default {
   padding: 0 30px;
 
   @include mobile {
-    padding: 0 20px;
+    padding: 0;
   }
 }
 
@@ -101,7 +101,8 @@ export default {
   width: 75%;
 
   @include mobile {
-    width: 100%;
+    width: calc(100% - 20px);
+    padding: 0;
   }
 }
 
