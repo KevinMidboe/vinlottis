@@ -19,35 +19,43 @@ export default {
       _response = await fetch("/api/purchase/statistics");
     }
     let response = await _response.json();
-    let labels = [""];
+    let labels = [];
     let blue = {
       label: "Blå",
       borderColor: "#57d2fb",
       backgroundColor: "#d4f2fe",
       borderWidth: 2,
-      data: [0]
+      data: []
     };
     let yellow = {
       label: "Gul",
       borderColor: "#ffde5d",
       backgroundColor: "#fff6d6",
       borderWidth: 2,
-      data: [0]
+      data: []
     };
     let red = {
       label: "Rød",
       borderColor: "#ef5878",
       backgroundColor: "#fbd7de",
       borderWidth: 2,
-      data: [0]
+      data: []
     };
     let green = {
       label: "Grønn",
       borderColor: "#10e783",
       backgroundColor: "#c8f9df",
       borderWidth: 2,
-      data: [0]
+      data: []
     };
+
+    if (response.length == 1) {
+      labels.push("");
+      blue.data.push(0);
+      yellow.data.push(0);
+      red.data.push(0);
+      green.data.push(0);
+    }
 
     let highestNumber = 0;
 
