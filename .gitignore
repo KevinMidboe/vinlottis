@@ -2,6 +2,7 @@
 
 public/index.html
 public/sw/
+config/env/lottery.config.js
 
 # Logs
 logs
