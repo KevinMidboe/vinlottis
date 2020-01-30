@@ -1,6 +1,7 @@
 var version = "v1.0";
 var cacheName = "::vinlottis";
 var CACHE_NAME = version + cacheName;
+var CACHE_NAME_API = version + cacheName + "::api";
 var STATIC_CACHE_URLS = ["/"];
 
 self.addEventListener("activate", event => {
