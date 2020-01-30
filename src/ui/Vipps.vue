@@ -71,7 +71,6 @@ export default {
       return this.amount * (__PRICE * 100);
     },
     vippsUrlBasedOnUserAgent: function() {
-      console.log(this.phone, __PHONE__);
       if (navigator.userAgent.includes("iPhone")) {
         return (
           "https://qr.vipps.no/28/2/01/031/47" +
