@@ -4,8 +4,8 @@
       <img src="/public/assets/images/knowit.svg" alt="knowit logo" />
       <div class="clock">
         <h2 cv-if="distance > 0">
-          <span v-if="days > 0">{{ pad(days) }}</span
-          >: <span>{{ pad(hours) }}</span
+          <span v-if="days > 0">{{ pad(days) }}:</span>
+          <span>{{ pad(hours) }}</span
           >: <span>{{ pad(minutes) }}</span
           >:
           <span>{{ pad(seconds) }}</span>
