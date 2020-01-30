@@ -74,7 +74,7 @@ export default {
       if (navigator.userAgent.includes("iPhone")) {
         return (
           "https://qr.vipps.no/28/2/01/031/47" +
-          this.phone +
+          this.phone.replace(/ /g, "") +
           "?v=1&m=" +
           this.message +
           "&a=" +
@@ -84,7 +84,7 @@ export default {
 
       return (
         "https://qr.vipps.no/28/2/01/031/47" +
-        this.phone +
+        this.phone.replace(/ /g, "") +
         "?v=1&m=" +
         this.message
       );
