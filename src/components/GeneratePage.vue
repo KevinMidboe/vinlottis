@@ -226,7 +226,7 @@ p {
 
 .color-count-container {
   margin: auto;
-  width: 20vw;
+  width: 300px;
   justify-content: space-around;
   align-items: center;
   display: flex;
