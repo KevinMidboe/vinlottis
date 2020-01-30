@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <h1 class="title" @click="startCountdown">Loddgenerator</h1>
-    <p class="subtext">Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'</p>
+    <p class="subtext">
+      Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'
+    </p>
     <div class="input-line">
       <label for="redCheckbox">
         <input type="checkbox" id="redCheckbox" v-model="redCheckbox" />
@@ -52,10 +54,10 @@
     </div>
 
     <div class="color-count-container" v-if="generated && !generating">
-      <span>Rød: {{red}}</span>
-      <span>Blå: {{blue}}</span>
-      <span>Gul: {{yellow}}</span>
-      <span>Grønn: {{green}}</span>
+      <span>Rød: {{ red }}</span>
+      <span>Blå: {{ blue }}</span>
+      <span>Gul: {{ yellow }}</span>
+      <span>Grønn: {{ green }}</span>
     </div>
 
     <Vipps class="vipps" :amount="numberOfBallots" />
@@ -230,6 +232,10 @@ p {
   display: flex;
   font-family: Arial;
   margin-top: 35px;
+
+  @include mobile {
+    width: 80vw;
+  }
 }
 
 .input-line {
