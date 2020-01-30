@@ -27,14 +27,37 @@ self.addEventListener("install", event => {
 });
 
 self.addEventListener("fetch", event => {
-  event.respondWith(
-    fetch(event.request)
-      .then(response => cache(event.request, response))
-      .catch(function() {
-        return caches.match(event.request);
-      })
-  );
+  if (event.request.url.includes("/api/")) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => cache(event.request, response))
+        .catch(function() {
+          return caches.match(event.request);
+        })
+    );
+  } else {
+    event.respondWith(
+      caches
+        .match(event.request) // check if the request has already been cached
+        .then(cached => cached || fetch(event.request)) // otherwise request network
+        .then(
+          response =>
+            staticCache(event.request, response) // put response in cache
+              .then(() => response) // resolve promise with the network response
+        )
+    );
+  }
 });
+
+function staticCache(request, response) {
+  if (response.type === "error" || response.type === "opaque") {
+    return Promise.resolve(); // do not put in cache network errors
+  }
+
+  return caches
+    .open(CACHE_NAME)
+    .then(cache => cache.put(request, response.clone()));
+}
 
 function cache(request, response) {
   //console.log(response.type === "error" || response.type === "opaque", request);
@@ -42,7 +65,7 @@ function cache(request, response) {
     return response;
   }
 
-  return caches.open(CACHE_NAME).then(cache => {
+  return caches.open(CACHE_NAME_API).then(cache => {
     cache.put(request, response.clone());
     return response;
   });
