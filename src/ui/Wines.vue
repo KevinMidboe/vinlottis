@@ -111,11 +111,23 @@ ol {
   overflow: hidden;
 
   &:hover {
-    max-width: initial;
+    line-break: unset;
+    word-break: break-word;
+    white-space: normal;
+    overflow: auto;
+    text-overflow: unset;
   }
 
   @include mobile {
     max-width: calc(75vw - 177px);
+
+    &:focus {
+      line-break: unset;
+      word-break: break-word;
+      white-space: normal;
+      overflow: auto;
+      text-overflow: unset;
+    }
   }
 }
 </style>
