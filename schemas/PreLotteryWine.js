@@ -4,7 +4,9 @@ const Schema = mongoose.Schema;
 const PreLotteryWine = new Schema({
   name: String,
   vivinoLink: String,
-  rating: Number
+  rating: Number,
+  id: String,
+  image: String
 });
 
 module.exports = mongoose.model("PreLotteryWine", PreLotteryWine);

@@ -27,37 +27,44 @@
       Vinnere
       <div v-for="winner in winners" class="winner-element">
         <hr />
-        <div class="label-div">
-          <input type="text" v-model="winner.name" placeholder="Navn" />
-        </div>
-        <div class="label-div">
-          <select v-model="winner.color">
-            <option value="blue">Blå</option>
-            <option value="red">Rød</option>
-            <option value="green">Grønn</option>
-            <option value="yellow">Gul</option>
-          </select>
-        </div>
-        <div class="label-div">
-          <input
-            type="text"
-            v-model="winner.wine.name"
-            placeholder="Vin-navn"
-          />
-        </div>
-        <div class="label-div">
-          <input
-            type="text"
-            v-model="winner.wine.vivinoLink"
-            placeholder="Vivino-link"
-          />
-        </div>
-        <div class="label-div">
-          <input
-            type="text"
-            v-model="winner.wine.rating"
-            placeholder="Rating"
-          />
+        <div class="winnner-container-inner">
+          <div class="input-container">
+            <div class="label-div">
+              <input type="text" v-model="winner.name" placeholder="Navn" />
+            </div>
+            <div class="label-div">
+              <select v-model="winner.color">
+                <option value="blue">Blå</option>
+                <option value="red">Rød</option>
+                <option value="green">Grønn</option>
+                <option value="yellow">Gul</option>
+              </select>
+            </div>
+            <div class="label-div">
+              <input
+                type="text"
+                v-model="winner.wine.name"
+                placeholder="Vin-navn"
+              />
+            </div>
+            <div class="label-div">
+              <input
+                type="text"
+                v-model="winner.wine.vivinoLink"
+                placeholder="Vivino-link"
+              />
+            </div>
+            <div class="label-div">
+              <input
+                type="text"
+                v-model="winner.wine.rating"
+                placeholder="Rating"
+              />
+            </div>
+          </div>
+          <div class="wine-image">
+            <img :src="winner.wine.image" />
+          </div>
         </div>
         <hr />
       </div>
@@ -79,6 +86,12 @@
             v-model="wine.vivinoLink"
             placeholder="Vivino-link"
           />
+        </div>
+        <div class="label-div">
+          <input type="text" v-model="wine.id" placeholder="Id" />
+        </div>
+        <div class="label-div">
+          <input type="text" v-model="wine.image" placeholder="Bilde" />
         </div>
         <div class="label-div">
           <input type="text" v-model="wine.rating" placeholder="Rating" />
@@ -112,7 +125,9 @@ export default {
         wine: {
           name: wine.name,
           vivinoLink: wine.vivinoLink,
-          rating: wine.rating
+          rating: wine.rating,
+          image: wine.image,
+          id: wine.id
         }
       });
     }
@@ -122,7 +137,9 @@ export default {
       this.wines.push({
         name: "",
         vivinoLink: "",
-        rating: ""
+        rating: "",
+        id: "",
+        image: ""
       });
     },
     sendWines: async function() {
@@ -235,8 +252,6 @@ input {
   font-size: 1.5rem;
   width: 100%;
 }
-.label-div {
-}
 hr {
   width: 50vw;
 }
@@ -295,6 +310,24 @@ hr {
   align-items: center;
 
   font-size: 1.22rem;
+}
+
+.input-container {
+  & .label-div {
+    width: 100%;
+  }
+}
+
+.winnner-container-inner {
+  display: flex;
+}
+
+.wine-image {
+  padding-left: 30px;
+
+  & img {
+    height: 400px;
+  }
 }
 
 input,

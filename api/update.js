@@ -22,15 +22,15 @@ router.route("/log/wines").post(async (req, res) => {
     res.send(false);
     return;
   }
-  console.log(req.body);
   const wines = req.body;
-  console.log(wines);
   for (let i = 0; i < wines.length; i++) {
     let wine = wines[i];
     let newWonWine = new PreLotteryWine({
       name: wine.name,
       vivinoLink: wine.vivinoLink,
-      rating: wine.rating
+      rating: wine.rating,
+      image: wine.image,
+      id: wine.id
     });
     await newWonWine.save();
   }
