@@ -11,6 +11,9 @@ mongoose.connect("mongodb://localhost:27017/vinlottis", {
 
 const config = require(path.join(__dirname + "/../config/env/push.config"));
 const Subscription = require(path.join(__dirname + "/../schemas/Subscription"));
+const lotteryConfig = require(path.join(
+  __dirname + "/../config/env/lottery.config"
+));
 
 const vapidKeys = {
   publicKey: config.publicKey,
@@ -52,13 +55,16 @@ const saveToDatabase = async subscription => {
   }
 };
 
-schedule.scheduleJob("0 50 14 * * 5", async () => {
-  let subs = await Subscription.find();
-  for (let i = 0; i < subs.length; i++) {
-    let subscription = subs[i]; //get subscription from your databse here.
-    const message = "Husk vinlotteriet, det begynner om 10 minutter!";
-    sendNotification(subscription, message);
+schedule.scheduleJob(
+  `0 50 ${lotteryConfig.hours - 1} * * ${lotteryConfig.date}`,
+  async () => {
+    let subs = await Subscription.find();
+    for (let i = 0; i < subs.length; i++) {
+      let subscription = subs[i]; //get subscription from your databse here.
+      const message = "Husk vinlotteriet, det begynner om 10 minutter!";
+      sendNotification(subscription, message);
+    }
   }
-});
+);
 
 module.exports = router;
