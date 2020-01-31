@@ -18,6 +18,15 @@ self.addEventListener("install", event => {
 });
 
 self.addEventListener("fetch", event => {
+  if (
+    event.request.url.includes("/login") ||
+    event.request.url.includes("/update") ||
+    event.request.url.includes("/register") ||
+    event.request.method == "POST"
+  ) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
   if (event.request.url.includes("/api/")) {
     event.respondWith(
       fetch(event.request)
