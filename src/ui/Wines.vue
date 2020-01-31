@@ -1,6 +1,6 @@
 <template>
   <div v-if="wines.length > 0">
-    <h3>Topp viner</h3>
+    <h3>Topp 5 viner</h3>
     <ol>
       <li v-for="wine in wines">
         <span v-if="wine.vivinoLink == '' || wine.vivinoLink == null">
@@ -36,7 +36,18 @@ export default {
     response.sort();
     response = response
       .filter(wine => wine.name != null && wine.name != "")
-      .sort((a, b) => (a.rating > b.rating ? -1 : 1));
+      .sort(
+        this.predicate(
+          {
+            name: "occurences",
+            reverse: true
+          },
+          {
+            name: "rating",
+            reverse: true
+          }
+        )
+      );
     this.wines = response.slice(0, 5);
   },
   methods: {
@@ -49,6 +60,67 @@ export default {
         eventAction: "click",
         eventValue: `${wine.name} - ${wine.vivinoLink}`
       });
+    },
+
+    predicate: function() {
+      var fields = [],
+        n_fields = arguments.length,
+        field,
+        name,
+        cmp;
+
+      var default_cmp = function(a, b) {
+          if (a == undefined) a = 0;
+          if (b == undefined) b = 0;
+          if (a === b) return 0;
+          return a < b ? -1 : 1;
+        },
+        getCmpFunc = function(primer, reverse) {
+          var dfc = default_cmp,
+            // closer in scope
+            cmp = default_cmp;
+          if (primer) {
+            cmp = function(a, b) {
+              return dfc(primer(a), primer(b));
+            };
+          }
+          if (reverse) {
+            return function(a, b) {
+              return -1 * cmp(a, b);
+            };
+          }
+          return cmp;
+        };
+
+      // preprocess sorting options
+      for (var i = 0; i < n_fields; i++) {
+        field = arguments[i];
+        if (typeof field === "string") {
+          name = field;
+          cmp = default_cmp;
+        } else {
+          name = field.name;
+          cmp = getCmpFunc(field.primer, field.reverse);
+        }
+        fields.push({
+          name: name,
+          cmp: cmp
+        });
+      }
+
+      // final comparison function
+      return function(A, B) {
+        var name, result;
+        for (var i = 0; i < n_fields; i++) {
+          result = 0;
+          field = fields[i];
+          name = field.name;
+
+          result = field.cmp(A[name], B[name]);
+          if (result !== 0) break;
+        }
+        return result;
+      };
     }
   }
 };

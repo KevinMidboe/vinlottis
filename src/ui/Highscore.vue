@@ -1,8 +1,10 @@
 <template>
   <div class="highscores" v-if="highscore.length > 0">
-    <h3>Highscore</h3>
+    <h3>Topp 5 vinnere</h3>
     <ol>
-      <li v-for="person in highscore">{{ person.name }} - {{ person.wins.length }}</li>
+      <li v-for="person in highscore">
+        {{ person.name }} - {{ person.wins.length }}
+      </li>
     </ol>
   </div>
 </template>
