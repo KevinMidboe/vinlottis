@@ -10,7 +10,7 @@
         <PurchaseGraph class="purchase" />
         <WinGraph class="win" />
       </div>
-      <router-link to="dagens" class="generate-link">
+      <router-link to="dagens" class="generate-link" v-if="todayExists">
         Lurer du på dagens fangst?
         <span class="subtext generator-link">Se her</span>
       </router-link>
@@ -56,10 +56,20 @@ export default {
   },
   data() {
     return {
-      hardStart: false
+      hardStart: false,
+      todayExists: false
     };
   },
   mounted() {
+    fetch("/api/wines/prelottery")
+      .then(wines => wines.json())
+      .then(wines => {
+        if (wines.length > 0) {
+          this.todayExists = true;
+        } else {
+          this.todayExists = false;
+        }
+      });
     if (window.location.hostname == "localhost") {
       return;
     }
