@@ -86,7 +86,9 @@ export default {
         (this.distance % (1000 * 60 * 60)) / (1000 * 60)
       );
       this.seconds = Math.floor((this.distance % (1000 * 60)) / 1000);
-
+      if (this.days == 7) {
+        this.days = 0;
+      }
       if (this.distance < 0) {
         clearTimeout(this.interval);
         return;

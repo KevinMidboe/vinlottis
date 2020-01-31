@@ -236,17 +236,14 @@ input {
   width: 100%;
 }
 .label-div {
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-  padding-bottom: 20px;
 }
 hr {
   width: 50vw;
 }
 
 .winner-container,
-.wine-container {
+.wine-container,
+.wines-container {
   width: 50vw;
   display: flex;
   flex-direction: column;
@@ -266,9 +263,74 @@ hr {
   justify-content: center;
 }
 
+.color-container {
+  width: 50%;
+  margin: auto;
+}
+
+.wines-container {
+  text-align: center;
+}
+
+.label-div {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding-bottom: 20px;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  @include mobile {
+    margin-top: 1.2rem;
+  }
+}
+
+.label-div label {
+  padding: 0 6px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 1.22rem;
+}
+
+input,
 button {
   font-size: 1.5rem;
-  width: 40%;
+}
+
+select {
+  width: 100%;
+  font-size: 1.5rem;
+}
+
+input {
+  font-size: 1.5rem;
+  padding: 8px;
+  margin: 0;
+  height: 3rem;
+  max-height: 3rem;
+  border: 1px solid rgba(#333333, 0.3);
+}
+
+button {
+  border: none;
+  background: #b7debd;
+  color: #333;
+  padding: 10px 30px;
+  margin: 0;
+  width: fit-content;
+  font-size: 1.3rem;
+  display: block;
+  height: calc(3rem + 18px);
+  display: inline-flex;
+  max-height: calc(3rem + 18px);
+  width: 400px;
   margin: 10px;
+  // disable-dbl-tap-zoom
+  touch-action: manipulation;
 }
 </style>
