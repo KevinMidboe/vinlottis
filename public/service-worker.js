@@ -11,9 +11,13 @@ self.addEventListener("activate", event => {
       const applicationServerKey = urlB64ToUint8Array(__PUBLICKEY__);
       const options = { applicationServerKey, userVisibleOnly: true };
       self.registration.pushManager.subscribe(options).then(subscription =>
-        saveSubscription(subscription).then(() => {
-          resolve();
-        })
+        saveSubscription(subscription)
+          .then(() => {
+            resolve();
+          })
+          .catch(() => {
+            resolve();
+          })
       );
     })
   );
