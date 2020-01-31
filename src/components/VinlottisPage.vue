@@ -10,6 +10,10 @@
         <PurchaseGraph class="purchase" />
         <WinGraph class="win" />
       </div>
+      <router-link to="dagens" class="generate-link">
+        Lurer du på dagens fangst?
+        <span class="subtext generator-link">Se her</span>
+      </router-link>
       <div class="bottom-container">
         <div class="left-bottom">
           <TotalBought />

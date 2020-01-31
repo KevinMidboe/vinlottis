@@ -1,5 +1,6 @@
 import VinlottisPage from "@/components/VinlottisPage";
-import GeneratePage from "@/components/GeneratePage"; 
+import GeneratePage from "@/components/GeneratePage";
+import TodaysPage from "@/components/TodaysPage";
 
 const routes = [
   {
@@ -9,6 +10,10 @@ const routes = [
   {
     path: "/generate",
     component: GeneratePage
+  },
+  {
+    path: "/dagens",
+    component: TodaysPage
   },
   {
     path: "/login",

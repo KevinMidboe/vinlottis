@@ -6,14 +6,14 @@ var STATIC_CACHE_URLS = ["/"];
 
 console.log("Nåværende versjon:", version);
 self.addEventListener("activate", event => {
+  event.waitUntil(removeCache(CACHE_NAME));
+  event.waitUntil(removeCache(CACHE_NAME_API));
   event.waitUntil(addCache(CACHE_NAME, STATIC_CACHE_URLS));
 });
 
 self.addEventListener("install", event => {
   console.log("Arbeids arbeideren installerer seg.");
   self.skipWaiting();
-  event.waitUntil(removeCache(CACHE_NAME));
-  event.waitUntil(removeCache(CACHE_NAME_API));
   event.waitUntil(addCache(CACHE_NAME, STATIC_CACHE_URLS));
 });
 
