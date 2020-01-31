@@ -68,7 +68,7 @@ export default {
       return this.isMobileFunction();
     },
     price: function() {
-      return this.amount * (__PRICE * 100);
+      return this.amount * (__PRICE__ * 100);
     },
     vippsUrlBasedOnUserAgent: function() {
       if (navigator.userAgent.includes("iPhone")) {
