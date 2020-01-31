@@ -242,7 +242,7 @@ export default {
 h1 {
   width: 100vw;
   text-align: center;
-  font-family: knowit;
+  font-family: knowit, Arial;
 }
 div {
   font-size: 2rem;

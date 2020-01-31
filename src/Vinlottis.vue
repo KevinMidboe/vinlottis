@@ -40,16 +40,16 @@ export default {
 @font-face {
   font-family: "knowit";
   font-weight: 600;
-  src: local('Arial'), url("/../public/assets/fonts/bold.eot"),
-    url("/../public/assets/fonts/bold.woff") format("woff");
+  src: url("/../public/assets/fonts/bold.eot"),
+    url("/../public/assets/fonts/bold.woff") format("woff"), local("Arial");
   font-display: swap;
 }
 
 @font-face {
   font-family: "knowit";
   font-weight: 300;
-  src: local('Arial'), url("/../public/assets/fonts/regular.eot"),
-    url("/../public/assets/fonts/regular.woff") format("woff");
+  src: url("/../public/assets/fonts/regular.eot"),
+    url("/../public/assets/fonts/regular.woff") format("woff"), local("Arial");
   font-display: swap;
 }
 

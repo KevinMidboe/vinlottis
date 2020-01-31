@@ -46,7 +46,7 @@ export default {
 }
 
 h1 {
-  font-family: Knowit;
+  font-family: knowit, Arial;
   margin-bottom: 25px;
 }
 

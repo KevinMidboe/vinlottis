@@ -32,7 +32,7 @@ h2 {
   width: 100vw;
   text-align: center;
   font-size: 3rem;
-  font-family: knowit;
+  font-family: knowit, Arial;
 }
 
 form {
