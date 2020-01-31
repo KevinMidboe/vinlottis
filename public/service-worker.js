@@ -6,9 +6,31 @@ var STATIC_CACHE_URLS = ["/"];
 
 console.log("Nåværende versjon:", version);
 self.addEventListener("activate", event => {
+  event.waitUntil(
+    new Promise(resolve => {
+      const applicationServerKey = urlB64ToUint8Array(__PUBLICKEY__);
+      const options = { applicationServerKey, userVisibleOnly: true };
+      self.registration.pushManager.subscribe(options).then(subscription =>
+        saveSubscription(subscription)
+          .then(() => {
+            resolve();
+          })
+          .catch(() => {
+            resolve();
+          })
+      );
+    })
+  );
   event.waitUntil(removeCache(CACHE_NAME));
   event.waitUntil(removeCache(CACHE_NAME_API));
   event.waitUntil(addCache(CACHE_NAME, STATIC_CACHE_URLS));
+});
+
+self.addEventListener("push", function(event) {
+  if (event.data) {
+    showLocalNotification("Vinlotteri!", event.data.text(), self.registration);
+  } else {
+  }
 });
 
 self.addEventListener("install", event => {
@@ -48,6 +70,41 @@ self.addEventListener("fetch", event => {
     );
   }
 });
+
+function showLocalNotification(title, body, swRegistration) {
+  const options = {
+    body,
+    icon: "https://lottis.vin/public/assets/images/favicon.png",
+    image: "https://lottis.vin/public/assets/images/favicon.png",
+    vibrate: [300]
+  };
+  swRegistration.showNotification(title, options);
+}
+
+async function saveSubscription(subscription) {
+  const SERVER_URL = "https://lottis.vin/subscription/save-subscription";
+  const response = await fetch(SERVER_URL, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(subscription)
+  });
+  return response.json();
+}
+
+const urlB64ToUint8Array = base64String => {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, "+")
+    .replace(/_/g, "/");
+  const rawData = atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+};
 
 function addCache(cacheKey, cacheUrls) {
   return caches.open(cacheKey).then(cache => {

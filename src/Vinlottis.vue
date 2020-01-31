@@ -23,6 +23,15 @@ export default {
           console.log(
             "Arbeids arbeideren din er installert. Du kan nå gå offline frem til neste trekning."
           );
+
+          if (!("PushManager" in window)) {
+            throw new Error("No Push API Support!");
+          }
+          window.Notification.requestPermission().then(permission => {
+            if (permission !== "granted") {
+              throw new Error("Permission not granted for Notification");
+            }
+          });
         })
         .catch(error => {
           console.error("Arbeids arbeideren klarer ikke arbeide.", error);
@@ -40,7 +49,7 @@ export default {
 @font-face {
   font-family: "knowit";
   font-weight: 600;
-  src: url("/../public/assets/fonts/bold.eot"),
+  src: url("/../public/assets/fonts/bold.woff"),
     url("/../public/assets/fonts/bold.woff") format("woff"), local("Arial");
   font-display: swap;
 }

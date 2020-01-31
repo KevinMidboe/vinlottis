@@ -6,6 +6,7 @@ const User = require(path.join(__dirname + "/schemas/User"));
 
 const updateApi = require(path.join(__dirname + "/api/update"));
 const retrieveApi = require(path.join(__dirname + "/api/retrieve"));
+const subscriptionApi = require(path.join(__dirname + "/api/subscriptions"));
 const loginApi = require(path.join(__dirname + "/api/login"));
 const bodyParser = require("body-parser");
 
@@ -79,6 +80,7 @@ app.use("/dist", express.static(path.join(__dirname, "public/dist")));
 app.use("/", loginApi);
 app.use("/api/", updateApi);
 app.use("/api/", retrieveApi);
+app.use("/subscription", subscriptionApi);
 
 app.use("/service-worker.js", function(req, res) {
   res.sendFile(path.join(__dirname, "public/sw/serviceWorker.js"));
