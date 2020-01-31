@@ -1,6 +1,6 @@
 <template>
   <div v-if="wines.length > 0">
-    <h3>Topp viner</h3>
+    <h3>Topp 5 viner</h3>
     <ol>
       <li v-for="wine in wines">
         <span v-if="wine.vivinoLink == '' || wine.vivinoLink == null">
