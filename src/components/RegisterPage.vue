@@ -41,21 +41,31 @@
             </div>
             <div class="label-div">
               <div class="color-selector">
-                <button class="blue"
-                        :class="{'active': winner.color == 'blue' }"
-                        @click="updateColorForWinner(winner, 'blue')"></button>
-                <button class="red"
-                        :class="{'active': winner.color == 'red' }"
-                        @click="updateColorForWinner(winner, 'red')"></button>
-                <button class="green"
-                        :class="{'active': winner.color == 'green' }"
-                        @click="updateColorForWinner(winner, 'green')"></button>
-                <button class="yellow"
-                        :class="{'active': winner.color == 'yellow' }"
-                        @click="updateColorForWinner(winner, 'yellow')"></button>
+                <button
+                  class="blue"
+                  :class="{'active': winner.color == 'blue' }"
+                  @click="updateColorForWinner(winner, 'blue')"
+                ></button>
+                <button
+                  class="red"
+                  :class="{'active': winner.color == 'red' }"
+                  @click="updateColorForWinner(winner, 'red')"
+                ></button>
+                <button
+                  class="green"
+                  :class="{'active': winner.color == 'green' }"
+                  @click="updateColorForWinner(winner, 'green')"
+                ></button>
+                <button
+                  class="yellow"
+                  :class="{'active': winner.color == 'yellow' }"
+                  @click="updateColorForWinner(winner, 'yellow')"
+                ></button>
               </div>
 
-              <span class="color-selected">Selected color: {{ winner.color ? winner.color : '(none)' }}</span>
+              <span
+                class="color-selected"
+              >Selected color: {{ winner.color ? winner.color : '(none)' }}</span>
             </div>
             <div class="label-div">
               <input type="text" v-model="winner.wine.name" placeholder="Vin-navn" />
@@ -141,7 +151,7 @@ export default {
       });
     },
     updateColorForWinner(winner, color) {
-      winner.color = winner.color == color ? null : color
+      winner.color = winner.color == color ? null : color;
     },
     sendWines: async function() {
       let _response = await fetch("/api/log/wines", {
@@ -206,7 +216,6 @@ export default {
         parseInt(this.green) +
         parseInt(this.yellow);
       const stolen = sendObject.purchase.bought - parseInt(this.payed) / 10;
-      console.log(sendObject.purchase.bought, this.payed);
       if (isNaN(stolen) || stolen == undefined) {
         alert("Betalt må registreres");
         return;
@@ -351,11 +360,14 @@ hr {
 
     &.green {
       background: #c8f9df;
-    }&.blue {
+    }
+    &.blue {
       background: #d4f2fe;
-    }&.red {
+    }
+    &.red {
       background: #fbd7de;
-    }&.yellow {
+    }
+    &.yellow {
       background: #fff6d6;
     }
   }
