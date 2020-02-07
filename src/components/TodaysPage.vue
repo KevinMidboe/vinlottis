@@ -41,6 +41,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import './src/styles/media-queries';
+
 .wine-image {
   height: 250px;
 }
@@ -50,22 +52,52 @@ h1 {
   margin-bottom: 25px;
 }
 
+.wines-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin: 0 2rem;
+
+  @media (min-width: 1500px) {
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
+  @include mobile {
+    flex-direction: column;
+  }
+}
+
+h3 {
+  max-width: 30vw;
+
+  @include mobile {
+    max-width: 50vw;
+  }
+}
+
 .inner-wine-container {
   display: flex;
   flex-direction: row;
-  justify-content: center;
   margin: auto;
   width: 500px;
   font-family: Arial;
   margin-bottom: 30px;
+
+  @include desktop {
+    justify-content: center;
+  }
 }
 
 .right {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   margin-bottom: 150px;
   margin-left: 50px;
+
+  @include mobile {
+    margin-left: 2rem;
+  }
 }
 
 a,
