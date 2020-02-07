@@ -1,6 +1,7 @@
 import VinlottisPage from "@/components/VinlottisPage";
 import GeneratePage from "@/components/GeneratePage";
 import TodaysPage from "@/components/TodaysPage";
+import AllWinesPage from "@/components/AllWinesPage";
 
 const routes = [
   {
@@ -14,6 +15,10 @@ const routes = [
   {
     path: "/dagens",
     component: TodaysPage
+  },
+  {
+    path: "/viner",
+    component: AllWinesPage
   },
   {
     path: "/login",

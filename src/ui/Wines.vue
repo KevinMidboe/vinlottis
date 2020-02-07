@@ -1,6 +1,8 @@
 <template>
   <div v-if="wines.length > 0">
-    <h3>Topp 5 viner</h3>
+    <h3>
+      <router-link to="viner">Topp 5 viner</router-link>
+    </h3>
     <ol>
       <li v-for="wine in wines">
         <span v-if="wine.vivinoLink == '' || wine.vivinoLink == null">
@@ -16,8 +18,7 @@
           :href="wine.vivinoLink"
           v-if="wine.vivinoLink != '' && wine.vivinoLink != null"
           @click="wineClick(wine)"
-          >Les mer</a
-        >
+        >Les mer</a>
       </li>
     </ol>
   </div>
@@ -130,6 +131,18 @@ export default {
 @import "../styles/media-queries.scss";
 h3 {
   text-align: left;
+
+  & a {
+    text-decoration: none;
+    color: #333333;
+
+    &:focus,
+    &:active,
+    &:visited {
+      text-decoration: none;
+      color: #333333;
+    }
+  }
 }
 div {
   margin: 0;

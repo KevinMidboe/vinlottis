@@ -109,4 +109,46 @@ router.route("/wines/statistics").get(async (req, res) => {
   res.json(wines);
 });
 
+router.route("/wines/statistics/overall").get(async (req, res) => {
+  const highscore = await Highscore.find().populate("wins.wine");
+  let wines = {};
+
+  for (let i = 0; i < highscore.length; i++) {
+    let person = highscore[i];
+    for (let y = 0; y < person.wins.length; y++) {
+      let wine = person.wins[y].wine;
+      let date = person.wins[y].date;
+      let color = person.wins[y].color;
+
+      if (wines[wine._id] == undefined) {
+        wines[wine._id] = {
+          name: wine.name,
+          occurences: wine.occurences,
+          rating: wine.rating,
+          image: wine.image,
+          id: wine.id,
+          _id: wine._id,
+          dates: [date],
+          winners: [person.name],
+          red: 0,
+          blue: 0,
+          green: 0,
+          yellow: 0
+        };
+        wines[wine._id][color] += 1;
+      } else {
+        wines[wine._id].dates.push(date);
+        wines[wine._id].winners.push(person.name);
+        if (wines[wine._id][color] == undefined) {
+          wines[wine._id][color] = 1;
+        } else {
+          wines[wine._id][color] += 1;
+        }
+      }
+    }
+  }
+
+  res.json(Object.values(wines));
+});
+
 module.exports = router;
