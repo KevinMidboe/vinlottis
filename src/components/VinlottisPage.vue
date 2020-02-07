@@ -155,7 +155,7 @@ export default {
 
 .vipps-outer-container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 
   @include desktop {
     margin-left: 20px;
