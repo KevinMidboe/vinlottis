@@ -29,8 +29,11 @@
         <hr />
         <div class="winnner-container-inner">
           <div class="input-container">
+            <div class="wine-image">
+              <img :src="winner.wine.image" />
+            </div>
             <div class="label-div">
-              <input type="text" v-model="winner.name" placeholder="Navn" />
+              <input type="text" v-model="winner.name" placeholder="Navn vinner" />
             </div>
             <div class="label-div">
               <div class="color-selector">
@@ -72,11 +75,7 @@
               />
             </div>
           </div>
-          <div class="wine-image">
-            <img :src="winner.wine.image" />
-          </div>
         </div>
-        <hr />
       </div>
     </div>
     <div class="button-container">
@@ -329,6 +328,7 @@ hr {
 .color-selector {
   .active {
     border: 2px solid black;
+    margin-bottom: 1rem;
   }
 
   button {
@@ -337,7 +337,6 @@ hr {
     padding: 10px 30px;
     margin: 0;
     font-size: 1.3rem;
-    height: calc(3rem + 18px);
     display: inline-flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -346,6 +345,10 @@ hr {
     margin: 10px;
     // disable-dbl-tap-zoom
     touch-action: manipulation;
+
+    @include mobile {
+      margin: 2px;
+    }
 
     &.green {
       background: #c8f9df;
@@ -360,6 +363,8 @@ hr {
 }
 
 .color-selected {
+  margin-bottom: 2rem;
+
   @include mobile {
     display: block;
     width: 100%;
