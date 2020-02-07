@@ -74,6 +74,8 @@ router.route("/log").post(async (req, res) => {
       wonWine = newWonWine;
     } else {
       wonWine.occurences += 1;
+      wonWine.image = currentWinner.wine.image;
+      wonWine.id = currentWinner.wine.id;
       await wonWine.save();
     }
 
