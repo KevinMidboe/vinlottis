@@ -152,10 +152,7 @@ export default {
       });
     },
     updateColorForWinner(winner, color) {
-      console.log('winner', winner)
-      console.log('color', color)
-
-      winner.color = color
+      winner.color = winner.color == color ? null : color
     },
     sendWines: async function() {
       let _response = await fetch("/api/log/wines", {
