@@ -6,11 +6,7 @@
         <a :href="wine.vivinoLink" v-for="wine in wines">
           <div class="inner-wine-container">
             <div class="left">
-              <!-- <img :src="wine.image" class="wine-image" /> -->
-              <img
-                src="https://images.vivino.com/thumbs/Mzt8QNxpSfa4W6Sgf02Ruw_pb_x960.png"
-                class="wine-image"
-              />
+              <img :src="wine.image" class="wine-image" />
             </div>
             <div class="right">
               <h2>{{ wine.name }}</h2>
