@@ -276,6 +276,10 @@ hr {
   align-items: center;
   flex-direction: column;
   justify-content: center;
+
+  button {
+    cursor: pointer;
+  }
 }
 
 .color-container {
