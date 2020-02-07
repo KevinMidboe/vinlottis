@@ -69,12 +69,16 @@ router.route("/log").post(async (req, res) => {
         name: currentWinner.wine.name,
         vivinoLink: currentWinner.wine.vivinoLink,
         rating: currentWinner.wine.rating,
-        occurences: 1
+        occurences: 1,
+        image: currentWinner.wine.image,
+        id: currentWinner.wine.id
       });
       await newWonWine.save();
       wonWine = newWonWine;
     } else {
       wonWine.occurences += 1;
+      wonWine.image = currentWinner.wine.image;
+      wonWine.id = currentWinner.wine.id;
       await wonWine.save();
     }
 

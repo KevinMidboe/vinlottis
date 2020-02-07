@@ -33,16 +33,29 @@
         <hr />
         <div class="winnner-container-inner">
           <div class="input-container">
-            <div class="label-div">
-              <input type="text" v-model="winner.name" placeholder="Navn" />
+            <div class="wine-image">
+              <img :src="winner.wine.image" />
             </div>
             <div class="label-div">
-              <select v-model="winner.color">
-                <option value="blue">Blå</option>
-                <option value="red">Rød</option>
-                <option value="green">Grønn</option>
-                <option value="yellow">Gul</option>
-              </select>
+              <input type="text" v-model="winner.name" placeholder="Navn vinner" />
+            </div>
+            <div class="label-div">
+              <div class="color-selector">
+                <button class="blue"
+                        :class="{'active': winner.color == 'blue' }"
+                        @click="updateColorForWinner(winner, 'blue')"></button>
+                <button class="red"
+                        :class="{'active': winner.color == 'red' }"
+                        @click="updateColorForWinner(winner, 'red')"></button>
+                <button class="green"
+                        :class="{'active': winner.color == 'green' }"
+                        @click="updateColorForWinner(winner, 'green')"></button>
+                <button class="yellow"
+                        :class="{'active': winner.color == 'yellow' }"
+                        @click="updateColorForWinner(winner, 'yellow')"></button>
+              </div>
+
+              <span class="color-selected">Selected color: {{ winner.color ? winner.color : '(none)' }}</span>
             </div>
             <div class="label-div">
               <input type="text" v-model="winner.wine.name" placeholder="Vin-navn" />
@@ -54,11 +67,7 @@
               <input type="text" v-model="winner.wine.rating" placeholder="Rating" />
             </div>
           </div>
-          <div class="wine-image">
-            <img :src="winner.wine.image" />
-          </div>
         </div>
-        <hr />
       </div>
     </div>
     <div class="button-container">
@@ -130,6 +139,9 @@ export default {
         id: "",
         image: ""
       });
+    },
+    updateColorForWinner(winner, color) {
+      winner.color = winner.color == color ? null : color
     },
     sendWines: async function() {
       let _response = await fetch("/api/log/wines", {
@@ -267,6 +279,10 @@ hr {
   justify-content: center;
   align-items: center;
   margin: auto;
+
+  @include mobile {
+    width: 80%;
+  }
 }
 
 .winner-element,
@@ -278,6 +294,10 @@ hr {
   align-items: center;
   flex-direction: column;
   justify-content: center;
+
+  button {
+    cursor: pointer;
+  }
 }
 
 .color-container {
@@ -291,8 +311,8 @@ hr {
 
 .label-div {
   display: flex;
-  flex-direction: column;
   width: 50%;
+  flex-direction: column;
   padding-bottom: 20px;
   margin: auto;
   display: flex;
@@ -301,6 +321,53 @@ hr {
 
   @include mobile {
     margin-top: 1.2rem;
+  }
+}
+
+.color-selector {
+  .active {
+    border: 2px solid black;
+    margin-bottom: 1rem;
+  }
+
+  button {
+    border: 2px solid transparent;
+    color: #333;
+    padding: 10px 30px;
+    margin: 0;
+    font-size: 1.3rem;
+    display: inline-flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    max-height: calc(3rem + 18px);
+    max-width: calc(3rem + 18px);
+    margin: 10px;
+    // disable-dbl-tap-zoom
+    touch-action: manipulation;
+
+    @include mobile {
+      margin: 2px;
+    }
+
+    &.green {
+      background: #c8f9df;
+    }&.blue {
+      background: #d4f2fe;
+    }&.red {
+      background: #fbd7de;
+    }&.yellow {
+      background: #fff6d6;
+    }
+  }
+}
+
+.color-selected {
+  margin-bottom: 2rem;
+
+  @include mobile {
+    display: block;
+    width: 100%;
+    font-size: 1.5rem !important;
   }
 }
 
@@ -315,6 +382,10 @@ hr {
 }
 
 .input-container {
+  @include mobile {
+    width: 100%;
+  }
+
   & .label-div {
     width: 100%;
   }
@@ -322,6 +393,10 @@ hr {
 
 .winnner-container-inner {
   display: flex;
+
+  @include mobile {
+    flex-direction: column;
+  }
 }
 
 .wine-image {
