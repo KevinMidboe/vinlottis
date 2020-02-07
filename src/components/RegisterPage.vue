@@ -33,12 +33,22 @@
               <input type="text" v-model="winner.name" placeholder="Navn" />
             </div>
             <div class="label-div">
-              <select v-model="winner.color">
-                <option value="blue">Blå</option>
-                <option value="red">Rød</option>
-                <option value="green">Grønn</option>
-                <option value="yellow">Gul</option>
-              </select>
+              <div class="color-selector">
+                <button class="blue"
+                        :class="{'active': winner.color == 'blue' }"
+                        @click="updateColorForWinner(winner, 'blue')"></button>
+                <button class="red"
+                        :class="{'active': winner.color == 'red' }"
+                        @click="updateColorForWinner(winner, 'red')"></button>
+                <button class="green"
+                        :class="{'active': winner.color == 'green' }"
+                        @click="updateColorForWinner(winner, 'green')"></button>
+                <button class="yellow"
+                        :class="{'active': winner.color == 'yellow' }"
+                        @click="updateColorForWinner(winner, 'yellow')"></button>
+              </div>
+
+              <span class="color-selected">Selected color: {{ winner.color ? winner.color : '(none)' }}</span>
             </div>
             <div class="label-div">
               <input
@@ -141,6 +151,12 @@ export default {
         id: "",
         image: ""
       });
+    },
+    updateColorForWinner(winner, color) {
+      console.log('winner', winner)
+      console.log('color', color)
+
+      winner.color = color
     },
     sendWines: async function() {
       let _response = await fetch("/api/log/wines", {
@@ -265,6 +281,10 @@ hr {
   justify-content: center;
   align-items: center;
   margin: auto;
+
+  @include mobile {
+    width: 80%;
+  }
 }
 
 .winner-element,
@@ -293,8 +313,8 @@ hr {
 
 .label-div {
   display: flex;
-  flex-direction: column;
   width: 50%;
+  flex-direction: column;
   padding-bottom: 20px;
   margin: auto;
   display: flex;
@@ -303,6 +323,47 @@ hr {
 
   @include mobile {
     margin-top: 1.2rem;
+  }
+}
+
+.color-selector {
+  .active {
+    border: 2px solid black;
+  }
+
+  button {
+    border: 2px solid transparent;
+    color: #333;
+    padding: 10px 30px;
+    margin: 0;
+    font-size: 1.3rem;
+    height: calc(3rem + 18px);
+    display: inline-flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    max-height: calc(3rem + 18px);
+    max-width: calc(3rem + 18px);
+    margin: 10px;
+    // disable-dbl-tap-zoom
+    touch-action: manipulation;
+
+    &.green {
+      background: #c8f9df;
+    }&.blue {
+      background: #d4f2fe;
+    }&.red {
+      background: #fbd7de;
+    }&.yellow {
+      background: #fff6d6;
+    }
+  }
+}
+
+.color-selected {
+  @include mobile {
+    display: block;
+    width: 100%;
+    font-size: 1.5rem !important;
   }
 }
 
@@ -317,6 +378,10 @@ hr {
 }
 
 .input-container {
+  @include mobile {
+    width: 100%;
+  }
+
   & .label-div {
     width: 100%;
   }
@@ -324,6 +389,10 @@ hr {
 
 .winnner-container-inner {
   display: flex;
+
+  @include mobile {
+    flex-direction: column;
+  }
 }
 
 .wine-image {
