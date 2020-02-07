@@ -35,12 +35,16 @@ router.route("/purchase/statistics/color").get(async (req, res) => {
   let blue = 0;
   let yellow = 0;
   let green = 0;
+  let stolen = 0;
   for (let i = 0; i < countColor.length; i++) {
     let element = countColor[i];
     red += element.red;
     blue += element.blue;
     yellow += element.yellow;
     green += element.green;
+    if (element.stolen != undefined) {
+      stolen += element.stolen;
+    }
   }
 
   const highscore = await Highscore.find();
@@ -88,6 +92,7 @@ router.route("/purchase/statistics/color").get(async (req, res) => {
       total: yellow,
       win: yellowWin
     },
+    stolen: stolen,
     total: total
   });
 });

@@ -7,6 +7,8 @@ const Purchase = new Schema({
   red: Number,
   yellow: Number,
   green: Number,
+  bought: Number,
+  stolen: Number,
   wines: [
     {
       type: Schema.Types.ObjectId,

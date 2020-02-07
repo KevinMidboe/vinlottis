@@ -18,6 +18,10 @@
         <label for="yellow">Gul</label>
         <input id="yellow" type="number" v-model="yellow" />
       </div>
+      <div class="label-div">
+        <label for="yellow">Kjøpt for sum</label>
+        <input id="yellow" type="number" v-model="payed" />
+      </div>
     </div>
     <div class="button-container">
       <button @click="addWinner">Legg til en vinner</button>
@@ -41,25 +45,13 @@
               </select>
             </div>
             <div class="label-div">
-              <input
-                type="text"
-                v-model="winner.wine.name"
-                placeholder="Vin-navn"
-              />
+              <input type="text" v-model="winner.wine.name" placeholder="Vin-navn" />
             </div>
             <div class="label-div">
-              <input
-                type="text"
-                v-model="winner.wine.vivinoLink"
-                placeholder="Vivino-link"
-              />
+              <input type="text" v-model="winner.wine.vivinoLink" placeholder="Vivino-link" />
             </div>
             <div class="label-div">
-              <input
-                type="text"
-                v-model="winner.wine.rating"
-                placeholder="Rating"
-              />
+              <input type="text" v-model="winner.wine.rating" placeholder="Rating" />
             </div>
           </div>
           <div class="wine-image">
@@ -81,11 +73,7 @@
           <input type="text" v-model="wine.name" placeholder="Vin-navn" />
         </div>
         <div class="label-div">
-          <input
-            type="text"
-            v-model="wine.vivinoLink"
-            placeholder="Vivino-link"
-          />
+          <input type="text" v-model="wine.vivinoLink" placeholder="Vivino-link" />
         </div>
         <div class="label-div">
           <input type="text" v-model="wine.id" placeholder="Id" />
@@ -110,6 +98,7 @@ export default {
       blue: 0,
       green: 0,
       yellow: 0,
+      payed: 0,
       winners: [],
       wines: []
     };
@@ -198,6 +187,19 @@ export default {
         alert("Blå må defineres");
         return;
       }
+
+      sendObject.purchase.bought =
+        parseInt(this.blue) +
+        parseInt(this.red) +
+        parseInt(this.green) +
+        parseInt(this.yellow);
+      const stolen = sendObject.purchase.bought - parseInt(this.payed) / 10;
+      console.log(sendObject.purchase.bought, this.payed);
+      if (isNaN(stolen) || stolen == undefined) {
+        alert("Betalt må registreres");
+        return;
+      }
+      sendObject.purchase.stolen = stolen;
 
       if (sendObject.winners.length == 0) {
         alert("Det må være med vinnere");

@@ -28,6 +28,7 @@
             <span class="total">{{ total }}</span> kjøpte
           </div>
           <div>{{ totalWin }} vinn</div>
+          <div>{{ stolen }} stjålet</div>
         </div>
       </div>
     </div>
@@ -44,6 +45,7 @@ export default {
       green: 0,
       total: 0,
       totalWin: 0,
+      stolen: 0,
       wins: 0,
       redPercentage: 0,
       yellowPercentage: 0,
@@ -61,6 +63,7 @@ export default {
     this.total = response.total;
     this.totalWin =
       this.red.win + this.yellow.win + this.blue.win + this.green.win;
+    this.stolen = response.stolen;
 
     this.redPercentage = this.round(
       this.red.win == 0 ? 0 : (this.red.win / this.totalWin) * 100

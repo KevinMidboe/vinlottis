@@ -55,6 +55,9 @@ router.route("/log").post(async (req, res) => {
   const yellow = purchaseBody.yellow;
   const green = purchaseBody.green;
 
+  const bought = purchaseBody.bought;
+  const stolen = purchaseBody.stolen;
+
   const winesThisDate = [];
 
   for (let i = 0; i < winnersBody.length; i++) {
@@ -111,7 +114,9 @@ router.route("/log").post(async (req, res) => {
     yellow: yellow,
     red: red,
     green: green,
-    wines: winesThisDate
+    wines: winesThisDate,
+    bought: bought,
+    stolen: stolen
   });
 
   await purchase.save();
