@@ -10,8 +10,8 @@
             </div>
             <div class="right">
               <h3>{{ wine.name }}</h3>
-              <spam>{{ wine.rating }} rating</spam>
-              <spam class="wine-link">Les mer</spam>
+              <span v-if="wine.rating">{{ wine.rating }} rating</span>
+              <span class="wine-link">Les mer</span>
             </div>
           </div>
         </a>
