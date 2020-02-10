@@ -46,7 +46,9 @@ export default {
   },
   async mounted() {
     const _wines = await fetch("/api/wines/statistics/overall");
-    this.wines = await _wines.json();
+    this.wines = (await _wines.json()).sort((a, b) =>
+      a.rating > b.rating ? -1 : 1
+    );
   }
 };
 </script>
