@@ -16,22 +16,30 @@
         <a
           class="wine-link"
           :href="wine.vivinoLink"
-          v-if="wine.vivinoLink != '' && wine.vivinoLink != null"
-          @click="wineClick(wine)"
+          @click="wineClick(wine, $event)"
         >Les mer</a>
       </li>
     </ol>
+    <div class="wine-window" v-if="wineOpen">
+      <div class="close-modal" @click="closeWine">X</div>
+      <Wine :wine="clickedWine" />
+    </div>
   </div>
 </template>
 
 <script>
 import { event } from "vue-analytics";
+import Wine from "@/ui/Wine";
+
 export default {
+  components: {
+    Wine
+  },
   data() {
-    return { wines: [] };
+    return { wines: [], clickedWine: null, wineOpen: false };
   },
   async mounted() {
-    let _response = await fetch("/api/wines/statistics");
+    let _response = await fetch("/api/wines/statistics/overall");
     let response = await _response.json();
 
     response.sort();
@@ -52,7 +60,11 @@ export default {
     this.wines = response.slice(0, 5);
   },
   methods: {
-    wineClick: function(wine) {
+    wineClick: function(wine, event) {
+      event.preventDefault();
+      this.clickedWine = wine;
+      this.wineOpen = true;
+
       if (window.location.hostname == "localhost") {
         return;
       }
@@ -61,6 +73,10 @@ export default {
         eventAction: "click",
         eventValue: `${wine.name} - ${wine.vivinoLink}`
       });
+    },
+    closeWine: function() {
+      this.clickedWine = null;
+      this.wineOpen = false;
     },
 
     predicate: function() {
@@ -129,6 +145,30 @@ export default {
 
 <style lang="scss" scoped>
 @import "../styles/media-queries.scss";
+.wine-window {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  position: fixed;
+  width: 95vw;
+  height: 95vh;
+  background: white;
+  border: 1px solid #3333333a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
 h3 {
   text-align: left;
 
@@ -185,6 +225,7 @@ ol {
   color: #333333;
   text-decoration: none;
   font-weight: bold;
+  cursor: pointer;
   border-bottom: 1px solid #ff5fff;
 }
 
@@ -194,25 +235,5 @@ ol {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-
-  &:hover {
-    line-break: unset;
-    word-break: break-word;
-    white-space: normal;
-    overflow: auto;
-    text-overflow: unset;
-  }
-
-  @include mobile {
-    max-width: calc(75vw - 177px);
-
-    &:focus {
-      line-break: unset;
-      word-break: break-word;
-      white-space: normal;
-      overflow: auto;
-      text-overflow: unset;
-    }
-  }
 }
 </style>
