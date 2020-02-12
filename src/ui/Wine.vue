@@ -7,7 +7,7 @@
       <h2>{{ wine.name }}</h2>
       <span v-if="wine.rating">{{ wine.rating }} rating</span>
 
-      <a :herf="wine.vivinoLink" class="wine-link">Les mer</a>
+      <a :href="wine.vivinoLink" class="wine-link">Les mer</a>
       <span class="name-wins">
         Vunnet av:
         {{wine.winners.join(", ")}}

@@ -3,9 +3,7 @@
     <div class="container">
       <h1 class="title">Alle viner</h1>
       <div class="wines-container">
-        <a :href="wine.vivinoLink" v-for="wine in wines">
-          <Wine :wine="wine" />
-        </a>
+        <Wine :wine="wine" v-for="wine in wines" />
       </div>
     </div>
   </div>

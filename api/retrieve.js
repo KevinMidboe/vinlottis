@@ -124,6 +124,7 @@ router.route("/wines/statistics/overall").get(async (req, res) => {
         wines[wine._id] = {
           name: wine.name,
           occurences: wine.occurences,
+          vivinoLink: wine.vivinoLink,
           rating: wine.rating,
           image: wine.image,
           id: wine.id,
