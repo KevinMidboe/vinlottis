@@ -64,6 +64,7 @@ span.color-win {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: 900;
 
   @include mobile {
     margin: 2px;

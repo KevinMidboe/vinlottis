@@ -159,6 +159,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  @include desktop {
+    width: 60vw;
+  }
 }
 
 .close-modal {
