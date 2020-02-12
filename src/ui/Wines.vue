@@ -20,9 +20,11 @@
         >Les mer</a>
       </li>
     </ol>
-    <div class="wine-window" v-if="wineOpen">
-      <div class="close-modal" @click="closeWine">X</div>
-      <Wine :wine="clickedWine" />
+    <div class="wine-window-outer" v-if="wineOpen" @click="closeWine">
+      <div class="wine-window">
+        <div class="close-modal" @click="closeWine">X</div>
+        <Wine :wine="clickedWine" />
+      </div>
     </div>
   </div>
 </template>
@@ -74,9 +76,11 @@ export default {
         eventValue: `${wine.name} - ${wine.vivinoLink}`
       });
     },
-    closeWine: function() {
-      this.clickedWine = null;
-      this.wineOpen = false;
+    closeWine: function(event) {
+      if (event.toElement.className.includes("wine-window-outer")) {
+        this.clickedWine = null;
+        this.wineOpen = false;
+      }
     },
 
     predicate: function() {
@@ -145,6 +149,14 @@ export default {
 
 <style lang="scss" scoped>
 @import "../styles/media-queries.scss";
+.wine-window-outer {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: #000000aa;
+  top: 0;
+  left: 0;
+}
 .wine-window {
   top: 0;
   left: 0;
