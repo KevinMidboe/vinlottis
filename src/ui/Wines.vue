@@ -77,7 +77,10 @@ export default {
       });
     },
     closeWine: function(event) {
-      if (event.toElement.className.includes("wine-window-outer")) {
+      if (
+        event.toElement.className.includes("wine-window-outer") ||
+        event.toElement.className.includes("close-modal")
+      ) {
         this.clickedWine = null;
         this.wineOpen = false;
       }
