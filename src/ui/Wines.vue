@@ -23,7 +23,7 @@
     <div class="wine-window-outer" v-if="wineOpen" @click="closeWine">
       <div class="wine-window">
         <div class="close-modal" @click="closeWine">X</div>
-        <Wine :wine="clickedWine" />
+        <Wine :wine="clickedWine" :fullscreen="true"/>
       </div>
     </div>
   </div>
