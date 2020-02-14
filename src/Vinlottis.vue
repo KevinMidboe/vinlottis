@@ -24,6 +24,19 @@ export default {
             "Arbeids arbeideren din er installert. Du kan nå gå offline frem til neste trekning."
           );
 
+          serviceWorker.onupdatefound = () => {
+            const installingWorker = serviceWorker.installing;
+            installingWorker.onstatechange = () => {
+              if (
+                installingWorker.state === "installed" &&
+                navigator.serviceWorker.controller
+              ) {
+                // Preferably, display a message asking the user to reload...
+                location.reload();
+              }
+            };
+          };
+
           if (!("PushManager" in window)) {
             throw new Error("No Push API Support!");
           }
