@@ -207,6 +207,12 @@ export default {
   display: inline-flex;
 }
 
+.outer-bought {
+  @include mobile {
+    padding: 0 20px;
+  }
+}
+
 .bought-container {
   display: flex;
   flex-direction: row;
