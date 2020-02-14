@@ -1,6 +1,15 @@
 <template>
   <div>
     <h1>Registrering</h1>
+    <div class="notification-element">
+      <div class="label-div">
+        <label for="notification">Push-melding</label>
+        <input id="notification" type="text" v-model="pushMessage" />
+      </div>
+    </div>
+    <div class="button-container">
+      <button @click="sendPush">Send push</button>
+    </div>
     <div class="color-container">
       <div class="label-div">
         <label for="blue">Blå</label>
@@ -119,7 +128,8 @@ export default {
       yellow: 0,
       payed: 0,
       winners: [],
-      wines: []
+      wines: [],
+      pushMessage: ""
     };
   },
   async mounted() {
@@ -141,6 +151,22 @@ export default {
     }
   },
   methods: {
+    sendPush: async function() {
+      let _response = await fetch("/subscription/send-notification", {
+        headers: {
+          "Content-Type": "application/json"
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        method: "POST",
+        body: JSON.stringify({ message: this.pushMessage })
+      });
+      let response = await _response.json();
+      if (response) {
+        alert("Sendt!");
+      } else {
+        alert("Noe gikk galt!");
+      }
+    },
     addWine: function(event) {
       this.wines.push({
         name: "",

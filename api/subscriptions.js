@@ -27,7 +27,11 @@ webpush.setVapidDetails(
 );
 
 const sendNotification = (subscription, dataToSend = "") => {
-  webpush.sendNotification(subscription, dataToSend);
+  try {
+    webpush.sendNotification(subscription, dataToSend);
+  } catch (e) {
+    console.log("error", e);
+  }
 };
 
 router.use((req, res, next) => {
@@ -54,6 +58,19 @@ const saveToDatabase = async subscription => {
     await newSubscription.save();
   }
 };
+
+router.route("/send-notification").post(async (req, res) => {
+  if (!req.isAuthenticated()) {
+    res.send(false);
+    return;
+  }
+  const message = req.body.message;
+  let subs = await Subscription.find();
+  for (let i = 0; i < subs.length; i++) {
+    let subscription = subs[i]; //get subscription from your databse here.
+    sendNotification(subscription, message);
+  }
+});
 
 schedule.scheduleJob(
   `0 50 ${lotteryConfig.hours - 1} * * ${lotteryConfig.date}`,
