@@ -1,14 +1,14 @@
 <template>
   <div class="inner-wine-container">
     <div class="left">
-      <img :src="wine.image" class="wine-image" />
+      <img :src="wine.image" class="wine-image" :class="{ 'fullscreen': fullscreen }"/>
     </div>
     <div class="right">
       <h2>{{ wine.name }}</h2>
       <span v-if="wine.rating">{{ wine.rating }} rating</span>
 
       <a :href="wine.vivinoLink" class="wine-link">Les mer</a>
-      <span class="name-wins">
+      <span class="name-wins" v-if="wine.winners">
         Vunnet av:
         {{wine.winners.join(", ")}}
       </span>
@@ -28,6 +28,10 @@ export default {
     wine: {
       type: Object,
       required: true
+    },
+    fullscreen: {
+      type: Boolean,
+      required: false
     }
   }
 };
@@ -37,6 +41,12 @@ export default {
 @import "./src/styles/media-queries";
 .wine-image {
   height: 250px;
+
+  &.fullscreen {
+    @include desktop {
+      height: unset;
+    }
+  }
 }
 
 .name-wins,
