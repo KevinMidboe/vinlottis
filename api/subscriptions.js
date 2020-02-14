@@ -70,6 +70,8 @@ router.route("/send-notification").post(async (req, res) => {
     let subscription = subs[i]; //get subscription from your databse here.
     sendNotification(subscription, message);
   }
+  res.json(true);
+  return;
 });
 
 schedule.scheduleJob(
