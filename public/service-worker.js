@@ -6,24 +6,60 @@ var STATIC_CACHE_URLS = ["/"];
 
 console.log("Nåværende versjon:", version);
 self.addEventListener("activate", event => {
-  event.waitUntil(
-    new Promise(resolve => {
-      const applicationServerKey = urlB64ToUint8Array(__PUBLICKEY__);
-      const options = { applicationServerKey, userVisibleOnly: true };
-      self.registration.pushManager.subscribe(options).then(subscription =>
-        saveSubscription(subscription)
-          .then(() => {
-            resolve();
-          })
-          .catch(() => {
-            resolve();
-          })
-      );
-    })
-  );
+  console.log("Aktiverer");
+
   event.waitUntil(removeCache(CACHE_NAME));
   event.waitUntil(removeCache(CACHE_NAME_API));
   event.waitUntil(addCache(CACHE_NAME, STATIC_CACHE_URLS));
+  event.waitUntil(
+    new Promise((resolve, reject) => {
+      const applicationServerKey = urlB64ToUint8Array(__PUBLICKEY__);
+      const options = { applicationServerKey, userVisibleOnly: true };
+      self.registration.pushManager
+        .subscribe(options)
+        .then(subscription =>
+          saveSubscription(subscription)
+            .then(() => {
+              resolve();
+            })
+            .catch(() => {
+              resolve();
+            })
+        )
+        .catch(() => {
+          console.log("Kunne ikke legge til pushnotifications");
+          resolve();
+        });
+    })
+  );
+});
+
+self.addEventListener("message", event => {
+  if (event.data === "updatePush") {
+    event.waitUntil(
+      new Promise((resolve, reject) => {
+        const applicationServerKey = urlB64ToUint8Array(__PUBLICKEY__);
+        const options = { applicationServerKey, userVisibleOnly: true };
+        self.registration.pushManager
+          .subscribe(options)
+          .then(subscription =>
+            saveSubscription(subscription)
+              .then(() => {
+                const channel = new BroadcastChannel("updatePush");
+                channel.postMessage({ success: true });
+                resolve();
+              })
+              .catch(() => {
+                resolve();
+              })
+          )
+          .catch(() => {
+            console.log("Kunne ikke legge til pushnotifications");
+            reject();
+          });
+      })
+    );
+  }
 });
 
 self.addEventListener("push", function(event) {
