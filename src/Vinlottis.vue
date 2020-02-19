@@ -51,7 +51,10 @@ export default {
           }
           window.Notification.requestPermission().then(permission => {
             if (permission !== "granted") {
-              throw new Error("Permission not granted for Notification");
+              console.log(
+                "Du valgte å ikke ha arbeids-arbeideren til å sende deg dytte-meldinger :'('"
+              );
+              return;
             }
             if (localStorage.getItem("push") == null) {
               this.sendMessage("updatePush");
