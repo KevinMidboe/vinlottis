@@ -1,7 +1,17 @@
 <template>
   <div class="outer">
     <div class="container">
-      <h1 class="title" @click="startCountdown">Vinlotteri</h1>
+      <div class="header-top">
+        <h1 class="title" @click="startCountdown">Vinlotteri</h1>
+        <img
+          src="/public/assets/images/notification.svg"
+          alt="Notification-bell"
+          @click="requestNotificationAccess"
+          class="notification-request-button"
+          role="button"
+          v-if="notificationAllowed"
+        />
+      </div>
       <router-link to="generate" class="generate-link">
         Klarer du ikke velge lodd-farger?
         <span class="subtext generator-link">Prøv loddgeneratoren</span>
@@ -57,10 +67,23 @@ export default {
   data() {
     return {
       hardStart: false,
-      todayExists: false
+      todayExists: false,
+      pushAllowed: false
     };
   },
+  computed: {
+    notificationAllowed: function() {
+      return (
+        Notification.permission !== "granted" ||
+        !this.pushAllowed ||
+        localStorage.getItem("push") == null
+      );
+    }
+  },
   mounted() {
+    this.$on("push-allowed", () => {
+      this.pushAllowed = true;
+    });
     fetch("/api/wines/prelottery")
       .then(wines => wines.json())
       .then(wines => {
@@ -76,6 +99,9 @@ export default {
     this.track();
   },
   methods: {
+    requestNotificationAccess() {
+      this.$root.$children[0].registerServiceWorkerPushNotification();
+    },
     changeEnabled(way) {
       this.hardStart = way;
     },
@@ -93,6 +119,11 @@ export default {
 @import "../styles/global.scss";
 @import "../styles/media-queries.scss";
 
+.notification-request-button {
+  cursor: pointer;
+  margin-left: 15px;
+}
+
 .bottom-container {
   display: flex;
   flex-direction: row;
@@ -107,8 +138,22 @@ export default {
   }
 }
 
-.title {
-  cursor: pointer;
+.header-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  margin-top: 3.8rem;
+
+  @include mobile {
+    margin-top: 1.5rem;
+  }
+
+  .title {
+    cursor: pointer;
+    margin: auto 0;
+  }
 }
 
 .left-bottom {

@@ -8,30 +8,10 @@ console.log("Nåværende versjon:", version);
 self.addEventListener("activate", event => {
   console.log("Aktiverer");
 
+  event.waitUntil(self.clients.claim());
   event.waitUntil(removeCache(CACHE_NAME));
   event.waitUntil(removeCache(CACHE_NAME_API));
   event.waitUntil(addCache(CACHE_NAME, STATIC_CACHE_URLS));
-  event.waitUntil(
-    new Promise((resolve, reject) => {
-      const applicationServerKey = urlB64ToUint8Array(__PUBLICKEY__);
-      const options = { applicationServerKey, userVisibleOnly: true };
-      self.registration.pushManager
-        .subscribe(options)
-        .then(subscription =>
-          saveSubscription(subscription)
-            .then(() => {
-              resolve();
-            })
-            .catch(() => {
-              resolve();
-            })
-        )
-        .catch(() => {
-          console.log("Kunne ikke legge til pushnotifications");
-          resolve();
-        });
-    })
-  );
 });
 
 self.addEventListener("message", event => {
@@ -121,7 +101,7 @@ function showLocalNotification(title, body, swRegistration) {
 }
 
 async function saveSubscription(subscription) {
-  const SERVER_URL = "https://lottis.vin/subscription/save-subscription";
+  const SERVER_URL = "/subscription/save-subscription";
   const response = await fetch(SERVER_URL, {
     method: "post",
     headers: {

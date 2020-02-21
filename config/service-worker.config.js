@@ -9,7 +9,7 @@ const ServiceWorkerConfig = {
     extensions: [".js", ".vue"]
   },
   entry: {
-    serviceWorker: [helpers.root("public", "service-worker")]
+    serviceWorker: [helpers.root("src/service-worker", "service-worker")]
   },
   optimization: {
     minimizer: []
@@ -19,7 +19,7 @@ const ServiceWorkerConfig = {
       {
         test: /\.js$/,
         loader: "babel-loader",
-        include: [helpers.root("public", "service-worker")]
+        include: [helpers.root("src/service-worker", "service-worker")]
       }
     ]
   },

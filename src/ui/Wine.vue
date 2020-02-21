@@ -1,7 +1,12 @@
 <template>
-  <div class="inner-wine-container">
+  <div class="inner-wine-container" :class="{ 'big': fullscreen }">
     <div class="left">
-      <img :src="wine.image" class="wine-image" :class="{ 'fullscreen': fullscreen }"/>
+      <!-- <img :src="wine.image" class="wine-image" :class="{ 'fullscreen': fullscreen }"/> -->
+      <img
+        src="https://images.vivino.com/thumbs/QRhTyEmKR8Wi_C1N2uqBWg_pb_x960.png"
+        class="wine-image"
+        :class="{ 'fullscreen': fullscreen }"
+      />
     </div>
     <div class="right">
       <h2>{{ wine.name }}</h2>
@@ -12,7 +17,7 @@
         Vunnet av:
         {{wine.winners.join(", ")}}
       </span>
-      <div class="color-wins">
+      <div class="color-wins" :class="{ 'big': fullscreen }">
         <span class="color-win blue">{{wine.blue == undefined ? 0 : wine.blue}}</span>
         <span class="color-win red">{{wine.red == undefined ? 0 : wine.red}}</span>
         <span class="color-win green">{{wine.green == undefined ? 0 : wine.green}}</span>
@@ -45,6 +50,7 @@ export default {
   &.fullscreen {
     @include desktop {
       height: unset;
+      max-height: 65vh;
     }
   }
 }
@@ -54,6 +60,10 @@ export default {
   display: flex;
   width: 60%;
   flex-wrap: wrap;
+}
+
+.color-wins.big {
+  width: unset;
 }
 
 span.color-win {
@@ -110,6 +120,10 @@ h3 {
   width: 500px;
   font-family: Arial;
   margin-bottom: 30px;
+
+  &.big {
+    align-items: center;
+  }
 
   @include desktop {
     justify-content: center;
