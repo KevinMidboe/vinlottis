@@ -68,6 +68,12 @@ self.addEventListener("fetch", event => {
     event.respondWith(fetch(event.request));
     return;
   }
+  if (
+    event.request.cache === "only-if-cached" &&
+    event.request.mode !== "same-origin"
+  )
+    return;
+
   if (event.request.url.includes("/api/")) {
     event.respondWith(
       fetch(event.request)
