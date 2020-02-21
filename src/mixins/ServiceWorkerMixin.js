@@ -4,8 +4,10 @@ var serviceWorkerRegistrationMixin = {
       console.log("Nettleseren din støtter ikke service-workers.");
       return;
     }
-    if (Notification.permission !== "granted") {
-      localStorage.removeItem("push");
+    if ("PushManager" in window) {
+      if (Notification.permission !== "granted") {
+        localStorage.removeItem("push");
+      }
     }
     this.registerPushListener();
     this.registerServiceWorker();

@@ -73,6 +73,9 @@ export default {
   },
   computed: {
     notificationAllowed: function() {
+      if (!("PushManager" in window)) {
+        return false;
+      }
       return (
         Notification.permission !== "granted" ||
         !this.pushAllowed ||
