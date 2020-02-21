@@ -77,7 +77,6 @@ var serviceWorkerRegistrationMixin = {
             serviceWorker.onupdatefound = () => {
               this.serviceWorkerUpdateFoundListener(serviceWorker);
             };
-            //this.registerServiceWorkerPushNotification();
           })
           .catch(error => {
             console.error("Arbeids arbeideren klarer ikke arbeide.", error);
