@@ -25,8 +25,12 @@ self.addEventListener("message", event => {
           .then(subscription =>
             saveSubscription(subscription)
               .then(() => {
-                const channel = new BroadcastChannel("updatePush");
-                channel.postMessage({ success: true });
+                try {
+                  const channel = new BroadcastChannel("updatePush");
+                  channel.postMessage({ success: true });
+                } catch (e) {
+                  console.log("Using safari 'eh? No notifications for you.");
+                }
                 resolve();
               })
               .catch(() => {

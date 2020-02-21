@@ -12,13 +12,17 @@ var serviceWorkerRegistrationMixin = {
   },
   methods: {
     registerPushListener: function() {
-      const channel = new BroadcastChannel("updatePush");
-      channel.addEventListener("message", event => {
-        if (event.data.success) {
-          localStorage.setItem("push", true);
-          this.$emit("push-allowed");
-        }
-      });
+      try {
+        const channel = new BroadcastChannel("updatePush");
+        channel.addEventListener("message", event => {
+          if (event.data.success) {
+            localStorage.setItem("push", true);
+            this.$emit("push-allowed");
+          }
+        });
+      } catch (e) {
+        console.log("Using safari 'eh? No notifications for you.");
+      }
     },
     sendMessage: function(message) {
       return new Promise(function(resolve, reject) {
