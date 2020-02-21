@@ -64,7 +64,11 @@ router.route("/send-notification").post(async (req, res) => {
     res.send(false);
     return;
   }
-  const message = req.body.message;
+
+  const message = JSON.stringify({
+    message: req.body.message,
+    title: "Vinlotteri!"
+  });
   let subs = await Subscription.find();
   for (let i = 0; i < subs.length; i++) {
     let subscription = subs[i]; //get subscription from your databse here.
@@ -80,10 +84,14 @@ schedule.scheduleJob(
     let subs = await Subscription.find();
     for (let i = 0; i < subs.length; i++) {
       let subscription = subs[i]; //get subscription from your databse here.
-      const message = "Husk vinlotteriet, det begynner om 10 minutter!";
+      const message = JSON.stringify({
+        message: "Husk vinlotteriet, det begynner om 10 minutter!",
+        title: "Vinlotteri!"
+      });
       sendNotification(subscription, message);
     }
   }
 );
 
 module.exports = router;
+module.exports.sendNotification = sendNotification;

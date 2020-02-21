@@ -64,7 +64,9 @@ self.addEventListener("message", event => {
 
 self.addEventListener("push", function(event) {
   if (event.data) {
-    showLocalNotification("Vinlotteri!", event.data.text(), self.registration);
+    var message = JSON.parse(event.data.text());
+
+    showLocalNotification(message.title, message.message, self.registration);
   } else {
   }
 });

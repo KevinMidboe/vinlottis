@@ -6,6 +6,9 @@ mongoose.connect("mongodb://localhost:27017/vinlottis", {
   useNewUrlParser: true
 });
 
+const sub = require(path.join(__dirname + "/../api/subscriptions"));
+
+const Subscription = require(path.join(__dirname + "/../schemas/Subscription"));
 const Purchase = require(path.join(__dirname + "/../schemas/Purchase"));
 const Wine = require(path.join(__dirname + "/../schemas/Wine"));
 const PreLotteryWine = require(path.join(
@@ -33,6 +36,16 @@ router.route("/log/wines").post(async (req, res) => {
       id: wine.id
     });
     await newWonWine.save();
+  }
+
+  let subs = await Subscription.find();
+  for (let i = 0; i < subs.length; i++) {
+    let subscription = subs[i]; //get subscription from your databse here.
+    const message = JSON.stringify({
+      message: "Dagens vin er lagt til, se den på lottis.vin/dagens!",
+      title: "Ny vin!"
+    });
+    sub.sendNotification(subscription, message);
   }
 
   res.send(true);
