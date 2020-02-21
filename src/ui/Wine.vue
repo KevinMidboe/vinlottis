@@ -1,12 +1,7 @@
 <template>
   <div class="inner-wine-container" :class="{ 'big': fullscreen }">
     <div class="left">
-      <!-- <img :src="wine.image" class="wine-image" :class="{ 'fullscreen': fullscreen }"/> -->
-      <img
-        src="https://images.vivino.com/thumbs/QRhTyEmKR8Wi_C1N2uqBWg_pb_x960.png"
-        class="wine-image"
-        :class="{ 'fullscreen': fullscreen }"
-      />
+      <img :src="wine.image" class="wine-image" :class="{ 'fullscreen': fullscreen }" />
     </div>
     <div class="right">
       <h2>{{ wine.name }}</h2>
