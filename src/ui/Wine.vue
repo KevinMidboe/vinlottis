@@ -53,7 +53,7 @@ export default {
 .name-wins,
 .color-wins {
   display: flex;
-  width: 60%;
+  width: 13rem;
   flex-wrap: wrap;
 }
 
