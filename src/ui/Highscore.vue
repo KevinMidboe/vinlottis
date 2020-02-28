@@ -1,6 +1,6 @@
 <template>
   <div class="highscores" v-if="highscore.length > 0">
-    <h3>Topp 5 vinnere</h3>
+    <h3>Topp 10 vinnere</h3>
     <ol>
       <li v-for="person in highscore">
         {{ person.name }} - {{ person.wins.length }}
@@ -23,7 +23,7 @@ export default {
     response = response.filter(
       person => person.name != null && person.name != ""
     );
-    this.highscore = response.slice(0, 5);
+    this.highscore = response.slice(0, 10);
   }
 };
 </script>

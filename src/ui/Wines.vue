@@ -1,7 +1,9 @@
 <template>
   <div v-if="wines.length > 0">
     <h3>
-      <router-link to="viner">Topp 5 viner</router-link>
+      <router-link to="viner"
+        >Topp 10 viner <span class="link">Se alle &gt;</span></router-link
+      >
     </h3>
     <ol>
       <li v-for="wine in wines">
@@ -17,13 +19,14 @@
           class="wine-link"
           :href="wine.vivinoLink"
           @click="wineClick(wine, $event)"
-        >Les mer</a>
+          >Les mer</a
+        >
       </li>
     </ol>
     <div class="wine-window-outer" v-if="wineOpen" @click="closeWine">
       <div class="wine-window">
         <div class="close-modal" @click="closeWine">X</div>
-        <Wine :wine="clickedWine" :fullscreen="true"/>
+        <Wine :wine="clickedWine" :fullscreen="true" />
       </div>
     </div>
   </div>
@@ -59,7 +62,7 @@ export default {
           }
         )
       );
-    this.wines = response.slice(0, 5);
+    this.wines = response.slice(0, 10);
   },
   methods: {
     wineClick: function(wine, event) {
@@ -177,6 +180,13 @@ export default {
   @include desktop {
     width: 60vw;
   }
+}
+
+.link {
+  font-weight: bold;
+  border-bottom: 1px solid #ff5fff;
+  font-size: 1rem;
+  margin-left: 15px;
 }
 
 .close-modal {
