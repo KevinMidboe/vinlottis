@@ -4,7 +4,7 @@ var serviceWorkerRegistrationMixin = {
       console.log("Nettleseren din støtter ikke service-workers.");
       return;
     }
-    if ("PushManager" in window) {
+    if ("PushManager" in window && __PUSHENABLED__) {
       if (Notification.permission !== "granted") {
         localStorage.removeItem("push");
       }

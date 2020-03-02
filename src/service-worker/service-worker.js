@@ -15,6 +15,9 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener("message", event => {
+  if (!__PUBLICKEY__) {
+    return;
+  }
   if (event.data === "updatePush") {
     event.waitUntil(
       new Promise((resolve, reject) => {

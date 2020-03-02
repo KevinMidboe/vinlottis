@@ -78,7 +78,8 @@ const webpackConfig = function(isDev) {
         __PRICE__: env.price,
         __MESSAGE__: JSON.stringify(env.message),
         __DATE__: env.date,
-        __HOURS__: env.hours
+        __HOURS__: env.hours,
+        __PUSHENABLED__: JSON.stringify(require("./env/push") != false)
       })
     ]
   };

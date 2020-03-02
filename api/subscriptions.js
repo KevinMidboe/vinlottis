@@ -9,11 +9,23 @@ mongoose.connect("mongodb://localhost:27017/vinlottis", {
   useNewUrlParser: true
 });
 
-const config = require(path.join(__dirname + "/../config/env/push.config"));
+const config = require(path.join(__dirname + "/../config/env/push"));
 const Subscription = require(path.join(__dirname + "/../schemas/Subscription"));
 const lotteryConfig = require(path.join(
   __dirname + "/../config/env/lottery.config"
 ));
+
+router.use((req, res, next) => {
+  next();
+});
+
+if (!config.publicKey) {
+  console.error(
+    "You are missing the push-setup! Server will continue running even without this."
+  );
+  module.exports = router;
+  return;
+}
 
 const vapidKeys = {
   publicKey: config.publicKey,
@@ -33,10 +45,6 @@ const sendNotification = (subscription, dataToSend = "") => {
     console.log("error", e);
   }
 };
-
-router.use((req, res, next) => {
-  next();
-});
 
 router.route("/save-subscription").post(async (req, res) => {
   const subscription = req.body;
