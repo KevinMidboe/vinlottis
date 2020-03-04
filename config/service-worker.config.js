@@ -42,7 +42,7 @@ const ServiceWorkerConfig = {
   plugins: [
     new webpack.DefinePlugin({
       __DATE__: new Date().getTime(),
-      __PUBLICKEY__: JSON.stringify(require("./env/push").publicKey)
+      __PUBLICKEY__: JSON.stringify(require("./defaults/push").publicKey)
     })
   ]
 };

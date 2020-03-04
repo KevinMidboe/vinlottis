@@ -1,10 +1,9 @@
 "use strict";
 
-const env = require("./env/lottery.config.js");
+const env = require("./defaults/lottery");
 const webpack = require("webpack");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
-const HtmlPlugin = require("html-webpack-plugin");
 const helpers = require("./helpers");
 
 const webpackConfig = function(isDev) {
@@ -79,7 +78,7 @@ const webpackConfig = function(isDev) {
         __MESSAGE__: JSON.stringify(env.message),
         __DATE__: env.date,
         __HOURS__: env.hours,
-        __PUSHENABLED__: JSON.stringify(require("./env/push") != false)
+        __PUSHENABLED__: JSON.stringify(require("./defaults/push") != false)
       })
     ]
   };

@@ -9,10 +9,10 @@ mongoose.connect("mongodb://localhost:27017/vinlottis", {
   useNewUrlParser: true
 });
 
-const config = require(path.join(__dirname + "/../config/env/push"));
+const config = require(path.join(__dirname + "/../config/defaults/push"));
 const Subscription = require(path.join(__dirname + "/../schemas/Subscription"));
 const lotteryConfig = require(path.join(
-  __dirname + "/../config/env/lottery.config"
+  __dirname + "/../config/defaults/lottery"
 ));
 
 router.use((req, res, next) => {
