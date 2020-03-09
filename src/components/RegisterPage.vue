@@ -1,382 +1,439 @@
 <template>
-  <div>
+  <div class="page-container">
     <h1>Registrering</h1>
     <div class="notification-element">
       <div class="label-div">
         <label for="notification">Push-melding</label>
-        <input id="notification" type="text" v-model="pushMessage" />
+        <textarea id="notification" type="text" rows="3" v-model="pushMessage" placeholder="Push meldingtekst" />
       </div>
     </div>
     <div class="button-container">
-      <button @click="sendPush">Send push</button>
+      <button class="vin-button" @click="sendPush">Send push</button>
     </div>
-    <div class="color-container">
-      <div class="label-div">
-        <label for="blue">Blå</label>
-        <input id="blue" type="number" v-model="blue" />
-      </div>
-      <div class="label-div">
-        <label for="red">Rød</label>
-        <input id="red" type="number" v-model="red" />
-      </div>
-      <div class="label-div">
-        <label for="green">Grønn</label>
-        <input id="green" type="number" v-model="green" />
-      </div>
-      <div class="label-div">
-        <label for="yellow">Gul</label>
-        <input id="yellow" type="number" v-model="yellow" />
-      </div>
-      <div class="label-div">
-        <label for="yellow">Kjøpt for sum</label>
-        <input id="yellow" type="number" v-model="payed" />
-      </div>
-    </div>
-    <div class="button-container">
-      <button @click="addWinner">Legg til en vinner</button>
-      <button @click="sendInfo">Send inn</button>
-    </div>
-    <div class="winner-container" v-if="winners.length > 0">
-      Vinnere
-      <div v-for="winner in winners" class="winner-element">
-        <hr />
-        <div class="winnner-container-inner">
-          <div class="input-container">
-            <div class="wine-image">
-              <img :src="winner.wine.image" />
-            </div>
-            <div class="label-div">
-              <input type="text" v-model="winner.name" placeholder="Navn vinner" />
-            </div>
-            <div class="label-div">
-              <div class="color-selector">
-                <button
-                  class="blue"
-                  :class="{'active': winner.color == 'blue' }"
-                  @click="updateColorForWinner(winner, 'blue')"
-                ></button>
-                <button
-                  class="red"
-                  :class="{'active': winner.color == 'red' }"
-                  @click="updateColorForWinner(winner, 'red')"
-                ></button>
-                <button
-                  class="green"
-                  :class="{'active': winner.color == 'green' }"
-                  @click="updateColorForWinner(winner, 'green')"
-                ></button>
-                <button
-                  class="yellow"
-                  :class="{'active': winner.color == 'yellow' }"
-                  @click="updateColorForWinner(winner, 'yellow')"
-                ></button>
-              </div>
 
-              <span
-                class="color-selected"
-              >Selected color: {{ winner.color ? winner.color : '(none)' }}</span>
-            </div>
-            <div class="label-div">
-              <input type="text" v-model="winner.wine.name" placeholder="Vin-navn" />
-            </div>
-            <div class="label-div">
-              <input type="text" v-model="winner.wine.vivinoLink" placeholder="Vivino-link" />
-            </div>
-            <div class="label-div">
-              <input type="text" v-model="winner.wine.rating" placeholder="Rating" />
-            </div>
+    <hr />
+
+    <h2 id="addwine-title">Prelottery</h2>
+    
+    <ScanToVinmonopolet @wine="wineFromVinmonopoletScan" v-if="showCamera"/>
+
+    <div class="button-container">
+      <button class="vin-button" @click="showCamera = !showCamera">
+        {{ showCamera ? "Skjul camera" : "Legg til vin med camera" }}
+      </button>
+      
+      <button class="vin-button" @click="addWine">Legg til en vin manuelt</button>
+    </div>
+
+    <div class="wines-container" v-if="wines.length > 0">
+      <wine v-for="wine in wines" :wine="wine">
+        <div class="button-container row">
+          <button class="vin-button" @click="editWine = amIBeingEdited(wine) ? false : wine">
+            {{ amIBeingEdited(wine) ? "Lukk" : "Rediger" }}
+          </button>
+          <button class="red vin-button" @click="deleteWine(wine)">Slett</button>
+        </div>
+
+        <div v-if="amIBeingEdited(wine)">
+          <div class="edit-div" v-for="key in Object.keys(wine)">
+            <label>{{ key }}</label>
+            <input type="text" v-model="wine[key]" :placeholder="key" />
           </div>
         </div>
+      </wine>
+    </div>
+    <div class="button-container" v-if="wines.length > 0">  
+      <button class="vin-button" @click="sendWines">Send inn viner</button>
+    </div>
+
+    <hr />
+
+    <h2>Lottery</h2>
+
+    <h3>Legg til lodd kjøpt</h3>
+    <div class="colors">
+      <div v-for="color in lotteryColorBoxes" :class="color.css + ' colors-box'">
+       <div class="colors-overlay">
+          <p>{{ color.name }} kjøpt</p>
+          <input v-model="color.value"
+                 min="0"
+                 :placeholder="0"
+                 type="number" />
+        </div>
+      </div>
+
+      <div class="label-div">
+        <label>Totalt kjøpt for:</label>
+        <input v-model="payed" placeholder="NOK" type="number" :step="price || 1" min="0" />
       </div>
     </div>
-    <div class="button-container">
-      <button @click="addWine">Legg til en vin</button>
-      <button @click="sendWines">Send inn viner</button>
-    </div>
-    <div class="wines-container" v-if="wines.length > 0">
-      Viner
-      <div v-for="wine in wines" class="wine-element">
-        <hr />
-        <div class="label-div">
-          <input type="text" v-model="wine.name" placeholder="Vin-navn" />
+
+    <h3>Vinnere</h3>
+    <div class="winner-container" v-if="winners.length > 0">
+      <wine v-for="winner in winners" :wine="winner.wine">
+        <div class="winner-element">
+          <div class="color-selector">
+            <div class="label-div">
+              <label>Farge vunnet</label>
+            </div>
+            <button
+              class="blue"
+              :class="{'active': winner.color == 'blue' }"
+              @click="winner.color = 'blue'"
+            ></button>
+            <button
+              class="red"
+              :class="{'active': winner.color == 'red' }"
+              @click="winner.color = 'red'"
+            ></button>
+            <button
+              class="green"
+              :class="{'active': winner.color == 'green' }"
+              @click="winner.color = 'green'"
+            ></button>
+            <button
+              class="yellow"
+              :class="{'active': winner.color == 'yellow' }"
+              @click="winner.color = 'yellow'"
+            ></button>
+          </div>
+
+          <div class="label-div">
+            <label for="winner-name">Navn vinner</label>
+            <input id="winner-name" type="text" placeholder="Navn" v-model="winner.name"/>
+          </div>
         </div>
-        <div class="label-div">
-          <input type="text" v-model="wine.vivinoLink" placeholder="Vivino-link" />
-        </div>
-        <div class="label-div">
-          <input type="text" v-model="wine.id" placeholder="Id" />
-        </div>
-        <div class="label-div">
-          <input type="text" v-model="wine.image" placeholder="Bilde" />
-        </div>
-        <div class="label-div">
-          <input type="text" v-model="wine.rating" placeholder="Rating" />
-        </div>
-        <hr />
+      </wine>
+
+      <div class="button-container">
+        <button class="vin-button" @click="sendInfo">Send inn vinnere</button>
+        <button class="vin-button" @click="resetWinnerDataInStorage">Reset local wines</button>
       </div>
     </div>
+
+  <TextToast v-if="showToast"
+             :text="toastText"
+             v-on:closeToast="showToast = false" />
   </div>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      red: 0,
-      blue: 0,
-      green: 0,
-      yellow: 0,
-      payed: 0,
-      winners: [],
-      wines: [],
-      pushMessage: ""
-    };
-  },
-  async mounted() {
-    const _wines = await fetch("/api/wines/prelottery");
-    const wines = await _wines.json();
-    for (let i = 0; i < wines.length; i++) {
-      let wine = wines[i];
-      this.winners.push({
-        name: "",
-        color: "",
-        wine: {
-          name: wine.name,
-          vivinoLink: wine.vivinoLink,
-          rating: wine.rating,
-          image: wine.image,
-          id: wine.id
-        }
-      });
-    }
-  },
-  methods: {
-    sendPush: async function() {
-      let _response = await fetch("/subscription/send-notification", {
-        headers: {
-          "Content-Type": "application/json"
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        method: "POST",
-        body: JSON.stringify({ message: this.pushMessage })
-      });
-      let response = await _response.json();
-      if (response) {
-        alert("Sendt!");
-      } else {
-        alert("Noe gikk galt!");
-      }
-    },
-    addWine: function(event) {
-      this.wines.push({
-        name: "",
-        vivinoLink: "",
-        rating: "",
-        id: "",
-        image: ""
-      });
-    },
-    updateColorForWinner(winner, color) {
-      winner.color = winner.color == color ? null : color;
-    },
-    sendWines: async function() {
-      let _response = await fetch("/api/log/wines", {
-        headers: {
-          "Content-Type": "application/json"
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        method: "POST",
-        body: JSON.stringify(this.wines)
-      });
-      let response = await _response.json();
-      if (response == true) {
-        alert("Sendt!");
-        window.location.reload();
-      } else {
-        alert("Noe gikk galt under innsending");
-      }
-    },
-    addWinner: function(event) {
-      this.winners.push({
-        name: "",
-        color: "",
-        wine: {
-          name: "",
-          vivinoLink: "",
-          rating: ""
-        }
-      });
-    },
-    sendInfo: async function(event) {
-      let sendObject = {
-        purchase: {
-          date: new Date(),
-          blue: this.blue,
-          red: this.red,
-          yellow: this.yellow,
-          green: this.green
-        },
-        winners: this.winners
+  import { prelottery, log, logWines, wineSchema } from "@/api";
+  import TextToast from "@/ui/TextToast";
+  import Wine from "@/ui/Wine";
+  import ScanToVinmonopolet from "@/ui/ScanToVinmonopolet";
+
+  export default {
+    components: { TextToast, Wine, ScanToVinmonopolet },
+    data() {
+      return {
+        red: 0,
+        blue: 0,
+        green: 0,
+        yellow: 0,
+        payed: undefined,
+        winners: [],
+        wines: [],
+        pushMessage: "",
+        toastText: undefined,
+        showToast: false,
+        showCamera: false,
+        editWine: false,
+        price: __PRICE__
       };
+    },
+    created() {
+      this.fetchAndAddPrelotteryWines()
+        .then(this.getWinnerdataFromStorage)
 
-      if (sendObject.purchase.red == undefined) {
-        alert("Rød må defineres");
-        return;
+      window.addEventListener("unload", this.setWinnerdataToStorage);
+    },
+    beforeDestroy() {
+      this.setWinnerdataToStorage()
+    },
+    computed: {
+      lotteryColorBoxes() {
+        return [{ value: this.blue, name: "Blå", css: "blue" },
+        { value: this.red, name: "Rød", css: "red" },
+        { value: this.green, name: "Grønn", css: "green" },
+        { value: this.yellow, name: "Gul", css: "yellow" }]
       }
-      if (sendObject.purchase.green == undefined) {
-        alert("Grønn må defineres");
-        return;
-      }
-      if (sendObject.purchase.yellow == undefined) {
-        alert("Gul må defineres");
-        return;
-      }
-      if (sendObject.purchase.blue == undefined) {
-        alert("Blå må defineres");
-        return;
-      }
+    },
+    methods: {
+      amIBeingEdited(wine) {
+        return this.editWine.id == wine.id && this.editWine.name == wine.name;
+      },
+      async fetchAndAddPrelotteryWines() {
+        const wines = await prelottery()
 
-      sendObject.purchase.bought =
-        parseInt(this.blue) +
-        parseInt(this.red) +
-        parseInt(this.green) +
-        parseInt(this.yellow);
-      const stolen = sendObject.purchase.bought - parseInt(this.payed) / 10;
-      if (isNaN(stolen) || stolen == undefined) {
-        alert("Betalt må registreres");
-        return;
-      }
-      sendObject.purchase.stolen = stolen;
+        for (let i = 0; i < wines.length; i++) {
+          let wine = wines[i];
+          this.winners.push({
+            name: "",
+            color: "",
+            wine: {
+              name: wine.name,
+              vivinoLink: wine.vivinoLink,
+              rating: wine.rating,
+              image: wine.image,
+              id: wine.id
+            }
+          });
+        }
+      },
+      wineFromVinmonopoletScan(wineResponse) {
+        if (this.wines.map(wine => wine.name).includes(wineResponse.name)) {
+          this.toastText = "Vinen er allerede lagt til."
+          this.showToast = true
+          return
+        }
 
-      if (sendObject.winners.length == 0) {
-        alert("Det må være med vinnere");
-        return;
-      }
-      for (let i = 0; i < sendObject.winners.length; i++) {
-        let currentWinner = sendObject.winners[i];
+        this.toastText = "Fant og la til vin:<br>" + wineResponse.name 
+        this.showToast = true;
 
-        if (currentWinner.name == undefined || currentWinner.name == "") {
-          alert("Navn må defineres");
+        this.wines.unshift(wineResponse)
+      },
+      sendPush: async function() {
+        let _response = await fetch("/subscription/send-notification", {
+          headers: {
+            "Content-Type": "application/json"
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          method: "POST",
+          body: JSON.stringify({ message: this.pushMessage })
+        });
+        let response = await _response.json();
+        if (response) {
+          alert("Sendt!");
+        } else {
+          alert("Noe gikk galt!");
+        }
+      },
+      addWine: async function(event) {
+        const wine = await wineSchema()
+
+        this.editWine = wine;
+        this.wines.unshift(wine);
+      },
+      deleteWine(deletedWine) {
+        this.wines = this.wines.filter(wine => wine.name != deletedWine.name)
+      },
+      sendWines: async function() {
+        let response = await logWines(this.wines)
+        if (response == true) {
+          alert("Sendt!");
+          window.location.reload();
+        } else {
+          alert("Noe gikk galt under innsending");
+        }
+      },
+      addWinner: function(event) {
+        this.winners.push({
+          name: "",
+          color: "",
+          wine: {
+            name: "",
+            vivinoLink: "",
+            rating: ""
+          }
+        });
+      },
+      sendInfo: async function(event) {
+        let sendObject = {
+          purchase: {
+            date: new Date(),
+            blue: this.blue,
+            red: this.red,
+            yellow: this.yellow,
+            green: this.green
+          },
+          winners: this.winners
+        };
+
+        if (sendObject.purchase.red == undefined) {
+          alert("Rød må defineres");
           return;
         }
-        if (currentWinner.color == undefined || currentWinner.color == "") {
-          alert("Farge må defineres");
+        if (sendObject.purchase.green == undefined) {
+          alert("Grønn må defineres");
           return;
         }
-      }
+        if (sendObject.purchase.yellow == undefined) {
+          alert("Gul må defineres");
+          return;
+        }
+        if (sendObject.purchase.blue == undefined) {
+          alert("Blå må defineres");
+          return;
+        }
 
-      let _response = await fetch("/api/log/", {
-        headers: {
-          "Content-Type": "application/json"
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        method: "POST",
-        body: JSON.stringify(sendObject)
-      });
-      let response = await _response.json();
-      if (response == true) {
-        alert("Sendt!");
-        window.location.reload();
-      } else {
-        alert("Noe gikk galt under innsending");
+        sendObject.purchase.bought =
+          parseInt(this.blue) +
+          parseInt(this.red) +
+          parseInt(this.green) +
+          parseInt(this.yellow);
+        const stolen = sendObject.purchase.bought - parseInt(this.payed) / 10;
+        if (isNaN(stolen) || stolen == undefined) {
+          alert("Betalt må registreres");
+          return;
+        }
+        sendObject.purchase.stolen = stolen;
+
+        if (sendObject.winners.length == 0) {
+          alert("Det må være med vinnere");
+          return;
+        }
+        for (let i = 0; i < sendObject.winners.length; i++) {
+          let currentWinner = sendObject.winners[i];
+
+          if (currentWinner.name == undefined || currentWinner.name == "") {
+            alert("Navn må defineres");
+            return;
+          }
+          if (currentWinner.color == undefined || currentWinner.color == "") {
+            alert("Farge må defineres");
+            return;
+          }
+        }
+
+        let response = await log(sendObject)
+        if (response == true) {
+          alert("Sendt!");
+          window.location.reload();
+        } else {
+          alert(response.message || "Noe gikk galt under innsending");
+        }
+      },
+      getWinnerdataFromStorage() {
+        if (this.winners.length == 0) {
+          return
+        }
+        
+        let localWinners = localStorage.getItem("winners");
+        if (localWinners) {
+          localWinners = JSON.parse(localWinners);
+
+          this.winners = this.winners.map(winner => {
+            const localWinnerMatch = localWinners.filter(localWinner => localWinner.wine.name == winner.wine.name || localWinner.wine.id == winner.wine.id)
+
+            if (localWinnerMatch.length > 0) {
+              winner.name = localWinnerMatch[0].name || winner.name
+              winner.color = localWinnerMatch[0].color || winner.name
+            }
+      
+            return winner
+          })
+        }
+
+        let localColors = localStorage.getItem("colorValues");
+        if (localColors) {
+          localColors = localColors.split(",")
+          this.lotteryColorBoxes.forEach((color, i) => {
+            color.value = Number(localColors[i]) || null
+          })
+        }
+      },
+      setWinnerdataToStorage() {
+        console.log("saving localstorage")
+        localStorage.setItem("winners", JSON.stringify(this.winners))
+        localStorage.setItem("colorValues", this.lotteryColorBoxes.map(color => color.value || null))
+        window.removeEventListener("unload", this.setWinnerdataToStorage)
+      },
+      resetWinnerDataInStorage() {
+        localStorage.removeItem("winners")
+        localStorage.removeItem("colorValues")
+        this.winners = []
+        this.fetchAndAddPrelotteryWines()
+          .then(resp => this.winners = resp)
+        this.lotteryColorBoxes.map(color => color.value = null)
       }
     }
-  }
-};
+  };
 </script>
 
 <style lang="scss" scoped>
 @import "../styles/global.scss";
 @import "../styles/media-queries.scss";
+
 h1 {
-  width: 100vw;
+  width: 100%;
   text-align: center;
   font-family: knowit, Arial;
 }
-div {
-  font-size: 2rem;
-  font-family: Arial;
-}
-input {
-  font-size: 1.5rem;
+
+h2 {
   width: 100%;
-}
-hr {
-  width: 50vw;
-}
-
-.winner-container,
-.wine-container,
-.wines-container {
-  width: 50vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-
-  @include mobile {
-    width: 80%;
-  }
-}
-
-.winner-element,
-.wine-element,
-.color-container,
-.button-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-
-  button {
-    cursor: pointer;
-  }
-}
-
-.color-container {
-  width: 50%;
-  margin: auto;
-}
-
-.wines-container {
   text-align: center;
+  font-size: 1.6rem;
+  font-family: knowit, Arial
 }
 
-.label-div {
-  display: flex;
-  width: 50%;
-  flex-direction: column;
-  padding-bottom: 20px;
-  margin: auto;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+hr {
+  width: 90%;
+  margin: 2rem auto;
+  color: grey;
+}
 
-  @include mobile {
-    margin-top: 1.2rem;
+.page-container {
+  padding: 0 1.5rem 3rem;
+
+  @include desktop {
+    max-width: 60vw;
+    margin: 0 auto;
   }
+}
+.winner-container {
+  width: max-content;
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .button-container {
+    width: 100%;
+  }
+}
+
+.notification-element {
+  margin-bottom: 2rem;
+}
+.winner-element {
+  display: flex;
+  flex-direction: row;
+}
+.wine-element {
+  align-items: flex-start;
 }
 
 .color-selector {
+  margin-bottom: 0.65rem;
+  margin-right: 1rem;
+
   .active {
-    border: 2px solid black;
-    margin-bottom: 1rem;
+    border: 2px solid unset;
+
+    &.green {
+      border-color: $green;
+    }
+    &.blue {
+      border-color: $dark-blue;
+    }
+    &.red {
+      border-color: $red;
+    }
+    &.yellow {
+      border-color: $dark-yellow;
+    }
   }
 
   button {
     border: 2px solid transparent;
-    color: #333;
-    padding: 10px 30px;
-    margin: 0;
-    font-size: 1.3rem;
     display: inline-flex;
     flex-wrap: wrap;
     flex-direction: row;
-    max-height: calc(3rem + 18px);
-    max-width: calc(3rem + 18px);
-    margin: 10px;
+    height: 2.5rem;
+    width: 2.5rem;
+
     // disable-dbl-tap-zoom
     touch-action: manipulation;
 
@@ -399,86 +456,88 @@ hr {
   }
 }
 
-.color-selected {
-  margin-bottom: 2rem;
-
-  @include mobile {
-    display: block;
-    width: 100%;
-    font-size: 1.5rem !important;
-  }
-}
-
-.label-div label {
-  padding: 0 6px;
+.colors {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  max-width: 1400px;
+  margin: 3rem auto 0;
 
-  font-size: 1.22rem;
-}
-
-.input-container {
   @include mobile {
-    width: 100%;
+    margin: 1.8rem auto 0;
   }
 
-  & .label-div {
+  .label-div {
+    margin-top: 0.5rem;
     width: 100%;
   }
 }
 
-.winnner-container-inner {
+.colors-box {
+  width: 150px;
+  height: 150px;
+  margin: 20px;
+  -webkit-mask-image: url(/../../public/assets/images/lodd.svg);
+  background-repeat: no-repeat;
+  mask-image: url(/../../public/assets/images/lodd.svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  @include mobile {
+    width: 120px;
+    height: 120px;
+    margin: 10px;
+  }
+}
+
+.colors-overlay {
   display: flex;
+  justify-content: center;
+  height: 100%;
+  padding: 0 0.5rem;
+  position: relative;
 
-  @include mobile {
-    flex-direction: column;
+  p {
+    margin: 0;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    position: absolute;
+    top: .4rem;
+    left: .5rem;
+  }
+
+  input {
+    width: 70%;
+    border: 0;
+    padding: 0;
+    font-size: 3rem;
+    height: unset;
+    max-height: unset;
+    position: absolute;
+    bottom: 1.5rem;
   }
 }
 
-.wine-image {
-  padding-left: 30px;
-
-  & img {
-    height: 400px;
-  }
+.green, .green .colors-overlay > input {
+  background-color: $light-green;
+  color: $green;
 }
 
-input,
-button {
-  font-size: 1.5rem;
+.blue, .blue .colors-overlay > input {
+  background-color: $light-blue;
+  color: $blue;
 }
 
-select {
-  width: 100%;
-  font-size: 1.5rem;
+.yellow, .yellow .colors-overlay > input {
+  background-color: $light-yellow;
+  color: $yellow;
 }
 
-input {
-  font-size: 1.5rem;
-  padding: 8px;
-  margin: 0;
-  height: 3rem;
-  max-height: 3rem;
-  border: 1px solid rgba(#333333, 0.3);
-}
-
-button {
-  border: none;
-  background: #b7debd;
-  color: #333;
-  padding: 10px 30px;
-  margin: 0;
-  width: fit-content;
-  font-size: 1.3rem;
-  display: block;
-  height: calc(3rem + 18px);
-  display: inline-flex;
-  max-height: calc(3rem + 18px);
-  width: 400px;
-  margin: 10px;
-  // disable-dbl-tap-zoom
-  touch-action: manipulation;
+.red, .red .colors-overlay > input {
+  background-color: $light-red;
+  color: $red;
 }
 </style>
