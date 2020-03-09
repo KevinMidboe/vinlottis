@@ -1,57 +1,49 @@
 <template>
   <div class="outer">
-    <div>
-      <h2>Vinlottis</h2>
-      <form method="post" action="/login">
-        <input type="text" name="username" placeholder="Brukernavn" />
-        <input type="password" name="password" placeholder="Passord" />
-        <input type="submit" value="login" />
-      </form>
-    </div>
+    <h2>Vinlottis brukerinnlogging</h2>
+    <form aria-label="User signin" @submit.prevent>
+      <div class="label-div">
+        <label>Brukernavn</label>
+        <input type="text" v-model="username" placeholder="Brukernavn" @keyup.enter="login" />
+      </div>
+      <div class="label-div row">
+        <label>Passord</label>
+        <input type="password" v-model="password" placeholder="Passord" @keyup.enter="login" />
+      </div>
+
+      <button class="vin-button" @click="login">Logg inn</button>
+
+      <div v-if="error" class="error">{{ error }}</div>
+    </form>
   </div>
 </template>
 <script>
-export default {};
+import { login } from "@/api";
+
+export default {
+  data() {
+    return {
+      username: undefined, 
+      password: undefined,
+      error: undefined
+    }
+  },
+  methods: {
+    login() {
+      login(this.username, this.password)
+        .then(resp => {
+          if (resp.redirected) { this.$router.push("update") }
+        })
+        .catch(this.loginErrorResponse)
+
+    },
+    loginErrorResponse(error) {
+      this.error = error.message || error
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/global.scss";
-@import "../styles/media-queries.scss";
-div {
-  font-family: Arial;
-}
-.outer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
-}
-h2 {
-  width: 100vw;
-  text-align: center;
-  font-size: 3rem;
-  font-family: knowit, Arial;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-}
-
-input {
-  margin: 20px;
-  width: 30vw;
-  font-size: 3rem;
-  border: none;
-  border-bottom: 1px solid black;
-}
-
-input[type="submit"] {
-  border: 1px solid black;
-}
+@import "../styles/loginAndRegister";
 </style>
