@@ -6,28 +6,28 @@
     </p>
     <div class="input-line">
       <label for="redCheckbox">
-        <input type="checkbox" id="redCheckbox" v-model="redCheckbox" />
+        <input type="checkbox" id="redCheckbox" v-model="redCheckbox" @click="generateColors"/>
         <span class="border">
           <span class="checkmark"></span>
         </span>
         <span class="text">Rød</span>
       </label>
       <label for="blueCheckbox">
-        <input type="checkbox" id="blueCheckbox" v-model="blueCheckbox" />
+        <input type="checkbox" id="blueCheckbox" v-model="blueCheckbox" @click="generateColors"/>
         <span class="border">
           <span class="checkmark"></span>
         </span>
         <span class="text">Blå</span>
       </label>
       <label for="yellowCheckbox">
-        <input type="checkbox" id="yellowCheckbox" v-model="yellowCheckbox" />
+        <input type="checkbox" id="yellowCheckbox" v-model="yellowCheckbox" @click="generateColors"/>
         <span class="border">
           <span class="checkmark"></span>
         </span>
         <span class="text">Gul</span>
       </label>
       <label for="greenCheckbox">
-        <input type="checkbox" id="greenCheckbox" v-model="greenCheckbox" />
+        <input type="checkbox" id="greenCheckbox" v-model="greenCheckbox" @click="generateColors"/>
         <span class="border">
           <span class="checkmark"></span>
         </span>
@@ -41,7 +41,7 @@
         @keyup.enter="generateColors"
         v-model="numberOfBallots"
       />
-      <button @click="generateColors">Generer</button>
+      <button class="vin-button" @click="generateColors">Generer</button>
     </div>
 
     <div class="colors">
@@ -53,7 +53,7 @@
       ></div>
     </div>
 
-    <div class="color-count-container" v-if="generated && !generating">
+    <div class="color-count-container" v-if="generated">
       <span>Rød: {{ red }}</span>
       <span>Blå: {{ blue }}</span>
       <span>Gul: {{ yellow }}</span>
@@ -118,7 +118,12 @@ export default {
       if (time == 5) {
         this.generating = false;
         this.generated = true;
-        if (this.numberOfBallots > 1 && new Set(this.colors).size == 1) {
+        if (this.numberOfBallots > 1 &&
+          [this.redCheckbox, this.greenCheckbox, this.yellowCheckbox, this.blueCheckbox].filter(value => value == true).length == 1) {
+          return
+        }
+
+        if (new Set(this.colors).size == 1) {
           alert("BINGO");
         }
 
@@ -283,10 +288,9 @@ button {
 
 input {
   font-size: 1.5rem;
-  padding: 8px;
+  padding: 7px;
   margin: 0;
   height: 3rem;
-  max-height: 3rem;
   border: 1px solid rgba(#333333, 0.3);
 }
 
@@ -349,23 +353,6 @@ label .text {
     height: 60px;
     margin: 10px;
   }
-}
-
-button {
-  border: none;
-  background: #b7debd;
-  color: #333;
-  padding: 10px 30px;
-  margin: 0;
-  width: fit-content;
-  font-size: 1.3rem;
-  display: block;
-  height: calc(3rem + 18px);
-  display: inline-flex;
-  max-height: calc(3rem + 18px);
-
-  // disable-dbl-tap-zoom
-  touch-action: manipulation;
 }
 
 .colors-text {

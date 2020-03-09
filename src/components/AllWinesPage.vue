@@ -13,6 +13,7 @@
 import { page, event } from "vue-analytics";
 import Banner from "@/ui/Banner";
 import Wine from "@/ui/Wine";
+import { overallWineStatistics } from "@/api";
 
 export default {
   components: {
@@ -25,8 +26,8 @@ export default {
     };
   },
   async mounted() {
-    const _wines = await fetch("/api/wines/statistics/overall");
-    this.wines = (await _wines.json()).sort((a, b) =>
+    const wines = await overallWineStatistics();
+    this.wines = wines.sort((a, b) =>
       a.rating > b.rating ? -1 : 1
     );
   }
