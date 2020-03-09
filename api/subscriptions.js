@@ -9,6 +9,8 @@ mongoose.connect("mongodb://localhost:27017/vinlottis", {
   useNewUrlParser: true
 });
 
+const mustBeAuthenticated = require(path.join(__dirname + "/../middleware/mustBeAuthenticated"))
+
 const config = require(path.join(__dirname + "/../config/defaults/push"));
 const Subscription = require(path.join(__dirname + "/../schemas/Subscription"));
 const lotteryConfig = require(path.join(
@@ -67,12 +69,7 @@ const saveToDatabase = async subscription => {
   }
 };
 
-router.route("/send-notification").post(async (req, res) => {
-  if (!req.isAuthenticated()) {
-    res.send(false);
-    return;
-  }
-
+router.route("/send-notification").post(mustBeAuthenticated, async (req, res) => {
   const message = JSON.stringify({
     message: req.body.message,
     title: "Vinlotteri!"
