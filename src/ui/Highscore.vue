@@ -10,13 +10,15 @@
 </template>
 
 <script>
+
+import { highscoreStatistics } from "@/api";
+
 export default {
   data() {
     return { highscore: [] };
   },
   async mounted() {
-    let _response = await fetch("/api/highscore/statistics");
-    let response = await _response.json();
+    let response = await highscoreStatistics();
     response.sort((a, b) => {
       return a.wins.length > b.wins.length ? -1 : 1;
     });

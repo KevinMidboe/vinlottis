@@ -35,6 +35,7 @@
 <script>
 import { event } from "vue-analytics";
 import Wine from "@/ui/Wine";
+import { overallWineStatistics } from "@/api";
 
 export default {
   components: {
@@ -44,8 +45,7 @@ export default {
     return { wines: [], clickedWine: null, wineOpen: false };
   },
   async mounted() {
-    let _response = await fetch("/api/wines/statistics/overall");
-    let response = await _response.json();
+    let response = await overallWineStatistics();
 
     response.sort();
     response = response
