@@ -4,5 +4,6 @@ module.exports = {
   price: 10,
   message: "VINLOTTERI",
   date: 5,
-  hours: 15
+  hours: 15,
+  apiUrl: undefined
 };
