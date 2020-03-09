@@ -1,24 +1,32 @@
 <template>
-  <div class="inner-wine-container" :class="{ 'big': fullscreen }">
-    <div class="left">
-      <img :src="wine.image" class="wine-image" :class="{ 'fullscreen': fullscreen }" />
-    </div>
-    <div class="right">
-      <h2>{{ wine.name }}</h2>
-      <span v-if="wine.rating">{{ wine.rating }} rating</span>
+  <div class="container">
+    <div class="inner-wine-container" :class="{ 'big': fullscreen }">
+      <div class="left">
+        <img v-if="wine.image" :src="wine.image" class="wine-image" :class="{ 'fullscreen': fullscreen }" />
+        <img v-else class="wine-placeholder" alt="Wine image" />
+      </div>
+      <div class="right">
+        <h2 v-if="wine.name">{{ wine.name }}</h2><h2 v-else>(no name)</h2>
+        <span v-if="wine.rating">{{ wine.rating }} rating</span>
+        <span v-if="wine.price">{{ wine.price }} NOK</span>
+        <span v-if="wine.country">{{ wine.country }}</span>
 
-      <a :href="wine.vivinoLink" class="wine-link">Les mer</a>
-      <span class="name-wins" v-if="wine.winners">
-        Vunnet av:
-        {{wine.winners.join(", ")}}
-      </span>
-      <div class="color-wins" :class="{ 'big': fullscreen }">
-        <span class="color-win blue">{{wine.blue == undefined ? 0 : wine.blue}}</span>
-        <span class="color-win red">{{wine.red == undefined ? 0 : wine.red}}</span>
-        <span class="color-win green">{{wine.green == undefined ? 0 : wine.green}}</span>
-        <span class="color-win yellow">{{wine.yellow == undefined ? 0 : wine.yellow}}</span>
+        <a v-if="wine.vivinoLink" :href="wine.vivinoLink" class="wine-link">Les mer</a>
+        <span class="name-wins" v-if="wine.winners">
+          Vunnet av:
+          {{wine.winners.join(", ")}}
+        </span>
+        <div class="color-wins" :class="{ 'big': fullscreen }"
+          v-if="wine.blue || wine.red || wine.green || wine.yellow">
+          <span class="color-win blue">{{wine.blue == undefined ? 0 : wine.blue}}</span>
+          <span class="color-win red">{{wine.red == undefined ? 0 : wine.red}}</span>
+          <span class="color-win green">{{wine.green == undefined ? 0 : wine.green}}</span>
+          <span class="color-win yellow">{{wine.yellow == undefined ? 0 : wine.yellow}}</span>
+        </div>
       </div>
     </div>
+
+    <slot></slot>
   </div>
 </template>
 
@@ -39,6 +47,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "./src/styles/media-queries";
+@import "./src/styles/variables";
+
 .wine-image {
   height: 250px;
 
@@ -48,6 +58,10 @@ export default {
       max-height: 65vh;
     }
   }
+}
+.wine-placeholder {
+  height: 250px;
+  width: 70px;
 }
 
 .name-wins,
@@ -109,25 +123,25 @@ h3 {
   }
 }
 
+.container {
+  margin-bottom: 30px;
+}
+
 .inner-wine-container {
   display: flex;
   flex-direction: row;
-  width: 500px;
   font-family: Arial;
-  margin-bottom: 30px;
+  width: 100%;
 
   &.big {
     align-items: center;
   }
 
   @include desktop {
-    justify-content: center;
-  }
-
-  @include mobile {
-    width: auto;
+    max-width: 600px;
   }
 }
+
 
 .right {
   display: flex;
@@ -158,5 +172,12 @@ a:visited {
   font-weight: bold;
   border-bottom: 1px solid #ff5fff;
   width: fit-content;
+}
+
+.button-container {
+  & button.red {
+    background-color: $light-red;
+    color: $red;
+  }
 }
 </style>
