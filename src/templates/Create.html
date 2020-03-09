@@ -50,6 +50,14 @@
       content="black-translucent"
     />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <!-- Super hacky safari bigint import -->
+    <script src="https://peterolson.github.io/BigInteger.js/BigInteger.min.js"></script>
+    <script type="application/javascript">
+      if (navigator.userAgent.includes("Safari")) {
+        BigInt = bigInt;
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>
