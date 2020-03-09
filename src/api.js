@@ -29,6 +29,21 @@ const overallWineStatistics = () => {
 }
 
 
+const chartWinsByColor = () => {
+  const url = new URL("/api/purchase/statistics/color", BASE_URL)
+
+  return fetch(url.href)
+    .then(resp => resp.json())
+}
+
+const chartPurchaseByColor = () => {
+  const url = new URL("/api/purchase/statistics", BASE_URL)
+
+  return fetch(url.href)
+    .then(resp => resp.json())
+}
+
+
 const prelottery = () => {
   const url = new URL("/api/wines/prelottery", BASE_URL)
 
@@ -150,6 +165,8 @@ export {
   colorStatistics,
   highscoreStatistics,
   overallWineStatistics,
+  chartWinsByColor,
+  chartPurchaseByColor,
   prelottery,
   log,
   logWines,
