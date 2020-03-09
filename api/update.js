@@ -48,11 +48,16 @@ router.route("/log/wines").post(mustBeAuthenticated, async (req, res) => {
   res.send(true);
 });
 
-router.route("/log").post(async (req, res) => {
-  if (!req.isAuthenticated()) {
-    res.send(false);
-    return;
-  }
+router.route("/log/schema").get(mustBeAuthenticated, async (req, res) => {
+  let schema = {...PreLotteryWine.schema.obj};
+  let nulledSchema = Object.keys(schema).reduce(
+    (accumulator, current) => {
+      accumulator[current] = "";
+      return accumulator
+    }, {});
+
+  res.send(nulledSchema)
+})
 
 router.route("/log").post(mustBeAuthenticated, async (req, res) => {
   await PreLotteryWine.deleteMany();
