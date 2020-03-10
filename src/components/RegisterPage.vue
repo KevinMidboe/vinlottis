@@ -26,7 +26,7 @@
     </div>
 
     <div v-if="wines.length > 0">
-      <wine v-for="wine in wines" :wine="wine">
+      <wine v-for="wine in wines" :key="key" :wine="wine">
         <div class="button-container row">
           <button class="vin-button" @click="editWine = amIBeingEdited(wine) ? false : wine">
             {{ amIBeingEdited(wine) ? "Lukk" : "Rediger" }}
@@ -35,7 +35,7 @@
         </div>
 
         <div v-if="amIBeingEdited(wine)" class="wine-edit">
-          <div class="label-div" v-for="key in Object.keys(wine)">
+          <div class="label-div" v-for="key in Object.keys(wine)" :key="key">
             <label>{{ key }}</label>
             <input type="text" v-model="wine[key]" :placeholder="key" />
           </div>
@@ -52,7 +52,7 @@
 
     <h3>Legg til lodd kjøpt</h3>
     <div class="colors">
-      <div v-for="color in lotteryColorBoxes" :class="color.css + ' colors-box'">
+      <div v-for="color in lotteryColorBoxes" :class="color.css + ' colors-box'" :key="color">
        <div class="colors-overlay">
           <p>{{ color.name }} kjøpt</p>
           <input v-model="color.value"
@@ -70,7 +70,7 @@
 
     <h3>Vinnere</h3>
     <div class="winner-container" v-if="winners.length > 0">
-      <wine v-for="winner in winners" :wine="winner.wine">
+      <wine v-for="winner in winners" :key="winner" :wine="winner.wine">
         <div class="winner-element">
           <div class="color-selector">
             <div class="label-div">
