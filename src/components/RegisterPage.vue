@@ -340,12 +340,11 @@
         window.removeEventListener("unload", this.setWinnerdataToStorage)
       },
       resetWinnerDataInStorage() {
-        localStorage.removeItem("winners")
-        localStorage.removeItem("colorValues")
         this.winners = []
         this.fetchAndAddPrelotteryWines()
           .then(resp => this.winners = resp)
         this.lotteryColorBoxes.map(color => color.value = null)
+        window.location.reload();
       }
     }
   };
