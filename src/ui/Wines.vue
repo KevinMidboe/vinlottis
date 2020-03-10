@@ -6,7 +6,7 @@
       >
     </h3>
     <ol>
-      <li v-for="wine in wines">
+      <li v-for="wine in wines" :key="wine">
         <span v-if="wine.vivinoLink == '' || wine.vivinoLink == null">
           {{ wine.name }} - sett {{ wine.occurences }} ganger,
           {{ wine.rating }} i rating

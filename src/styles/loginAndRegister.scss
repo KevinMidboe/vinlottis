@@ -27,14 +27,14 @@ form {
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
-  margin: 0 auto;
-  width: 60vw;
+  margin: 2rem auto 0;
+  width: 80vw;
+  max-width: 1100px;
 
   @include mobile {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 0 auto;
     width: 90vw;
   }
 
@@ -44,8 +44,10 @@ form {
     line-height: 2rem;
     border: none;
     border-bottom: 1px solid black;
+    max-width: 30vw;
 
     @include mobile {
+      max-width: unset;
       font-size: 2rem;
       min-height: 2rem;
       line-height: 2rem;

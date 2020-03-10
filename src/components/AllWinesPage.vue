@@ -3,7 +3,7 @@
     <div class="container">
       <h1 class="title">Alle viner</h1>
       <div class="wines-container">
-        <Wine :wine="wine" v-for="wine in wines" />
+        <Wine :wine="wine" v-for="wine in wines" :key="wine" />
       </div>
     </div>
   </div>

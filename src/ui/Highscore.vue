@@ -2,7 +2,7 @@
   <div class="highscores" v-if="highscore.length > 0">
     <h3>Topp 10 vinnere</h3>
     <ol>
-      <li v-for="person in highscore">
+      <li v-for="person in highscore" :key="person">
         {{ person.name }} - {{ person.wins.length }}
       </li>
     </ol>
