@@ -12,17 +12,6 @@
         <span v-if="wine.country">{{ wine.country }}</span>
 
         <a v-if="wine.vivinoLink" :href="wine.vivinoLink" class="wine-link">Les mer</a>
-        <span class="name-wins" v-if="wine.winners">
-          Vunnet av:
-          {{wine.winners.join(", ")}}
-        </span>
-        <div class="color-wins" :class="{ 'big': fullscreen }"
-          v-if="wine.blue || wine.red || wine.green || wine.yellow">
-          <span class="color-win blue">{{wine.blue == undefined ? 0 : wine.blue}}</span>
-          <span class="color-win red">{{wine.red == undefined ? 0 : wine.red}}</span>
-          <span class="color-win green">{{wine.green == undefined ? 0 : wine.green}}</span>
-          <span class="color-win yellow">{{wine.yellow == undefined ? 0 : wine.yellow}}</span>
-        </div>
       </div>
     </div>
 
@@ -52,10 +41,17 @@ export default {
 .wine-image {
   height: 250px;
 
+  @include mobile {
+    max-width: 90px;
+    object-fit: cover;
+  }
+
   &.fullscreen {
     @include desktop {
-      height: unset;
+      height: 100%;
       max-height: 65vh;
+      max-width: 275px;
+      object-fit: cover;
     }
   }
 }
@@ -64,58 +60,8 @@ export default {
   width: 70px;
 }
 
-.name-wins,
-.color-wins {
-  display: flex;
-  width: 13rem;
-  flex-wrap: wrap;
-}
-
-.color-wins.big {
-  width: unset;
-}
-
-span.color-win {
-  border: 2px solid transparent;
-  color: #333;
-  display: block;
-  padding: 30px;
-  font-size: 1.3rem;
-  display: inline-flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  /* max-height: calc(3rem + 18px); */
-  /* max-width: calc(3rem + 18px); */
-  width: 1rem;
-  margin: 10px;
-  touch-action: manipulation;
-  height: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 900;
-
-  @include mobile {
-    margin: 2px;
-    padding: 10px;
-    font-size: 1rem;
-  }
-
-  &.green {
-    background: #c8f9df;
-  }
-  &.blue {
-    background: #d4f2fe;
-  }
-  &.red {
-    background: #fbd7de;
-  }
-  &.yellow {
-    background: #fff6d6;
-  }
-}
-
-h3 {
+h2 {
+  width: 100%;
   max-width: 30vw;
 
   @include mobile {
