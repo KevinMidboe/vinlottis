@@ -127,10 +127,10 @@
     components: { TextToast, Wine, ScanToVinmonopolet },
     data() {
       return {
-        red: 0,
-        blue: 0,
-        green: 0,
-        yellow: 0,
+        red: null,
+        blue: null,
+        green: null,
+        yellow: null,
         payed: undefined,
         winners: [],
         wines: [],
@@ -310,7 +310,7 @@
         }
         
         let localWinners = localStorage.getItem("winners");
-        if (localWinners) {
+        if (localWinners && this.winners.length) {
           localWinners = JSON.parse(localWinners);
 
           this.winners = this.winners.map(winner => {
