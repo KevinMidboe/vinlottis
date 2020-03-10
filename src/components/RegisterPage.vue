@@ -417,6 +417,10 @@ hr {
   margin-bottom: 0.65rem;
   margin-right: 1rem;
 
+  @include mobile {
+    max-width: 150px;
+  }
+
   .active {
     border: 2px solid unset;
 
