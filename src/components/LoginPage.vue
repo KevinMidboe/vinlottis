@@ -4,14 +4,18 @@
     <form aria-label="User signin" @submit.prevent>
       <div class="label-div">
         <label>Brukernavn</label>
-        <input type="text" v-model="username" placeholder="Brukernavn" @keyup.enter="login" />
+        <input type="text"
+               v-model="username"
+               placeholder="Brukernavn"
+               autocapitalize="none"
+               @keyup.enter="submit" />
       </div>
       <div class="label-div row">
         <label>Passord</label>
-        <input type="password" v-model="password" placeholder="Passord" @keyup.enter="login" />
+        <input type="password" v-model="password" placeholder="Passord" @keyup.enter="submit" />
       </div>
 
-      <button class="vin-button" @click="login">Logg inn</button>
+      <button class="vin-button" @click="submit">Logg inn</button>
 
       <div v-if="error" class="error">{{ error }}</div>
     </form>
@@ -29,16 +33,10 @@ export default {
     }
   },
   methods: {
-    login() {
+    submit() {
       login(this.username, this.password)
-        .then(resp => {
-          if (resp.redirected) { this.$router.push("update") }
-        })
-        .catch(this.loginErrorResponse)
-
-    },
-    loginErrorResponse(error) {
-      this.error = error.message || error
+        .then(resp => this.$router.push("update"))
+        .catch(error => this.error = error.message || error)
     }
   }
 };

@@ -1,4 +1,4 @@
-const BASE_URL = __APIURL__ || "http://localhost:30030/";
+const BASE_URL = __APIURL__ || window.location.origin;
 
 const statistics = () => {
   const url = new URL('/api/purchase/statistics', BASE_URL)
@@ -119,17 +119,13 @@ const login = (username, password) => {
       "Content-Type": "application/json"
     },
     method: "POST",
-    redirect: "follow",
     body: JSON.stringify({ username, password })
   }
 
   return fetch(url.href, options)
     .then(resp => {
       if (resp.ok) {        
-        if (resp.bodyUsed)
-          return resp.json()
-        else
-          return resp
+        return resp.json()
       } else {
         return handleErrors(resp)
       }
@@ -143,17 +139,13 @@ const register = (username, password) => {
       "Content-Type": "application/json"
     },
     method: "POST",
-    redirect: 'follow',
     body: JSON.stringify({ username, password })
   }
 
   return fetch(url.href, options)
     .then(resp => {
       if (resp.ok) {
-        if (resp.bodyUsed)
-          return resp.json()
-        else
-          return resp
+        return resp.json()
       } else {
         return handleErrors(resp)
       }

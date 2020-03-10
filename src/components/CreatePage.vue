@@ -4,16 +4,20 @@
     <form aria-label="User registration" @submit.prevent>
       <div class="label-div">
         <label>Brukernavn</label>
-        <input type="text" v-model="username" placeholder="Brukernavn" @keyup.enter="login" />
+        <input type="text"
+               v-model="username"
+               placeholder="Brukernavn"
+               autocapitalize="none"
+               @keyup.enter="submit" />
       </div>
       <div class="label-div row">
         <label>Passord</label>
-        <input type="password" v-model="password" placeholder="Passord" @keyup.enter="login" />
+        <input type="password" v-model="password" placeholder="Passord" @keyup.enter="submit" />
       </div>
 
-      <button class="vin-button" @click="register">Registrer bruker</button>
+      <button class="vin-button" @click="submit">Registrer bruker</button>
 
-      <p v-if="error" class="error">{{ error }}</p>
+      <div v-if="error" class="error">{{ error }}</div>
     </form>
   </div>
 </template>
@@ -29,17 +33,10 @@ export default {
     }
   },
   methods: {
-    register() {
+    submit() {
       register(this.username, this.password)
-        .then(resp => {
-          if (resp.redirected) { this.$router.push("/") }
-        })
-        .catch(this.registerErrorResponse)
-
-    },
-    registerErrorResponse(error) {
-      console.log("error", error)
-      this.error = error.message || error
+        .then(resp => this.$router.push("/"))
+        .catch(error => this.error = error.message || error)
     }
   }
 };
