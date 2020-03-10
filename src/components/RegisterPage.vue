@@ -305,10 +305,6 @@
         }
       },
       getWinnerdataFromStorage() {
-        if (this.winners.length == 0) {
-          return
-        }
-        
         let localWinners = localStorage.getItem("winners");
         if (localWinners) {
           localWinners = JSON.parse(localWinners);
@@ -329,14 +325,15 @@
         if (localColors) {
           localColors = localColors.split(",")
           this.lotteryColorBoxes.forEach((color, i) => {
-            color.value = Number(localColors[i]) || null
+            const localColorValue = Number(localColors[i])
+            color.value = localColorValue == 0 ? null : localColorValue
           })
         }
       },
       setWinnerdataToStorage() {
         console.log("saving localstorage")
         localStorage.setItem("winners", JSON.stringify(this.winners))
-        localStorage.setItem("colorValues", this.lotteryColorBoxes.map(color => color.value || null))
+        localStorage.setItem("colorValues", this.lotteryColorBoxes.map(color => Number(color.value)))
         window.removeEventListener("unload", this.setWinnerdataToStorage)
       },
       resetWinnerDataInStorage() {
