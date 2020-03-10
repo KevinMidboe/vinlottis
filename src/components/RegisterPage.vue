@@ -72,7 +72,7 @@
 
     <h3>Vinnere</h3>
     <div class="winner-container" v-if="winners.length > 0">
-      <wine v-for="winner in winners" :key="winner" :wine="winner.wine">
+      <wine v-for="winner in winners" :key="winner" :wine="winner.wine" :inlineSlot="true">
         <div class="winner-element">
           <div class="color-selector">
             <div class="label-div">
