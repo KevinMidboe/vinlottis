@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="inner-wine-container" :class="{ 'big': fullscreen }">
+  <div class="container" >
+    <div class="wine-container" :class="{ 'big': fullscreen }">
       <div class="left">
         <img v-if="wine.image" :src="wine.image" class="wine-image" :class="{ 'fullscreen': fullscreen }" />
         <img v-else class="wine-placeholder" alt="Wine image" />
@@ -13,9 +13,11 @@
 
         <a v-if="wine.vivinoLink" :href="wine.vivinoLink" class="wine-link">Les mer</a>
       </div>
-    </div>
 
-    <slot></slot>
+      <slot v-if="inlineSlot"></slot>
+    </div>
+    <slot v-if="!inlineSlot"></slot>
+
   </div>
 </template>
 
@@ -29,6 +31,11 @@ export default {
     fullscreen: {
       type: Boolean,
       required: false
+    },
+    inlineSlot: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 };
@@ -71,11 +78,9 @@ h2 {
 
 .container {
   margin-bottom: 30px;
-}
-
-.inner-wine-container {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   font-family: Arial;
   width: 100%;
 
@@ -84,21 +89,35 @@ h2 {
   }
 
   @include desktop {
-    max-width: 600px;
+    max-width: 550px;
   }
 }
 
+.wine-container {
+  width: 100%;
+  // display: flex;
+  // flex-direction: row;
+  // flex-wrap: wrap;
+
+  >* {
+    // flex: 1 1 auto;
+  }
+}
+
+.left {
+  float: left;
+  margin-right: 3rem;
+
+  @include mobile {
+    margin-right: 2rem;
+  }
+}
 
 .right {
   display: flex;
   flex-direction: column;
-  margin-bottom: 150px;
-  margin-left: 50px;
-
-  @include mobile {
-    margin-left: 2rem;
-    margin-bottom: 50px;
-  }
+  height: max-content;
+  margin-bottom: 2rem;
 }
 
 a,
