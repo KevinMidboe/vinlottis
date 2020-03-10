@@ -52,10 +52,28 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
     <!-- Super hacky safari bigint import -->
-    <script src="https://peterolson.github.io/BigInteger.js/BigInteger.min.js"></script>
     <script type="application/javascript">
-      if (navigator.userAgent.includes("Safari")) {
-        BigInt = bigInt;
+      const loadBigInt = function(callbackfn) {
+        var newScript = document.createElement("script");
+        newScript.type = "text/javascript";
+        newScript.setAttribute("src", "https://peterolson.github.io/BigInteger.js/BigInteger.min.js");
+
+        if(newScript.readyState) {
+          console.log("newScript is ready")
+          newScript.onreadystatechange = function() {
+            if(/loaded|complete/.test(newScript.readyState)) callbackfn();
+          }
+        } else {
+          newScript.addEventListener("load", callbackfn, false);
+        }
+        document.documentElement.firstChild.appendChild(newScript);
+      }
+
+      if (!navigator.userAgent.includes("Chrome") && !navigator.userAgent.includes("Firefox")) {
+        loadBigInt(function() {
+          console.log("callback from loadBigInt")
+          BigInt = bigInt;
+        })
       }
     </script>
   </head>
