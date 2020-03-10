@@ -25,19 +25,21 @@
       <button class="vin-button" @click="addWine">Legg til en vin manuelt</button>
     </div>
 
-    <div v-if="wines.length > 0">
+    <div v-if="wines.length > 0" class="edit-container">
       <wine v-for="wine in wines" :key="key" :wine="wine">
-        <div class="button-container row">
-          <button class="vin-button" @click="editWine = amIBeingEdited(wine) ? false : wine">
-            {{ amIBeingEdited(wine) ? "Lukk" : "Rediger" }}
-          </button>
-          <button class="red vin-button" @click="deleteWine(wine)">Slett</button>
-        </div>
+        <div class="edit">
+          <div class="button-container row">
+            <button class="vin-button" @click="editWine = amIBeingEdited(wine) ? false : wine">
+              {{ amIBeingEdited(wine) ? "Lukk" : "Rediger" }}
+            </button>
+            <button class="red vin-button" @click="deleteWine(wine)">Slett</button>
+          </div>
 
-        <div v-if="amIBeingEdited(wine)" class="wine-edit">
-          <div class="label-div" v-for="key in Object.keys(wine)" :key="key">
-            <label>{{ key }}</label>
-            <input type="text" v-model="wine[key]" :placeholder="key" />
+          <div v-if="amIBeingEdited(wine)" class="wine-edit">
+            <div class="label-div" v-for="key in Object.keys(wine)" :key="key">
+              <label>{{ key }}</label>
+              <input type="text" v-model="wine[key]" :placeholder="key" />
+            </div>
           </div>
         </div>
       </wine>
@@ -389,19 +391,34 @@ hr {
     width: 100%;
   }
 }
+.edit-container {
+  margin-top: 2rem;
+}
+.edit {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .notification-element {
   margin-bottom: 2rem;
 }
 .winner-element {
+  padding-top: 1.2rem;
   display: flex;
   flex-direction: row;
+
+  @include mobile {
+    width: 100%;
+  }
 }
 .wine-element {
   align-items: flex-start;
 }
 
 .wine-edit {
+  width: 100%;
   margin-top: 1.5rem;
 
   label {
@@ -414,8 +431,12 @@ hr {
   margin-bottom: 0.65rem;
   margin-right: 1rem;
 
+  @include desktop {
+    min-width: 175px;
+  }
+
   @include mobile {
-    max-width: 150px;
+    max-width: 25vw;
   }
 
   .active {
