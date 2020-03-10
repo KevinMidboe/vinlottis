@@ -78,6 +78,7 @@ const webpackConfig = function(isDev) {
         __MESSAGE__: JSON.stringify(env.message),
         __DATE__: env.date,
         __HOURS__: env.hours,
+        __APIURL__: JSON.stringify(env.apiUrl),
         __PUSHENABLED__: JSON.stringify(require("./defaults/push") != false)
       })
     ]

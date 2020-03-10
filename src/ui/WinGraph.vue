@@ -5,19 +5,13 @@
 </template>
 
 <script>
+import { chartWinsByColor } from "@/api";
+
 export default {
   async mounted() {
     let canvas = this.$refs["win-chart"].getContext("2d");
 
-    let _response = undefined;
-    if (process.env.NODE_ENV == "development") {
-      _response = await fetch(
-        "http://localhost:30030/api/purchase/statistics/color"
-      );
-    } else {
-      _response = await fetch("/api/purchase/statistics/color");
-    }
-    let response = await _response.json();
+    let response = await chartWinsByColor();
     let labels = ["Vunnet"];
     let blue = {
       label: "Blå",

@@ -35,6 +35,9 @@
   </div>
 </template>
 <script>
+
+import { colorStatistics } from "@/api";
+
 export default {
   data() {
     return {
@@ -54,8 +57,7 @@ export default {
     };
   },
   async mounted() {
-    let _response = await fetch("/api/purchase/statistics/color");
-    let response = await _response.json();
+    let response = await colorStatistics();
     this.red = response.red;
     this.blue = response.blue;
     this.green = response.green;

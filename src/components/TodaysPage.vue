@@ -3,7 +3,7 @@
     <div class="container">
       <h1 class="title">Dagens viner</h1>
       <div class="wines-container">
-        <a :href="wine.vivinoLink" v-for="wine in wines">
+        <a :href="wine.vivinoLink" v-for="wine in wines" :key="wine">
           <div class="inner-wine-container">
             <div class="left">
               <img :src="wine.image" class="wine-image" />

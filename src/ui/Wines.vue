@@ -6,7 +6,7 @@
       >
     </h3>
     <ol>
-      <li v-for="wine in wines">
+      <li v-for="wine in wines" :key="wine">
         <span v-if="wine.vivinoLink == '' || wine.vivinoLink == null">
           {{ wine.name }} - sett {{ wine.occurences }} ganger,
           {{ wine.rating }} i rating
@@ -35,6 +35,7 @@
 <script>
 import { event } from "vue-analytics";
 import Wine from "@/ui/Wine";
+import { overallWineStatistics } from "@/api";
 
 export default {
   components: {
@@ -44,8 +45,7 @@ export default {
     return { wines: [], clickedWine: null, wineOpen: false };
   },
   async mounted() {
-    let _response = await fetch("/api/wines/statistics/overall");
-    let response = await _response.json();
+    let response = await overallWineStatistics();
 
     response.sort();
     response = response

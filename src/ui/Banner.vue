@@ -101,6 +101,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../styles/media-queries.scss";
+@import "../styles/variables.scss";
 
 .link {
   text-decoration: none;
@@ -115,7 +116,7 @@ export default {
   width: calc(100% - 80px);
   margin-top: 0px;
   padding: 0px 40px;
-  background-color: #dbeede;
+  background-color: $primary;
   -webkit-box-shadow: 0px 0px 22px -8px rgba(0, 0, 0, 0.65);
   -moz-box-shadow: 0px 0px 22px -8px rgba(0, 0, 0, 0.65);
   box-shadow: 0px 0px 22px -8px rgba(0, 0, 0, 0.65);

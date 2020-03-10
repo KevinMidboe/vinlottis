@@ -7,6 +7,7 @@ mongoose.connect("mongodb://localhost:27017/vinlottis", {
 });
 
 const sub = require(path.join(__dirname + "/../api/subscriptions"));
+const mustBeAuthenticated = require(path.join(__dirname + "/../middleware/mustBeAuthenticated"))
 
 const Subscription = require(path.join(__dirname + "/../schemas/Subscription"));
 const Purchase = require(path.join(__dirname + "/../schemas/Purchase"));
@@ -20,11 +21,7 @@ router.use((req, res, next) => {
   next();
 });
 
-router.route("/log/wines").post(async (req, res) => {
-  if (!req.isAuthenticated()) {
-    res.send(false);
-    return;
-  }
+router.route("/log/wines").post(mustBeAuthenticated, async (req, res) => {
   const wines = req.body;
   for (let i = 0; i < wines.length; i++) {
     let wine = wines[i];
@@ -51,12 +48,18 @@ router.route("/log/wines").post(async (req, res) => {
   res.send(true);
 });
 
-router.route("/log").post(async (req, res) => {
-  if (!req.isAuthenticated()) {
-    res.send(false);
-    return;
-  }
+router.route("/log/schema").get(mustBeAuthenticated, async (req, res) => {
+  let schema = {...PreLotteryWine.schema.obj};
+  let nulledSchema = Object.keys(schema).reduce(
+    (accumulator, current) => {
+      accumulator[current] = "";
+      return accumulator
+    }, {});
 
+  res.send(nulledSchema)
+})
+
+router.route("/log").post(mustBeAuthenticated, async (req, res) => {
   await PreLotteryWine.deleteMany();
 
   const purchaseBody = req.body.purchase;

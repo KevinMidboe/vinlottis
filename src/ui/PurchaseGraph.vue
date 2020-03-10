@@ -7,18 +7,13 @@
 
 <script>
 import Chartjs from "chart.js";
+import { chartPurchaseByColor } from "@/api";
 
 export default {
   async mounted() {
     let canvas = this.$refs["purchase-chart"].getContext("2d");
 
-    let _response = undefined;
-    if (process.env.NODE_ENV == "development") {
-      _response = await fetch("http://localhost:30030/api/purchase/statistics");
-    } else {
-      _response = await fetch("/api/purchase/statistics");
-    }
-    let response = await _response.json();
+    let response = await chartPurchaseByColor();
     let labels = [];
     let blue = {
       label: "Blå",

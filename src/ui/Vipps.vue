@@ -10,14 +10,14 @@
         class="vipps-logo"
         alt="vipps logo"
       />
-      <span v-if="amount * 10 > 10">
+      <span v-if="amount * price > price">
         kr.
-        <span class="big-money">{{ amount * 10 }},-</span>
-        (10,- pr. lodd)
+        <span class="big-money">{{ amount * price }},-</span>
+         {{ price }},- pr. lodd)
       </span>
-      <span v-if="amount * 10 == 10">
+      <span v-if="amount * price == price">
         kr.
-        <span class="big-money">{{ amount * 10 }},-</span>
+        <span class="big-money">{{ amount * price }},-</span>
         pr. lodd
       </span>
       <ing
@@ -52,6 +52,7 @@ export default {
       qrFailed: false,
       phone: __PHONE__,
       name: __NAME__,
+      price: __PRICE__,
       message: __MESSAGE__
     };
   },
@@ -67,8 +68,8 @@ export default {
     isMobile: function() {
       return this.isMobileFunction();
     },
-    price: function() {
-      return this.amount * (__PRICE__ * 100);
+    priceToPay: function() {
+      return this.amount * (this.price * 100);
     },
     vippsUrlBasedOnUserAgent: function() {
       if (navigator.userAgent.includes("iPhone")) {
@@ -78,7 +79,7 @@ export default {
           "?v=1&m=" +
           this.message +
           "&a=" +
-          this.price
+          this.priceToPay
         );
       }
 
