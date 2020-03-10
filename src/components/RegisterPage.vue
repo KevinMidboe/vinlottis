@@ -25,7 +25,7 @@
       <button class="vin-button" @click="addWine">Legg til en vin manuelt</button>
     </div>
 
-    <div class="wines-container" v-if="wines.length > 0">
+    <div v-if="wines.length > 0">
       <wine v-for="wine in wines" :wine="wine">
         <div class="button-container row">
           <button class="vin-button" @click="editWine = amIBeingEdited(wine) ? false : wine">
@@ -34,8 +34,8 @@
           <button class="red vin-button" @click="deleteWine(wine)">Slett</button>
         </div>
 
-        <div v-if="amIBeingEdited(wine)">
-          <div class="edit-div" v-for="key in Object.keys(wine)">
+        <div v-if="amIBeingEdited(wine)" class="wine-edit">
+          <div class="label-div" v-for="key in Object.keys(wine)">
             <label>{{ key }}</label>
             <input type="text" v-model="wine[key]" :placeholder="key" />
           </div>
@@ -403,6 +403,15 @@ hr {
 }
 .wine-element {
   align-items: flex-start;
+}
+
+.wine-edit {
+  margin-top: 1.5rem;
+
+  label {
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+  }
 }
 
 .color-selector {
