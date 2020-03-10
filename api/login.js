@@ -17,7 +17,6 @@ router.get("/register", function(req, res) {
 //     req.body.password,
 //     function(err) {
 //       if (err) {
-//         console.log("error while user register!", err);
 //         if (err.name == "UserExistsError")
 //           res.status(409).send({ success: false, message: err.message })
 //         else if (err.name == "MissingUsernameError" || err.name == "MissingPasswordError")
@@ -25,9 +24,7 @@ router.get("/register", function(req, res) {
 //         return next(err);
 //       }
 
-//       console.log("user registered!", req.body.username);
-
-//       res.redirect("/#/")
+//       return res.status(200).send({ message: "Bruker registrert. Velkommen " + req.body.username, success: true })
 //      }
 //   );
 // });
@@ -40,14 +37,17 @@ router.post("/login", function(req, res, next) {
   passport.authenticate("local", function(err, user, info) { 
     if (err) {
       if (err.name == "MissingUsernameError" || err.name == "MissingPasswordError")
-        return res.status(400).send({ success: false, message: err.message })
+        return res.status(400).send({ message: err.message, success: false })
       return next(err);
     }
 
-    if (!user) return res.status(404).send({ success: false, message: "Incorrect username or password" })
+    if (!user) return res.status(404).send({ message: "Incorrect username or password", success: false })
 
-    console.log("user logged in:", user)
-    res.redirect("/#/update")
+    req.logIn(user, (err) => {
+      if (err) { return next(err) }
+
+      return res.status(200).send({ message: "Velkommen " + user.username, success: true })
+    })
   })(req, res, next);
 });
 
