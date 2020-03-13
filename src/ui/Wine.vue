@@ -1,23 +1,23 @@
 <template>
-  <div class="container" >
-    <div class="wine-container" :class="{ 'big': fullscreen }">
-      <div class="left">
-        <img v-if="wine.image" :src="wine.image" class="wine-image" :class="{ 'fullscreen': fullscreen }" />
-        <img v-else class="wine-placeholder" alt="Wine image" />
-      </div>
-      <div class="right">
+  <div class="wine-container" :class="{ 'big': fullscreen }">
+    <div class="left">
+      <img v-if="wine.image" :src="wine.image" class="wine-image" :class="{ 'fullscreen': fullscreen }" />
+      <img v-else class="wine-placeholder" alt="Wine image" />
+    </div>
+    <div class="right">
+      <div>
         <h2 v-if="wine.name">{{ wine.name }}</h2><h2 v-else>(no name)</h2>
         <span v-if="wine.rating">{{ wine.rating }} rating</span>
         <span v-if="wine.price">{{ wine.price }} NOK</span>
         <span v-if="wine.country">{{ wine.country }}</span>
 
-        <a v-if="wine.vivinoLink" :href="wine.vivinoLink" class="wine-link">Les mer</a>
+        <a v-if="wine.vivinoLink" :href="wine.vivinoLink" class="wine-link">Les mer på {{ hostname(wine.vivinoLink) }}</a>
       </div>
 
-      <slot v-if="inlineSlot"></slot>
+      <slot v-if="shouldUseInlineSlot()"></slot>
     </div>
-    <slot v-if="!inlineSlot"></slot>
 
+    <slot v-if="!shouldUseInlineSlot()"></slot>
   </div>
 </template>
 
@@ -36,6 +36,15 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    }
+  },
+  methods: {
+    shouldUseInlineSlot() {
+      return this.inlineSlot && window.innerWidth > 768
+    },
+    hostname(url) {
+      const urlHostname = new URL(url).hostname
+      return urlHostname.split(".")[(urlHostname.match(/\./g) || []).length - 1]
     }
   }
 };
@@ -76,13 +85,11 @@ h2 {
   }
 }
 
-.container {
+.wine-container {
   margin-bottom: 30px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   font-family: Arial;
   width: 100%;
+  max-width: max-content;
 
   &.big {
     align-items: center;
@@ -90,17 +97,6 @@ h2 {
 
   @include desktop {
     max-width: 550px;
-  }
-}
-
-.wine-container {
-  width: 100%;
-  // display: flex;
-  // flex-direction: row;
-  // flex-wrap: wrap;
-
-  >* {
-    // flex: 1 1 auto;
   }
 }
 
@@ -114,10 +110,15 @@ h2 {
 }
 
 .right {
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   height: max-content;
-  margin-bottom: 2rem;
+
+  > div:first-of-type {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 a,

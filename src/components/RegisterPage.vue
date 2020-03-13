@@ -393,6 +393,8 @@ hr {
 }
 .edit-container {
   margin-top: 2rem;
+  display: flex;
+  justify-content: center;
 }
 .edit {
   width: 100%;
@@ -405,9 +407,12 @@ hr {
   margin-bottom: 2rem;
 }
 .winner-element {
-  padding-top: 1.2rem;
   display: flex;
   flex-direction: row;
+
+  @include desktop {
+    margin-top: 1.5rem;
+  }
 
   @include mobile {
     width: 100%;

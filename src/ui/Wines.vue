@@ -25,8 +25,8 @@
     </ol>
     <div class="wine-window-outer" v-if="wineOpen" @click="closeWine">
       <div class="wine-window">
-        <div class="close-modal" @click="closeWine">X</div>
         <Wine :wine="clickedWine" :fullscreen="true" />
+        <div class="close-modal" @click="closeWine">X</div>
       </div>
     </div>
   </div>
@@ -178,7 +178,11 @@ export default {
   justify-content: center;
   align-items: center;
   @include desktop {
-    width: 60vw;
+    width: 80vw;
+  }
+
+  > *:first-child {
+    display: flex;
   }
 }
 
@@ -211,12 +215,6 @@ h3 {
       color: #333333;
     }
   }
-}
-div {
-  margin: 0;
-  font-family: arial;
-  display: inline-flex;
-  flex-direction: column;
 }
 
 ol {

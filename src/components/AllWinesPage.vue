@@ -5,11 +5,6 @@
       <div class="wines-container">
         <Wine :wine="wine" v-for="wine in wines" :key="wine" :fullscreen="true" :inlineSlot="true">
           <div class="winners-container">
-            <div class="name-wins" v-if="wine.winners">
-              <span class="label">Vunnet av:</span>
-              <span class="names" v-for="winner in wine.winners">- {{ winner }}</span>
-              </span>
-            </div>
             <div class="color-wins" :class="{ 'big': fullscreen }"
               v-if="wine.blue || wine.red || wine.green || wine.yellow">
               <span class="label">Vinnende lodd:</span>
@@ -17,6 +12,11 @@
               <span class="color-win red">{{wine.red == undefined ? 0 : wine.red}}</span>
               <span class="color-win green">{{wine.green == undefined ? 0 : wine.green}}</span>
               <span class="color-win yellow">{{wine.yellow == undefined ? 0 : wine.yellow}}</span>
+            </div>
+            <div class="name-wins" v-if="wine.winners">
+              <span class="label">Vunnet av:</span>
+              <span class="names" v-for="winner in wine.winners">- {{ winner }}</span>
+              </span>
             </div>
           </div>
         </Wine>
@@ -62,26 +62,32 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  margin: 0 2rem;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
 
-  @media(min-width: 1500px) {
-    max-width: 1500px;
-    margin: 0 auto;
-  }
+  @include desktop {
+    margin: 0 2rem;
 
-  @include mobile {
-    flex-direction: column;
+    > div {
+      max-width: max-content;
+    }
   }
 }
 
 .winners-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  margin-top: 2rem;
 
   @include mobile {
     flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
+    width: max-content;
+    margin: 0.75rem;
+
+    &:not(&:first-child) {
+      margin-top: 0.5rem;
+    }
   }
 }
 
@@ -94,7 +100,7 @@ h1 {
 .name-wins {
   display: flex;
   flex-direction: column;
-
+  width: max-content;
 
   .names {
     margin-left: 0.5rem;
@@ -114,7 +120,7 @@ h1 {
     margin-left: -2px; // offset span.color-win margin
   }
   @include desktop {
-    margin-top: 1rem;
+    width: 30%;
   }
 }
 
