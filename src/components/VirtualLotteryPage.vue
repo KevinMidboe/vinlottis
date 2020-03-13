@@ -1,6 +1,16 @@
 <template>
   <div>
     <h1>Virtuelt lotteri</h1>
+    <h2
+      v-if="
+        attendees.length <= 0 &&
+          winners.length <= 0 &&
+          attendeesFetched &&
+          winnersFetched
+      "
+    >
+      Her var det lite.. Sikker på at det er en virtuell trekning nå?
+    </h2>
     <div class="current-draw" v-if="currentWinnerDrawn">
       <h2>NY VINNER:</h2>
       <div
@@ -60,7 +70,9 @@ export default {
       countdownStarted: false,
       secondsLeft: 15,
       secondsNameLeft: 5,
-      socket: null
+      socket: null,
+      attendeesFetched: false,
+      winnersFetched: false
     };
   },
   mounted() {
@@ -116,6 +128,7 @@ export default {
       if (response) {
         this.winners = response;
       }
+      this.winnersFetched = true;
     },
     getAttendees: async function() {
       let response = await attendees();
@@ -127,6 +140,7 @@ export default {
           this.countdown();
         }
       }
+      this.attendeesFetched = true;
     }
   }
 };

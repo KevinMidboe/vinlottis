@@ -71,7 +71,8 @@ self.addEventListener("fetch", event => {
     event.request.url.includes("/register") ||
     event.request.method == "POST" ||
     event.request.url.includes("/api/wines/prelottery") ||
-    event.request.url.includes("/api/virtual")
+    event.request.url.includes("/api/virtual") ||
+    event.request.url.includes("/socket.io")
   ) {
     event.respondWith(fetch(event.request));
     return;
