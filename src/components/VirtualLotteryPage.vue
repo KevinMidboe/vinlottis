@@ -66,7 +66,7 @@ export default {
   mounted() {
     this.getAttendees();
     this.getWinners();
-    this.socket = io(window.location.hostname + ":8080");
+    this.socket = io(`${window.location.hostname}:${window.location.port}`);
     this.socket.on("color_winner", msg => {
       this.currentWinnerDrawn = true;
       this.currentWinnerColor = msg.color;

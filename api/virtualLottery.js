@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/vinlottis", {
   useNewUrlParser: true
 });
-const io = require("socket.io")(8080);
+let io;
 const mustBeAuthenticated = require(path.join(
   __dirname + "/../middleware/mustBeAuthenticated"
 ));
@@ -68,7 +68,6 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
       colorToChoseFrom = "yellow";
       break;
   }
-
   io.emit("color_winner", { color: colorToChoseFrom });
 
   findObject[colorToChoseFrom] = { $gt: 0 };
@@ -169,7 +168,6 @@ router.route("/attendee").post(mustBeAuthenticated, async (req, res) => {
     yellow,
     phoneNumber: attendee.phoneNumber
   });
-  console.log(newAttendee);
   await newAttendee.save();
 
   io.emit("new_attendee", {});
@@ -177,4 +175,7 @@ router.route("/attendee").post(mustBeAuthenticated, async (req, res) => {
   res.send(true);
 });
 
-module.exports = router;
+module.exports = function(_io) {
+  io = _io;
+  return router;
+};

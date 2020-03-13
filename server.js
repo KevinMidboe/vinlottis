@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
 const path = require("path");
 const session = require("express-session");
 const User = require(path.join(__dirname + "/schemas/User"));
@@ -83,7 +85,7 @@ app.use("/", loginApi);
 app.use("/api/", updateApi);
 app.use("/api/", retrieveApi);
 app.use("/api/", wineinfoApi);
-app.use("/api/virtual/", virtualApi);
+app.use("/api/virtual/", virtualApi(io));
 app.use("/subscription", subscriptionApi);
 
 app.get("/dagens", function(req, res) {
@@ -94,4 +96,4 @@ app.use("/service-worker.js", function(req, res) {
   res.sendFile(path.join(__dirname, "public/sw/serviceWorker.js"));
 });
 
-app.listen(30030);
+server.listen(30030);
