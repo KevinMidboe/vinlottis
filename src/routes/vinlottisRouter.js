@@ -7,6 +7,9 @@ import LoginPage from "@/components/LoginPage";
 import RegisterPage from "@/components/RegisterPage";
 import CreatePage from "@/components/CreatePage";
 
+import VirtualLotteryRegistrationPage from "@/components/VirtualLotteryRegistrationPage";
+import VirtualLotteryPage from "@/components/VirtualLotteryPage";
+
 const routes = [
   {
     path: "*",
@@ -35,6 +38,14 @@ const routes = [
   {
     path: "/create",
     component: CreatePage
+  },
+  {
+    path: "/virtual-register",
+    component: VirtualLotteryRegistrationPage
+  },
+  {
+    path: "/virtual",
+    component: VirtualLotteryPage
   }
 ];
 

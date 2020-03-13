@@ -66,6 +66,76 @@ const log = (sendObject) => {
     .then(resp => resp.json())
 }
 
+const addAttendee = sendObject => {
+  const url = new URL("/api/virtual/attendee", BASE_URL);
+
+  const options = {
+    headers: {
+      "Content-Type": "application/json"
+    },
+    method: "POST",
+    body: JSON.stringify(sendObject)
+  };
+
+  return fetch(url.href, options).then(resp => resp.json());
+};
+
+const getVirtualWinner = () => {
+  const url = new URL("/api/virtual/winner", BASE_URL);
+
+  return fetch(url.href).then(resp => resp.json());
+};
+
+const attendeesSecure = () => {
+  const url = new URL("/api/virtual/attendees/secure", BASE_URL);
+
+  return fetch(url.href).then(resp => resp.json());
+};
+
+const winnersSecure = () => {
+  const url = new URL("/api/virtual/winners/secure", BASE_URL);
+
+  return fetch(url.href).then(resp => resp.json());
+};
+
+const winners = () => {
+  const url = new URL("/api/virtual/winners", BASE_URL);
+
+  return fetch(url.href).then(resp => resp.json());
+};
+
+const deleteWinners = () => {
+  const url = new URL("/api/virtual/winners", BASE_URL);
+
+  const options = {
+    headers: {
+      "Content-Type": "application/json"
+    },
+    method: "DELETE"
+  };
+
+  return fetch(url.href, options).then(resp => resp.json());
+}
+
+const deleteAttendees = () => {
+  const url = new URL("/api/virtual/attendees", BASE_URL);
+
+  const options = {
+    headers: {
+      "Content-Type": "application/json"
+    },
+    method: "DELETE"
+  };
+
+  return fetch(url.href, options).then(resp => resp.json());
+};
+
+const attendees = () => {
+  const url = new URL("/api/virtual/attendees", BASE_URL);
+
+  return fetch(url.href).then(resp => resp.json());
+}
+
 const logWines = (wines) => {
   const url = new URL("/api/log/wines", BASE_URL)
 
@@ -165,5 +235,13 @@ export {
   wineSchema,
   barcodeToVinmonopolet,
   login,
-  register
-}
+  register,
+  addAttendee,
+  getVirtualWinner,
+  attendeesSecure,
+  attendees,
+  winners,
+  winnersSecure,
+  deleteWinners,
+  deleteAttendees
+};

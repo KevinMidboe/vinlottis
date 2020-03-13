@@ -7,13 +7,18 @@ mongoose.connect("mongodb://localhost:27017/vinlottis", {
 });
 
 const sub = require(path.join(__dirname + "/../api/subscriptions"));
-const mustBeAuthenticated = require(path.join(__dirname + "/../middleware/mustBeAuthenticated"))
+const mustBeAuthenticated = require(path.join(
+  __dirname + "/../middleware/mustBeAuthenticated"
+));
 
 const Subscription = require(path.join(__dirname + "/../schemas/Subscription"));
 const Purchase = require(path.join(__dirname + "/../schemas/Purchase"));
 const Wine = require(path.join(__dirname + "/../schemas/Wine"));
 const PreLotteryWine = require(path.join(
   __dirname + "/../schemas/PreLotteryWine"
+));
+const VirtualWinner = require(path.join(
+  __dirname + "/../schemas/VirtualWinner"
 ));
 const Highscore = require(path.join(__dirname + "/../schemas/Highscore"));
 
@@ -49,15 +54,14 @@ router.route("/log/wines").post(mustBeAuthenticated, async (req, res) => {
 });
 
 router.route("/log/schema").get(mustBeAuthenticated, async (req, res) => {
-  let schema = {...PreLotteryWine.schema.obj};
-  let nulledSchema = Object.keys(schema).reduce(
-    (accumulator, current) => {
-      accumulator[current] = "";
-      return accumulator
-    }, {});
+  let schema = { ...PreLotteryWine.schema.obj };
+  let nulledSchema = Object.keys(schema).reduce((accumulator, current) => {
+    accumulator[current] = "";
+    return accumulator;
+  }, {});
 
-  res.send(nulledSchema)
-})
+  res.send(nulledSchema);
+});
 
 router.route("/log").post(mustBeAuthenticated, async (req, res) => {
   await PreLotteryWine.deleteMany();

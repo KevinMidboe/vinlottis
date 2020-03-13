@@ -9,6 +9,7 @@ const retrieveApi = require(path.join(__dirname + "/api/retrieve"));
 const subscriptionApi = require(path.join(__dirname + "/api/subscriptions"));
 const loginApi = require(path.join(__dirname + "/api/login"));
 const wineinfoApi = require(path.join(__dirname + "/api/wineinfo"));
+const virtualApi = require(path.join(__dirname + "/api/virtualLottery"));
 const bodyParser = require("body-parser");
 
 const mongoose = require("mongoose");
@@ -82,6 +83,7 @@ app.use("/", loginApi);
 app.use("/api/", updateApi);
 app.use("/api/", retrieveApi);
 app.use("/api/", wineinfoApi);
+app.use("/api/virtual/", virtualApi);
 app.use("/subscription", subscriptionApi);
 
 app.get("/dagens", function(req, res) {
