@@ -99,7 +99,10 @@ export default {
         this.currentWinnerDrawn = false;
       }, 15000);
     });
-
+    this.socket.on("refresh_data", async msg => {
+      this.getAttendees();
+      this.getWinners();
+    });
     this.socket.on("new_attendee", async msg => {
       this.getAttendees();
     });

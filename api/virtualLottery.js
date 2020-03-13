@@ -21,11 +21,13 @@ router.use((req, res, next) => {
 
 router.route("/winners").delete(mustBeAuthenticated, async (req, res) => {
   await VirtualWinner.deleteMany();
+  io.emit("refresh_data", {});
   res.json(true);
 });
 
 router.route("/attendees").delete(mustBeAuthenticated, async (req, res) => {
   await Attendee.deleteMany();
+  io.emit("refresh_data", {});
   res.json(true);
 });
 
