@@ -6,21 +6,20 @@
       >
     </h3>
     <ol>
-      <li v-for="wine in wines" :key="wine">
-        <span v-if="wine.vivinoLink == '' || wine.vivinoLink == null">
-          {{ wine.name }} - sett {{ wine.occurences }} ganger,
-          {{ wine.rating }} i rating
-        </span>
+      <li v-for="(wine, index) in wines" :key="wine">
         <div class="inline-wine-name">
-          <span class="truncate">{{ wine.name }}</span>
+          <span class="truncate">
+            <span class="increment">{{ index + 1}}.</span>{{ wine.name }}
+          </span>
         </div>
-        - {{ wine.occurences }} gang(er)
+        <span class="wine-win-info">{{ wine.rating ? wine.rating + "/5" : wine.price + " kr"}}
+          - {{ wine.occurences }} gang(er)
+        </span>
         <a
           class="wine-link"
           :href="wine.vivinoLink"
           @click="wineClick(wine, $event)"
-          >Les mer</a
-        >
+          >Les mer</a>
       </li>
     </ol>
     <div class="wine-window-outer" v-if="wineOpen" @click="closeWine">
@@ -218,33 +217,50 @@ h3 {
 }
 
 ol {
-  padding-left: 1.375rem !important;
   margin-left: 0;
   margin: 0 0 1.5em;
   padding: 0;
-  counter-reset: item;
   & > li {
-    margin: 0 0 0 -1.25rem;
+    margin: 0 0 0.5rem - 1.25rem;
+    margin: 0;
     padding: 0;
     list-style-type: none;
-    counter-increment: item;
-    &:before {
-      display: inline-block;
-      width: 1em;
-      font-weight: bold;
-      text-align: right;
-      content: counter(item) ".";
-    }
 
-    @include mobile {
+    display: flex;
+    justify-content: space-between;
+
+    @media (max-width: 1080px) {
       padding: 5px 0;
+      margin-bottom: 0.3rem;
+      flex-wrap: wrap;
+      justify-content: unset;
     }
+  }
+
+  @include desktop {
+    padding-left: 1rem !important;
   }
 }
 
 .inline-wine-name {
   display: inline-flex;
   padding: 0;
+  flex-grow: 1;
+  max-width: 420px;
+
+  .increment {
+    font-weight: 600;
+    margin-right: 0.5rem;
+  }
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    max-width: 75vw;
+  }
+}
+
+.wine-win-info {
+  margin-right: 0.75rem;
 }
 
 .wine-link {
@@ -257,7 +273,6 @@ ol {
 
 .truncate {
   display: inline-block;
-  max-width: 350px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
