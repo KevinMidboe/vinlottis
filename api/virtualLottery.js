@@ -74,6 +74,8 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
     }
   }
 
+  ballotColors = shuffle(ballotColors);
+
   let colorToChoseFrom =
     ballotColors[Math.floor(Math.random() * ballotColors.length)];
   let findObject = {};
@@ -92,6 +94,8 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
       });
     }
   }
+
+  attendeeListDemocratic = shuffle(attendeeListDemocratic);
 
   let winner =
     attendeeListDemocratic[
@@ -181,6 +185,26 @@ router.route("/attendee").post(mustBeAuthenticated, async (req, res) => {
 
   res.send(true);
 });
+
+function shuffle(array) {
+  let currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
 
 module.exports = function(_io) {
   io = _io;
