@@ -12,6 +12,10 @@ const subscriptionApi = require(path.join(__dirname + "/api/subscriptions"));
 const loginApi = require(path.join(__dirname + "/api/login"));
 const wineinfoApi = require(path.join(__dirname + "/api/wineinfo"));
 const virtualApi = require(path.join(__dirname + "/api/virtualLottery"));
+
+//This is required for the chat to work
+const chat = require(path.join(__dirname + "/api/chat"))(io);
+
 const bodyParser = require("body-parser");
 
 const mongoose = require("mongoose");

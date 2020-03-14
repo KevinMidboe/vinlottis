@@ -4,14 +4,17 @@
     <div class="bought-container">
       <div
         v-for="color in colors"
-        :class="color.name + '-container ' + color.name + '-ballot inner-bought-container ballot-element'"
+        :class="
+          color.name +
+            '-container ' +
+            color.name +
+            '-ballot inner-bought-container ballot-element'
+        "
         :key="color.name"
       >
         <div class="number-container">
           <span class="color-total bought-number-span">
-            {{
-            color.total
-            }}
+            {{ color.total }}
           </span>
           <span>kjøpte</span>
         </div>
@@ -35,7 +38,6 @@
   </div>
 </template>
 <script>
-
 import { colorStatistics } from "@/api";
 
 export default {
@@ -123,6 +125,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../styles/global.scss";
 @import "../styles/variables.scss";
 @import "../styles/media-queries.scss";
 
@@ -137,28 +140,6 @@ export default {
   width: 140px;
   height: 150px;
   margin: 20px 0;
-  -webkit-mask-image: url(/../../public/assets/images/lodd.svg);
-  background-repeat: no-repeat;
-  mask-image: url(/../../public/assets/images/lodd.svg);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  color: #333333;
-
-  &.green-ballot {
-    background-color: $light-green;
-  }
-
-  &.blue-ballot {
-    background-color: $light-blue;
-  }
-
-  &.yellow-ballot {
-    background-color: $light-yellow;
-  }
-
-  &.red-ballot {
-    background-color: $light-red;
-  }
 }
 
 .number-container {

@@ -11,93 +11,86 @@
     >
       Her var det lite.. Sikker på at det er en virtuell trekning nå?
     </h2>
-    <div class="current-draw" v-if="currentWinnerDrawn">
-      <h2>NY VINNER:</h2>
-      <div
-        :class="currentWinnerColor + '-ballot'"
-        class="ballot-element center-new-winner"
-      >
-        <span v-if="currentWinnerName">{{ currentWinnerName }}</span>
-        <span v-if="!currentWinnerName">{{ secondsNameLeft }}</span>
-      </div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <div v-if="countdownStarted && attendees.length > 0">
-        <h2>Trekker ny om: {{ secondsLeft }}</h2>
-      </div>
-    </div>
+    <WinnerDraw
+      :currentWinnerDrawn="currentWinnerDrawn"
+      :currentWinner="currentWinner"
+      :attendees="attendees"
+    />
 
-    <h2 v-if="winners.length > 0">Vinnere</h2>
-    <div class="winners" v-if="winners.length > 0">
-      <div class="winner" v-for="(winner, index) in winners" :key="index">
-        <div :class="winner.color + '-ballot'" class="ballot-element">
-          {{ winner.name }}
-        </div>
-      </div>
-    </div>
-    <div class="attendees" v-if="attendees.length > 0">
-      <h2>Deltakere</h2>
-      <div class="attendee" v-for="(attendee, index) in attendees" :key="index">
-        <span class="attendee-name">{{ attendee.name }}</span>
-        <div class="red-ballot ballot-element small">{{ attendee.red }}</div>
-        <div class="blue-ballot ballot-element small">{{ attendee.blue }}</div>
-        <div class="green-ballot ballot-element small">
-          {{ attendee.green }}
-        </div>
-        <div class="yellow-ballot ballot-element small">
-          {{ attendee.yellow }}
-        </div>
-      </div>
+    <Winners :winners="winners" />
+    <hr />
+    <div class="middle-elements">
+      <Attendees :attendees="attendees" class="outer-attendees" />
+      <Chat
+        class="outer-chat"
+        :chatHistory="chatHistory"
+        :usernameAllowed="usernameAllowed"
+        v-on:message="sendMessage"
+        v-on:username="setUsername"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { attendees, winners } from "@/api";
+import Chat from "@/ui/Chat";
+import Attendees from "@/ui/Attendees";
+import Winners from "@/ui/Winners";
+import WinnerDraw from "@/ui/WinnerDraw";
 import io from "socket.io-client";
 
 export default {
+  components: { Chat, Attendees, Winners, WinnerDraw },
   data() {
     return {
       attendees: [],
       winners: [],
       currentWinnerDrawn: false,
-      currentWinnerName: null,
-      currentWinnerColor: null,
-      countdownStarted: false,
-      secondsLeft: 15,
-      secondsNameLeft: 5,
+      currentWinner: {},
       socket: null,
       attendeesFetched: false,
-      winnersFetched: false
+      winnersFetched: false,
+      chatHistory: [],
+      usernameAccepted: false,
+      username: null,
+      wasDisconnected: false,
+      emitUsernameOnConnect: false
     };
   },
   mounted() {
     this.getAttendees();
     this.getWinners();
     this.socket = io(`${window.location.hostname}:${window.location.port}`);
-    this.socket.on("color_winner", msg => {
-      this.currentWinnerDrawn = true;
-      this.currentWinnerColor = msg.color;
+    this.socket.on("color_winner", msg => {});
+
+    this.socket.on("chat", msg => {
+      this.chatHistory.push(msg);
+    });
+
+    this.socket.on("disconnect", msg => {
+      this.wasDisconnected = true;
+    });
+
+    this.socket.on("connect", msg => {
+      if (
+        this.emitUsernameOnConnect ||
+        (this.wasDisconnected && this.username != null)
+      ) {
+        this.setUsername(this.username);
+      }
     });
 
     this.socket.on("winner", async msg => {
       this.currentWinnerDrawn = true;
-      this.countdown();
-      setTimeout(() => {
-        this.currentWinnerName = msg.name;
-        this.getWinners();
-        this.getAttendees();
-      }, 5000);
+      this.currentWinner = { name: msg.name, color: msg.color };
 
       setTimeout(() => {
-        this.currentWinnerColor = null;
-        this.currentWinnerName = null;
+        this.getWinners();
+        this.getAttendees();
+        this.currentWinner = null;
         this.currentWinnerDrawn = false;
-      }, 15000);
+      }, 12000);
     });
     this.socket.on("refresh_data", async msg => {
       this.getAttendees();
@@ -106,25 +99,30 @@ export default {
     this.socket.on("new_attendee", async msg => {
       this.getAttendees();
     });
+    this.socket.on("accept_username", accepted => {
+      this.usernameAccepted = accepted;
+      if (!accepted) {
+        this.username = null;
+      } else {
+        window.localStorage.setItem("username", this.username);
+      }
+    });
   },
   beforeDestroy() {
     this.socket.disconnect();
     this.socket = null;
   },
   methods: {
-    countdown: function() {
-      this.secondsLeft -= 1;
-      this.secondsNameLeft -= 1;
-      this.countdownStarted = true;
-      if (this.secondsLeft <= 0) {
-        this.secondsLeft = 15;
-        this.secondsNameLeft = 5;
-        this.countdownStarted = false;
+    setUsername: function(username) {
+      this.username = username;
+      if (!this.socket || !this.socket.emit) {
+        this.emitUsernameOnConnect = true;
         return;
       }
-      setTimeout(() => {
-        this.countdown();
-      }, 1000);
+      this.socket.emit("username", { username });
+    },
+    sendMessage: function(msg) {
+      this.socket.emit("chat", { message: msg });
     },
     getWinners: async function() {
       let response = await winners();
@@ -137,11 +135,6 @@ export default {
       let response = await attendees();
       if (response) {
         this.attendees = response;
-        if (attendees <= 0) {
-          this.secondsLeft = 0;
-          this.secondsNameLeft = 0;
-          this.countdown();
-        }
       }
       this.attendeesFetched = true;
     }
@@ -153,7 +146,9 @@ export default {
 @import "../styles/global.scss";
 @import "../styles/variables.scss";
 @import "../styles/media-queries.scss";
-
+hr {
+  width: 80%;
+}
 h1,
 h2 {
   text-align: center;
@@ -162,72 +157,28 @@ h2 {
   margin: auto;
 }
 
-.attendee-name {
-  width: 60%;
+.outer-chat {
+  margin: 0 60px 0 10px;
+}
+
+.outer-attendees {
+  margin: 0 10px 0 45px;
 }
 
 .center-new-winner {
   margin: auto !important;
 }
 
-.ballot-element {
-  width: 140px;
-  height: 150px;
-  margin: 20px 0;
-  -webkit-mask-image: url(/../../public/assets/images/lodd.svg);
-  background-repeat: no-repeat;
-  mask-image: url(/../../public/assets/images/lodd.svg);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  color: #333333;
-  font-size: 0.75rem;
-  font-weight: bold;
+.middle-elements {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  text-align: center;
+  height: 400px;
 
-  &.small {
-    width: 45px;
-    height: 45px;
-    font-size: 1rem;
+  @include mobile {
+    height: auto;
+    flex-direction: column;
   }
-
-  &.green-ballot {
-    background-color: $light-green;
-  }
-
-  &.blue-ballot {
-    background-color: $light-blue;
-  }
-
-  &.yellow-ballot {
-    background-color: $light-yellow;
-  }
-
-  &.red-ballot {
-    background-color: $light-red;
-  }
-}
-
-.winners {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.attendees {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.attendee {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 50%;
-  margin: 0 auto;
 }
 </style>

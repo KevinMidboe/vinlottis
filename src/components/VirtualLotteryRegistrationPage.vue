@@ -3,12 +3,21 @@
     <h1>Virtuelt lotteri registrering</h1>
     <br />
     <div class="draw-winner-container" v-if="attendees.length > 0">
-      <span v-if="drawingWinner"
-        >Vent {{ secondsLeft }} sekunder til å trekke på nytt</span
-      >
-      <button class="vin-button" v-if="!drawingWinner" @click="drawWinner">
-        Trekk en vinner
-      </button>
+      <div v-if="drawingWinner">
+        <span
+          >Trekker {{ currentWinners }} av {{ numberOfWinners }} vinnere.
+          {{ secondsLeft }} sekunder av {{ drawTime }} igjen</span
+        >
+        <button class="vin-button" @click="stopDraw">
+          Stopp trekning
+        </button>
+      </div>
+      <div class="draw-container" v-if="!drawingWinner">
+        <button class="vin-button" @click="drawWinner">
+          Trekk vinnere
+        </button>
+        <input type="number" v-model="numberOfWinners" />
+      </div>
     </div>
     <h2 v-if="winners.length > 0">Vinnere</h2>
     <div class="winners" v-if="winners.length > 0">
@@ -39,7 +48,7 @@
       </button>
     </div>
     <div class="attendees" v-if="attendees.length > 0">
-      <h2>Deltakere hittil</h2>
+      <h2>Deltakere ({{ attendees.length }})</h2>
       <div class="attendee" v-for="(attendee, index) in attendees" :key="index">
         <div class="name-and-phone">
           <span class="name">{{ attendee.name }}</span>
@@ -148,7 +157,10 @@ export default {
       attendees: [],
       winners: [],
       drawingWinner: false,
-      secondsLeft: 15
+      secondsLeft: 20,
+      drawTime: 20,
+      currentWinners: 1,
+      numberOfWinners: 4
     };
   },
   mounted() {
@@ -183,11 +195,19 @@ export default {
       let response = await attendeesSecure();
       this.attendees = response;
     },
+    stopDraw: function() {
+      this.drawingWinner = false;
+      this.secondsLeft = this.drawTime;
+    },
     drawWinner: async function() {
       this.drawingWinner = true;
       let response = await getVirtualWinner();
       if (response) {
-        this.countdown();
+        if (this.currentWinners < this.numberOfWinners) {
+          this.countdown();
+        } else {
+          this.drawingWinner = false;
+        }
         this.getWinners();
         this.getAttendees();
       } else {
@@ -197,9 +217,17 @@ export default {
     },
     countdown: function() {
       this.secondsLeft -= 1;
+      if (!this.drawingWinner) {
+        return;
+      }
       if (this.secondsLeft <= 0) {
-        this.secondsLeft = 15;
-        this.drawingWinner = false;
+        this.secondsLeft = this.drawTime;
+        this.currentWinners += 1;
+        if (this.currentWinners <= this.numberOfWinners) {
+          this.drawWinner();
+        } else {
+          this.drawingWinner = false;
+        }
         return;
       }
       setTimeout(() => {
@@ -237,6 +265,10 @@ export default {
 <style lang="scss" scoped>
 @import "../styles/global.scss";
 @import "../styles/media-queries.scss";
+
+.draw-container {
+  display: flex;
+}
 
 .draw-winner-container,
 .delete-buttons {

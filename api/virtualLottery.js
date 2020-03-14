@@ -52,28 +52,33 @@ router.route("/winners/secure").get(mustBeAuthenticated, async (req, res) => {
 });
 
 router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
-  let colorWinner = Math.floor(Math.random() * 4);
-  let colorToChoseFrom;
+  let allContestants = await Attendee.find();
+  if (allContestants.length == 0) {
+    res.json(false);
+    return;
+  }
+  let ballotColors = [];
+  for (let i = 0; i < allContestants.length; i++) {
+    let currentContestant = allContestants[i];
+    for (let blue = 0; blue < currentContestant.blue; blue++) {
+      ballotColors.push("blue");
+    }
+    for (let red = 0; red < currentContestant.red; red++) {
+      ballotColors.push("red");
+    }
+    for (let green = 0; green < currentContestant.green; green++) {
+      ballotColors.push("green");
+    }
+    for (let yellow = 0; yellow < currentContestant.yellow; yellow++) {
+      ballotColors.push("yellow");
+    }
+  }
+
+  let colorToChoseFrom =
+    ballotColors[Math.floor(Math.random() * ballotColors.length)];
   let findObject = {};
 
-  switch (colorWinner) {
-    case 0:
-      colorToChoseFrom = "red";
-      break;
-    case 1:
-      colorToChoseFrom = "blue";
-      break;
-    case 2:
-      colorToChoseFrom = "green";
-      break;
-    case 3:
-      colorToChoseFrom = "yellow";
-      break;
-  }
-  io.emit("color_winner", { color: colorToChoseFrom });
-
   findObject[colorToChoseFrom] = { $gt: 0 };
-
   let contestantsToChoseFrom = await Attendee.find(findObject);
   let attendeeListDemocratic = [];
 
@@ -93,7 +98,7 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
       Math.floor(Math.random() * attendeeListDemocratic.length)
     ];
 
-  io.emit("winner", { name: winner.name });
+  io.emit("winner", { color: colorToChoseFrom, name: winner.name });
 
   let newWinnerElement = new VirtualWinner({
     name: winner.name,
