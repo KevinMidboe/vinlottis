@@ -76,18 +76,36 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
 
   ballotColors = shuffle(ballotColors);
 
-  let colorToChoseFrom =
+  let colorToChooseFrom =
     ballotColors[Math.floor(Math.random() * ballotColors.length)];
   let findObject = {};
 
-  findObject[colorToChoseFrom] = { $gt: 0 };
-  let contestantsToChoseFrom = await Attendee.find(findObject);
+  findObject[colorToChooseFrom] = { $gt: 0 };
+
+  let tries = 0;
+  const maxTries = 3;
+  let contestantsToChooseFrom = undefined;
+  while (contestantsToChooseFrom == undefined && tries < maxTries) {
+    const hit = await Attendee.find(findObject);
+    if (hit && hit.length) {
+      contestantsToChooseFrom = hit;
+      break
+    }
+    tries++;
+  }
+  if (contestantsToChooseFrom == undefined) {
+    return res.status(404).send({
+      success: false,
+      message: `Klarte ikke trekke en vinner etter ${maxTries} forsøk.`
+    })
+  }
+
   let attendeeListDemocratic = [];
 
   let currentContestant;
-  for (let i = 0; i < contestantsToChoseFrom.length; i++) {
-    currentContestant = contestantsToChoseFrom[i];
-    for (let y = 0; y < currentContestant[colorToChoseFrom]; y++) {
+  for (let i = 0; i < contestantsToChooseFrom.length; i++) {
+    currentContestant = contestantsToChooseFrom[i];
+    for (let y = 0; y < currentContestant[colorToChooseFrom]; y++) {
       attendeeListDemocratic.push({
         name: currentContestant.name,
         phoneNumber: currentContestant.phoneNumber
@@ -102,12 +120,12 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
       Math.floor(Math.random() * attendeeListDemocratic.length)
     ];
 
-  io.emit("winner", { color: colorToChoseFrom, name: winner.name });
+  io.emit("winner", { color: colorToChooseFrom, name: winner.name });
 
   let newWinnerElement = new VirtualWinner({
     name: winner.name,
     phoneNumber: winner.phoneNumber,
-    color: colorToChoseFrom
+    color: colorToChooseFrom
   });
 
   await Attendee.remove({ name: winner.name, phoneNumber: winner.phoneNumber });
