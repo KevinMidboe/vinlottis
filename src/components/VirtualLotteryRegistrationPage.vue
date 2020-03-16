@@ -8,12 +8,12 @@
           >Trekker {{ currentWinners }} av {{ numberOfWinners }} vinnere.
           {{ secondsLeft }} sekunder av {{ drawTime }} igjen</span
         >
-        <button class="vin-button" @click="stopDraw">
+        <button class="vin-button no-margin" @click="stopDraw">
           Stopp trekning
         </button>
       </div>
       <div class="draw-container" v-if="!drawingWinner">
-        <button class="vin-button" @click="drawWinner">
+        <button class="vin-button no-margin" @click="drawWinner">
           Trekk vinnere
         </button>
         <input type="number" v-model="numberOfWinners" />
@@ -268,6 +268,7 @@ export default {
 
 .draw-container {
   display: flex;
+  justify-content: space-around;
 }
 
 .draw-winner-container,

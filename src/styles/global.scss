@@ -140,6 +140,10 @@ textarea {
   }
 }
 
+.no-margin {
+  margin: 0 !important;
+}
+
 .ballot-element {
   margin: 20px 0;
   -webkit-mask-image: url(/../../public/assets/images/lodd.svg);
