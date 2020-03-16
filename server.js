@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
 const path = require("path");
 const session = require("express-session");
 const User = require(path.join(__dirname + "/schemas/User"));
@@ -9,6 +11,11 @@ const retrieveApi = require(path.join(__dirname + "/api/retrieve"));
 const subscriptionApi = require(path.join(__dirname + "/api/subscriptions"));
 const loginApi = require(path.join(__dirname + "/api/login"));
 const wineinfoApi = require(path.join(__dirname + "/api/wineinfo"));
+const virtualApi = require(path.join(__dirname + "/api/virtualLottery"));
+
+//This is required for the chat to work
+const chat = require(path.join(__dirname + "/api/chat"))(io);
+
 const bodyParser = require("body-parser");
 
 const mongoose = require("mongoose");
@@ -82,6 +89,7 @@ app.use("/", loginApi);
 app.use("/api/", updateApi);
 app.use("/api/", retrieveApi);
 app.use("/api/", wineinfoApi);
+app.use("/api/virtual/", virtualApi(io));
 app.use("/subscription", subscriptionApi);
 
 app.get("/dagens", function(req, res) {
@@ -92,4 +100,4 @@ app.use("/service-worker.js", function(req, res) {
   res.sendFile(path.join(__dirname, "public/sw/serviceWorker.js"));
 });
 
-app.listen(30030);
+server.listen(30030);
