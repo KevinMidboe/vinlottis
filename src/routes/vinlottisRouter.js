@@ -4,12 +4,10 @@ import TodaysPage from "@/components/TodaysPage";
 import AllWinesPage from "@/components/AllWinesPage";
 
 import LoginPage from "@/components/LoginPage";
-import RegisterPage from "@/components/RegisterPage";
 import CreatePage from "@/components/CreatePage";
 
 import AdminPage from "@/components/AdminPage";
 
-import VirtualLotteryRegistrationPage from "@/components/VirtualLotteryRegistrationPage";
 import VirtualLotteryPage from "@/components/VirtualLotteryPage";
 
 const routes = [

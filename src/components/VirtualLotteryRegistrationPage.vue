@@ -133,6 +133,7 @@
 </template>
 
 <script>
+import io from "socket.io-client";
 import {
   addAttendee,
   getVirtualWinner,
@@ -160,12 +161,29 @@ export default {
       secondsLeft: 20,
       drawTime: 20,
       currentWinners: 1,
-      numberOfWinners: 4
+      numberOfWinners: 4,
+      socket: null
     };
   },
   mounted() {
     this.getAttendees();
     this.getWinners();
+
+    this.socket = io(`${window.location.hostname}:${window.location.port}`);
+
+    this.socket.on("winner", async msg => {
+      this.getWinners();
+      this.getAttendees();
+    });
+
+    this.socket.on("refresh_data", async msg => {
+      this.getAttendees();
+      this.getWinners();
+    });
+
+    this.socket.on("new_attendee", async msg => {
+      this.getAttendees();
+    });
   },
   methods: {
     sendAttendee: async function() {
