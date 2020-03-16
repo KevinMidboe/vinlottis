@@ -13,7 +13,7 @@
       <span v-if="amount * price > price">
         kr.
         <span class="big-money">{{ amount * price }},-</span>
-         {{ price }},- pr. lodd)
+        ({{ price }},- pr. lodd)
       </span>
       <span v-if="amount * price == price">
         kr.

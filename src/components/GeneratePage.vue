@@ -206,7 +206,7 @@ export default {
       }
     },
     track() {
-      this.$ga.page("/generate");
+      this.$ga.page("/lottery/generate");
     }
   }
 };

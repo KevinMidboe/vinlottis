@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { page, event } from "vue-analytics";
 import { attendees, winners } from "@/api";
 import Chat from "@/ui/Chat";
 import Vipps from "@/ui/Vipps";
@@ -61,6 +62,7 @@ export default {
     };
   },
   mounted() {
+    this.track();
     this.getAttendees();
     this.getWinners();
     this.socket = io(`${window.location.hostname}:${window.location.port}`);
@@ -139,6 +141,9 @@ export default {
         this.attendees = response;
       }
       this.attendeesFetched = true;
+    },
+    track() {
+      this.$ga.page("/lottery/game");
     }
   }
 };
