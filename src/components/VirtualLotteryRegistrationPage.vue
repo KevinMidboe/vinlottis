@@ -95,36 +95,31 @@
           v-model="randomColors"
         />
       </div>
-      <br />
-      <br />
       <div v-if="!randomColors">
+        <br />
+        <br />
         <div class="label-div">
           <label for="red">Rød</label>
           <input id="red" type="number" placeholder="Rød" v-model="red" />
         </div>
+        <br />
         <div class="label-div">
           <label for="blue">Blå</label>
           <input id="blue" type="number" placeholder="Blå" v-model="blue" />
         </div>
+        <br />
         <div class="label-div">
           <label for="green">Grønn</label>
           <input id="green" type="number" placeholder="Grønn" v-model="green" />
         </div>
+        <br />
         <div class="label-div">
           <label for="yellow">Gul</label>
           <input id="yellow" type="number" placeholder="Gul" v-model="yellow" />
         </div>
       </div>
-      <div v-if="randomColors">
-        <div class="label-div">
-          <label for="ballots">Antall lodd</label>
-          <input
-            id="ballots"
-            type="number"
-            placeholder="Antall lodd"
-            v-model="ballots"
-          />
-        </div>
+      <div v-else>
+        <RaffleGenerator @colors="setWithRandomColors" />
       </div>
     </div>
     <br />
@@ -143,8 +138,12 @@ import {
   deleteWinners,
   deleteAttendees
 } from "@/api";
+import RaffleGenerator from "@/ui/RaffleGenerator";
 
 export default {
+  components: {
+    RaffleGenerator
+  },
   data() {
     return {
       name: null,
@@ -186,6 +185,9 @@ export default {
     });
   },
   methods: {
+    setWithRandomColors(colors) {
+      Object.keys(colors).forEach(color => this[color] = colors[color])
+    },
     sendAttendee: async function() {
       let response = await addAttendee({
         name: this.name,
@@ -194,8 +196,7 @@ export default {
         blue: this.blue,
         green: this.green,
         yellow: this.yellow,
-        ballots: this.ballots,
-        randomColors: this.randomColors
+        ballots: this.ballots
       });
       if (response == true) {
         alert("Sendt inn deltaker!");

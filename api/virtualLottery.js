@@ -160,35 +160,8 @@ router.route("/attendees/secure").get(mustBeAuthenticated, async (req, res) => {
 
 router.route("/attendee").post(mustBeAuthenticated, async (req, res) => {
   const attendee = req.body;
-  let red = 0;
-  let blue = 0;
-  let green = 0;
-  let yellow = 0;
-  if (attendee.randomColors) {
-    let color;
-    for (let i = 0; i < attendee.ballots; i++) {
-      color = Math.floor(Math.random() * 4);
-      switch (color) {
-        case 0:
-          red += 1;
-          break;
-        case 1:
-          blue += 1;
-          break;
-        case 2:
-          green += 1;
-          break;
-        case 3:
-          yellow += 1;
-          break;
-      }
-    }
-  } else {
-    red = attendee.red;
-    blue = attendee.blue;
-    yellow = attendee.yellow;
-    green = attendee.green;
-  }
+  const { red, blue, yellow, green } = attendee;
+
   let newAttendee = new Attendee({
     name: attendee.name,
     red,
