@@ -60,6 +60,13 @@
 
 <script>
 export default {
+  props: {
+    generateOnInit: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
   data() {
     return {
       numberOfBallots: 4,
@@ -79,12 +86,14 @@ export default {
   },
   beforeMount() {
     this.$emit("numberOfBallots", this.numberOfBallots);
+    if (this.generateOnInit) {
+      this.generateColors();
+    }
   },
   watch: {
     numberOfBallots: function() {
       this.$emit("numberOfBallots", this.numberOfBallots);
       this.generateColors();
-      this.emitColors();
     }
   },
   methods: {

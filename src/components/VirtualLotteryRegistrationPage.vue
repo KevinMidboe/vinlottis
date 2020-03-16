@@ -119,7 +119,7 @@
         </div>
       </div>
       <div v-else>
-        <RaffleGenerator @colors="setWithRandomColors" />
+        <RaffleGenerator @colors="setWithRandomColors" :generateOnInit="true" />
       </div>
     </div>
     <br />
