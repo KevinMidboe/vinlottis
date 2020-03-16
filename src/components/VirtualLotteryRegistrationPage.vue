@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <h1>Virtuelt lotteri registrering</h1>
+    <h1 class="title">Virtuelt lotteri registrering</h1>
     <br />
     <div class="draw-winner-container" v-if="attendees.length > 0">
       <div v-if="drawingWinner">

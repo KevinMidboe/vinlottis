@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Virtuelt lotteri</h1>
+    <h1 class="title">Virtuelt lotteri</h1>
     <h2
       v-if="
         attendees.length <= 0 &&
@@ -29,19 +29,21 @@
         v-on:username="setUsername"
       />
     </div>
+    <Vipps class="vipps" :amount="1" />
   </div>
 </template>
 
 <script>
 import { attendees, winners } from "@/api";
 import Chat from "@/ui/Chat";
+import Vipps from "@/ui/Vipps";
 import Attendees from "@/ui/Attendees";
 import Winners from "@/ui/Winners";
 import WinnerDraw from "@/ui/WinnerDraw";
 import io from "socket.io-client";
 
 export default {
-  components: { Chat, Attendees, Winners, WinnerDraw },
+  components: { Chat, Attendees, Winners, WinnerDraw, Vipps },
   data() {
     return {
       attendees: [],
@@ -159,10 +161,16 @@ h2 {
 
 .outer-chat {
   margin: 0 60px 0 10px;
+  @include mobile {
+    margin: 0;
+  }
 }
 
 .outer-attendees {
   margin: 0 10px 0 45px;
+  @include mobile {
+    margin: 0;
+  }
 }
 
 .center-new-winner {
@@ -178,6 +186,16 @@ h2 {
 
   @include mobile {
     height: auto;
+    flex-direction: column;
+  }
+}
+
+.vipps {
+  margin-top: 70px;
+  display: flex;
+  padding-bottom: 50px;
+  justify-content: center;
+  @include mobile {
     flex-direction: column;
   }
 }

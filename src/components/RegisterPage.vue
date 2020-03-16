@@ -1,11 +1,6 @@
 <template>
   <div class="page-container">
     <h1>Registrering</h1>
-
-    <router-link to="virtual-register" class="generate-link"
-      >Virtuelt-lotteri
-      <span class="subtext generator-link">Her</span></router-link
-    >
     <br />
     <br />
     <div class="notification-element">

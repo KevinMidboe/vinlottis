@@ -12,9 +12,9 @@
           v-if="notificationAllowed"
         />
       </div>
-      <router-link to="generate" class="generate-link">
-        Klarer du ikke velge lodd-farger?
-        <span class="subtext generator-link">Prøv loddgeneratoren</span>
+      <router-link to="lottery" class="generate-link">
+        Vil du til lotteriet?
+        <span class="subtext generator-link">Trykk her</span>
       </router-link>
       <div class="chart-container">
         <PurchaseGraph class="purchase" />

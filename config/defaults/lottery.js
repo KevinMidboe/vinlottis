@@ -10,6 +10,7 @@ try {
     price: 10,
     message: "INSERT MESSAGE",
     date: 5,
-    hours: 15
+    hours: 15,
+    apiUrl: "https://lottis.vin"
   };
 }

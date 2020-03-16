@@ -43,6 +43,7 @@ export default {
       return this.inlineSlot && window.innerWidth > 768
     },
     hostname(url) {
+      console.log(url);
       const urlHostname = new URL(url).hostname
       return urlHostname.split(".")[(urlHostname.match(/\./g) || []).length - 1]
     }
