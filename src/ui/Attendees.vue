@@ -43,6 +43,8 @@ export default {
   justify-content: center;
   align-items: center;
   font-weight: bold;
+  font-size: 0.75rem;
+  text-align: center;
 }
 
 .attendees {

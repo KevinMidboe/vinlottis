@@ -18,7 +18,7 @@
           @keyup.enter="sendMessage"
           type="text"
           v-model="message"
-          maxlength="30"
+          placeholder="Melding.."
         />
         <button @click="sendMessage">Send</button
         ><button @click="removeUsername">Logg ut</button>
@@ -29,7 +29,8 @@
         type="text"
         @keyup.enter="setUsername"
         v-model="temporaryUsername"
-        title
+        maxlength="30"
+        placeholder="Ditt navn.."
       />
       <button @click="setUsername">Lagre brukernavn</button>
     </div>
