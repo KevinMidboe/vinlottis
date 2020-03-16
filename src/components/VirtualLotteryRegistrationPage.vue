@@ -395,7 +395,7 @@ button {
 
 .attendee {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: 50%;
