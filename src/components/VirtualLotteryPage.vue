@@ -11,6 +11,10 @@
     >
       Her var det lite.. Sikker på at det er en virtuell trekning nå?
     </h2>
+    <div class="title-info">
+      <h2>Send vipps med melding "Vinlotteri" for å bli registrert til virtuelt lotteri</h2>
+      <p>Send gjerne melding om fargeønsker også</p>
+    </div>
     <WinnerDraw
       :currentWinnerDrawn="currentWinnerDrawn"
       :currentWinner="currentWinner"
@@ -166,6 +170,11 @@ h2 {
 }
 .current-draw {
   margin: auto;
+}
+
+.title-info {
+  width: 100%;
+  text-align: center;
 }
 
 .outer-chat {
