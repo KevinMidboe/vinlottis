@@ -45,7 +45,8 @@ router.route("/log/wines").post(mustBeAuthenticated, async (req, res) => {
     let subscription = subs[i]; //get subscription from your databse here.
     const message = JSON.stringify({
       message: "Dagens vin er lagt til, se den på lottis.vin/dagens!",
-      title: "Ny vin!"
+      title: "Ny vin!",
+      link: "/#/dagens"
     });
     sub.sendNotification(subscription, message);
   }
