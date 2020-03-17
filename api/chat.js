@@ -1,4 +1,7 @@
-module.exports = io => {
+const path = require("path");
+const { addMessage } = require(path.join(__dirname + "/redis.js"));
+
+const io = (io) => {
   io.on("connection", socket => {
     let username = null;
 
@@ -19,7 +22,10 @@ module.exports = io => {
     socket.on("chat", msg => {
       msg.username = username;
       msg.timestamp = new Date().getTime();
+      addMessage(msg);
       io.emit("chat", msg);
     });
   });
 };
+
+module.exports = io;

@@ -15,6 +15,7 @@ const virtualApi = require(path.join(__dirname + "/api/virtualLottery"));
 
 //This is required for the chat to work
 const chat = require(path.join(__dirname + "/api/chat"))(io);
+const chatHistory = require(path.join(__dirname + "/api/chatHistory"));
 
 const bodyParser = require("body-parser");
 
@@ -89,6 +90,7 @@ app.use("/", loginApi);
 app.use("/api/", updateApi);
 app.use("/api/", retrieveApi);
 app.use("/api/", wineinfoApi);
+app.use("/api/", chatHistory);
 app.use("/api/virtual/", virtualApi(io));
 app.use("/subscription", subscriptionApi);
 
