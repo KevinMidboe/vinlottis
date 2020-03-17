@@ -14,6 +14,18 @@ self.addEventListener("activate", event => {
   event.waitUntil(addCache(CACHE_NAME, STATIC_CACHE_URLS));
 });
 
+self.addEventListener("notificationclick", function(event) {
+  event.notification.close();
+  if (
+    event.notification.data != undefined &&
+    event.notification.data.link != undefined
+  ) {
+    event.waitUntil(clients.openWindow(event.notification.data.link));
+  } else {
+    event.waitUntil(clients.openWindow("/"));
+  }
+});
+
 self.addEventListener("message", event => {
   if (!__PUBLICKEY__) {
     return;
@@ -52,8 +64,17 @@ self.addEventListener("message", event => {
 self.addEventListener("push", function(event) {
   if (event.data) {
     var message = JSON.parse(event.data.text());
+    var link = "/";
+    if (message.link != undefined) {
+      link = message.link;
+    }
 
-    showLocalNotification(message.title, message.message, self.registration);
+    showLocalNotification(
+      message.title,
+      message.message,
+      link,
+      self.registration
+    );
   } else {
   }
 });
@@ -105,12 +126,13 @@ self.addEventListener("fetch", event => {
   }
 });
 
-function showLocalNotification(title, body, swRegistration) {
+function showLocalNotification(title, body, link, swRegistration) {
   const options = {
     body,
     icon: "https://lottis.vin/public/assets/images/favicon.png",
     image: "https://lottis.vin/public/assets/images/favicon.png",
-    vibrate: [300]
+    vibrate: [300],
+    data: { link: link }
   };
   swRegistration.showNotification(title, options);
 }

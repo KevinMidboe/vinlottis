@@ -13,6 +13,12 @@
           v-model="pushMessage"
           placeholder="Push meldingtekst"
         />
+        <input
+          id="notification-link"
+          type="text"
+          v-model="pushLink"
+          placeholder="Push-click link"
+        />
       </div>
     </div>
     <div class="button-container">
@@ -173,6 +179,7 @@ export default {
       winners: [],
       wines: [],
       pushMessage: "",
+      pushLink: "/",
       toastText: undefined,
       showToast: false,
       showCamera: false,
@@ -239,7 +246,7 @@ export default {
           // 'Content-Type': 'application/x-www-form-urlencoded',
         },
         method: "POST",
-        body: JSON.stringify({ message: this.pushMessage })
+        body: JSON.stringify({ message: this.pushMessage, link: this.pushLink })
       });
       let response = await _response.json();
       if (response) {

@@ -9,7 +9,9 @@ mongoose.connect("mongodb://localhost:27017/vinlottis", {
   useNewUrlParser: true
 });
 
-const mustBeAuthenticated = require(path.join(__dirname + "/../middleware/mustBeAuthenticated"))
+const mustBeAuthenticated = require(path.join(
+  __dirname + "/../middleware/mustBeAuthenticated"
+));
 
 const config = require(path.join(__dirname + "/../config/defaults/push"));
 const Subscription = require(path.join(__dirname + "/../schemas/Subscription"));
@@ -69,19 +71,22 @@ const saveToDatabase = async subscription => {
   }
 };
 
-router.route("/send-notification").post(mustBeAuthenticated, async (req, res) => {
-  const message = JSON.stringify({
-    message: req.body.message,
-    title: "Vinlotteri!"
+router
+  .route("/send-notification")
+  .post(mustBeAuthenticated, async (req, res) => {
+    const message = JSON.stringify({
+      message: req.body.message,
+      title: "Vinlotteri!",
+      link: req.body.link
+    });
+    let subs = await Subscription.find();
+    for (let i = 0; i < subs.length; i++) {
+      let subscription = subs[i]; //get subscription from your databse here.
+      sendNotification(subscription, message);
+    }
+    res.json(true);
+    return;
   });
-  let subs = await Subscription.find();
-  for (let i = 0; i < subs.length; i++) {
-    let subscription = subs[i]; //get subscription from your databse here.
-    sendNotification(subscription, message);
-  }
-  res.json(true);
-  return;
-});
 
 schedule.scheduleJob(
   `0 50 ${lotteryConfig.hours - 1} * * ${lotteryConfig.date}`,
@@ -91,7 +96,8 @@ schedule.scheduleJob(
       let subscription = subs[i]; //get subscription from your databse here.
       const message = JSON.stringify({
         message: "Husk vinlotteriet, det begynner om 10 minutter!",
-        title: "Vinlotteri!"
+        title: "Vinlotteri!",
+        link: "/"
       });
       sendNotification(subscription, message);
     }
