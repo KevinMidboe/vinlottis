@@ -3,18 +3,7 @@
     <div class="container">
       <h1 class="title">Dagens viner</h1>
       <div class="wines-container">
-        <a :href="wine.vivinoLink" v-for="wine in wines" :key="wine">
-          <div class="inner-wine-container">
-            <div class="left">
-              <img :src="wine.image" class="wine-image" />
-            </div>
-            <div class="right">
-              <h3>{{ wine.name }}</h3>
-              <span v-if="wine.rating">{{ wine.rating }} rating</span>
-              <span class="wine-link">Les mer</span>
-            </div>
-          </div>
-        </a>
+        <Wine :wine="wine" v-for="wine in wines" :key="wine" :fullscreen="true" :inlineSlot="true" />
       </div>
     </div>
   </div>
@@ -23,10 +12,12 @@
 <script>
 import { page, event } from "vue-analytics";
 import Banner from "@/ui/Banner";
+import Wine from "@/ui/Wine";
 
 export default {
   components: {
-    Banner
+    Banner,
+    Wine
   },
   data() {
     return {
@@ -55,7 +46,7 @@ h1 {
 .wines-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
   margin: 0 2rem;
 
   @media (min-width: 1500px) {
