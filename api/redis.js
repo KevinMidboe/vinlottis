@@ -8,19 +8,19 @@ try {
     console.error("Missing redis-configurations..");
     client = {
       rpush: function() {
-        console.log("redis lpush", arguments);
+        console.log("redis-dummy lpush", arguments);
         if (typeof arguments[arguments.length - 1] == "function") {
           arguments[arguments.length - 1](null);
         }
       },
       lrange: function() {
-        console.log("redis lrange", arguments);
+        console.log("redis-dummy lrange", arguments);
         if (typeof arguments[arguments.length - 1] == "function") {
           arguments[arguments.length - 1](null);
         }
       },
       del: function() {
-        console.log("redis del", arguments);
+        console.log("redis-dummy del", arguments);
         if (typeof arguments[arguments.length - 1] == "function") {
           arguments[arguments.length - 1](null);
         }
