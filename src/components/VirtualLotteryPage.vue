@@ -35,7 +35,7 @@
 
 <script>
 import { page, event } from "vue-analytics";
-import { attendees, winners } from "@/api";
+import { attendees, winners, getChatHistory } from "@/api";
 import Chat from "@/ui/Chat";
 import Vipps from "@/ui/Vipps";
 import Attendees from "@/ui/Attendees";
@@ -60,6 +60,10 @@ export default {
       wasDisconnected: false,
       emitUsernameOnConnect: false
     };
+  },
+  created() {
+    getChatHistory()
+      .then(messages => this.chatHistory = messages)
   },
   mounted() {
     this.track();

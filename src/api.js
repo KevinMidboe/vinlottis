@@ -222,6 +222,19 @@ const register = (username, password) => {
     })
 }
 
+
+const getChatHistory = (skip=null, take=null) => {
+  const url = new URL("/api/chat/history", BASE_URL);
+  if (!isNaN(skip))
+    url.searchParams.append("skip", skip);
+  if (!isNaN(take))
+    url.searchParams.append("take", take);
+
+  return fetch(url.href)
+    .then(resp => resp.json())
+
+}
+
 export {
   statistics,
   colorStatistics,
@@ -243,5 +256,6 @@ export {
   winners,
   winnersSecure,
   deleteWinners,
-  deleteAttendees
+  deleteAttendees,
+  getChatHistory
 };
