@@ -81,9 +81,14 @@ export default {
     },
     getTime: function(timestamp) {
       let date = new Date(timestamp);
-      return `${this.pad(date.getHours())}:${this.pad(
+      const timeString = `${this.pad(date.getHours())}:${this.pad(
         date.getMinutes()
       )}:${this.pad(date.getSeconds())}`;
+
+      if (date.getDate() == new Date().getDate()) {
+        return timeString;
+      }
+      return `${date.toLocaleDateString()} ${timeString}`
     },
     sendMessage: function() {
       this.$emit("message", this.message);
