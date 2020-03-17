@@ -3,14 +3,13 @@
     <div class="top-banner">
       <img src="/public/assets/images/knowit.svg" alt="knowit logo" />
       <div class="clock">
-        <h2 cv-if="distance > 0">
+        <h2 v-if="!fiveMinutesLeft && !tenMinutesOver">
           <span v-if="days > 0">{{ pad(days) }}:</span>
-          <span>{{ pad(hours) }}</span
-          >: <span>{{ pad(minutes) }}</span
-          >:
+          <span>{{ pad(hours) }}</span>:
+          <span>{{ pad(minutes) }}</span>:
           <span>{{ pad(seconds) }}</span>
         </h2>
-        <h2 v-if="distance <= 0">Lotteriet har begynt!</h2>
+        <h2 v-if="twoMinutesLeft || tenMinutesOver">Lotteriet er i gang!</h2>
       </div>
     </div>
   </router-link>
@@ -34,6 +33,20 @@ export default {
   },
   mounted() {
     this.initialize(), this.countdown();
+  },
+  computed: {
+    fiveMinutesLeft: function() {
+      if (this.days == 0 && this.hours == 0 && this.minutes <= 2) {
+        return true;
+      }
+      return false;
+    },
+    tenMinutesOver: function() {
+      if (this.days == 6 && this.hours >= 23 && this.minutes >= 50) {
+        return true;
+      }
+      return false;
+    }
   },
   methods: {
     pad: function(num) {
@@ -90,8 +103,7 @@ export default {
         this.days = 0;
       }
       if (this.distance < 0) {
-        clearTimeout(this.interval);
-        return;
+        this.initialize();
       }
       this.interval = setTimeout(this.countdown, 500);
     }
