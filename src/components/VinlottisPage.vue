@@ -52,6 +52,7 @@ import Banner from "@/ui/Banner";
 import Wines from "@/ui/Wines";
 import Vipps from "@/ui/Vipps";
 import Countdown from "@/ui/Countdown";
+import { prelottery } from "@/api";
 
 export default {
   components: {
@@ -67,7 +68,6 @@ export default {
   data() {
     return {
       hardStart: false,
-      todayExists: false,
       pushAllowed: false
     };
   },
@@ -81,21 +81,17 @@ export default {
         !this.pushAllowed ||
         localStorage.getItem("push") == null
       );
+    },
+    todayExists: () => {
+      return prelottery()
+        .then(wines => wines.length > 0)
+        .catch(() => false)
     }
   },
   mounted() {
     this.$on("push-allowed", () => {
       this.pushAllowed = true;
     });
-    fetch("/api/wines/prelottery")
-      .then(wines => wines.json())
-      .then(wines => {
-        if (wines.length > 0) {
-          this.todayExists = true;
-        } else {
-          this.todayExists = false;
-        }
-      });
     if (window.location.hostname == "localhost") {
       return;
     }

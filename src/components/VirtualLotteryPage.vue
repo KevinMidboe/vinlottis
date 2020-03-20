@@ -15,6 +15,12 @@
       <h2>Send vipps med melding "Vinlotteri" for å bli registrert til virtuelt lotteri</h2>
       <p>Send gjerne melding om fargeønsker også</p>
     </div>
+
+    <router-link to="dagens" class="generate-link" v-if="todayExists">
+      Lurer du på dagens fangst?
+      <span class="subtext generator-link">Se her</span>
+    </router-link>
+
     <WinnerDraw
       :currentWinnerDrawn="currentWinnerDrawn"
       :currentWinner="currentWinner"
@@ -39,7 +45,7 @@
 
 <script>
 import { page, event } from "vue-analytics";
-import { attendees, winners, getChatHistory } from "@/api";
+import { attendees, winners, getChatHistory, prelottery } from "@/api";
 import Chat from "@/ui/Chat";
 import Vipps from "@/ui/Vipps";
 import Attendees from "@/ui/Attendees";
@@ -124,6 +130,13 @@ export default {
     this.socket.disconnect();
     this.socket = null;
   },
+  computed: {
+    todayExists: () => {
+      return prelottery()
+        .then(wines => wines.length > 0)
+        .catch(() => false)
+    }
+  },
   methods: {
     setUsername: function(username) {
       this.username = username;
@@ -156,6 +169,38 @@ export default {
   }
 };
 </script>
+
+<!-- TODO move link styling to global with more generic name -->
+<style lang="scss" scoped>
+@import "../styles/global.scss";
+@import "../styles/variables.scss";
+@import "../styles/media-queries.scss";
+.generate-link {
+  color: #333333;
+  text-decoration: none;
+  display: block;
+  width: 100vw;
+  text-align: center;
+  margin-bottom: 0px;
+
+  @include mobile {
+    width: 60vw;
+    margin: auto;
+  }
+}
+
+.vipps-image {
+  width: 250px;
+  margin: auto;
+  display: block;
+  margin-top: 30px;
+}
+
+.generator-link {
+  font-weight: bold;
+  border-bottom: 1px solid #ff5fff;
+}
+</style>
 
 <style lang="scss" scoped>
 @import "../styles/global.scss";
