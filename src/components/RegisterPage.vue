@@ -76,7 +76,7 @@
     <h3>Legg til lodd kjøpt</h3>
     <div class="colors">
       <div
-        v-for="color in lotteryColorBoxes"
+        v-for="color in lotteryColors"
         :class="color.css + ' colors-box'"
         :key="color"
       >
@@ -184,6 +184,12 @@ export default {
       showToast: false,
       showCamera: false,
       editWine: false,
+      lotteryColors: [
+        { value: null, name: "Blå", css: "blue" },
+        { value: null, name: "Rød", css: "red" },
+        { value: null, name: "Grønn", css: "green" },
+        { value: null, name: "Gul", css: "yellow" }
+      ],
       price: __PRICE__
     };
   },
@@ -194,16 +200,6 @@ export default {
   },
   beforeDestroy() {
     this.setWinnerdataToStorage();
-  },
-  computed: {
-    lotteryColorBoxes() {
-      return [
-        { value: this.blue, name: "Blå", css: "blue" },
-        { value: this.red, name: "Rød", css: "red" },
-        { value: this.green, name: "Grønn", css: "green" },
-        { value: this.yellow, name: "Gul", css: "yellow" }
-      ];
-    }
   },
   methods: {
     amIBeingEdited(wine) {
@@ -285,13 +281,17 @@ export default {
       });
     },
     sendInfo: async function(event) {
+      const colors = {
+        red: this.lotteryColors.filter(c => c.css == "red")[0].value,
+        green: this.lotteryColors.filter(c => c.css == "green")[0].value,
+        blue: this.lotteryColors.filter(c => c.css == "blue")[0].value,
+        yellow: this.lotteryColors.filter(c => c.css == "yellow")[0].value
+      }
+
       let sendObject = {
         purchase: {
           date: new Date(),
-          blue: this.blue,
-          red: this.red,
-          yellow: this.yellow,
-          green: this.green
+          ...colors
         },
         winners: this.winners
       };
@@ -374,7 +374,7 @@ export default {
       let localColors = localStorage.getItem("colorValues");
       if (localColors) {
         localColors = localColors.split(",");
-        this.lotteryColorBoxes.forEach((color, i) => {
+        this.lotteryColors.forEach((color, i) => {
           const localColorValue = Number(localColors[i]);
           color.value = localColorValue == 0 ? null : localColorValue;
         });
@@ -385,14 +385,14 @@ export default {
       localStorage.setItem("winners", JSON.stringify(this.winners));
       localStorage.setItem(
         "colorValues",
-        this.lotteryColorBoxes.map(color => Number(color.value))
+        this.lotteryColors.map(color => Number(color.value))
       );
       window.removeEventListener("unload", this.setWinnerdataToStorage);
     },
     resetWinnerDataInStorage() {
       this.winners = [];
       this.fetchAndAddPrelotteryWines().then(resp => (this.winners = resp));
-      this.lotteryColorBoxes.map(color => (color.value = null));
+      this.lotteryColors.map(color => (color.value = null));
       window.location.reload();
     }
   }
