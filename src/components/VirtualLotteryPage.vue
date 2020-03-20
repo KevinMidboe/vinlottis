@@ -23,7 +23,7 @@
 
     <hr>
 
-    <h2>Live oversikt av kjøp i dag</h2>
+    <h2>Live oversikt av lodd kjøp i dag</h2>
     <div class="colors">
       <div
         v-for="color in Object.keys(ticketsBought)"
