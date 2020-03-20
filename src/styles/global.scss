@@ -74,13 +74,15 @@ body {
     margin-right: 2rem;
   }
 
-  @include mobile &:not(.row) {
-    flex-direction: column;
-    align-items: center;
+  @include mobile {
+    &:not(.row) {
+      flex-direction: column;
+      align-items: center;
 
-    > *:not(:last-child) {
-      margin-right: unset;
-      margin-bottom: .75rem;
+      > *:not(:last-child) {
+        margin-right: unset;
+        margin-bottom: .75rem;
+      }
     }
   }
 }
