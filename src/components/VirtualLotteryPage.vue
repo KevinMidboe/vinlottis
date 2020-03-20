@@ -21,6 +21,21 @@
       <span class="subtext generator-link">Se her</span>
     </router-link>
 
+    <hr>
+
+    <h2>Live oversikt av kjøp i dag</h2>
+    <div class="colors">
+      <div
+        v-for="color in Object.keys(ticketsBought)"
+        :class="color + ' colors-box'"
+        :key="color"
+      >
+        <div class="colors-overlay">
+          <p>{{ ticketsBought[color] }} kjøpt</p>
+        </div>
+      </div>
+    </div>
+
     <WinnerDraw
       :currentWinnerDrawn="currentWinnerDrawn"
       :currentWinner="currentWinner"
@@ -68,7 +83,8 @@ export default {
       usernameAccepted: false,
       username: null,
       wasDisconnected: false,
-      emitUsernameOnConnect: false
+      emitUsernameOnConnect: false,
+      ticketsBought: {}
     };
   },
   created() {
@@ -160,6 +176,14 @@ export default {
       let response = await attendees();
       if (response) {
         this.attendees = response;
+        const addValueOfListObjectByKey = (list, key) => list.map(object => object[key]).reduce((a, b) => a + b);
+
+        this.ticketsBought = {
+          red: addValueOfListObjectByKey(response, "red"),
+          blue: addValueOfListObjectByKey(response, "blue"),
+          green: addValueOfListObjectByKey(response, "green"),
+          yellow: addValueOfListObjectByKey(response, "yellow"),
+        }
       }
       this.attendeesFetched = true;
     },
@@ -199,6 +223,151 @@ export default {
 .generator-link {
   font-weight: bold;
   border-bottom: 1px solid #ff5fff;
+}
+</style>
+
+<style lang="scss" scoped>
+@import "../styles/global.scss";
+@import "../styles/variables.scss";
+@import "../styles/media-queries.scss";
+.color-selector {
+  margin-bottom: 0.65rem;
+  margin-right: 1rem;
+
+  @include desktop {
+    min-width: 175px;
+  }
+
+  @include mobile {
+    max-width: 25vw;
+  }
+
+  .active {
+    border: 2px solid unset;
+
+    &.green {
+      border-color: $green;
+    }
+    &.blue {
+      border-color: $dark-blue;
+    }
+    &.red {
+      border-color: $red;
+    }
+    &.yellow {
+      border-color: $dark-yellow;
+    }
+  }
+
+  button {
+    border: 2px solid transparent;
+    display: inline-flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    height: 2.5rem;
+    width: 2.5rem;
+
+    // disable-dbl-tap-zoom
+    touch-action: manipulation;
+
+    @include mobile {
+      margin: 2px;
+    }
+
+    &.green {
+      background: #c8f9df;
+    }
+    &.blue {
+      background: #d4f2fe;
+    }
+    &.red {
+      background: #fbd7de;
+    }
+    &.yellow {
+      background: #fff6d6;
+    }
+  }
+}
+
+.colors {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  @include mobile {
+    margin: 1.8rem auto 0;
+  }
+
+  .label-div {
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+}
+
+.colors-box {
+  width: 150px;
+  height: 150px;
+  margin: 20px;
+  -webkit-mask-image: url(/../../public/assets/images/lodd.svg);
+  background-repeat: no-repeat;
+  mask-image: url(/../../public/assets/images/lodd.svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  @include mobile {
+    width: 120px;
+    height: 120px;
+    margin: 10px;
+  }
+}
+
+.colors-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0 0.25rem;
+  position: relative;
+
+  p {
+    width: 70%;
+    border: 0;
+    padding: 0;
+    font-size: 1.5rem;
+    height: unset;
+    max-height: unset;
+
+    @include mobile {
+      font-size: 1.3rem;
+    }
+  }
+}
+
+.green,
+.green .colors-overlay > input {
+  background-color: $light-green;
+  color: $green;
+}
+
+.blue,
+.blue .colors-overlay > input {
+  background-color: $light-blue;
+  color: $blue;
+}
+
+.yellow,
+.yellow .colors-overlay > input {
+  background-color: $light-yellow;
+  color: $yellow;
+}
+
+.red,
+.red .colors-overlay > input {
+  background-color: $light-red;
+  color: $red;
 }
 </style>
 
