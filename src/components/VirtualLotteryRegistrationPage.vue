@@ -4,18 +4,14 @@
     <br />
     <div class="draw-winner-container" v-if="attendees.length > 0">
       <div v-if="drawingWinner">
-        <span
-          >Trekker {{ currentWinners }} av {{ numberOfWinners }} vinnere.
-          {{ secondsLeft }} sekunder av {{ drawTime }} igjen</span
-        >
-        <button class="vin-button no-margin" @click="stopDraw">
-          Stopp trekning
-        </button>
+        <span>
+          Trekker {{ currentWinners }} av {{ numberOfWinners }} vinnere.
+          {{ secondsLeft }} sekunder av {{ drawTime }} igjen
+        </span>
+        <button class="vin-button no-margin" @click="stopDraw">Stopp trekning</button>
       </div>
       <div class="draw-container" v-if="!drawingWinner">
-        <button class="vin-button no-margin" @click="drawWinner">
-          Trekk vinnere
-        </button>
+        <button class="vin-button no-margin" @click="drawWinner">Trekk vinnere</button>
         <input type="number" v-model="numberOfWinners" />
       </div>
     </div>
@@ -28,24 +24,17 @@
         </div>
       </div>
     </div>
-    <div
-      class="delete-buttons"
-      v-if="attendees.length > 0 || winners.length > 0"
-    >
+    <div class="delete-buttons" v-if="attendees.length > 0 || winners.length > 0">
       <button
         class="vin-button"
         v-if="winners.length > 0"
         @click="deleteAllWinners"
-      >
-        Slett virtuelle vinnere
-      </button>
+      >Slett virtuelle vinnere</button>
       <button
         class="vin-button"
         v-if="attendees.length > 0"
         @click="deleteAllAttendees"
-      >
-        Slett virtuelle deltakere
-      </button>
+      >Slett virtuelle deltakere</button>
     </div>
     <div class="attendees" v-if="attendees.length > 0">
       <h2>Deltakere ({{ attendees.length }})</h2>
@@ -56,15 +45,9 @@
         </div>
         <div class="ballots-container">
           <div class="red-ballot ballot-element small">{{ attendee.red }}</div>
-          <div class="blue-ballot ballot-element small">
-            {{ attendee.blue }}
-          </div>
-          <div class="green-ballot ballot-element small">
-            {{ attendee.green }}
-          </div>
-          <div class="yellow-ballot ballot-element small">
-            {{ attendee.yellow }}
-          </div>
+          <div class="blue-ballot ballot-element small">{{ attendee.blue }}</div>
+          <div class="green-ballot ballot-element small">{{ attendee.green }}</div>
+          <div class="yellow-ballot ballot-element small">{{ attendee.yellow }}</div>
         </div>
       </div>
     </div>
@@ -77,12 +60,7 @@
       <br />
       <div class="label-div">
         <label for="phoneNumber">Telefonnummer</label>
-        <input
-          id="phoneNumber"
-          type="text"
-          placeholder="Telefonnummer"
-          v-model="phoneNumber"
-        />
+        <input id="phoneNumber" type="text" placeholder="Telefonnummer" v-model="phoneNumber" />
       </div>
       <br />
       <br />
@@ -186,7 +164,7 @@ export default {
   },
   methods: {
     setWithRandomColors(colors) {
-      Object.keys(colors).forEach(color => this[color] = colors[color])
+      Object.keys(colors).forEach(color => (this[color] = colors[color]));
     },
     sendAttendee: async function() {
       let response = await addAttendee({
@@ -406,7 +384,6 @@ button {
   & .ballots-container {
     display: flex;
     justify-content: center;
-    align-items: center;
   }
 
   & .name-and-phone {
