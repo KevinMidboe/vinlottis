@@ -2,7 +2,7 @@
   <div class="attendees" v-if="attendees.length > 0">
     <h2>Deltakere ({{ attendees.length }})</h2>
     <div class="attendees-container" ref="attendees">
-      <div class="attendee" v-for="(attendee, index) in attendees" :key="index">
+      <div class="attendee" v-for="(attendee, index) in flipList(attendees)" :key="index">
         <span class="attendee-name">{{ attendee.name }}</span>
         <div class="red-ballot ballot-element small">{{ attendee.red }}</div>
         <div class="blue-ballot ballot-element small">{{ attendee.blue }}</div>
@@ -19,6 +19,9 @@ export default {
     attendees: {
       type: Array
     }
+  },
+  methods: {
+    flipList: (list) => list.slice().reverse()
   },
   watch: {
     attendees: {
