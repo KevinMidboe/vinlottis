@@ -1,17 +1,13 @@
 <template>
   <div class="attendees" v-if="attendees.length > 0">
     <h2>Deltakere ({{ attendees.length }})</h2>
-    <div class="attendee" v-for="(attendee, index) in attendees" :key="index">
-      <span class="attendee-name">{{ attendee.name }}</span>
-      <div class="red-ballot ballot-element small">{{ attendee.red }}</div>
-      <div class="blue-ballot ballot-element small">
-        {{ attendee.blue }}
-      </div>
-      <div class="green-ballot ballot-element small">
-        {{ attendee.green }}
-      </div>
-      <div class="yellow-ballot ballot-element small">
-        {{ attendee.yellow }}
+    <div class="attendees-container" ref="attendees">
+      <div class="attendee" v-for="(attendee, index) in attendees" :key="index">
+        <span class="attendee-name">{{ attendee.name }}</span>
+        <div class="red-ballot ballot-element small">{{ attendee.red }}</div>
+        <div class="blue-ballot ballot-element small">{{ attendee.blue }}</div>
+        <div class="green-ballot ballot-element small">{{ attendee.green }}</div>
+        <div class="yellow-ballot ballot-element small">{{ attendee.yellow }}</div>
       </div>
     </div>
   </div>
@@ -22,6 +18,16 @@ export default {
   props: {
     attendees: {
       type: Array
+    }
+  },
+  watch: {
+    attendees: {
+      deep: true,
+      handler() {
+        setTimeout(() => {
+          this.$refs.attendees.scrollTop = this.$refs.attendees.scrollHeight;
+        }, 50);
+      }
     }
   }
 };
@@ -52,6 +58,11 @@ export default {
   flex-direction: column;
   align-items: center;
   width: 65%;
+  height: 100%;
+}
+
+.attendees-container {
+  width: 100%;
   height: 100%;
   overflow-y: scroll;
 }
