@@ -53,9 +53,11 @@ export default {
   watch: {
     chatHistory: {
       handler() {
-        setTimeout(() => {
-          this.$refs.history.scrollTop = this.$refs.history.scrollHeight;
-        }, 10);
+        if (this.$refs && this.$refs.history) {
+          setTimeout(() => {
+            this.$refs.history.scrollTop = this.$refs.history.scrollHeight;
+          }, 10);
+        }
       },
       deep: true
     }

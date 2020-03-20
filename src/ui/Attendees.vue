@@ -24,9 +24,11 @@ export default {
     attendees: {
       deep: true,
       handler() {
-        setTimeout(() => {
-          this.$refs.attendees.scrollTop = this.$refs.attendees.scrollHeight;
-        }, 50);
+        if (this.$refs && this.$refs.history) {
+          setTimeout(() => {
+            this.$refs.attendees.scrollTop = this.$refs.attendees.scrollHeight;
+          }, 50);
+        }
       }
     }
   }
