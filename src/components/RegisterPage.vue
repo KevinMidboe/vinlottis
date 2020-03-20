@@ -171,10 +171,6 @@ export default {
   components: { TextToast, Wine, ScanToVinmonopolet },
   data() {
     return {
-      red: null,
-      blue: null,
-      green: null,
-      yellow: null,
       payed: undefined,
       winners: [],
       wines: [],
@@ -314,10 +310,10 @@ export default {
       }
 
       sendObject.purchase.bought =
-        parseInt(this.blue) +
-        parseInt(this.red) +
-        parseInt(this.green) +
-        parseInt(this.yellow);
+        parseInt(colors.blue) +
+        parseInt(colors.red) +
+        parseInt(colors.green) +
+        parseInt(colors.yellow);
       const stolen = sendObject.purchase.bought - parseInt(this.payed) / 10;
       if (isNaN(stolen) || stolen == undefined) {
         alert("Betalt må registreres");
