@@ -3,9 +3,7 @@
     <h2 v-if="winners.length > 0">Vinnere</h2>
     <div class="winners" v-if="winners.length > 0">
       <div class="winner" v-for="(winner, index) in winners" :key="index">
-        <div :class="winner.color + '-ballot'" class="ballot-element">
-          {{ winner.name }}
-        </div>
+        <div :class="winner.color + '-ballot'" class="ballot-element">{{ winner.name }}</div>
       </div>
     </div>
   </div>
@@ -44,5 +42,6 @@ h2 {
   justify-content: center;
   align-items: center;
   font-weight: bold;
+  text-align: center;
 }
 </style>
