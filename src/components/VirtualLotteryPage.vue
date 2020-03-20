@@ -16,7 +16,7 @@
       <p>Send gjerne melding om fargeønsker også</p>
     </div>
 
-    <router-link to="dagens" class="generate-link" v-if="todayExists">
+    <router-link to="/dagens" class="generate-link" v-if="todayExists">
       Lurer du på dagens fangst?
       <span class="subtext generator-link">Se her</span>
     </router-link>
