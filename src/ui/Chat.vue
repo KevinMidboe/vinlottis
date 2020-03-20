@@ -14,14 +14,9 @@
         </div>
       </div>
       <div class="input">
-        <input
-          @keyup.enter="sendMessage"
-          type="text"
-          v-model="message"
-          placeholder="Melding.."
-        />
-        <button @click="sendMessage">Send</button
-        ><button @click="removeUsername">Logg ut</button>
+        <input @keyup.enter="sendMessage" type="text" v-model="message" placeholder="Melding.." />
+        <button @click="sendMessage">Send</button>
+        <button @click="removeUsername">Logg ut</button>
       </div>
     </div>
     <div v-if="!usernameSet" class="username-dialog">
@@ -88,7 +83,7 @@ export default {
       if (date.getDate() == new Date().getDate()) {
         return timeString;
       }
-      return `${date.toLocaleDateString()} ${timeString}`
+      return `${date.toLocaleDateString()} ${timeString}`;
     },
     sendMessage: function() {
       this.$emit("message", this.message);
@@ -147,7 +142,7 @@ input {
 
 .chat-container,
 .chat-inner-container {
-  height: 100%;
+  height: 95%;
 }
 
 .history {
