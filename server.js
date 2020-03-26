@@ -37,7 +37,7 @@ app.use(
       //vibrate: ["'none'"],
       payment: ["'none'"],
       microphone: ["'none'"],
-      camera: ["'none'"],
+      camera: ["'self'"],
       speaker: ["*"],
       syncXhr: ["'self'"]
       //notifications: ["'self'"]
@@ -102,4 +102,4 @@ app.use("/service-worker.js", function(req, res) {
   res.sendFile(path.join(__dirname, "public/sw/serviceWorker.js"));
 });
 
-server.listen(30030);
+server.listen(3000);

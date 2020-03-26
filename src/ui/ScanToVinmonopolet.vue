@@ -6,63 +6,70 @@
 </template>
 
 <script>
-import { BrowserBarcodeReader } from '@zxing/library';
+import { BrowserBarcodeReader } from "@zxing/library";
 import { barcodeToVinmonopolet } from "@/api";
 
-export default {
+export default {
   name: "Scan to vinnopolet",
   data() {
     return {
       video: undefined,
       errorMessage: undefined
-    }
+    };
   },
   mounted() {
     if (navigator.mediaDevices == undefined) {
-      this.errorMessage = "Feil: Ingen kamera funnet."
-      return
+      this.errorMessage = "Feil: Ingen kamera funnet.";
+      return;
     }
 
     setTimeout(() => {
-      this.video = document.querySelector('video');
+      this.video = document.querySelector("video");
       this.scrollIntoView();
 
       const constraints = {
         audio: false,
         video: {
-          facingMode: { exact: "environment" }
+          facingMode: "environment"
         }
       };
 
-      navigator.mediaDevices.getUserMedia(constraints)
+      navigator.mediaDevices
+        .getUserMedia(constraints)
         .then(this.handleSuccess)
-        .catch(this.handleError)
-    }, 10)
+        .catch(this.handleError);
+    }, 10);
   },
   methods: {
     handleSuccess(stream) {
       this.video.classList.remove("hidden");
       this.video.srcObject = stream;
-      this.searchVideoForBarcode(this.video)
+      this.searchVideoForBarcode(this.video);
     },
     handleError(error) {
-      console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
-      this.errorMessage = "Feil ved oppstart av kamera! Feilmelding: " + error.message
+      console.log(
+        "navigator.MediaDevices.getUserMedia error: ",
+        error.message,
+        error.name
+      );
+      this.errorMessage =
+        "Feil ved oppstart av kamera! Feilmelding: " + error.message;
     },
     searchVideoForBarcode(video) {
-      const codeReader = new BrowserBarcodeReader()
+      const codeReader = new BrowserBarcodeReader();
 
-      codeReader.decodeOnceFromVideoDevice(undefined, video)
+      codeReader
+        .decodeOnceFromVideoDevice(undefined, video)
         .then(result => {
-            barcodeToVinmonopolet(result.text)
-              .then(this.emitWineFromVinmonopolet)
-              .catch(this.catchVinmonopoletError)
-              .then(this.searchVideoForBarcode(video))
+          barcodeToVinmonopolet(result.text)
+            .then(this.emitWineFromVinmonopolet)
+            .catch(this.catchVinmonopoletError)
+            .then(this.searchVideoForBarcode(video));
         })
         .catch(err => console.error(err));
     },
     emitWineFromVinmonopolet(response) {
-      this.errorMessage = ""
+      this.errorMessage = "";
 
       this.$emit("wine", {
         name: response.name,
@@ -77,12 +84,13 @@ export default {
       this.errorMessage = "Feil! " + error.message || error;
     },
     scrollIntoView() {
-      window.scrollTo(0, 
+      window.scrollTo(
+        0,
         document.getElementById("addwine-title").offsetTop - 10
-      )
+      );
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
