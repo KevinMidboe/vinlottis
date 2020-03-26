@@ -13,12 +13,7 @@
           v-model="pushMessage"
           placeholder="Push meldingtekst"
         />
-        <input
-          id="notification-link"
-          type="text"
-          v-model="pushLink"
-          placeholder="Push-click link"
-        />
+        <input id="notification-link" type="text" v-model="pushLink" placeholder="Push-click link" />
       </div>
     </div>
     <div class="button-container">
@@ -32,13 +27,12 @@
     <ScanToVinmonopolet @wine="wineFromVinmonopoletScan" v-if="showCamera" />
 
     <div class="button-container">
-      <button class="vin-button" @click="showCamera = !showCamera">
-        {{ showCamera ? "Skjul camera" : "Legg til vin med camera" }}
-      </button>
+      <button
+        class="vin-button"
+        @click="showCamera = !showCamera"
+      >{{ showCamera ? "Skjul camera" : "Legg til vin med camera" }}</button>
 
-      <button class="vin-button" @click="addWine">
-        Legg til en vin manuelt
-      </button>
+      <button class="vin-button" @click="addWine">Legg til en vin manuelt</button>
     </div>
 
     <div v-if="wines.length > 0" class="edit-container">
@@ -48,12 +42,8 @@
             <button
               class="vin-button"
               @click="editWine = amIBeingEdited(wine) ? false : wine"
-            >
-              {{ amIBeingEdited(wine) ? "Lukk" : "Rediger" }}
-            </button>
-            <button class="red vin-button" @click="deleteWine(wine)">
-              Slett
-            </button>
+            >{{ amIBeingEdited(wine) ? "Lukk" : "Rediger" }}</button>
+            <button class="red vin-button" @click="deleteWine(wine)">Slett</button>
           </div>
 
           <div v-if="amIBeingEdited(wine)" class="wine-edit">
@@ -75,11 +65,7 @@
 
     <h3>Legg til lodd kjøpt</h3>
     <div class="colors">
-      <div
-        v-for="color in lotteryColors"
-        :class="color.css + ' colors-box'"
-        :key="color"
-      >
+      <div v-for="color in lotteryColors" :class="color.css + ' colors-box'" :key="color">
         <div class="colors-overlay">
           <p>{{ color.name }} kjøpt</p>
           <input v-model="color.value" min="0" :placeholder="0" type="number" />
@@ -88,24 +74,13 @@
 
       <div class="label-div">
         <label>Totalt kjøpt for:</label>
-        <input
-          v-model="payed"
-          placeholder="NOK"
-          type="number"
-          :step="price || 1"
-          min="0"
-        />
+        <input v-model="payed" placeholder="NOK" type="number" :step="price || 1" min="0" />
       </div>
     </div>
 
     <h3>Vinnere</h3>
     <div class="winner-container" v-if="winners.length > 0">
-      <wine
-        v-for="winner in winners"
-        :key="winner"
-        :wine="winner.wine"
-        :inlineSlot="true"
-      >
+      <wine v-for="winner in winners" :key="winner" :wine="winner.wine" :inlineSlot="true">
         <div class="winner-element">
           <div class="color-selector">
             <div class="label-div">
@@ -135,29 +110,18 @@
 
           <div class="label-div">
             <label for="winner-name">Navn vinner</label>
-            <input
-              id="winner-name"
-              type="text"
-              placeholder="Navn"
-              v-model="winner.name"
-            />
+            <input id="winner-name" type="text" placeholder="Navn" v-model="winner.name" />
           </div>
         </div>
       </wine>
 
       <div class="button-container">
         <button class="vin-button" @click="sendInfo">Send inn vinnere</button>
-        <button class="vin-button" @click="resetWinnerDataInStorage">
-          Reset local wines
-        </button>
+        <button class="vin-button" @click="resetWinnerDataInStorage">Reset local wines</button>
       </div>
     </div>
 
-    <TextToast
-      v-if="showToast"
-      :text="toastText"
-      v-on:closeToast="showToast = false"
-    />
+    <TextToast v-if="showToast" :text="toastText" v-on:closeToast="showToast = false" />
   </div>
 </template>
 
@@ -282,7 +246,7 @@ export default {
         green: this.lotteryColors.filter(c => c.css == "green")[0].value,
         blue: this.lotteryColors.filter(c => c.css == "blue")[0].value,
         yellow: this.lotteryColors.filter(c => c.css == "yellow")[0].value
-      }
+      };
 
       let sendObject = {
         purchase: {
@@ -441,6 +405,7 @@ hr {
   margin-top: 2rem;
   display: flex;
   justify-content: center;
+  flex-direction: column;
 }
 .edit {
   width: 100%;
