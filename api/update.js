@@ -32,7 +32,7 @@ router.route("/log/wines").post(mustBeAuthenticated, async (req, res) => {
     let wine = wines[i];
     let newWonWine = new PreLotteryWine({
       name: wine.name,
-      vivinoLink: wine.vivinoLink,
+      link: wine.link,
       rating: wine.rating,
       image: wine.image,
       price: wine.price,
@@ -90,7 +90,7 @@ router.route("/log").post(mustBeAuthenticated, async (req, res) => {
     if (wonWine == undefined) {
       let newWonWine = new Wine({
         name: currentWinner.wine.name,
-        vivinoLink: currentWinner.wine.vivinoLink,
+        link: currentWinner.wine.link,
         rating: currentWinner.wine.rating,
         occurences: 1,
         image: currentWinner.wine.image,

@@ -11,7 +11,7 @@
         <span v-if="wine.price">{{ wine.price }} NOK</span>
         <span v-if="wine.country">{{ wine.country }}</span>
 
-        <a v-if="wine.vivinoLink" :href="wine.vivinoLink" class="wine-link">Les mer på {{ hostname(wine.vivinoLink) }}</a>
+        <a v-if="wine.link" :href="wine.link" class="wine-link">Les mer på {{ hostname(wine.link) }}</a>
       </div>
 
       <slot v-if="shouldUseInlineSlot()"></slot>

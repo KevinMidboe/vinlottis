@@ -175,7 +175,7 @@ export default {
           color: "",
           wine: {
             name: wine.name,
-            vivinoLink: wine.vivinoLink,
+            link: wine.link,
             rating: wine.rating,
             image: wine.image,
             id: wine.id
@@ -235,7 +235,7 @@ export default {
         color: "",
         wine: {
           name: "",
-          vivinoLink: "",
+          link: "",
           rating: ""
         }
       });

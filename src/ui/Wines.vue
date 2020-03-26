@@ -17,7 +17,7 @@
         </span>
         <a
           class="wine-link"
-          :href="wine.vivinoLink"
+          :href="wine.link"
           @click="wineClick(wine, $event)"
           >Les mer</a>
       </li>
@@ -75,7 +75,7 @@ export default {
       this.$ga.event({
         eventCategory: "Wines",
         eventAction: "click",
-        eventValue: `${wine.name} - ${wine.vivinoLink}`
+        eventValue: `${wine.name} - ${wine.link}`
       });
     },
     closeWine: function(event) {

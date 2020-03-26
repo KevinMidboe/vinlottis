@@ -73,7 +73,7 @@ export default {
 
       this.$emit("wine", {
         name: response.name,
-        vivinoLink: "https://vinmonopolet.no" + response.url,
+        link: "https://vinmonopolet.no" + response.url,
         price: response.price.value,
         image: response.images[1].url,
         country: response.main_country.name,
