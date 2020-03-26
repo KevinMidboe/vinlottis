@@ -7,7 +7,9 @@ const Wine = new Schema({
   rating: Number,
   occurences: Number,
   id: String,
-  image: String
+  image: String,
+  price: String,
+  country: String
 });
 
 module.exports = mongoose.model("Wine", Wine);

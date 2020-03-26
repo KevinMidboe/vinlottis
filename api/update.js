@@ -35,6 +35,8 @@ router.route("/log/wines").post(mustBeAuthenticated, async (req, res) => {
       vivinoLink: wine.vivinoLink,
       rating: wine.rating,
       image: wine.image,
+      price: wine.price,
+      country: wine.country,
       id: wine.id
     });
     await newWonWine.save();
