@@ -52,7 +52,7 @@ router.route("/winners/secure").get(mustBeAuthenticated, async (req, res) => {
 });
 
 router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
-  let allContestants = await Attendee.find();
+  let allContestants = await Attendee.find({ winner: false });
   if (allContestants.length == 0) {
     res.json(false);
     return;
@@ -78,7 +78,7 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
 
   let colorToChooseFrom =
     ballotColors[Math.floor(Math.random() * ballotColors.length)];
-  let findObject = {};
+  let findObject = { winner: false };
 
   findObject[colorToChooseFrom] = { $gt: 0 };
 
@@ -108,7 +108,11 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
     for (let y = 0; y < currentContestant[colorToChooseFrom]; y++) {
       attendeeListDemocratic.push({
         name: currentContestant.name,
-        phoneNumber: currentContestant.phoneNumber
+        phoneNumber: currentContestant.phoneNumber,
+        red: currentContestant.red,
+        blue: currentContestant.blue,
+        green: currentContestant.green,
+        yellow: currentContestant.yellow
       });
     }
   }
@@ -132,7 +136,10 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
     yellow: winner.yellow
   });
 
-  await Attendee.remove({ name: winner.name, phoneNumber: winner.phoneNumber });
+  await Attendee.update(
+    { name: winner.name, phoneNumber: winner.phoneNumber },
+    { $set: { winner: true } }
+  );
 
   await newWinnerElement.save();
   res.json(winner);
@@ -172,7 +179,8 @@ router.route("/attendee").post(mustBeAuthenticated, async (req, res) => {
     blue,
     green,
     yellow,
-    phoneNumber: attendee.phoneNumber
+    phoneNumber: attendee.phoneNumber,
+    winner: false
   });
   await newAttendee.save();
 

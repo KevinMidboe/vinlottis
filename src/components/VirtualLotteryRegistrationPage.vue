@@ -21,6 +21,10 @@
         <div :class="winner.color + '-ballot'" class="ballot-element">
           <span>{{ winner.name }}</span>
           <span>{{ winner.phoneNumber }}</span>
+          <span>Rød: {{ winner.red }}</span>
+          <span>Blå: {{ winner.blue }}</span>
+          <span>Grønn: {{ winner.green }}</span>
+          <span>Gul: {{ winner.yellow }}</span>
         </div>
       </div>
     </div>

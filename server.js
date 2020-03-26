@@ -102,4 +102,4 @@ app.use("/service-worker.js", function(req, res) {
   res.sendFile(path.join(__dirname, "public/sw/serviceWorker.js"));
 });
 
-server.listen(3000);
+server.listen(30030);

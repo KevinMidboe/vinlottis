@@ -7,7 +7,8 @@ const Attendee = new Schema({
   green: Number,
   blue: Number,
   red: Number,
-  yellow: Number
+  yellow: Number,
+  winner: Boolean
 });
 
 module.exports = mongoose.model("Attendee", Attendee);
