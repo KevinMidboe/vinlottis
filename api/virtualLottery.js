@@ -89,7 +89,7 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
     const hit = await Attendee.find(findObject);
     if (hit && hit.length) {
       contestantsToChooseFrom = hit;
-      break
+      break;
     }
     tries++;
   }
@@ -97,7 +97,7 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
     return res.status(404).send({
       success: false,
       message: `Klarte ikke trekke en vinner etter ${maxTries} forsøk.`
-    })
+    });
   }
 
   let attendeeListDemocratic = [];
@@ -125,7 +125,11 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
   let newWinnerElement = new VirtualWinner({
     name: winner.name,
     phoneNumber: winner.phoneNumber,
-    color: colorToChooseFrom
+    color: colorToChooseFrom,
+    red: winner.red,
+    blue: winner.blue,
+    green: winner.green,
+    yellow: winner.yellow
   });
 
   await Attendee.remove({ name: winner.name, phoneNumber: winner.phoneNumber });
