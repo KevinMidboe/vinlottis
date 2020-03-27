@@ -8,9 +8,7 @@
           attendeesFetched &&
           winnersFetched
       "
-    >
-      Her var det lite.. Sikker på at det er en virtuell trekning nå?
-    </h2>
+    >Her var det lite.. Sikker på at det er en virtuell trekning nå?</h2>
     <div class="title-info">
       <h2>Send vipps med melding "Vinlotteri" for å bli registrert til virtuelt lotteri</h2>
       <p>Send gjerne melding om fargeønsker også</p>
@@ -21,15 +19,11 @@
       <span class="subtext generator-link">Se her</span>
     </router-link>
 
-    <hr>
+    <hr />
 
     <h2>Live oversikt av lodd kjøp i dag</h2>
     <div class="colors">
-      <div
-        v-for="color in Object.keys(ticketsBought)"
-        :class="color + ' colors-box'"
-        :key="color"
-      >
+      <div v-for="color in Object.keys(ticketsBought)" :class="color + ' colors-box'" :key="color">
         <div class="colors-overlay">
           <p>{{ ticketsBought[color] }} kjøpt</p>
         </div>
@@ -88,8 +82,7 @@ export default {
     };
   },
   created() {
-    getChatHistory()
-      .then(messages => this.chatHistory = messages)
+    getChatHistory().then(messages => (this.chatHistory = messages));
   },
   mounted() {
     this.track();
@@ -150,7 +143,7 @@ export default {
     todayExists: () => {
       return prelottery()
         .then(wines => wines.length > 0)
-        .catch(() => false)
+        .catch(() => false);
     }
   },
   methods: {
@@ -176,14 +169,19 @@ export default {
       let response = await attendees();
       if (response) {
         this.attendees = response;
-        const addValueOfListObjectByKey = (list, key) => list.map(object => object[key]).reduce((a, b) => a + b);
+        if (this.attendees == undefined || this.attendees.length == 0) {
+          this.attendeesFetched = true;
+          return;
+        }
+        const addValueOfListObjectByKey = (list, key) =>
+          list.map(object => object[key]).reduce((a, b) => a + b);
 
         this.ticketsBought = {
           red: addValueOfListObjectByKey(response, "red"),
           blue: addValueOfListObjectByKey(response, "blue"),
           green: addValueOfListObjectByKey(response, "green"),
-          yellow: addValueOfListObjectByKey(response, "yellow"),
-        }
+          yellow: addValueOfListObjectByKey(response, "yellow")
+        };
       }
       this.attendeesFetched = true;
     },

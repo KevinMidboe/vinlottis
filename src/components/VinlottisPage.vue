@@ -81,14 +81,9 @@ export default {
         !this.pushAllowed ||
         localStorage.getItem("push") == null
       );
-    },
-    todayExists: () => {
-      return prelottery()
-        .then(wines => wines.length > 0)
-        .catch(() => false)
     }
   },
-  mounted() {
+  async mounted() {
     this.$on("push-allowed", () => {
       this.pushAllowed = true;
     });
@@ -96,6 +91,11 @@ export default {
       return;
     }
     this.track();
+    try {
+      this.todayExists = (await prelottery()).length > 0;
+    } catch (e) {
+      this.todayExists = false;
+    }
   },
   methods: {
     requestNotificationAccess() {
