@@ -79,8 +79,17 @@ export default {
       nextDayOfLottery = new Date(nextDayOfLottery.setHours(__HOURS__));
       nextDayOfLottery = new Date(nextDayOfLottery.setMinutes(0));
       nextDayOfLottery = new Date(nextDayOfLottery.setSeconds(0));
+      let nowDate = new Date();
+      let now = nowDate.getTime();
+      if (nextDayOfLottery.getTimezoneOffset() != nowDate.getTimezoneOffset()) {
+        let _diff =
+          (nextDayOfLottery.getTimezoneOffset() - nowDate.getTimezoneOffset()) *
+          60 *
+          -1;
+        nextDayOfLottery.setSeconds(nextDayOfLottery.getSeconds() + _diff);
+      }
       this.nextLottery = nextDayOfLottery;
-      let now = new Date().getTime();
+
       this.distance = new Date(this.nextLottery).getTime() - now;
     },
     countdown: function() {
