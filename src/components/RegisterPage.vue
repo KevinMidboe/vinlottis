@@ -79,6 +79,7 @@
     </div>
 
     <h3>Vinnere</h3>
+    <a class="wine-link" @click="fetchColorsAndWinners()">Refresh data fra virtuelt lotteri</a>
     <div class="winner-container" v-if="winners.length > 0">
       <wine v-for="winner in winners" :key="winner" :wine="winner.wine" :inlineSlot="true">
         <div class="winner-element">
@@ -107,11 +108,25 @@
               @click="winner.color = 'yellow'"
             ></button>
           </div>
-
           <div class="label-div">
             <label for="winner-name">Navn vinner</label>
             <input id="winner-name" type="text" placeholder="Navn" v-model="winner.name" />
           </div>
+        </div>
+        <div class="label-div">
+          <label for="potential-winner-name">Virtuelle vinnere</label>
+          <select
+            id="potential-winner-name"
+            type="text"
+            placeholder="Navn"
+            v-model="winner.potentialWinner"
+            @change="potentialChange($event, winner)"
+          >
+            <option
+              v-for="fetchedWinner in fetchedWinners"
+              :value="stringify(fetchedWinner)"
+            >{{fetchedWinner.name}}</option>
+          </select>
         </div>
       </wine>
 
@@ -126,7 +141,14 @@
 </template>
 
 <script>
-import { prelottery, log, logWines, wineSchema } from "@/api";
+import {
+  prelottery,
+  log,
+  logWines,
+  wineSchema,
+  winnersSecure,
+  attendees
+} from "@/api";
 import TextToast from "@/ui/TextToast";
 import Wine from "@/ui/Wine";
 import ScanToVinmonopolet from "@/ui/ScanToVinmonopolet";
@@ -137,6 +159,7 @@ export default {
     return {
       payed: undefined,
       winners: [],
+      fetchedWinners: [],
       wines: [],
       pushMessage: "",
       pushLink: "/",
@@ -161,7 +184,59 @@ export default {
   beforeDestroy() {
     this.setWinnerdataToStorage();
   },
+  mounted() {
+    this.fetchColorsAndWinners();
+  },
   methods: {
+    stringify(json) {
+      return JSON.stringify(json);
+    },
+    potentialChange(event, winner) {
+      let data = JSON.parse(event.target.value);
+      winner.name = data.name;
+      winner.color = data.color;
+    },
+    async fetchColorsAndWinners() {
+      let winners = await winnersSecure();
+      let _attendees = await attendees();
+      let colors = {
+        red: 0,
+        blue: 0,
+        green: 0,
+        yellow: 0
+      };
+      this.payed = 0;
+      for (let i = 0; i < _attendees.length; i++) {
+        let attendee = _attendees[i];
+        colors.red += attendee.red;
+        colors.blue += attendee.blue;
+        colors.green += attendee.green;
+        colors.yellow += attendee.yellow;
+        this.payed +=
+          (attendee.red + attendee.blue + attendee.green + attendee.yellow) *
+          10;
+      }
+
+      for (let i = 0; i < this.lotteryColors.length; i++) {
+        let currentColor = this.lotteryColors[i];
+        switch (currentColor.css) {
+          case "red":
+            currentColor.value = colors.red;
+            break;
+          case "blue":
+            currentColor.value = colors.blue;
+            break;
+            a;
+          case "green":
+            currentColor.value = colors.green;
+            break;
+          case "yellow":
+            currentColor.value = colors.yellow;
+            break;
+        }
+      }
+      this.fetchedWinners = winners;
+    },
     amIBeingEdited(wine) {
       return this.editWine.id == wine.id && this.editWine.name == wine.name;
     },
@@ -173,6 +248,7 @@ export default {
         this.winners.push({
           name: "",
           color: "",
+          potentialWinner: "",
           wine: {
             name: wine.name,
             vivinoLink: wine.vivinoLink,
@@ -341,7 +417,6 @@ export default {
       }
     },
     setWinnerdataToStorage() {
-      console.log("saving localstorage");
       localStorage.setItem("winners", JSON.stringify(this.winners));
       localStorage.setItem(
         "colorValues",
@@ -362,7 +437,13 @@ export default {
 <style lang="scss" scoped>
 @import "../styles/global.scss";
 @import "../styles/media-queries.scss";
-
+select {
+  margin: 0 0 auto;
+  height: 2rem;
+  min-width: 0;
+  width: 98%;
+  padding: 1%;
+}
 h1 {
   width: 100%;
   text-align: center;
@@ -374,6 +455,14 @@ h2 {
   text-align: center;
   font-size: 1.6rem;
   font-family: knowit, Arial;
+}
+
+.wine-link {
+  color: #333333;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  border-bottom: 1px solid #ff5fff;
 }
 
 hr {

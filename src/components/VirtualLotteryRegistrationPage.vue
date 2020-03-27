@@ -201,19 +201,21 @@ export default {
       this.secondsLeft = this.drawTime;
     },
     drawWinner: async function() {
-      this.drawingWinner = true;
-      let response = await getVirtualWinner();
-      if (response) {
-        if (this.currentWinners < this.numberOfWinners) {
-          this.countdown();
+      if (window.confirm("Er du sikker på at du vil trekke vinnere?")) {
+        this.drawingWinner = true;
+        let response = await getVirtualWinner();
+        if (response) {
+          if (this.currentWinners < this.numberOfWinners) {
+            this.countdown();
+          } else {
+            this.drawingWinner = false;
+          }
+          this.getWinners();
+          this.getAttendees();
         } else {
           this.drawingWinner = false;
+          alert("Noe gikk galt under trekningen..!");
         }
-        this.getWinners();
-        this.getAttendees();
-      } else {
-        this.drawingWinner = false;
-        alert("Noe gikk galt under trekningen..!");
       }
     },
     countdown: function() {
@@ -236,19 +238,23 @@ export default {
       }, 1000);
     },
     deleteAllWinners: async function() {
-      let response = await deleteWinners();
-      if (response) {
-        this.getWinners();
-      } else {
-        alert("Klarte ikke hente ut vinnere");
+      if (window.confirm("Er du sikker på at du vil slette vinnere?")) {
+        let response = await deleteWinners();
+        if (response) {
+          this.getWinners();
+        } else {
+          alert("Klarte ikke hente ut vinnere");
+        }
       }
     },
     deleteAllAttendees: async function() {
-      let response = await deleteAttendees();
-      if (response) {
-        this.getAttendees();
-      } else {
-        alert("Klarte ikke hente ut vinnere");
+      if (window.confirm("Er du sikker på at du vil slette alle deltakere?")) {
+        let response = await deleteAttendees();
+        if (response) {
+          this.getAttendees();
+        } else {
+          alert("Klarte ikke hente ut vinnere");
+        }
       }
     },
     getWinners: async function() {
