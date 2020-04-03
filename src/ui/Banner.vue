@@ -3,7 +3,7 @@
     <div class="top-banner">
       <img src="/public/assets/images/knowit.svg" alt="knowit logo" />
       <div class="clock">
-        <h2 v-if="!fiveMinutesLeft && !tenMinutesOver">
+        <h2 v-if="!fiveMinutesLeft || !tenMinutesOver">
           <span v-if="days > 0">{{ pad(days) }}:</span>
           <span>{{ pad(hours) }}</span>:
           <span>{{ pad(minutes) }}</span>:
