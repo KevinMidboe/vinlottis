@@ -20,7 +20,7 @@
         <PurchaseGraph class="purchase" />
         <WinGraph class="win" />
       </div>
-      <router-link to="dagens" class="generate-link" v-if="todayExists">
+      <router-link to="dagens" class="generate-link">
         Lurer du på dagens fangst?
         <span class="subtext generator-link">Se her</span>
       </router-link>
@@ -91,11 +91,6 @@ export default {
       return;
     }
     this.track();
-    try {
-      this.todayExists = (await prelottery()).length > 0;
-    } catch (e) {
-      this.todayExists = false;
-    }
   },
   methods: {
     requestNotificationAccess() {
