@@ -5,7 +5,7 @@ const config = require(path.join(__dirname + "/../config/defaults/lottery"));
 async function sendMessage(winnerObject) {
   console.log("sent message to ", winnerObject);
   winnerObject.timestamp_sent = new Date().getTime();
-  winnerObject.timestamp_limit = new Date().getTime() * (600000 * 10000);
+  winnerObject.timestamp_limit = new Date().getTime() * 600000;
   await winnerObject.save();
 
   await sendMessageToUser(
