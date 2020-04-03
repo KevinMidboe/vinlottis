@@ -82,7 +82,7 @@ export default {
     };
   },
   created() {
-    getChatHistory().then(messages => (this.chatHistory = messages));
+    getChatHistory(0, 100).then(messages => (this.chatHistory = messages));
   },
   mounted() {
     this.track();

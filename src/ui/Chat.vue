@@ -2,24 +2,22 @@
   <div class="chat-container">
     <hr />
     <h2>Chat</h2>
-    <div v-if="usernameSet" class="chat-inner-container">
-      <div class="history" ref="history">
-        <div
-          v-for="(history, index) in chatHistory"
-          :key="`${history.username}-${history.timestamp}-${index}`"
-        >
-          <span class="timestamp">[{{ getTime(history.timestamp) }}]</span>
-          <span class="user-name">{{ history.username }}:</span>
-          <span class="message">{{ history.message }}</span>
-        </div>
-      </div>
-      <div class="input">
-        <input @keyup.enter="sendMessage" type="text" v-model="message" placeholder="Melding.." />
-        <button @click="sendMessage">Send</button>
-        <button @click="removeUsername">Logg ut</button>
+    <div class="history" ref="history">
+      <div
+        v-for="(history, index) in chatHistory"
+        :key="`${history.username}-${history.timestamp}-${index}`"
+      >
+        <span class="timestamp">[{{ getTime(history.timestamp) }}]</span>
+        <span class="user-name">{{ history.username }}:</span>
+        <span class="message">{{ history.message }}</span>
       </div>
     </div>
-    <div v-if="!usernameSet" class="username-dialog">
+    <div v-if="usernameSet" class="input">
+      <input @keyup.enter="sendMessage" type="text" v-model="message" placeholder="Melding.." />
+      <button @click="sendMessage">Send</button>
+      <button @click="removeUsername">Logg ut</button>
+    </div>
+    <div v-else class="username-dialog">
       <input
         type="text"
         @keyup.enter="setUsername"
@@ -127,6 +125,7 @@ hr {
   }
 }
 .chat-container {
+  height: 100%;
   width: 50%;
 
   @include mobile {
@@ -142,10 +141,6 @@ input {
   display: flex;
 }
 
-.chat-container,
-.chat-inner-container {
-  height: 95%;
-}
 
 .history {
   height: 75%;
