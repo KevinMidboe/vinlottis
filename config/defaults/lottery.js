@@ -11,6 +11,7 @@ try {
     message: "INSERT MESSAGE",
     date: 5,
     hours: 15,
-    apiUrl: "https://lottis.vin"
+    apiUrl: "https://lottis.vin",
+    token: undefined
   };
 }

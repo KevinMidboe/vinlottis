@@ -5,5 +5,6 @@ module.exports = {
   message: "VINLOTTERI",
   date: 5,
   hours: 15,
-  apiUrl: undefined
+  apiUrl: undefined,
+  token: undefined
 };

@@ -8,7 +8,7 @@ import CreatePage from "@/components/CreatePage";
 
 import AdminPage from "@/components/AdminPage";
 
-import VirtualLotteryPage from "@/components/VirtualLotteryPage";
+import WinnerPage from "@/components/WinnerPage";
 import LotteryPage from "@/components/LotteryPage";
 
 const routes = [
@@ -43,6 +43,10 @@ const routes = [
   {
     path: "/lottery/:tab",
     component: LotteryPage
+  },
+  {
+    path: "/winner/:id",
+    component: WinnerPage
   }
 ];
 
