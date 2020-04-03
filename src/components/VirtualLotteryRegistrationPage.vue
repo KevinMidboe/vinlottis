@@ -111,6 +111,7 @@
 
 <script>
 import io from "socket.io-client";
+import eventBus from "@/mixins/EventBus";
 import {
   addAttendee,
   getVirtualWinner,

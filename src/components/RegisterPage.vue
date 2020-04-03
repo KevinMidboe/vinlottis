@@ -183,9 +183,16 @@ export default {
   },
   beforeDestroy() {
     this.setWinnerdataToStorage();
+    eventBus.$off("tab-change", () => {
+      this.fetchColorsAndWinners();
+    });
   },
   mounted() {
     this.fetchColorsAndWinners();
+
+    eventBus.$on("tab-change", () => {
+      this.fetchColorsAndWinners();
+    });
   },
   methods: {
     stringify(json) {

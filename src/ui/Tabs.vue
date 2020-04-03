@@ -7,9 +7,7 @@
         :key="index"
         @click="changeTab(index)"
         :class="chosenTab == index ? 'active' : null"
-      >
-        {{ tab.name }}
-      </div>
+      >{{ tab.name }}</div>
     </div>
     <div class="tab-elements">
       <component
@@ -23,6 +21,7 @@
 </template>
 
 <script>
+import eventBus from "@/mixins/EventBus";
 export default {
   props: {
     tabs: {
@@ -45,6 +44,7 @@ export default {
     changeTab: function(num) {
       this.chosenTab = num;
       this.$emit("tabChange", num);
+      eventBus.$emit("tab-change");
     }
   }
 };
