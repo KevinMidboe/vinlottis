@@ -141,6 +141,7 @@
 </template>
 
 <script>
+import eventBus from "@/mixins/EventBus";
 import {
   prelottery,
   log,
