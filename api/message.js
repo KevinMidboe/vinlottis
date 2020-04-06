@@ -7,9 +7,11 @@ async function sendMessage(winnerObject) {
   winnerObject.timestamp_limit = new Date().getTime() * 600000;
   await winnerObject.save();
 
+  let url = new URL(`/#/winner/${winnerObject.id}`, "https://lottis.vin");
+
   await sendMessageToUser(
     winnerObject.phoneNumber,
-    `Gratulerer som heldig vinner av vinlotteriet ${winnerObject.name}! Her er linken for å velge hva slags vin du vil ha, du har 10 minutter på å velge ut noe før du blir lagt bakerst i køen. /#/winner/${winnerObject.id}`
+    `Gratulerer som heldig vinner av vinlotteriet ${winnerObject.name}! Her er linken for å velge hva slags vin du vil ha, du har 10 minutter på å velge ut noe før du blir lagt bakerst i køen. ${url.href}. (Hvis den siden kommer opp som tom må du prøve å refreshe siden noen ganger.)`
   );
 
   return true;
