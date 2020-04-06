@@ -41,7 +41,7 @@ async function sendMessageTooLate(winnerObject) {
 async function sendMessageToUser(phoneNumber, message) {
   request.post(
     {
-      url: `https://gatewayapi.com/rest/mtsms?token=${config.token}`,
+      url: `https://gatewayapi.com/rest/mtsms?token=${config.gatewayToken}`,
       json: true,
       body: {
         sender: "Vinlottis",
@@ -62,7 +62,7 @@ async function sendUpdate(winners) {
   }
   request.post(
     {
-      url: `https://gatewayapi.com/rest/mtsms?token=${config.token}`,
+      url: `https://gatewayapi.com/rest/mtsms?token=${config.gatewayToken}`,
       json: true,
       body: {
         sender: "Vinlottis",

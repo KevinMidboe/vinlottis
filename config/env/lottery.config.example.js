@@ -6,5 +6,5 @@ module.exports = {
   date: 5,
   hours: 15,
   apiUrl: undefined,
-  token: undefined
+  gatewayToken: undefined
 };

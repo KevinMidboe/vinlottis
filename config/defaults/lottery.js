@@ -12,6 +12,6 @@ try {
     date: 5,
     hours: 15,
     apiUrl: "https://lottis.vin",
-    token: undefined
+    gatewayToken: undefined
   };
 }

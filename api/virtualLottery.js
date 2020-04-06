@@ -165,7 +165,7 @@ const sha512 = function(password, salt) {
 };
 
 router.route("/finish").get(mustBeAuthenticated, async (req, res) => {
-  if (!config.token) {
+  if (!config.gatewayToken) {
     res.json(false);
     return;
   }
