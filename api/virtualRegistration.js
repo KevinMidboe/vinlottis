@@ -7,12 +7,12 @@ mongoose.connect("mongodb://localhost:27017/vinlottis", {
   useNewUrlParser: true
 });
 
+const _wineFunctions = require(path.join(__dirname + "/../api/wine"));
+const _personFunctions = require(path.join(__dirname + "/../api/person"));
 const Message = require(path.join(__dirname + "/../api/message"));
 const VirtualWinner = require(path.join(
   __dirname + "/../schemas/VirtualWinner"
 ));
-const Highscore = require(path.join(__dirname + "/../schemas/Highscore"));
-const Wine = require(path.join(__dirname + "/../schemas/Wine"));
 const PreLotteryWine = require(path.join(
   __dirname + "/../schemas/PreLotteryWine"
 ));
@@ -86,63 +86,19 @@ router.route("/:id").post(async (req, res) => {
     });
   }
 
-  let wonWine = await Wine.findOne({ name: prelotteryWine.name });
-  if (wonWine == undefined) {
-    let newWonWine = new Wine({
-      name: prelotteryWine.name,
-      vivinoLink: prelotteryWine.vivinoLink,
-      rating: prelotteryWine.rating,
-      occurences: 1,
-      image: prelotteryWine.image,
-      id: prelotteryWine.id
-    });
-    await newWonWine.save();
-    wonWine = newWonWine;
-  } else {
-    wonWine.occurences += 1;
-    wonWine.image = prelotteryWine.image;
-    wonWine.id = prelotteryWine.id;
-    await wonWine.save();
-  }
-
+  let wonWine = await _wineFunctions.findSaveWine(prelotteryWine);
   await prelotteryWine.delete();
-
-  const person = await Highscore.findOne({
-    name: foundWinner.name
-  });
-
-  if (person == undefined) {
-    let newPerson = new Highscore({
-      name: foundWinner.name,
-      wins: [
-        {
-          color: foundWinner.color,
-          date: date,
-          wine: wonWine
-        }
-      ]
-    });
-
-    await newPerson.save();
-  } else {
-    person.wins.push({
-      color: foundWinner.color,
-      date: date,
-      wine: wonWine
-    });
-    person.markModified("wins");
-    await person.save();
-  }
+  await _personFunctions.findSavePerson(foundWinner, wonWine);
 
   await foundWinner.delete();
 
-  let prelotteryWine = await PreLotteryWine.find();
+  let nextWineBottle = await PreLotteryWine.find();
   let nextWinner = await VirtualWinner.find().sort({ timestamp_drawn: 1 });
-  if (nextWinner.length > 1 && prelotteryWine.length > 1) {
+  if (nextWinner.length > 1 && nextWineBottle.length > 1) {
     Message.sendMessage(nextWinner[0]);
     startTimeout(id);
-  } else if (nextWinner.length == 1 && prelotteryWine.length == 1) {
-    chooseForUser(nextWinner[0], prelotteryWine[0]);
+  } else if (nextWinner.length == 1 && nextWineBottle.length == 1) {
+    chooseForUser(nextWinner[0], nextWineBottle[0]);
   }
 
   res.json({
@@ -154,51 +110,8 @@ router.route("/:id").post(async (req, res) => {
 async function chooseForUser(winner, prelotteryWine) {
   let date = new Date();
   date.setHours(5, 0, 0, 0);
-  let wonWine = await Wine.findOne({ name: prelotteryWine.name });
-  if (wonWine == undefined) {
-    let newWonWine = new Wine({
-      name: prelotteryWine.name,
-      vivinoLink: prelotteryWine.vivinoLink,
-      rating: prelotteryWine.rating,
-      occurences: 1,
-      image: prelotteryWine.image,
-      id: prelotteryWine.id
-    });
-    await newWonWine.save();
-    wonWine = newWonWine;
-  } else {
-    wonWine.occurences += 1;
-    wonWine.image = prelotteryWine.image;
-    wonWine.id = prelotteryWine.id;
-    await wonWine.save();
-  }
-
-  const person = await Highscore.findOne({
-    name: winner.name
-  });
-
-  if (person == undefined) {
-    let newPerson = new Highscore({
-      name: winner.name,
-      wins: [
-        {
-          color: winner.color,
-          date: date,
-          wine: wonWine
-        }
-      ]
-    });
-
-    await newPerson.save();
-  } else {
-    person.wins.push({
-      color: winner.color,
-      date: date,
-      wine: wonWine
-    });
-    person.markModified("wins");
-    await person.save();
-  }
+  let wonWine = await _wineFunctions.findSaveWine(prelotteryWine);
+  await _personFunctions.findSavePerson(winner, wonWine);
 
   await prelotteryWine.delete();
   Message.sendWonWineMessage(winner, prelotteryWine);

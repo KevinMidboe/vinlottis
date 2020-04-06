@@ -1,7 +1,7 @@
 let client;
 try {
   const redis = require("redis");
-  console.log("trying to create");
+  console.log("trying to create redis");
   client = redis.createClient();
   client.on("error", function(err) {
     client.quit();
