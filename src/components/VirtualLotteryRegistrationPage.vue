@@ -118,7 +118,8 @@ import {
   attendees,
   winnersSecure,
   deleteWinners,
-  deleteAttendees
+  deleteAttendees,
+  finishedDraw
 } from "@/api";
 import RaffleGenerator from "@/ui/RaffleGenerator";
 
@@ -165,6 +166,9 @@ export default {
     this.socket.on("new_attendee", async msg => {
       this.getAttendees();
     });
+
+    window.finishedDraw = finishedDraw;
+    console.log("here");
   },
   methods: {
     setWithRandomColors(colors) {
@@ -209,6 +213,7 @@ export default {
             this.countdown();
           } else {
             this.drawingWinner = false;
+            finishedDraw();
           }
           this.getWinners();
           this.getAttendees();

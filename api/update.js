@@ -11,16 +11,13 @@ const mustBeAuthenticated = require(path.join(
   __dirname + "/../middleware/mustBeAuthenticated"
 ));
 
+const _wineFunctions = require(path.join(__dirname + "/../api/wine"));
+const _personFunctions = require(path.join(__dirname + "/../api/person"));
 const Subscription = require(path.join(__dirname + "/../schemas/Subscription"));
 const Purchase = require(path.join(__dirname + "/../schemas/Purchase"));
-const Wine = require(path.join(__dirname + "/../schemas/Wine"));
 const PreLotteryWine = require(path.join(
   __dirname + "/../schemas/PreLotteryWine"
 ));
-const VirtualWinner = require(path.join(
-  __dirname + "/../schemas/VirtualWinner"
-));
-const Highscore = require(path.join(__dirname + "/../schemas/Highscore"));
 
 router.use((req, res, next) => {
   next();
@@ -86,53 +83,10 @@ router.route("/log").post(mustBeAuthenticated, async (req, res) => {
   for (let i = 0; i < winnersBody.length; i++) {
     let currentWinner = winnersBody[i];
 
-    let wonWine = await Wine.findOne({ name: currentWinner.wine.name });
-    if (wonWine == undefined) {
-      let newWonWine = new Wine({
-        name: currentWinner.wine.name,
-        vivinoLink: currentWinner.wine.vivinoLink,
-        rating: currentWinner.wine.rating,
-        occurences: 1,
-        image: currentWinner.wine.image,
-        id: currentWinner.wine.id
-      });
-      await newWonWine.save();
-      wonWine = newWonWine;
-    } else {
-      wonWine.occurences += 1;
-      wonWine.image = currentWinner.wine.image;
-      wonWine.id = currentWinner.wine.id;
-      await wonWine.save();
-    }
-
+    let wonWine = await _wineFunctions.findSaveWine(currentWinner);
     winesThisDate.push(wonWine);
 
-    const person = await Highscore.findOne({
-      name: currentWinner.name
-    });
-
-    if (person == undefined) {
-      let newPerson = new Highscore({
-        name: currentWinner.name,
-        wins: [
-          {
-            color: currentWinner.color,
-            date: date,
-            wine: wonWine
-          }
-        ]
-      });
-
-      await newPerson.save();
-    } else {
-      person.wins.push({
-        color: currentWinner.color,
-        date: date,
-        wine: wonWine
-      });
-      person.markModified("wins");
-      await person.save();
-    }
+    await _personFunctions.findSavePerson(currentWinner, wonWine);
   }
 
   let purchase = new Purchase({

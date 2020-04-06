@@ -8,7 +8,11 @@ const VirtualWinner = new Schema({
   green: Number,
   blue: Number,
   red: Number,
-  yellow: Number
+  yellow: Number,
+  id: String,
+  timestamp_drawn: Number,
+  timestamp_sent: Number,
+  timestamp_limit: Number
 });
 
 module.exports = mongoose.model("VirtualWinner", VirtualWinner);

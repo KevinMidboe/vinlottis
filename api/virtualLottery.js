@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const router = express.Router();
+const crypto = require("crypto");
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/vinlottis", {
   useNewUrlParser: true
@@ -9,11 +10,13 @@ let io;
 const mustBeAuthenticated = require(path.join(
   __dirname + "/../middleware/mustBeAuthenticated"
 ));
+const config = require(path.join(__dirname + "/../config/defaults/lottery"));
 
 const Attendee = require(path.join(__dirname + "/../schemas/Attendee"));
 const VirtualWinner = require(path.join(
   __dirname + "/../schemas/VirtualWinner"
 ));
+const Message = require(path.join(__dirname + "/../api/message"));
 
 router.use((req, res, next) => {
   next();
@@ -133,7 +136,9 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
     red: winner.red,
     blue: winner.blue,
     green: winner.green,
-    yellow: winner.yellow
+    yellow: winner.yellow,
+    id: sha512(winner.phoneNumber, genRandomString(10)),
+    timestamp_drawn: new Date().getTime()
   });
 
   await Attendee.update(
@@ -143,6 +148,56 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
 
   await newWinnerElement.save();
   res.json(winner);
+});
+
+const genRandomString = function(length) {
+  return crypto
+    .randomBytes(Math.ceil(length / 2))
+    .toString("hex") /** convert to hexadecimal format */
+    .slice(0, length); /** return required number of characters */
+};
+
+const sha512 = function(password, salt) {
+  var hash = crypto.createHmac("md5", salt); /** Hashing algorithm sha512 */
+  hash.update(password);
+  var value = hash.digest("hex");
+  return value;
+};
+
+router.route("/finish").get(mustBeAuthenticated, async (req, res) => {
+  if (!config.token) {
+    res.json(false);
+    return;
+  }
+  let winners = await VirtualWinner.find({ timestamp_sent: undefined }).sort({
+    timestamp_drawn: 1
+  });
+
+  if (winners.length == 0) {
+    res.json(false);
+    return;
+  }
+
+  let firstWinner = winners[0];
+  messageSent = false;
+  try {
+    let messageSent = await Message.sendMessage(firstWinner);
+    Message.sendUpdate(winners.slice(1));
+    if (!messageSent) {
+      res.json(false);
+      return;
+    }
+  } catch (e) {
+    res.json(false);
+    return;
+  }
+
+  firstWinner.timestamp_sent = new Date().getTime();
+  firstWinner.timestamp_limit = new Date().getTime() + 600000;
+
+  await firstWinner.save();
+  res.json(true);
+  return;
 });
 
 router.route("/attendees").get(async (req, res) => {

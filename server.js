@@ -12,6 +12,9 @@ const subscriptionApi = require(path.join(__dirname + "/api/subscriptions"));
 const loginApi = require(path.join(__dirname + "/api/login"));
 const wineinfoApi = require(path.join(__dirname + "/api/wineinfo"));
 const virtualApi = require(path.join(__dirname + "/api/virtualLottery"));
+const virtualRegistrationApi = require(path.join(
+  __dirname + "/api/virtualRegistration"
+));
 
 //This is required for the chat to work
 const chat = require(path.join(__dirname + "/api/chat"))(io);
@@ -92,6 +95,7 @@ app.use("/api/", retrieveApi);
 app.use("/api/", wineinfoApi);
 app.use("/api/", chatHistory);
 app.use("/api/virtual/", virtualApi(io));
+app.use("/api/virtual-registration/", virtualRegistrationApi);
 app.use("/subscription", subscriptionApi);
 
 app.get("/dagens", function(req, res) {

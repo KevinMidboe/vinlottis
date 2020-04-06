@@ -1,17 +1,32 @@
 <template>
   <div class="wine-container" :class="{ 'big': fullscreen }">
     <div class="left">
-      <img v-if="wine.image" :src="wine.image" class="wine-image" :class="{ 'fullscreen': fullscreen }" />
+      <img
+        v-if="wine.image"
+        :src="wine.image"
+        class="wine-image"
+        :class="{ 'fullscreen': fullscreen }"
+      />
       <img v-else class="wine-placeholder" alt="Wine image" />
     </div>
     <div class="right">
       <div>
-        <h2 v-if="wine.name">{{ wine.name }}</h2><h2 v-else>(no name)</h2>
+        <h2 v-if="wine.name">{{ wine.name }}</h2>
+        <h2 v-else>(no name)</h2>
         <span v-if="wine.rating">{{ wine.rating }} rating</span>
         <span v-if="wine.price">{{ wine.price }} NOK</span>
         <span v-if="wine.country">{{ wine.country }}</span>
 
-        <a v-if="wine.vivinoLink" :href="wine.vivinoLink" class="wine-link">Les mer på {{ hostname(wine.vivinoLink) }}</a>
+        <a
+          v-if="wine.vivinoLink"
+          :href="wine.vivinoLink"
+          class="wine-link"
+        >Les mer på {{ hostname(wine.vivinoLink) }}</a>
+        <button
+          v-if="winner"
+          @click="choseWine(wine.name)"
+          class="vin-button"
+        >Velg dette som din vin</button>
       </div>
 
       <slot v-if="shouldUseInlineSlot()"></slot>
@@ -36,15 +51,27 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    winner: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   methods: {
     shouldUseInlineSlot() {
-      return this.inlineSlot && window.innerWidth > 768
+      return this.inlineSlot && window.innerWidth > 768;
     },
     hostname(url) {
-      const urlHostname = new URL(url).hostname
-      return urlHostname.split(".")[(urlHostname.match(/\./g) || []).length - 1]
+      const urlHostname = new URL(url).hostname;
+      return urlHostname.split(".")[
+        (urlHostname.match(/\./g) || []).length - 1
+      ];
+    },
+    choseWine(name) {
+      if (window.confirm(`Er du sikker på at du vil ha ${name}?`)) {
+        this.$emit("chosen", name);
+      }
     }
   }
 };
@@ -52,6 +79,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "./src/styles/media-queries";
+@import "./src/styles/global";
 @import "./src/styles/variables";
 
 .wine-image {
