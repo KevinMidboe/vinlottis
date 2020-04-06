@@ -3,7 +3,6 @@ const path = require("path");
 const config = require(path.join(__dirname + "/../config/defaults/lottery"));
 
 async function sendMessage(winnerObject) {
-  console.log("sent message to ", winnerObject);
   winnerObject.timestamp_sent = new Date().getTime();
   winnerObject.timestamp_limit = new Date().getTime() * 600000;
   await winnerObject.save();
@@ -11,6 +10,22 @@ async function sendMessage(winnerObject) {
   await sendMessageToUser(
     winnerObject.phoneNumber,
     `Gratulerer som heldig vinner av vinlotteriet ${winnerObject.name}! Her er linken for å velge hva slags vin du vil ha, du har 10 minutter på å velge ut noe før du blir lagt bakerst i køen. /#/winner/${winnerObject.id}`
+  );
+
+  return true;
+}
+
+async function sendWonWineMessage(winnerObject, wineObject) {
+  console.log(
+    `User ${winnerObject.id} is only one left, chosing wine for him/her.`
+  );
+  winnerObject.timestamp_sent = new Date().getTime();
+  winnerObject.timestamp_limit = new Date().getTime();
+  await winnerObject.save();
+
+  await sendMessageToUser(
+    winnerObject.phoneNumber,
+    `Gratulerer som heldig vinner av vinlotteriet ${winnerObject.name}! Du har vunnet vinen ${wineObject.name}, og vil få nærmere info om hvordan/hvor du kan hente vinen snarest. Ha en ellers fin helg!`
   );
 
   return true;
@@ -24,9 +39,6 @@ async function sendMessageTooLate(winnerObject) {
 }
 
 async function sendMessageToUser(phoneNumber, message) {
-  console.log("num", phoneNumber);
-  console.log("message", message);
-
   request.post(
     {
       url: `https://gatewayapi.com/rest/mtsms?token=${config.token}`,
@@ -68,3 +80,4 @@ async function sendUpdate(winners) {
 module.exports.sendUpdate = sendUpdate;
 module.exports.sendMessage = sendMessage;
 module.exports.sendMessageTooLate = sendMessageTooLate;
+module.exports.sendWonWineMessage = sendWonWineMessage;

@@ -8,7 +8,6 @@ mongoose.connect("mongodb://localhost:27017/vinlottis", {
 });
 
 const Message = require(path.join(__dirname + "/../api/message"));
-const config = require(path.join(__dirname + "/../config/defaults/push"));
 const VirtualWinner = require(path.join(
   __dirname + "/../schemas/VirtualWinner"
 ));
@@ -16,9 +15,6 @@ const Highscore = require(path.join(__dirname + "/../schemas/Highscore"));
 const Wine = require(path.join(__dirname + "/../schemas/Wine"));
 const PreLotteryWine = require(path.join(
   __dirname + "/../schemas/PreLotteryWine"
-));
-const lotteryConfig = require(path.join(
-  __dirname + "/../config/defaults/lottery"
 ));
 
 router.use((req, res, next) => {
@@ -31,7 +27,6 @@ router.route("/winner/:id").get((req, res) => {
 
 router.route("/:id").get(async (req, res) => {
   let id = req.params.id;
-
   let foundWinner = await VirtualWinner.findOne({ id: id });
 
   if (!foundWinner) {
@@ -80,6 +75,7 @@ router.route("/:id").post(async (req, res) => {
     return;
   }
   let date = new Date();
+  date.setHours(5, 0, 0, 0);
 
   let prelotteryWine = await PreLotteryWine.findOne({ name: wineName });
 
@@ -140,12 +136,14 @@ router.route("/:id").post(async (req, res) => {
 
   await foundWinner.delete();
 
+  let prelotteryWine = await PreLotteryWine.find();
   let nextWinner = await VirtualWinner.find().sort({ timestamp_drawn: 1 });
-  if (nextWinner.length > 0) {
+  if (nextWinner.length > 1 && prelotteryWine.length > 1) {
     Message.sendMessage(nextWinner[0]);
+    startTimeout(id);
+  } else if (nextWinner.length == 1 && prelotteryWine.length == 1) {
+    chooseForUser(nextWinner[0], prelotteryWine[0]);
   }
-
-  startTimeout(id);
 
   res.json({
     success: true
@@ -153,20 +151,84 @@ router.route("/:id").post(async (req, res) => {
   return;
 });
 
+async function chooseForUser(winner, prelotteryWine) {
+  let date = new Date();
+  date.setHours(5, 0, 0, 0);
+  let wonWine = await Wine.findOne({ name: prelotteryWine.name });
+  if (wonWine == undefined) {
+    let newWonWine = new Wine({
+      name: prelotteryWine.name,
+      vivinoLink: prelotteryWine.vivinoLink,
+      rating: prelotteryWine.rating,
+      occurences: 1,
+      image: prelotteryWine.image,
+      id: prelotteryWine.id
+    });
+    await newWonWine.save();
+    wonWine = newWonWine;
+  } else {
+    wonWine.occurences += 1;
+    wonWine.image = prelotteryWine.image;
+    wonWine.id = prelotteryWine.id;
+    await wonWine.save();
+  }
+
+  const person = await Highscore.findOne({
+    name: winner.name
+  });
+
+  if (person == undefined) {
+    let newPerson = new Highscore({
+      name: winner.name,
+      wins: [
+        {
+          color: winner.color,
+          date: date,
+          wine: wonWine
+        }
+      ]
+    });
+
+    await newPerson.save();
+  } else {
+    person.wins.push({
+      color: winner.color,
+      date: date,
+      wine: wonWine
+    });
+    person.markModified("wins");
+    await person.save();
+  }
+
+  await prelotteryWine.delete();
+  Message.sendWonWineMessage(winner, prelotteryWine);
+}
+
 function startTimeout(id) {
+  console.log(`Starting timeout for user ${id}.`);
   setTimeout(async () => {
     let virtualWinner = await VirtualWinner.findOne({ id: id });
     if (!virtualWinner) {
+      console.log(
+        `Timeout done for user ${id}, but user has already sent data.`
+      );
       return;
     }
+    console.log(`Timeout done for user ${id}, sending update to user.`);
 
     Message.sendMessageTooLate(virtualWinner);
 
-    virtualWinner.timestamp_drawn;
+    virtualWinner.timestamp_drawn = new Date().getTime();
     virtualWinner.timestamp_limit = null;
     virtualWinner.timestamp_sent = null;
 
     await virtualWinner.save();
+
+    let prelotteryWine = await PreLotteryWine.find();
+    let nextWinner = await VirtualWinner.find().sort({ timestamp_drawn: 1 });
+    if (nextWinner.length == 1 && prelotteryWine.length == 1) {
+      chooseForUser(nextWinner[0], prelotteryWine[0]);
+    }
   }, 600000);
 }
 
