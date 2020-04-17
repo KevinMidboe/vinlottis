@@ -16,6 +16,10 @@ const Attendee = require(path.join(__dirname + "/../schemas/Attendee"));
 const VirtualWinner = require(path.join(
   __dirname + "/../schemas/VirtualWinner"
 ));
+const PreLotteryWine = require(path.join(
+  __dirname + "/../schemas/PreLotteryWine"
+));
+
 const Message = require(path.join(__dirname + "/../api/message"));
 
 router.use((req, res, next) => {
@@ -196,6 +200,7 @@ router.route("/finish").get(mustBeAuthenticated, async (req, res) => {
   firstWinner.timestamp_limit = new Date().getTime() + 600000;
 
   await firstWinner.save();
+  startTimeout(firstWinner.id);
   res.json(true);
   return;
 });
@@ -262,6 +267,42 @@ function shuffle(array) {
   }
 
   return array;
+}
+
+
+function startTimeout(id) {
+  console.log(`Starting timeout for user ${id}.`);
+  setTimeout(async () => {
+    let virtualWinner = await VirtualWinner.findOne({ id: id });
+    if (!virtualWinner) {
+      console.log(
+        `Timeout done for user ${id}, but user has already sent data.`
+      );
+      return;
+    }
+    console.log(`Timeout done for user ${id}, sending update to user.`);
+
+    Message.sendMessageTooLate(virtualWinner);
+
+    virtualWinner.timestamp_drawn = new Date().getTime();
+    virtualWinner.timestamp_limit = null;
+    virtualWinner.timestamp_sent = null;
+
+    await virtualWinner.save();
+
+    let prelotteryWine = await PreLotteryWine.find();
+    let nextWinner = await VirtualWinner.find().sort({ timestamp_drawn: 1 });
+    if (nextWinner.length == 1 && prelotteryWine.length == 1) {
+      chooseForUser(nextWinner[0], prelotteryWine[0]);
+    } else {
+      nextWinner[0].timestamp_sent = new Date().getTime();
+      nextWinner[0].timestamp_limit = new Date().getTime() + 600000;
+      await nextWinner[0].save();
+      Message.sendMessage(nextWinner[0]);
+      startTimeout(nextWinner[0].id); 
+    }
+    
+  }, 600000);
 }
 
 module.exports = function(_io) {
