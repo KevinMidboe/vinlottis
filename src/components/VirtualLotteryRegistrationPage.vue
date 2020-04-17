@@ -213,7 +213,12 @@ export default {
             this.countdown();
           } else {
             this.drawingWinner = false;
-            finishedDraw();
+            let finished = await finishedDraw();
+            if(finished) {
+              alert("SMS'er er sendt ut!");
+            } else {
+              alert("Noe gikk galt under SMS utsendelser.. Sjekk logg og database for id'er.");
+            }
           }
           this.getWinners();
           this.getAttendees();
