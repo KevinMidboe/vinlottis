@@ -86,7 +86,7 @@ router.route("/log").post(mustBeAuthenticated, async (req, res) => {
     let wonWine = await _wineFunctions.findSaveWine(currentWinner);
     winesThisDate.push(wonWine);
 
-    await _personFunctions.findSavePerson(currentWinner, wonWine);
+    await _personFunctions.findSavePerson(currentWinner, wonWine, date);
   }
 
   let purchase = new Purchase({

@@ -88,7 +88,7 @@ router.route("/:id").post(async (req, res) => {
 
   let wonWine = await _wineFunctions.findSaveWine(prelotteryWine);
   await prelotteryWine.delete();
-  await _personFunctions.findSavePerson(foundWinner, wonWine);
+  await _personFunctions.findSavePerson(foundWinner, wonWine, date);
 
   await foundWinner.delete();
 
@@ -111,10 +111,11 @@ async function chooseForUser(winner, prelotteryWine) {
   let date = new Date();
   date.setHours(5, 0, 0, 0);
   let wonWine = await _wineFunctions.findSaveWine(prelotteryWine);
-  await _personFunctions.findSavePerson(winner, wonWine);
+  await _personFunctions.findSavePerson(winner, wonWine, date);
 
   await prelotteryWine.delete();
-  Message.sendWonWineMessage(winner, prelotteryWine);
+  await Message.sendWonWineMessage(winner, prelotteryWine);
+  await winner.delete();
 }
 
 function startTimeout(id) {

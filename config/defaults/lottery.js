@@ -11,7 +11,7 @@ try {
     message: "INSERT MESSAGE",
     date: 5,
     hours: 15,
-    apiUrl: "https://lottis.vin",
+    apiUrl: "http://localhost:30030",
     gatewayToken: undefined
   };
 }

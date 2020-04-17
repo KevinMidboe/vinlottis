@@ -41,6 +41,7 @@ async function sendMessageTooLate(winnerObject) {
 }
 
 async function sendMessageToUser(phoneNumber, message) {
+  try {
   request.post(
     {
       url: `https://gatewayapi.com/rest/mtsms?token=${config.gatewayToken}`,
@@ -53,8 +54,14 @@ async function sendMessageToUser(phoneNumber, message) {
     },
     function(err, r, body) {
       console.log(err ? err : body);
+      if(err) {
+        console.log(phoneNumber, message);
+      }
     }
   );
+  } catch(e) {
+    console.log(phoneNumber, message);
+  }
 }
 
 async function sendUpdate(winners) {
