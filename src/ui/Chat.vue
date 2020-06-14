@@ -82,12 +82,11 @@ export default {
   },
   mounted() {
     let username = window.localStorage.getItem("username");
-    if (!username) {
-      return;
+    if (username) {
+      this.username = username;
+      this.usernameSet = true;
+      this.$emit("username", username);
     }
-    this.username = username;
-    this.usernameSet = true;
-    this.$emit("username", username);
   },
   methods: {
     pad: function(num) {
