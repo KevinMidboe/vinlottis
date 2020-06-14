@@ -245,6 +245,18 @@ const postWineChosen = (id, wineName) => {
   });
 };
 
+const historyAll = () => {
+  const url = new URL(`/api/lottery/all`, BASE_URL);
+
+  return fetch(url.href).then(resp => {
+    if (resp.ok) {
+      return resp.json();
+    } else {
+      return handleErrors(resp);
+    }
+  });
+}
+
 export {
   statistics,
   colorStatistics,
@@ -270,5 +282,6 @@ export {
   getChatHistory,
   finishedDraw,
   getAmIWinner,
-  postWineChosen
+  postWineChosen,
+  historyAll
 };

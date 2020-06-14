@@ -10,6 +10,7 @@ import AdminPage from "@/components/AdminPage";
 
 import WinnerPage from "@/components/WinnerPage";
 import LotteryPage from "@/components/LotteryPage";
+import HistoryPage from "@/components/HistoryPage";
 
 const routes = [
   {
@@ -47,6 +48,10 @@ const routes = [
   {
     path: "/winner/:id",
     component: WinnerPage
+  },
+  {
+    path: "/history",
+    component: HistoryPage
   }
 ];
 
