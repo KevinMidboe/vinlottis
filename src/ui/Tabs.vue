@@ -10,12 +10,7 @@
       >{{ tab.name }}</div>
     </div>
     <div class="tab-elements">
-      <component
-        v-for="(tab, index) in tabs"
-        :key="index"
-        :is="tab.component"
-        :class="chosenTab == index ? null : 'hide'"
-      />
+      <component :is="tabs[chosenTab].component" />
     </div>
   </div>
 </template>
@@ -53,9 +48,6 @@ export default {
 <style lang="scss" scoped>
 h1 {
   text-align: center;
-}
-.hide {
-  display: none;
 }
 
 .tab-container {
