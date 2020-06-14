@@ -3,12 +3,18 @@
     <hr />
     <h2>Chat</h2>
     <div class="history" ref="history">
-      <div
+      <div class="opaque-skirt"></div>
+      <div v-if="existsMore" class="fetch-older-history">
+        <button @click="$emit('loadMoreHistory')">Hent eldre meldinger</button>
+      </div>
+      <div class="history-message"
         v-for="(history, index) in chatHistory"
         :key="`${history.username}-${history.timestamp}-${index}`"
       >
-        <span class="timestamp">[{{ getTime(history.timestamp) }}]</span>
-        <span class="user-name">{{ history.username }}:</span>
+        <div>
+          <span class="user-name">{{ history.username }}</span>
+          <span class="timestamp">{{ getTime(history.timestamp) }}</span>
+        </div>
         <span class="message">{{ history.message }}</span>
       </div>
     </div>
@@ -38,6 +44,9 @@ export default {
     },
     chatHistory: {
       type: Array
+    },
+    historyPageSize: {
+      type: Number
     }
   },
   data() {
@@ -45,16 +54,27 @@ export default {
       message: "",
       temporaryUsername: null,
       username: null,
-      usernameSet: false
+      usernameSet: false,
+      existsMore: true
     };
   },
   watch: {
     chatHistory: {
-      handler() {
+      handler: function(newVal, oldVal) {
         if (this.$refs && this.$refs.history) {
+          const firstMessages = oldVal.length == 0;
+          const diffLargerThanOne = newVal.length - oldVal.length > 1;
+
           setTimeout(() => {
-            this.$refs.history.scrollTop = this.$refs.history.scrollHeight;
-          }, 10);
+            if (firstMessages || diffLargerThanOne == false) {
+              this.scrollToBottomOfHistory();
+            } else {
+              this.scrollToStartOfNewMessages();
+              // what shows the load more button - if we scroll page and less than page size
+              // come back we have reached a limit
+              this.existsMore = newVal.length - oldVal.length == this.historyPageSize
+            }
+          }, 100);
         }
       },
       deep: true
@@ -105,6 +125,20 @@ export default {
         this.usernameSet = true;
         this.$emit("username", this.username);
       }
+    },
+    scrollToBottomOfHistory() {
+      if (this.$refs && this.$refs.history) {
+        const { history } = this.$refs;
+        history.scrollTop = history.scrollHeight;
+      }
+    },
+    scrollToStartOfNewMessages() {
+      const { history } = this.$refs;
+      const histLength = history.children.length;
+      const pages = Math.floor(histLength / 100);
+
+      const messageToScrollTo = history.children[histLength - ((pages * 100) + 3)]
+      history.scrollTop = messageToScrollTo.offsetTop;
     }
   }
 };
@@ -127,6 +161,7 @@ hr {
 .chat-container {
   height: 100%;
   width: 50%;
+  position: relative;
 
   @include mobile {
     width: 100%;
@@ -145,6 +180,46 @@ input {
 .history {
   height: 75%;
   overflow-y: scroll;
+
+  &-message {
+    display: flex;
+    flex-direction: column;
+    margin: 0.35rem 0;
+    position: relative;
+
+    .user-name {
+      font-weight: bold;
+      font-size: 1.05rem;
+      margin-right: 0.3rem;
+    }
+    .timestamp {
+      font-size: 0.9rem;
+      top: 2px;
+      position: absolute;
+    }
+  }
+
+  &-message:nth-of-type(2) {
+    margin-top: 1rem;
+  }
+
+  & .opaque-skirt {
+    width: 100%;
+    position: absolute;
+    height: 1rem;
+    z-index: 1;
+    background: linear-gradient(
+      to bottom,
+      white,
+      rgba(255, 255, 255, 0)
+    );
+  }
+
+  & .fetch-older-history {
+    display: flex;
+    justify-content: center;
+    margin: 0.2rem 0 0.5rem;
+  }
 
   @include mobile {
     height: 300px;
