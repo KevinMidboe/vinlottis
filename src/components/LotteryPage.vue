@@ -11,9 +11,7 @@ import VirtualLotteryPage from "@/components/VirtualLotteryPage";
 
 export default {
   components: {
-    Tabs,
-    GeneratePage,
-    VirtualLotteryPage
+    Tabs
   },
   data() {
     return {

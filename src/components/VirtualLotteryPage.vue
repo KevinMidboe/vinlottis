@@ -43,9 +43,11 @@
       <Chat
         class="outer-chat"
         :chatHistory="chatHistory"
+        :historyPageSize="historyPageSize"
         :usernameAllowed="usernameAllowed"
-        v-on:message="sendMessage"
-        v-on:username="setUsername"
+        @loadMoreHistory="loadMoreHistory"
+        @message="sendMessage"
+        @username="setUsername"
       />
     </div>
     <Vipps class="vipps" :amount="1" />
@@ -74,6 +76,9 @@ export default {
       attendeesFetched: false,
       winnersFetched: false,
       chatHistory: [],
+      historyPage: 0,
+      historyPageSize: 100,
+      lastHistoryPage: false,
       usernameAccepted: false,
       username: null,
       wasDisconnected: false,
@@ -157,6 +162,15 @@ export default {
     },
     sendMessage: function(msg) {
       this.socket.emit("chat", { message: msg });
+    },
+    loadMoreHistory: function() {
+      const { historyPage, historyPageSize } = this;
+      const page = historyPage + 1;
+
+      getChatHistory(page * historyPageSize, historyPageSize).then(messages => {
+        this.chatHistory = messages.concat(this.chatHistory);
+        this.historyPage = page;
+      });
     },
     getWinners: async function() {
       let response = await winners();
