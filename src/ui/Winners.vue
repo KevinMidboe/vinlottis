@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 v-if="winners.length > 0">Vinnere</h2>
+    <h2 v-if="winners.length > 0"> {{ title ? title : 'Vinnere' }}</h2>
     <div class="winners" v-if="winners.length > 0">
       <div class="winner" v-for="(winner, index) in winners" :key="index">
         <div :class="winner.color + '-ballot'" class="ballot-element">{{ winner.name }}</div>
@@ -14,6 +14,10 @@ export default {
   props: {
     winners: {
       type: Array
+    },
+    title: {
+      type: String,
+      required: false
     }
   }
 };
