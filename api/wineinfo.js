@@ -1,15 +1,7 @@
-const express = require("express");
-const path = require("path");
-const router = express.Router();
 const fetch = require('node-fetch')
+const path = require('path')
 
-const mustBeAuthenticated = require(path.join(__dirname + "/../middleware/mustBeAuthenticated"))
-
-router.use((req, res, next) => {
-  next();
-});
-
-router.route("/wineinfo/:ean").get(async (req, res) => {
+const byEAN = async (req, res) => {
   const vinmonopoletResponse = await fetch("https://app.vinmonopolet.no/vmpws/v2/vmp/products/barCodeSearch/" + req.params.ean)
     .then(resp => resp.json())
 
@@ -25,7 +17,9 @@ router.route("/wineinfo/:ean").get(async (req, res) => {
     })
   }
 
-  res.send(vinmonopoletResponse);
-});
+  return res.send(vinmonopoletResponse);
+};
 
-module.exports = router;
+module.exports = {
+  byEAN
+};
