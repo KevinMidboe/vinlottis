@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const router = express.Router();
 const fetch = require('node-fetch')
+const config = require(path.join(__dirname + "/../config/env/vinmonopolet.config"));
 
 const mustBeAuthenticated = require(path.join(__dirname + "/../middleware/mustBeAuthenticated"))
 
@@ -10,33 +11,31 @@ router.use((req, res, next) => {
 });
 
 const convertToOurWineObject = wine => {
-  console.log("traff her", wine)
-  return {
-    name: wine.basic.productShortName,
-    image: `https://bilder.vinmonopolet.no/cache/300x300-0/${wine.basic.productId}-1.jpg`,
-    rating: undefined,
-    price: wine.prices[0].salesPrice,
-    country: wine.origins.origin.country,
-    vivinoLink: undefined
+  if(wine.basic.ageLimit === "18"){
+    return {
+      name: wine.basic.productShortName,
+      image: `https://bilder.vinmonopolet.no/cache/300x300-0/${wine.basic.productId}-1.jpg`,
+      rating: undefined,
+      price: wine.prices[0].salesPrice,
+      country: wine.origins.origin.country,
+      vivinoLink: undefined
+    }
   }
 }
 
 router.route("/wineinfo/search").get(async (req, res) => {
-  console.log("h")
-  console.log(req)
   const {query} = req.query
   let url = new URL(`https://apis.vinmonopolet.no/products/v0/details-normal?productShortNameContains=test&maxResults=5`)
   url.searchParams.set('productShortNameContains', query)
 
   const vinmonopoletResponse = await fetch(url, {
     headers: {
-      "Ocp-Apim-Subscription-Key": ""
+      "Ocp-Apim-Subscription-Key": `${config.gatewayToken}`
     }
   })
     .then(resp => resp.json())
 
-  const winesConverted = vinmonopoletResponse.map(convertToOurWineObject)
-  console.log(winesConverted)
+  const winesConverted = vinmonopoletResponse.map(convertToOurWineObject).filter(Boolean)
 
   if (vinmonopoletResponse.errors != null) {
     return vinmonopoletResponse.errors.map(error => {
