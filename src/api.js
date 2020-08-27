@@ -160,6 +160,21 @@ const barcodeToVinmonopolet = id => {
   });
 };
 
+const searchForWine = searchString => {
+  const url = new URL("/api/wineinfo/search?query=" + searchString, BASE_URL);
+
+  return fetch(url.href).then(async resp => {
+    if (!resp.ok) {
+      if (resp.status == 404) {
+        throw await resp.json();
+      }
+    } else {
+      return resp.json();
+    }
+  });
+};
+
+
 const handleErrors = async resp => {
   if ([400, 409].includes(resp.status)) {
     throw await resp.json();
@@ -269,6 +284,7 @@ export {
   logWines,
   wineSchema,
   barcodeToVinmonopolet,
+  searchForWine,
   login,
   register,
   addAttendee,
