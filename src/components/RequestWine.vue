@@ -4,8 +4,10 @@
       Foreslå en vin!
     </h1>
     <section>
-      <input type="text" v-model="searchString" >
-      <button @click=(fetchWineFromVin()) class="vin-button">Søk</button>
+      <section class="search-section">
+        <input type="text" v-model="searchString" @keyup.enter="fetchWineFromVin()" placeholder="Søk etter en vin du liker her!🍷">
+        <button :disabled="!searchString" @click="fetchWineFromVin()" class="vin-button">Søk</button>
+      </section>
       <section v-for="(wine, index) in this.wines" :key="index" class="search-results-container">
         <img
           v-if="wine.image"
@@ -17,14 +19,24 @@
         <section class="wine-info">
           <h2 v-if="wine.name">{{ wine.name }}</h2>
           <h2 v-else>(no name)</h2>
-          <span v-if="wine.price">{{ wine.price }} NOK</span>
-          <span v-if="wine.country">{{ wine.country }}</span>
+          <div class="__details">
+            <span v-if="wine.rating">{{ wine.rating }}%</span>
+            <span v-if="wine.price">{{ wine.price }} NOK</span>
+            <span v-if="wine.country">{{ wine.country }}</span>
+          </div>
         </section>
         <section class="buttons">
           <button class="vin-button">Send inn denne som ønske</button>
-          <button class="vin-button">Les mer på polet</button>
+          <a
+          v-if="wine.vivinoLink"
+          :href="wine.vivinoLink"
+          class="wine-link"
+        >Les mer på polet</a>
         </section>
       </section>
+      <p v-if="this.wines && this.wines.length == 0">
+        Fant ingen viner med det navnet!
+      </p>
     </section>
   </main>
 </template>
@@ -40,14 +52,15 @@ export default {
   data() {
     return {
       searchString: undefined,
-      res: undefined,
       wines: undefined,
     }
   },
   methods: {
     fetchWineFromVin(){
-      searchForWine(this.searchString)
-        .then(res => this.wines = res)
+      if(this.searchString){
+        searchForWine(this.searchString)
+          .then(res => this.wines = res)
+      }
     },
   },
 }
@@ -61,6 +74,7 @@ export default {
 main{
   margin: auto;
   width: 80%;
+  text-align: center;
 }
 
 input[type="text"] {
@@ -69,31 +83,60 @@ input[type="text"] {
   border-radius: 4px;
   padding: 0.5rem 1rem;
   border: 1px solid black;
-  max-width: 200px;
+  max-width: 80%;
+}
+
+.search-section{
+  display: flex;
+  justify-content: space-around;
+  flex-flow: row;
 }
 
 .search-results-container{
   display: flex;
-  border: 1px solid black;
+  padding: 3px;
+  border-radius: 1px;
+  box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.3);   
+  margin: 1rem 0;
+  justify-content: space-around;
+  flex-flow: row wrap;
+  align-items: stretch;
+
+
+  .wine-image {
+    height: 100px;
+  }
+
+  .wine-placeholder {
+    height: 100px;
+    width: 70px;
+  }
+
+  .wine-info{
+    display: flex;
+    flex-direction: column;
+    .__details{
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .wine-link {
+    color: #333333;
+    font-family: Arial;
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 1px solid #ff5fff;
+    width: fit-content;
+  }
 
   .buttons{
-    margin-left: auto;
+    display: flex;
+    align-items: center;
     order: 2;
+    justify-content: space-between;
+    width: 40%;
+    margin-right: 1rem;
   }
-}
-
-.wine-image {
-  height: 100px;
-}
-
-.wine-placeholder {
-  height: 100px;
-  width: 70px;
-}
-
-.wine-info{
-  display: flex;
-  flex-direction: column;
 }
 
 

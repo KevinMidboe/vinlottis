@@ -15,10 +15,10 @@ const convertToOurWineObject = wine => {
     return {
       name: wine.basic.productShortName,
       image: `https://bilder.vinmonopolet.no/cache/300x300-0/${wine.basic.productId}-1.jpg`,
-      rating: undefined,
+      rating: wine.basic.alcoholContent,
       price: wine.prices[0].salesPrice,
       country: wine.origins.origin.country,
-      vivinoLink: undefined
+      vivinoLink: "https://www.vinmonopolet.no/p/" + wine.basic.productId
     }
   }
 }
