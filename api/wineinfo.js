@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const router = express.Router();
 const fetch = require('node-fetch')
-const config = require(path.join(__dirname + "/../config/env/vinmonopolet.config"));
+const config = require(path.join(__dirname + "/../config/env/lottery.config"));
 
 const mustBeAuthenticated = require(path.join(__dirname + "/../middleware/mustBeAuthenticated"))
 
@@ -32,7 +32,7 @@ router.route("/wineinfo/search").get(async (req, res) => {
 
   const vinmonopoletResponse = await fetch(url, {
     headers: {
-      "Ocp-Apim-Subscription-Key": `${config.gatewayToken}`
+      "Ocp-Apim-Subscription-Key": config.vinmonopoletToken
     }
   })
     .then(resp => resp.json())
