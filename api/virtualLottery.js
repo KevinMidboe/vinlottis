@@ -6,10 +6,7 @@ const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/vinlottis", {
   useNewUrlParser: true
 });
-let io;
-const mustBeAuthenticated = require(path.join(
-  __dirname + "/../middleware/mustBeAuthenticated"
-));
+
 const config = require(path.join(__dirname + "/../config/defaults/lottery"));
 
 const Attendee = require(path.join(__dirname + "/../schemas/Attendee"));
@@ -24,12 +21,14 @@ const Message = require(path.join(__dirname + "/../api/message"));
 
 const removeWinners = async (req, res) => {
   await VirtualWinner.deleteMany();
+  var io = req.app.get('socketio');
   io.emit("refresh_data", {});
   return res.json(true);
 };
 
 const deleteAttendees = req, res) => {
   await Attendee.deleteMany();
+  var io = req.app.get('socketio');
   io.emit("refresh_data", {});
   return res.json(true);
 };
@@ -127,6 +126,7 @@ const winner = async (req, res) => {
       Math.floor(Math.random() * attendeeListDemocratic.length)
     ];
 
+  var io = req.app.get('socketio');
   io.emit("winner", { color: colorToChooseFrom, name: winner.name });
 
   let newWinnerElement = new VirtualWinner({
@@ -235,6 +235,8 @@ return addAttendee = async (req, res) => {
   });
   await newAttendee.save();
 
+
+  var io = req.app.get('socketio');
   io.emit("new_attendee", {});
 
   return res.send(true);

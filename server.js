@@ -71,6 +71,8 @@ app.use(
   })
 );
 
+app.set('socketio', io);
+
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
