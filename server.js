@@ -11,6 +11,7 @@ const retrieveApi = require(path.join(__dirname + "/api/retrieve"));
 const subscriptionApi = require(path.join(__dirname + "/api/subscriptions"));
 const loginApi = require(path.join(__dirname + "/api/login"));
 const wineinfoApi = require(path.join(__dirname + "/api/wineinfo"));
+const requestApi = require(path.join(__dirname + "/api/request"));
 const virtualApi = require(path.join(__dirname + "/api/virtualLottery"));
 const virtualRegistrationApi = require(path.join(
   __dirname + "/api/virtualRegistration"
@@ -94,6 +95,7 @@ app.use("/", loginApi);
 app.use("/api/", updateApi);
 app.use("/api/", retrieveApi);
 app.use("/api/", wineinfoApi);
+app.use("/api/", requestApi);
 app.use("/api/", chatHistory);
 app.use("/api/lottery", lottery);
 app.use("/api/virtual/", virtualApi(io));

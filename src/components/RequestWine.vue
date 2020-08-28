@@ -26,7 +26,7 @@
           </div>
         </section>
         <section class="buttons">
-          <button class="vin-button">Send inn denne som ønske</button>
+          <button class="vin-button" @click="request(wine)">Send inn denne som ønske</button>
           <a
           v-if="wine.vivinoLink"
           :href="wine.vivinoLink"
@@ -58,10 +58,28 @@ export default {
   methods: {
     fetchWineFromVin(){
       if(this.searchString){
-        searchForWine(this.searchString)
+        this.wines = []
+        let localSearchString = this.searchString.replace(/ /g,"_");
+        searchForWine(localSearchString)
           .then(res => this.wines = res)
       }
     },
+    request(wine){
+      const options = {
+        body: JSON.stringify({
+          wine: wine
+        }),
+         headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "post"
+      }
+
+      fetch("http://localhost:30030/api/request", options)
+        .then(res => res.json())
+        .then(console.log)
+    }
   },
 }
 </script>

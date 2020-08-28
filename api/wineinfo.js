@@ -14,11 +14,13 @@ const convertToOurWineObject = wine => {
   if(wine.basic.ageLimit === "18"){
     return {
       name: wine.basic.productShortName,
-      image: `https://bilder.vinmonopolet.no/cache/300x300-0/${wine.basic.productId}-1.jpg`,
+      vivinoLink: "https://www.vinmonopolet.no/p/" + wine.basic.productId,
       rating: wine.basic.alcoholContent,
-      price: wine.prices[0].salesPrice,
-      country: wine.origins.origin.country,
-      vivinoLink: "https://www.vinmonopolet.no/p/" + wine.basic.productId
+      occurences: 0,
+      id: wine.basic.productId,
+      image: `https://bilder.vinmonopolet.no/cache/300x300-0/${wine.basic.productId}-1.jpg`,
+      price: wine.prices[0].salesPrice.toString(),
+      country: wine.origins.origin.country
     }
   }
 }
@@ -34,8 +36,8 @@ router.route("/wineinfo/search").get(async (req, res) => {
     }
   })
     .then(resp => resp.json())
+    .catch(err => console.error(err))
 
-  const winesConverted = vinmonopoletResponse.map(convertToOurWineObject).filter(Boolean)
 
   if (vinmonopoletResponse.errors != null) {
     return vinmonopoletResponse.errors.map(error => {
@@ -48,7 +50,7 @@ router.route("/wineinfo/search").get(async (req, res) => {
       }
     })
   }
-
+  const winesConverted = vinmonopoletResponse.map(convertToOurWineObject).filter(Boolean)
   res.send(winesConverted);
 });
 
