@@ -36,10 +36,19 @@ router.get("/lottery/latest", lottery.latest);
 router.get("/lottery/by-date/:date", lottery.byEpochDate);
 router.get("/lottery/by-name/:name", lottery.byName);
 
+router.delete('/winners', mustBeAuthenticated, virtual.removeWinners);
+router.delete('/attendees', mustBeAuthenticated, virtual.removeAttendees);
+router.get('/winners', virtual.winners);
+router.get('/winners/secure', mustBeAuthenticated, virtual.winnersSecure);
+router.post('/finish', mustBeAuthenticated, virtual.finish);
+router.get('/attendee/all', virtual.attendees);
+router.get('/attendee/all/secure', mustBeAuthenticated, virtual.attendeesSecure);
+router.post('attendee/add', mustBeAuthenticated, virtual.addAttendee);
+
 // router.use("/api/", updateApi);
 // router.use("/api/", retrieveApi);
 // router.use("/api/", wineinfoApi);
 // router.use("/api/lottery", lottery);
-router.use("/api/virtual-registration/", virtualRegistrationApi);
+// router.use("/api/virtual-registration/", virtualRegistrationApi);
 
 module.exports = router;

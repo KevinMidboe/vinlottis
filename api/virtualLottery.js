@@ -22,23 +22,19 @@ const PreLotteryWine = require(path.join(
 
 const Message = require(path.join(__dirname + "/../api/message"));
 
-router.use((req, res, next) => {
-  next();
-});
-
-router.route("/winners").delete(mustBeAuthenticated, async (req, res) => {
+const removeWinners = async (req, res) => {
   await VirtualWinner.deleteMany();
   io.emit("refresh_data", {});
-  res.json(true);
-});
+  return res.json(true);
+};
 
-router.route("/attendees").delete(mustBeAuthenticated, async (req, res) => {
+const deleteAttendees = req, res) => {
   await Attendee.deleteMany();
   io.emit("refresh_data", {});
-  res.json(true);
-});
+  return res.json(true);
+};
 
-router.route("/winners").get(async (req, res) => {
+const winners = async (req, res) => {
   let winners = await VirtualWinner.find();
   let winnersRedacted = [];
   let winner;
@@ -50,18 +46,18 @@ router.route("/winners").get(async (req, res) => {
     });
   }
   res.json(winnersRedacted);
-});
+};
 
-router.route("/winners/secure").get(mustBeAuthenticated, async (req, res) => {
+const winnersSecure = async (req, res) => {
   let winners = await VirtualWinner.find();
 
-  res.json(winners);
+  return res.json(winners);
 });
 
-router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
+const winner = async (req, res) => {
   let allContestants = await Attendee.find({ winner: false });
   if (allContestants.length == 0) {
-    res.json(false);
+    return res.json(false);
     return;
   }
   let ballotColors = [];
@@ -151,8 +147,8 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
   );
 
   await newWinnerElement.save();
-  res.json(winner);
-});
+  return res.json(winner);
+};
 
 const genRandomString = function(length) {
   return crypto
@@ -168,18 +164,16 @@ const sha512 = function(password, salt) {
   return value;
 };
 
-router.route("/finish").get(mustBeAuthenticated, async (req, res) => {
+const finish = async (req, res) => {
   if (!config.gatewayToken) {
-    res.json(false);
-    return;
+    return res.json(false);
   }
   let winners = await VirtualWinner.find({ timestamp_sent: undefined }).sort({
     timestamp_drawn: 1
   });
 
   if (winners.length == 0) {
-    res.json(false);
-    return;
+    return res.json(false);
   }
 
   let firstWinner = winners[0];
@@ -188,12 +182,10 @@ router.route("/finish").get(mustBeAuthenticated, async (req, res) => {
     let messageSent = await Message.sendMessage(firstWinner);
     Message.sendUpdate(winners.slice(1));
     if (!messageSent) {
-      res.json(false);
-      return;
+      return res.json(false);
     }
   } catch (e) {
-    res.json(false);
-    return;
+    return res.json(false);
   }
 
   firstWinner.timestamp_sent = new Date().getTime();
@@ -201,11 +193,10 @@ router.route("/finish").get(mustBeAuthenticated, async (req, res) => {
 
   await firstWinner.save();
   startTimeout(firstWinner.id);
-  res.json(true);
-  return;
-});
+  return res.json(true);
+};
 
-router.route("/attendees").get(async (req, res) => {
+const attendees = async (req, res) => {
   let attendees = await Attendee.find();
   let attendeesRedacted = [];
   let attendee;
@@ -220,16 +211,16 @@ router.route("/attendees").get(async (req, res) => {
       yellow: attendee.yellow
     });
   }
-  res.json(attendeesRedacted);
-});
+  return res.json(attendeesRedacted);
+};
 
-router.route("/attendees/secure").get(mustBeAuthenticated, async (req, res) => {
+const attendeesSecure = async (req, res) => {
   let attendees = await Attendee.find();
 
-  res.json(attendees);
+  return res.json(attendees);
 });
 
-router.route("/attendee").post(mustBeAuthenticated, async (req, res) => {
+return addAttendee = async (req, res) => {
   const attendee = req.body;
   const { red, blue, yellow, green } = attendee;
 
@@ -246,7 +237,7 @@ router.route("/attendee").post(mustBeAuthenticated, async (req, res) => {
 
   io.emit("new_attendee", {});
 
-  res.send(true);
+  return res.send(true);
 });
 
 function shuffle(array) {
@@ -305,7 +296,15 @@ function startTimeout(id) {
   }, 600000);
 }
 
-module.exports = function(_io) {
-  io = _io;
-  return router;
-};
+module.exports = {
+  removeWinners,
+  deleteAttendees,
+  winners,
+  winnersSecure,
+  winner,
+  finish,
+  attendees,
+  attendeesSecure,
+  addAttendee
+}
+
