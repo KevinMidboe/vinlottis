@@ -22,7 +22,6 @@ router.route("/request").get(async (req, res) => {
 
 router.route("/request").post(async (req, res) => {
   const {wine} = req.body
-  console.log(wine)
 
   let thisWineIsLOKO = await Wine.findOne({id: wine.id})
 
@@ -37,12 +36,10 @@ router.route("/request").post(async (req, res) => {
     });
     await thisWineIsLOKO.save()
   }
-  console.log(thisWineIsLOKO)
 
   let requestedWine = await RequestedWine.findOne({ "wineId": wine.id})
   
   if(requestedWine == undefined){
-    // console.log(localWine)
     requestedWine = new RequestedWine({
       count: 1,
       wineId: wine.id,

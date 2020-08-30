@@ -26,7 +26,7 @@
           </div>
         </section>
         <section class="buttons">
-          <button class="vin-button" @click="request(wine)">Send inn denne som ønske</button>
+          <button class="vin-button" @click="request(wine)">Foreslå denne</button>
           <a
           v-if="wine.vivinoLink"
           :href="wine.vivinoLink"
@@ -78,7 +78,6 @@ export default {
 
       fetch("http://localhost:30030/api/request", options)
         .then(res => res.json())
-        .then(console.log)
     }
   },
 }
@@ -154,6 +153,25 @@ input[type="text"] {
     justify-content: space-between;
     width: 40%;
     margin-right: 1rem;
+  }
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    .wine-image {
+      height: 100px;
+      width: 50px;
+      align-self: center;
+    }
+    .buttons{
+      display: flex;
+      flex-direction: column;
+      align-self: center;
+      margin: 1em;
+      .wine-link{
+        margin-top: 1em;
+      }
+    }
+    
   }
 }
 

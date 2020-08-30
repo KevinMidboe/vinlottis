@@ -27,7 +27,7 @@ const convertToOurWineObject = wine => {
 
 router.route("/wineinfo/search").get(async (req, res) => {
   const {query} = req.query
-  let url = new URL(`https://apis.vinmonopolet.no/products/v0/details-normal?productShortNameContains=test&maxResults=5`)
+  let url = new URL(`https://apis.vinmonopolet.no/products/v0/details-normal?productShortNameContains=test&maxResults=15`)
   url.searchParams.set('productShortNameContains', query)
 
   const vinmonopoletResponse = await fetch(url, {
