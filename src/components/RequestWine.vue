@@ -3,6 +3,12 @@
     <h1>
       Foreslå en vin!
     </h1>
+    <Modal 
+      v-if="showModal" 
+      modalText="Ønsket ditt har blitt lagt til" 
+      :buttons="modalButtons"
+      @modalBtnClicked="emitFromModalButton"
+    ></Modal>
     <section>
       <section class="search-section">
         <input type="text" v-model="searchString" @keyup.enter="fetchWineFromVin()" placeholder="Søk etter en vin du liker her!🍷">
@@ -44,15 +50,28 @@
 <script>
 import { searchForWine } from "@/api";
 import Wine from "@/ui/Wine";
+import Modal from "@/ui/Modal";
 
 export default {
   components: {
-    Wine
+    Wine,
+    Modal
   },
   data() {
     return {
       searchString: undefined,
       wines: undefined,
+      showModal: false,
+      modalButtons: [
+        {
+          text: "Legg til flere viner",
+          action: "stay"
+        },
+        {
+          text: "Se alle viner",
+          action: "move"
+        }
+      ]
     }
   },
   methods: {
@@ -78,6 +97,15 @@ export default {
 
       fetch("http://localhost:30030/api/request", options)
         .then(res => res.json())
+        .then(() => this.showModal = true)
+    },
+    emitFromModalButton(action){
+      console.log(action)
+      if(action == "stay"){
+        this.showModal = false
+      } else {
+        this.$router.push("/requested-wines");
+      }
     }
   },
 }
@@ -92,6 +120,7 @@ main{
   margin: auto;
   width: 80%;
   text-align: center;
+  z-index: 0;
 }
 
 input[type="text"] {
