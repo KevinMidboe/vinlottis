@@ -24,6 +24,12 @@ const overallWineStatistics = () => {
   return fetch(url.href).then(resp => resp.json());
 };
 
+const allRequestedWines = () => {
+  const url = new URL("/api/wines/all-requested-wines", BASE_URL);
+
+  return fetch(url.href).then(resp => resp.json());
+};
+
 const chartWinsByColor = () => {
   const url = new URL("/api/purchase/statistics/color", BASE_URL);
 
@@ -285,6 +291,7 @@ export {
   wineSchema,
   barcodeToVinmonopolet,
   searchForWine,
+  allRequestedWines,
   login,
   register,
   addAttendee,

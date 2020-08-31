@@ -1,14 +1,27 @@
 <template>
   <main>
-    <p>
+    <h1>
       Alle viner
-    </p>
+    </h1>
+    <section>
+      {{this.wines}}
+    </section>
   </main>
 </template>
 
 <script>
-export default {
+import { allRequestedWines } from "@/api";
 
+export default {
+  data(){
+    return{
+      wines: undefined
+    }
+  },
+  async mounted() {
+    const wines = await allRequestedWines();
+    this.wines = wines  
+  }
 }
 </script>
 
