@@ -97,4 +97,5 @@ export default {
   position: relative;
   padding: 20px 10px;
 }
+
 </style>
