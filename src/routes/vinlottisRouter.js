@@ -13,6 +13,7 @@ import LotteryPage from "@/components/LotteryPage";
 import HistoryPage from "@/components/HistoryPage";
 
 import RequestWine from "@/components/RequestWine";
+import AllRequestedWines from "@/components/AllRequestedWines";
 
 const routes = [
   {
@@ -58,6 +59,10 @@ const routes = [
   {
     path: "/request",
     component: RequestWine
+  },
+  {
+    path: "/requested-wines",
+    component: AllRequestedWines
   }
 ];
 
