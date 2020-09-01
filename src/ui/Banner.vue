@@ -174,22 +174,6 @@ export default {
   .__routes{
     text-decoration: none;
     color: #333333;
-
-    @include mobile {
-      display: none;
-    }
-  }
-
-  @include mobile {
-    padding: 0px 40px;
-
-    > img {
-      height: 23px;
-    }
-
-    // .__routes{
-    //   display: none;
-    // }
   }
 }
 

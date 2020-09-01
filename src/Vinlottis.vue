@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <banner />
+    <banner v-if="!mobileView"/>
+    <MobileBanner v-if="mobileView" />
     <router-view />
     <UpdateToast
       v-if="showToast"
@@ -15,17 +16,22 @@
 import ServiceWorkerMixin from "@/mixins/ServiceWorkerMixin";
 import banner from "@/ui/Banner";
 import UpdateToast from "@/ui/UpdateToast";
+import MobileBanner from "@/ui/MobileBanner";
 
 export default {
   name: "vinlottis",
-  components: { banner, UpdateToast },
+  components: { banner, UpdateToast, MobileBanner },
   props: {},
   data() {
     return {
       showToast: false,
       toastText: null,
-      refreshToast: false
+      refreshToast: false,
+      mobileView: false
     };
+  },
+  beforeMount(){
+    this.handleView()
   },
   mounted() {
     console.log("SNEAKY PETE!");
@@ -45,6 +51,10 @@ export default {
   methods: {
     closeToast: function() {
       this.showToast = false;
+    },
+    handleView(){
+      console.log(window.innerWidth <= 768)
+      this.mobileView = window.innerWidth <= 768;
     }
   }
 };
