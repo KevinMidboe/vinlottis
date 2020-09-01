@@ -2,6 +2,11 @@
   <router-link to="/" class="link">
     <div class="top-banner">
       <img src="/public/assets/images/knowit.svg" alt="knowit logo" />
+      <div v-for="(route, index) in routes" :key="index" >
+        <router-link :to="route.route" class="__routes">
+          {{route.name}}
+        </router-link>
+      </div>
       <div class="clock">
         <h2 v-if="!fiveMinutesLeft || !tenMinutesOver">
           <span v-if="days > 0">{{ pad(days) }}:</span>
@@ -28,7 +33,29 @@ export default {
       enabled: false,
       code: "38384040373937396665",
       codeDone: "",
-      interval: null
+      interval: null,
+      routes: [
+        {
+          name: "Dagens viner",
+          route: "/dagens/"
+        },
+        {
+          name: "History",
+          route: "/history/"
+        },
+        {
+          name: "Lotteriet",
+          route: "/lottery/game/"
+        },
+        // {
+        //   name: "Foreslå vin",
+        //   route: "/request"
+        // },
+        // {
+        //   name: "Foreslåtte viner",
+        //   route: "/all-requested-wines"
+        // },
+      ]
     };
   },
   mounted() {
@@ -115,7 +142,7 @@ export default {
         this.initialize();
       }
       this.interval = setTimeout(this.countdown, 500);
-    }
+    },
   }
 };
 </script>
@@ -126,6 +153,8 @@ export default {
 
 .link {
   text-decoration: none;
+  color: #333333;
+
 }
 
 .top-banner {
@@ -142,12 +171,25 @@ export default {
   -moz-box-shadow: 0px 0px 22px -8px rgba(0, 0, 0, 0.65);
   box-shadow: 0px 0px 22px -8px rgba(0, 0, 0, 0.65);
 
+  .__routes{
+    text-decoration: none;
+    color: #333333;
+
+    @include mobile {
+      display: none;
+    }
+  }
+
   @include mobile {
     padding: 0px 40px;
 
     > img {
       height: 23px;
     }
+
+    // .__routes{
+    //   display: none;
+    // }
   }
 }
 
