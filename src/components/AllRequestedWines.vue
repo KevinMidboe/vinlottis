@@ -25,6 +25,7 @@ export default {
   },
   methods: {
     async refreshData(){
+      this.wines = []
       const wines = await allRequestedWines()
       this.wines = wines
     }

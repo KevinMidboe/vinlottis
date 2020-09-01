@@ -100,7 +100,6 @@ export default {
         .then(() => this.showModal = true)
     },
     emitFromModalButton(action){
-      console.log(action)
       if(action == "stay"){
         this.showModal = false
       } else {
