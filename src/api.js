@@ -101,7 +101,7 @@ const winners = () => {
 };
 
 const deleteRequestedWine = wineToBeDeleted => {
-  console.log("when do i get here", wineToBeDeleted)
+
   const url = new URL("api/request", BASE_URL);
 
   const options = {
