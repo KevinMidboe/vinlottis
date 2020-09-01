@@ -19,11 +19,16 @@
           class="wine-link"
         >Les mer på polet</a>
         </section>
+        <button @click="deleteWine(wine)">
+          Slett vinen
+        </button>
       </section>
     </div>
 </template>
 
 <script>
+import { deleteRequestedWine } from "@/api";
+
 export default {
   data(){
     return {
@@ -40,7 +45,6 @@ export default {
   methods: {
     request(wine){
       this.locallyRequested = true
-      // wine.requested = true
       this.requestedElement.count = this.requestedElement.count +1
       const options = {
         body: JSON.stringify({
@@ -54,6 +58,16 @@ export default {
       }
       fetch("http://localhost:30030/api/request", options)
         .then(res => res.json())
+    },
+    async deleteWine(wine) {
+      if (window.confirm("Er du sikker på at du vil slette vinen?")) {
+        let response = await deleteRequestedWine(wine);
+        if (response) {
+          this.$emit('deletedOne');
+        } else {
+          alert("Klarte ikke hente ut vinnere");
+        }
+      }
     },
   },
 }

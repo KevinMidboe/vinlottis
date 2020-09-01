@@ -100,6 +100,21 @@ const winners = () => {
   return fetch(url.href).then(resp => resp.json());
 };
 
+const deleteRequestedWine = wineToBeDeleted => {
+  console.log("when do i get here", wineToBeDeleted)
+  const url = new URL("api/request", BASE_URL);
+
+  const options = {
+    headers: {
+      "Content-Type": "application/json"
+    },
+    method: "DELETE",
+    body: JSON.stringify(wineToBeDeleted)
+  };
+
+  return fetch(url.href, options).then(resp => resp.json())
+}
+
 const deleteWinners = () => {
   const url = new URL("/api/virtual/winners", BASE_URL);
 
@@ -302,6 +317,7 @@ export {
   winnersSecure,
   deleteWinners,
   deleteAttendees,
+  deleteRequestedWine,
   getChatHistory,
   finishedDraw,
   getAmIWinner,

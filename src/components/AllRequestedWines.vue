@@ -1,10 +1,10 @@
 <template>
   <main>
     <h1>
-      Alle viner foreslåtte viner
+      Alle foreslåtte viner
     </h1>
     <section class="requested-wines-container">
-      <RequestedWineCard v-for="requestedEl in wines" :key="requestedEl.id" :requestedElement="requestedEl" />
+      <RequestedWineCard v-for="requestedEl in wines" :key="requestedEl.id" :requestedElement="requestedEl" @deletedOne="refreshData" />
     </section>
   </main>
 </template>
@@ -22,9 +22,14 @@ export default {
       canRequest: true
     }
   },
-  async mounted() {
-    const wines = await allRequestedWines();
-    this.wines = wines
+  methods: {
+    async refreshData(){
+      const wines = await allRequestedWines()
+      this.wines = wines
+    }
+  },
+  mounted() {
+    this.refreshData()
   }
 }
 </script>

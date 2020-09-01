@@ -9,11 +9,18 @@ const RequestedWine = require(path.join(
 const Wine = require(path.join(
   __dirname + "/../schemas/Wine"
 ));
+const mustBeAuthenticated = require(path.join(
+  __dirname + "/../middleware/mustBeAuthenticated"
+));
 
 router.use((req, res, next) => {
   next();
 });
 
+router.route("/request/").delete(mustBeAuthenticated, async (req, res) => {
+  await RequestedWine.deleteOne({wineId: req.body.id})
+  res.json(true);
+})
 
 router.route("/request").get(async (req, res) => {
   const rWines = await RequestedWine.find({}).populate("wine")
