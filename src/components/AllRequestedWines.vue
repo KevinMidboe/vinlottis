@@ -4,7 +4,7 @@
       Alle foreslåtte viner
     </h1>
     <section class="requested-wines-container">
-      <p v-if="this.wines.length <= 0">Ingen har foreslått noe enda!</p>
+      <p v-if="this.wines == undefined || this.wines.length <= 0">Ingen har foreslått noe enda!</p>
       <RequestedWineCard v-for="requestedEl in wines" :key="requestedEl.id" :requestedElement="requestedEl" @deletedOne="refreshData" />
     </section>
   </main>
