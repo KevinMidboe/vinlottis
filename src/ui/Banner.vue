@@ -188,7 +188,11 @@ export default {
     color: #333333;
     display: flex;
     font-family: Arial;
-    font-size: 0.8em;
+    margin-right: 2rem;
+    @include mobile {
+      font-size: 0.8em;
+      margin-right: 1rem;
+    }
     h2 {
       display: flex;
     }
