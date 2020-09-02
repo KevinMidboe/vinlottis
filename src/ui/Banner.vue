@@ -43,9 +43,6 @@ export default {
       minutes: 0,
       seconds: 0,
       distance: 0,
-      enabled: false,
-      code: "38384040373937396665",
-      codeDone: "",
       interval: null,
     };
   },
@@ -78,19 +75,6 @@ export default {
         return `0${num}`;
       }
       return num;
-    },
-    listenerFunction: function(event) {
-      this.codeDone += event.keyCode;
-      if (this.code.substring(0, this.codeDone.length) == this.codeDone) {
-        if (this.code == this.codeDone && !this.enabled) {
-          this.enabled = true;
-          this.initialize();
-          this.countdown();
-          this.codeDone = "";
-        }
-      } else {
-        this.codeDone = "";
-      }
     },
     initialize: function() {
       let d = new Date();

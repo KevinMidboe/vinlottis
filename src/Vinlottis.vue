@@ -49,9 +49,6 @@ export default {
       ]
     };
   },
-  beforeMount(){
-    this.handleView()
-  },
   mounted() {
     console.log("SNEAKY PETE!");
     this.$on("service-worker-updated", () => {
@@ -99,10 +96,8 @@ body {
 </style>
 
 <style scoped>
-
 .app-container {
   background-color: white;
   min-height: 100vh;
 }
-
 </style>
