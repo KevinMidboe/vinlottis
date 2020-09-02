@@ -108,4 +108,6 @@ app.use("/service-worker.js", function(req, res) {
   res.sendFile(path.join(__dirname, "public/sw/serviceWorker.js"));
 });
 
-server.listen(30030);
+PORT = 30030
+console.log(`Running on port: ${PORT}`)
+server.listen(PORT);
