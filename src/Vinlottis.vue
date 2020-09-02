@@ -1,7 +1,6 @@
 <template>
   <div class="app-container">
-    <banner v-if="!mobileView"/>
-    <MobileBanner v-if="mobileView" />
+    <banner :routes="routes"/>
     <router-view />
     <UpdateToast
       v-if="showToast"
@@ -16,18 +15,38 @@
 import ServiceWorkerMixin from "@/mixins/ServiceWorkerMixin";
 import banner from "@/ui/Banner";
 import UpdateToast from "@/ui/UpdateToast";
-import MobileBanner from "@/ui/MobileBanner";
 
 export default {
   name: "vinlottis",
-  components: { banner, UpdateToast, MobileBanner },
+  components: { banner, UpdateToast },
   props: {},
   data() {
     return {
       showToast: false,
       toastText: null,
       refreshToast: false,
-      mobileView: false
+      routes: [
+        {
+          name: "Dagens viner",
+          route: "/dagens/"
+        },
+        {
+          name: "Historie",
+          route: "/history/"
+        },
+        {
+          name: "Lotteriet",
+          route: "/lottery/game/"
+        },
+        // {
+        //   name: "Foreslå vin",
+        //   route: "/request"
+        // },
+        // {
+        //   name: "Foreslåtte viner",
+        //   route: "/all-requested-wines"
+        // },
+      ]
     };
   },
   beforeMount(){
@@ -52,10 +71,6 @@ export default {
     closeToast: function() {
       this.showToast = false;
     },
-    handleView(){
-      console.log(window.innerWidth <= 768)
-      this.mobileView = window.innerWidth <= 768;
-    }
   }
 };
 </script>
@@ -84,8 +99,10 @@ body {
 </style>
 
 <style scoped>
+
 .app-container {
   background-color: white;
   min-height: 100vh;
 }
+
 </style>
