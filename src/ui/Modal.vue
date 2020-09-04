@@ -38,7 +38,7 @@ export default {
   },
   methods:{
     modalButtonClicked(action){
-      this.$emit('modalBtnClicked', action)
+      this.$emit('click', action)
     }
   }
 }

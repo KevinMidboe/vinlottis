@@ -19,9 +19,9 @@
           class="wine-link"
         >Les mer på polet</a>
         </section>
-        <button @click="deleteWine(wine)">
+        <!-- <button @click="deleteWine(wine)">
           Slett vinen
-        </button>
+        </button> -->
       </section>
     </div>
 </template>

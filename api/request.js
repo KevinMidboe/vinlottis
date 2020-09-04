@@ -27,6 +27,12 @@ router.route("/request").get(async (req, res) => {
   return res.send(rWines)
 })
 
+router.route("/request/all").get(async (req, res) => {
+  const allWines = await RequestedWine.find({}).populate("wine");
+
+  res.json(allWines);
+});
+
 router.route("/request").post(async (req, res) => {
   const {wine} = req.body
 

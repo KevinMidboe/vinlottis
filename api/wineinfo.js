@@ -18,7 +18,7 @@ const convertToOurWineObject = wine => {
       rating: wine.basic.alcoholContent,
       occurences: 0,
       id: wine.basic.productId,
-      image: `https://bilder.vinmonopolet.no/cache/300x300-0/${wine.basic.productId}-1.jpg`,
+      image: `https://bilder.vinmonopolet.no/cache/500x500-0/${wine.basic.productId}-1.jpg`,
       price: wine.prices[0].salesPrice.toString(),
       country: wine.origins.origin.country
     }

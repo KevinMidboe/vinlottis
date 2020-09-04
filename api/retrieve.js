@@ -104,12 +104,6 @@ router.route("/highscore/statistics").get(async (req, res) => {
   res.json(highscore);
 });
 
-router.route("/wines/all-requested-wines").get(async (req, res) => {
-  const allWines = await RequestedWine.find({}).populate("wine");
-
-  res.json(allWines);
-});
-
 
 router.route("/wines/statistics").get(async (req, res) => {
   const wines = await Wine.find();

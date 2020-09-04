@@ -25,7 +25,7 @@ const overallWineStatistics = () => {
 };
 
 const allRequestedWines = () => {
-  const url = new URL("/api/wines/all-requested-wines", BASE_URL);
+  const url = new URL("/api/request/all", BASE_URL);
 
   return fetch(url.href).then(resp => resp.json());
 };

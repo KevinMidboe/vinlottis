@@ -7,7 +7,7 @@
       v-if="showModal" 
       modalText="Ønsket ditt har blitt lagt til" 
       :buttons="modalButtons"
-      @modalBtnClicked="emitFromModalButton"
+      @click="emitFromModalButton"
     ></Modal>
     <section>
       <section class="search-section">
