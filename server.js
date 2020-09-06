@@ -95,6 +95,9 @@ app.use("/subscription", subscriptionApi);
 app.get("/dagens", function(req, res) {
   res.redirect("/#/dagens");
 });
+app.get("/winner/:id", function(req, res) {
+  res.redirect("/#/winner/" + req.params.id);
+});
 
 app.use("/service-worker.js", function(req, res) {
   res.sendFile(path.join(__dirname, "public/sw/serviceWorker.js"));
