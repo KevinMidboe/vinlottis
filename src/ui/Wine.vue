@@ -22,6 +22,7 @@
           :href="wine.vivinoLink"
           class="wine-link"
         >Les mer på {{ hostname(wine.vivinoLink) }}</a>
+
         <button
           v-if="winner"
           @click="choseWine(wine.name)"
@@ -173,5 +174,9 @@ a:visited {
     background-color: $light-red;
     color: $red;
   }
+}
+
+.vin-button {
+  margin-top: 1rem;
 }
 </style>
