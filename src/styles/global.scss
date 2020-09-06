@@ -74,6 +74,16 @@ body {
     margin-right: 2rem;
   }
 
+  &.column {
+    flex-direction: column;
+    align-items: center;
+
+    > * {
+      margin-right: unset;
+      margin-bottom: 1rem;
+    }
+  }
+
   @include mobile {
     &:not(.row) {
       flex-direction: column;
