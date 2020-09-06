@@ -78,6 +78,10 @@
       </div>
     </div>
 
+    <div class="button-container">
+      <button class="vin-button" @click="submitLottery">Send inn lotteri</button>
+    </div>
+
     <h3>Vinnere</h3>
     <a class="wine-link" @click="fetchColorsAndWinners()">Refresh data fra virtuelt lotteri</a>
     <div class="winner-container" v-if="winners.length > 0">
@@ -130,8 +134,8 @@
         </div>
       </wine>
 
-      <div class="button-container">
-        <button class="vin-button" @click="sendInfo">Send inn vinnere</button>
+      <div class="button-container column">
+        <button class="vin-button" @click="submitLotteryWinners">Send inn vinnere</button>
         <button class="vin-button" @click="resetWinnerDataInStorage">Reset local wines</button>
       </div>
     </div>
@@ -142,9 +146,11 @@
 
 <script>
 import eventBus from "@/mixins/EventBus";
+import { dateString } from '@/utils'
 import {
   prelottery,
-  log,
+  sendLotteryWinners,
+  sendLottery,
   logWines,
   wineSchema,
   winnersSecure,
@@ -306,7 +312,7 @@ export default {
     },
     sendWines: async function() {
       let response = await logWines(this.wines);
-      if (response == true) {
+      if (response.success == true) {
         alert("Sendt!");
         window.location.reload();
       } else {
@@ -324,7 +330,7 @@ export default {
         }
       });
     },
-    sendInfo: async function(event) {
+    submitLottery: async function(event) {
       const colors = {
         red: this.lotteryColors.filter(c => c.css == "red")[0].value,
         green: this.lotteryColors.filter(c => c.css == "green")[0].value,
@@ -333,41 +339,56 @@ export default {
       };
 
       let sendObject = {
-        purchase: {
-          date: new Date(),
+        lottery: {
+          date: dateString(new Date()),
           ...colors
-        },
-        winners: this.winners
+        }
       };
 
-      if (sendObject.purchase.red == undefined) {
+      if (sendObject.lottery.red == undefined) {
         alert("Rød må defineres");
         return;
       }
-      if (sendObject.purchase.green == undefined) {
+      if (sendObject.lottery.green == undefined) {
         alert("Grønn må defineres");
         return;
       }
-      if (sendObject.purchase.yellow == undefined) {
+      if (sendObject.lottery.yellow == undefined) {
         alert("Gul må defineres");
         return;
       }
-      if (sendObject.purchase.blue == undefined) {
+      if (sendObject.lottery.blue == undefined) {
         alert("Blå må defineres");
         return;
       }
 
-      sendObject.purchase.bought =
+      sendObject.lottery.bought =
         parseInt(colors.blue) +
         parseInt(colors.red) +
         parseInt(colors.green) +
         parseInt(colors.yellow);
-      const stolen = sendObject.purchase.bought - parseInt(this.payed) / 10;
+      const stolen = sendObject.lottery.bought - parseInt(this.payed) / 10;
       if (isNaN(stolen) || stolen == undefined) {
         alert("Betalt må registreres");
         return;
       }
-      sendObject.purchase.stolen = stolen;
+      sendObject.lottery.stolen = stolen;
+
+      let response = await sendLottery(sendObject);
+      if (response == true) {
+        alert("Sendt!");
+        window.location.reload();
+      } else {
+        alert(response.message || "Noe gikk galt under innsending");
+      }
+    },
+    submitLotteryWinners: async function(event) {
+      let sendObject = {
+        lottery: {
+          date: dateString(new Date()),
+          winners: this.winners
+        }
+      }
 
       if (sendObject.winners.length == 0) {
         alert("Det må være med vinnere");
@@ -386,7 +407,7 @@ export default {
         }
       }
 
-      let response = await log(sendObject);
+      let response = await sendLotteryWinners(sendObject);
       if (response == true) {
         alert("Sendt!");
         window.location.reload();
@@ -613,7 +634,7 @@ hr {
   flex-wrap: wrap;
   justify-content: center;
   max-width: 1400px;
-  margin: 3rem auto 0;
+  margin: 3rem auto 1rem;
 
   @include mobile {
     margin: 1.8rem auto 0;
