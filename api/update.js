@@ -10,7 +10,7 @@ const sub = require(path.join(__dirname + "/../api/subscriptions"));
 const _wineFunctions = require(path.join(__dirname + "/../api/wine"));
 const _personFunctions = require(path.join(__dirname + "/../api/person"));
 const Subscription = require(path.join(__dirname + "/../schemas/Subscription"));
-const Purchase = require(path.join(__dirname + "/../schemas/Purchase"));
+const Lottery = require(path.join(__dirname + "/../schemas/Purchase"));
 const PreLotteryWine = require(path.join(
   __dirname + "/../schemas/PreLotteryWine"
 ));
@@ -32,17 +32,28 @@ const submitWines = async (req, res) => {
   }
 
   let subs = await Subscription.find();
+  console.log("Sending new wines w/ push notification to all subscribers.")
   for (let i = 0; i < subs.length; i++) {
     let subscription = subs[i]; //get subscription from your databse here.
+
     const message = JSON.stringify({
       message: "Dagens vin er lagt til, se den på lottis.vin/dagens!",
       title: "Ny vin!",
       link: "/#/dagens"
     });
-    sub.sendNotification(subscription, message);
+
+    try {
+      sub.sendNotification(subscription, message);
+    } catch (error) {
+      console.error("Error when trying to send push notification to subscriber.");
+      console.error(error);
+    }
   }
 
-  return res.send(true);
+  return res.send({
+    message: "Submitted and notified push subscribers of new wines!",
+    success: true
+  });
 };
 
 const schema = async (req, res) => {
@@ -55,44 +66,73 @@ const schema = async (req, res) => {
   return res.send(nulledSchema);
 }
 
-const submitLottery = async (req, res) => {
-  await PreLotteryWine.deleteMany();
+// TODO IMPLEMENT WITH FRONTEND (unused)
+const submitWinesToLottery = async (req, res) => {
+  const { lottery } = req.body;
+  const { date, wines } = lottery;
+  const wineObjects = await Promise.all(wines.map(async (wine) => await _wineFunctions.findSaveWine(wine)))
 
-  const purchaseBody = req.body.purchase;
-  const winnersBody = req.body.winners;
+  return Lottery.findOneAndUpdate({ date: date }, {
+      date: date,
+      wines: wineObjects
+    }, {
+      upsert: true
+    }).then(_ => res.send(true))
+      .catch(err => res.status(500).send({ message: 'Unexpected error while updating/saving wine to lottery.',
+                                           success: false,
+                                           exception: err.message }));
+}
 
-  const date = purchaseBody.date;
-  const blue = purchaseBody.blue;
-  const red = purchaseBody.red;
-  const yellow = purchaseBody.yellow;
-  const green = purchaseBody.green;
+ /**
+  * @apiParam (Request body) {Array} winners List of winners
+  */
+const submitWinnersToLottery = async (req, res) => {
+  const { lottery } = req.body;
+  const { winners, date } = lottery;
 
-  const bought = purchaseBody.bought;
-  const stolen = purchaseBody.stolen;
-
-  const winesThisDate = [];
-
-  for (let i = 0; i < winnersBody.length; i++) {
-    let currentWinner = winnersBody[i];
-
-    let wonWine = await _wineFunctions.findSaveWine(currentWinner);
-    winesThisDate.push(wonWine);
-
-    await _personFunctions.findSavePerson(currentWinner, wonWine, date);
+  for (let i = 0; i < winners.length; i++) {
+    let currentWinner = winners[i];
+    let wonWine = await _wineFunctions.findSaveWine(currentWinner.wine); // TODO rename to findAndSaveWineToLottery
+    await _personFunctions.findSavePerson(currentWinner, wonWine, date); // TODO rename to findAndSaveWineToPerson
   }
 
-  let purchase = new Purchase({
-    date: date,
-    blue: blue,
-    yellow: yellow,
-    red: red,
-    green: green,
-    wines: winesThisDate,
-    bought: bought,
-    stolen: stolen
-  });
+  return res.json(true);
+}
 
-  await purchase.save();
+ /**
+  * @apiParam (Request body) {Date} date Date of lottery
+  * @apiParam (Request body) {Number} blue Number of blue tickets
+  * @apiParam (Request body) {Number} red Number of red tickets
+  * @apiParam (Request body) {Number} green Number of green tickets
+  * @apiParam (Request body) {Number} yellow Number of yellow tickets
+  * @apiParam (Request body) {Number} bought Number of tickets bought
+  * @apiParam (Request body) {Number} stolen Number of tickets stolen
+  */
+const submitLottery = async (req, res) => {
+  const { lottery } = req.body
+
+  const { date,
+          blue,
+          red,
+          yellow,
+          green,
+          bought,
+          stolen } = lottery;
+
+  return Lottery.findOneAndUpdate({ date: date }, {
+      date: date,
+      blue: blue,
+      yellow: yellow,
+      red: red,
+      green: green,
+      bought: bought,
+      stolen: stolen
+    }, {
+      upsert: true
+    }).then(_ => res.send(true))
+      .catch(err => res.status(500).send({ message: 'Unexpected error while updating/saving lottery.',
+                                           success: false,
+                                           exception: err.message }));
 
   return res.send(true);
 };
@@ -100,5 +140,7 @@ const submitLottery = async (req, res) => {
 module.exports = {
   submitWines,
   schema,
-  submitLottery
+  submitLottery,
+  submitWinnersToLottery,
+  submitWinesToLottery
 };
