@@ -1,20 +1,12 @@
-const express = require('express');
 const path = require('path');
 
-const router = express.Router();
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/vinlottis', {
   useNewUrlParser: true
 })
 
-const mustBeAuthenticated = require(path.join(
-  __dirname + '/../middleware/mustBeAuthenticated'
-));
-const config = require(path.join(__dirname + '/../config/defaults/lottery'));
-
 const Highscore = require(path.join(__dirname + '/../schemas/Highscore'));
 const Wine = require(path.join(__dirname + '/../schemas/Wine'));
-
 
 // Utils
 const epochToDateString = date => new Date(parseInt(date)).toDateString();
@@ -62,7 +54,7 @@ const resolveWineReferences = listWithWines => {
 }
 
 // Routes
-router.route('/all').get((req, res) => {
+const all = (req, res) => {
   return Highscore.find()
     .then(highscore => getHighscoreByDates(highscore))
     .then(groupedLotteries => groupedHighscoreToSortedList(groupedLotteries))
@@ -70,9 +62,19 @@ router.route('/all').get((req, res) => {
       message: "Lotteries by date!",
       lotteries
     }))
-})
+}
 
-router.route('/by-date/:date').get((req, res) => {
+const latest = (req, res) => {
+  return Highscore.find()
+    .then(highscore => getHighscoreByDates(highscore))
+    .then(groupedLotteries => groupedHighscoreToSortedList(groupedLotteries))
+    .then(lotteries => res.send({
+      message: "Latest lottery!",
+      lottery: lotteries.slice(-1).pop()
+    }))
+}
+
+const byEpochDate = (req, res) => {
   const { date } = req.params;
   const dateString = epochToDateString(date);
 
@@ -92,10 +94,10 @@ router.route('/by-date/:date').get((req, res) => {
         })
       }
     })
-})
+}
 
-router.route("/by-name").get((req, res) => {
-  const { name } = req.query;
+const byName = (req, res) => {
+  const { name } = req.params;
 
   return Highscore.find({ name })
     .then(async (highscore) => {
@@ -113,6 +115,11 @@ router.route("/by-name").get((req, res) => {
         })
       }
     })
-})
+}
 
-module.exports = router;
+module.exports = {
+  all,
+  latest,
+  byEpochDate,
+  byName
+};

@@ -106,6 +106,8 @@
     </div>
     <br />
     <button class="vin-button" @click="sendAttendee">Send deltaker</button>
+
+    <TextToast v-if="showToast" :text="toastText" v-on:closeToast="showToast = false" />
   </div>
 </template>
 
@@ -119,13 +121,16 @@ import {
   winnersSecure,
   deleteWinners,
   deleteAttendees,
-  finishedDraw
+  finishedDraw,
+  prelottery
 } from "@/api";
+import TextToast from "@/ui/TextToast";
 import RaffleGenerator from "@/ui/RaffleGenerator";
 
 export default {
   components: {
-    RaffleGenerator
+    RaffleGenerator,
+    TextToast
   },
   data() {
     return {
@@ -144,7 +149,9 @@ export default {
       drawTime: 20,
       currentWinners: 1,
       numberOfWinners: 4,
-      socket: null
+      socket: null,
+      toastText: undefined,
+      showToast: false
     };
   },
   mounted() {
@@ -168,13 +175,21 @@ export default {
     });
 
     window.finishedDraw = finishedDraw;
-    console.log("here");
   },
   methods: {
     setWithRandomColors(colors) {
       Object.keys(colors).forEach(color => (this[color] = colors[color]));
     },
     sendAttendee: async function() {
+      if (this.red == 0 && this.blue == 0 && this.green == 0 && this.yellow == 0) {
+        alert('Ingen farger valgt!')
+        return;
+      }
+      if (this.name == 0 && this.phoneNumber) {
+        alert('Ingen navn eller tlf satt!')
+        return;
+      }
+
       let response = await addAttendee({
         name: this.name,
         phoneNumber: this.phoneNumber,
@@ -184,10 +199,15 @@ export default {
         yellow: this.yellow,
         ballots: this.ballots
       });
+
       if (response == true) {
-        alert("Sendt inn deltaker!");
+        this.toastText = `Sendt inn deltaker: ${this.name}`;
+        this.showToast = true;
+
         this.name = null;
         this.phoneNumber = null;
+        this.yellow = 0;
+        this.green = 0;
         this.red = 0;
         this.blue = 0;
 
@@ -208,6 +228,7 @@ export default {
       if (window.confirm("Er du sikker på at du vil trekke vinnere?")) {
         this.drawingWinner = true;
         let response = await getVirtualWinner();
+
         if (response) {
           if (this.currentWinners < this.numberOfWinners) {
             this.countdown();
