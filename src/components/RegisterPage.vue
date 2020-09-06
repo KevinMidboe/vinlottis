@@ -390,12 +390,12 @@ export default {
         }
       }
 
-      if (sendObject.winners.length == 0) {
+      if (sendObject.lottery.winners.length == 0) {
         alert("Det må være med vinnere");
         return;
       }
-      for (let i = 0; i < sendObject.winners.length; i++) {
-        let currentWinner = sendObject.winners[i];
+      for (let i = 0; i < sendObject.lottery.winners.length; i++) {
+        let currentWinner = sendObject.lottery.winners[i];
 
         if (currentWinner.name == undefined || currentWinner.name == "") {
           alert("Navn må defineres");
