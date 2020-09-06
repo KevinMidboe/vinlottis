@@ -6,7 +6,7 @@ const path = require("path");
 const session = require("express-session");
 const User = require(path.join(__dirname + "/schemas/User"));
 
-const apiRouter = require(path.join(__dirname + "/api/app"));
+const apiRouter = require(path.join(__dirname + "/api/router.js"));
 
 const loginApi = require(path.join(__dirname + "/api/login"));
 const virtualApi = require(path.join(__dirname + "/api/virtualLottery"));
@@ -89,7 +89,6 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/dist", express.static(path.join(__dirname, "public/dist")));
 app.use("/", loginApi);
 app.use("/api/", chatHistory);
-app.use("/api/virtual/", virtualApi(io));
 app.use("/api/", apiRouter);
 app.use("/subscription", subscriptionApi);
 
