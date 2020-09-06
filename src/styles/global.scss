@@ -153,6 +153,44 @@ textarea {
   }
 }
 
+
+.cursor {
+  &-pointer {
+    cursor: pointer;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+.vin-link {
+  font-weight: bold;
+  border-bottom: 1px solid #ff5fff;
+  font-size: 1rem;
+  margin-left: 15px;
+}
+
+
+.margin-top {
+  &-md {
+    margin-top: 3rem;
+  }
+}
+
+.margin-bottom {
+  &-md {
+    margin-bottom: 3rem;
+  }
+  &-sm {
+    margin-bottom: 1rem;
+  }
+  &-0 {
+    margin-bottom: 0;
+  }
+}
+
+
 .no-margin {
   margin: 0 !important;
 }
