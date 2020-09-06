@@ -11,6 +11,7 @@ import AdminPage from "@/components/AdminPage";
 import WinnerPage from "@/components/WinnerPage";
 import LotteryPage from "@/components/LotteryPage";
 import HistoryPage from "@/components/HistoryPage";
+import HighscorePage from "@/components/HighscorePage";
 
 const routes = [
   {
@@ -52,6 +53,10 @@ const routes = [
   {
     path: "/history",
     component: HistoryPage
+  },
+  {
+    path: "/highscore",
+    component: HighscorePage
   }
 ];
 
