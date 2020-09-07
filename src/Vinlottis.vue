@@ -38,14 +38,14 @@ export default {
           name: "Lotteriet",
           route: "/lottery/game/"
         },
-        // {
-        //   name: "Foreslå vin",
-        //   route: "/request"
-        // },
-        // {
-        //   name: "Foreslåtte viner",
-        //   route: "/all-requested-wines"
-        // },
+        {
+          name: "Foreslå vin",
+          route: "/request"
+        },
+        {
+          name: "Foreslåtte viner",
+          route: "/requested-wines"
+        },
       ]
     };
   },
