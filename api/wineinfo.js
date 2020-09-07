@@ -1,14 +1,7 @@
-const express = require("express");
-const path = require("path");
-const router = express.Router();
 const fetch = require('node-fetch')
+const path = require('path')
 const config = require(path.join(__dirname + "/../config/env/lottery.config"));
-
 const mustBeAuthenticated = require(path.join(__dirname + "/../middleware/mustBeAuthenticated"))
-
-router.use((req, res, next) => {
-  next();
-});
 
 const convertToOurWineObject = wine => {
   if(wine.basic.ageLimit === "18"){
@@ -25,11 +18,11 @@ const convertToOurWineObject = wine => {
   }
 }
 
-router.route("/wineinfo/search").get(async (req, res) => {
+const wineSearch = async (req, res) => {
   const {query} = req.query
   let url = new URL(`https://apis.vinmonopolet.no/products/v0/details-normal?productShortNameContains=test&maxResults=15`)
   url.searchParams.set('productShortNameContains', query)
-
+  
   const vinmonopoletResponse = await fetch(url, {
     headers: {
       "Ocp-Apim-Subscription-Key": config.vinmonopoletToken
@@ -37,8 +30,8 @@ router.route("/wineinfo/search").get(async (req, res) => {
   })
     .then(resp => resp.json())
     .catch(err => console.error(err))
-
-
+  
+  
   if (vinmonopoletResponse.errors != null) {
     return vinmonopoletResponse.errors.map(error => {
       if (error.type == "UnknownProductError") {
@@ -51,12 +44,11 @@ router.route("/wineinfo/search").get(async (req, res) => {
     })
   }
   const winesConverted = vinmonopoletResponse.map(convertToOurWineObject).filter(Boolean)
-  res.send(winesConverted);
-});
 
+  return res.send(winesConverted);
+}
 
-
-router.route("/wineinfo/:ean").get(async (req, res) => {
+const byEAN = async (req, res) => {
   const vinmonopoletResponse = await fetch("https://app.vinmonopolet.no/vmpws/v2/vmp/products/barCodeSearch/" + req.params.ean)
     .then(resp => resp.json())
 
@@ -72,7 +64,10 @@ router.route("/wineinfo/:ean").get(async (req, res) => {
     })
   }
 
-  res.send(vinmonopoletResponse);
-});
+  return res.send(vinmonopoletResponse);
+};
 
-module.exports = router;
+module.exports = {
+  byEAN,
+  wineSearch
+};

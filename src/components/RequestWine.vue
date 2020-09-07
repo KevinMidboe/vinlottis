@@ -95,7 +95,7 @@ export default {
         method: "post"
       }
 
-      fetch("http://localhost:30030/api/request", options)
+      fetch("http://localhost:30030/api/request/new-wine", options)
         .then(res => res.json())
         .then(() => this.showModal = true)
     },

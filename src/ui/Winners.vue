@@ -34,8 +34,10 @@ h2 {
 
 .winners {
   display: flex;
+  flex-flow: wrap;
   justify-content: space-around;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .ballot-element {

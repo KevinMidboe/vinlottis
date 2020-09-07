@@ -56,13 +56,13 @@ export default {
         },
         method: "post"
       }
-      fetch("http://localhost:30030/api/request", options)
+      fetch("http://localhost:30030/api/request/new-wine", options)
         .then(res => res.json())
     },
     async deleteWine(wine) {
       if (window.confirm("Er du sikker på at du vil slette vinen?")) {
         let response = await deleteRequestedWine(wine);
-        if (response) {
+        if (response['success'] == true) {
           this.$emit('wineDeleted', wine);
         } else {
           alert("Klarte ikke slette vinen");

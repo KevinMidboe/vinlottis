@@ -52,6 +52,7 @@ export default {
 
 <style lang="scss">
 @import "./styles/global.scss";
+@import "./styles/positioning.scss";
 @font-face {
   font-family: "knowit";
   font-weight: 600;
