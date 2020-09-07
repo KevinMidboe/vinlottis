@@ -13,6 +13,13 @@ steps:
   commands:
     - node -v
     - yarn --version
+- name: backend_build
+  image: node:13.6.0
+  commands:
+    - node -v
+    - yarn --version
+    - yarn
+    - yarn build
 - name: deploy
   image: appleboy/drone-ssh
   pull: true
