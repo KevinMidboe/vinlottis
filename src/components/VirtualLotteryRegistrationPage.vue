@@ -1,8 +1,7 @@
 <template>
   <div class="page-container">
-    <h1 class="title">Virtuelt lotteri registrering</h1>
-    <br />
-    <div class="draw-winner-container" v-if="attendees.length > 0">
+    <h2 class="margin-top-md">Start trekkning</h2>
+    <div class="margin-bottom-sm" v-if="attendees.length > 0">
       <div v-if="drawingWinner">
         <span>
           Trekker {{ currentWinners }} av {{ numberOfWinners }} vinnere.
@@ -10,76 +9,42 @@
         </span>
         <button class="vin-button no-margin" @click="stopDraw">Stopp trekning</button>
       </div>
+
       <div class="draw-container" v-if="!drawingWinner">
         <button class="vin-button no-margin" @click="drawWinner">Trekk vinnere</button>
         <input type="number" v-model="numberOfWinners" />
       </div>
     </div>
-    <h2 v-if="winners.length > 0">Vinnere</h2>
-    <div class="winners" v-if="winners.length > 0">
-      <div class="winner" v-for="(winner, index) in winners" :key="index">
-        <div :class="winner.color + '-ballot'" class="ballot-element">
-          <span>{{ winner.name }}</span>
-          <span>{{ winner.phoneNumber }}</span>
-          <span>Rød: {{ winner.red }}</span>
-          <span>Blå: {{ winner.blue }}</span>
-          <span>Grønn: {{ winner.green }}</span>
-          <span>Gul: {{ winner.yellow }}</span>
+
+    <br />
+    <hr />
+
+    <div>
+      <h2 class="margin-top-md">Legg til virtuel deltaker</h2>
+      <div class="form-group row">
+        <div class="label-div">
+          <label for="name">Navn</label>
+          <input id="name" type="text" placeholder="Navn" v-model="name" ref="afterSubmitFocusElement" />
         </div>
-      </div>
-    </div>
-    <div class="delete-buttons" v-if="attendees.length > 0 || winners.length > 0">
-      <button
-        class="vin-button"
-        v-if="winners.length > 0"
-        @click="deleteAllWinners"
-      >Slett virtuelle vinnere</button>
-      <button
-        class="vin-button"
-        v-if="attendees.length > 0"
-        @click="deleteAllAttendees"
-      >Slett virtuelle deltakere</button>
-    </div>
-    <div class="attendees" v-if="attendees.length > 0">
-      <h2>Deltakere ({{ attendees.length }})</h2>
-      <div class="attendee" v-for="(attendee, index) in attendees" :key="index">
-        <div class="name-and-phone">
-          <span class="name">{{ attendee.name }}</span>
-          <span class="phoneNumber">{{ attendee.phoneNumber }}</span>
-        </div>
-        <div class="ballots-container">
-          <div class="red-ballot ballot-element small">{{ attendee.red }}</div>
-          <div class="blue-ballot ballot-element small">{{ attendee.blue }}</div>
-          <div class="green-ballot ballot-element small">{{ attendee.green }}</div>
-          <div class="yellow-ballot ballot-element small">{{ attendee.yellow }}</div>
-        </div>
-      </div>
-    </div>
-    <div class="attendee-registration-container">
-      <h2>Legg til deltaker</h2>
-      <div class="label-div">
-        <label for="name">Navn</label>
-        <input id="name" type="text" placeholder="Navn" v-model="name" />
-      </div>
-      <br />
-      <div class="label-div">
-        <label for="phoneNumber">Telefonnummer</label>
-        <input id="phoneNumber" type="text" placeholder="Telefonnummer" v-model="phoneNumber" />
-      </div>
-      <br />
-      <br />
-      <div class="label-div">
-        <label for="randomColors">Tilfeldig farger?</label>
-        <input
-          id="randomColors"
-          type="checkbox"
-          placeholder="Tilfeldig farger"
-          v-model="randomColors"
-        />
-      </div>
-      <div v-if="!randomColors">
         <br />
-        <br />
+        <div class="label-div">
+          <label for="phoneNumber">Telefonnummer</label>
+          <input id="phoneNumber" type="text" placeholder="Telefonnummer" v-model="phoneNumber" />
+        </div>
+        <div class="label-div">
+          <label for="randomColors">Tilfeldig farger?</label>
+          <input
+            id="randomColors"
+            type="checkbox"
+            placeholder="Tilfeldig farger"
+            v-model="randomColors"
+          />
+        </div>
+      </div>
+
+      <br />
+
+      <div v-if="!randomColors" class="form-group">
         <div class="label-div">
           <label for="red">Rød</label>
           <input id="red" type="number" placeholder="Rød" v-model="red" />
@@ -101,11 +66,58 @@
         </div>
       </div>
       <div v-else>
-        <RaffleGenerator @colors="setWithRandomColors" :generateOnInit="true" />
+        <RaffleGenerator @colors="setWithRandomColors" :generateOnInit="true" :minimal="true" />
       </div>
     </div>
     <br />
     <button class="vin-button" @click="sendAttendee">Send deltaker</button>
+
+
+    <h2 v-if="winners.length > 0">Vinnere</h2>
+    <div class="winners" v-if="winners.length > 0">
+      <div v-for="(winner, index) in winners" :key="index">
+        <div class="ballot-element" :class="winner.color + '-ballot'">
+          <span>{{ winner.name }}</span>
+          <span>{{ winner.phoneNumber }}</span>
+          <span>Rød: {{ winner.red }}</span>
+          <span>Blå: {{ winner.blue }}</span>
+          <span>Grønn: {{ winner.green }}</span>
+          <span>Gul: {{ winner.yellow }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex margin-bottom-sm" v-if="attendees.length > 0 || winners.length > 0">
+      <button
+        class="vin-button"
+        v-if="winners.length > 0"
+        @click="deleteAllWinners"
+      >Slett virtuelle vinnere</button>
+    </div>
+
+    <hr />
+
+    <div class="attendees" v-if="attendees.length > 0">
+      <h2>Deltakere ({{ attendees.length }})</h2>
+      <div class="attendee" v-for="(attendee, index) in attendees" :key="index">
+        <div class="name-and-phone">
+          <span class="name">{{ attendee.name }}</span>
+          <span class="phoneNumber">{{ attendee.phoneNumber }}</span>
+        </div>
+        <div class="ballots-container">
+          <div class="red-ballot ballot-element small">{{ attendee.red }}</div>
+          <div class="blue-ballot ballot-element small">{{ attendee.blue }}</div>
+          <div class="green-ballot ballot-element small">{{ attendee.green }}</div>
+          <div class="yellow-ballot ballot-element small">{{ attendee.yellow }}</div>
+        </div>
+      </div>
+
+      <button
+        class="vin-button"
+        v-if="attendees.length > 0"
+        @click="deleteAllAttendees"
+      >Slett virtuelle deltakere</button>
+    </div>
 
     <TextToast v-if="showToast" :text="toastText" v-on:closeToast="showToast = false" />
   </div>
@@ -203,6 +215,7 @@ export default {
       if (response == true) {
         this.toastText = `Sendt inn deltaker: ${this.name}`;
         this.showToast = true;
+        this.randomColors = false;
 
         this.name = null;
         this.phoneNumber = null;
@@ -212,6 +225,7 @@ export default {
         this.blue = 0;
 
         this.getAttendees();
+        this.$refs['afterSubmitFocusElement'].focus();
       } else {
         alert("Klarte ikke sende inn.. Er du logget inn?");
       }
@@ -304,18 +318,18 @@ export default {
 @import "../styles/global.scss";
 @import "../styles/media-queries.scss";
 
+
+.form-group {
+  display: flex;
+
+  > *:not(:first-of-type) {
+    margin-left: 2rem;
+  }
+}
+
 .draw-container {
   display: flex;
   justify-content: space-around;
-}
-
-.draw-winner-container,
-.delete-buttons {
-  margin-bottom: 20px;
-}
-
-.delete-buttons {
-  display: flex;
 }
 
 h1 {
@@ -349,9 +363,33 @@ hr {
 #randomColors {
   width: 40px;
   height: 40px;
-  &:checked {
-    background: green;
+  padding: 0;
+  border: 2px solid $dark-blue;
+  position: relative;
+  border-radius: 4px;
+  &:after {
+    content: "nei";
+    position: absolute;
+    top: 0.45rem;
+    left: 0.3rem;
   }
+  &:checked:before {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+    background-color: $dark-blue;
+  }
+  &:checked:after {
+    content: "ja";
+    left: 0.7rem;
+  }
+}
+
+.winners {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .ballot-element {
@@ -398,12 +436,6 @@ hr {
 button {
   display: flex !important;
   margin: auto !important;
-}
-
-.winners {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
 }
 
 .attendees {
