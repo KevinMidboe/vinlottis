@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { deleteRequestedWine } from "@/api";
+import { deleteRequestedWine, requestNewWine } from "@/api";
 
 export default {
   data(){
@@ -46,18 +46,7 @@ export default {
     request(wine){
       this.locallyRequested = true
       this.requestedElement.count = this.requestedElement.count +1
-      const options = {
-        body: JSON.stringify({
-          wine: wine
-        }),
-         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "post"
-      }
-      fetch("http://localhost:30030/api/request/new-wine", options)
-        .then(res => res.json())
+      requestNewWine(wine)
     },
     async deleteWine(wine) {
       if (window.confirm("Er du sikker på at du vil slette vinen?")) {

@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { searchForWine } from "@/api";
+import { searchForWine, requestNewWine } from "@/api";
 import Wine from "@/ui/Wine";
 import Modal from "@/ui/Modal";
 
@@ -84,19 +84,7 @@ export default {
       }
     },
     request(wine){
-      const options = {
-        body: JSON.stringify({
-          wine: wine
-        }),
-         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "post"
-      }
-
-      fetch("http://localhost:30030/api/request/new-wine", options)
-        .then(res => res.json())
+      requestNewWine(wine)
         .then(() => this.showModal = true)
     },
     emitFromModalButton(action){
