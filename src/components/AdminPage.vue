@@ -1,26 +1,29 @@
 <template>
   <div>
-    <h1>Admin-side</h1>
+    <h1>Vinlottis admin panel</h1>
     <Tabs :tabs="tabs" />
   </div>
 </template>
 
 <script>
 import Tabs from "@/ui/Tabs";
-import RegisterPage from "@/components/RegisterPage";
+import PreLottery from "@/components/RegisterPage";
 import VirtualLotteryRegistrationPage from "@/components/VirtualLotteryRegistrationPage";
+import SubmitLotteryPage from "@/components/SubmitLotteryPage";
 
 export default {
   components: {
     Tabs,
-    RegisterPage,
-    VirtualLotteryRegistrationPage
+    PreLottery,
+    VirtualLotteryRegistrationPage,
+    SubmitLotteryPage
   },
   data() {
     return {
       tabs: [
-        { name: "Registrering", component: RegisterPage },
-        { name: "Virtuelt lotteri", component: VirtualLotteryRegistrationPage }
+        { name: "Registrer ✏️", component: PreLottery },
+        { name: "Virtuelt lotteri 🍾", component: VirtualLotteryRegistrationPage },
+        { name: "Send inn lotteri 📈", component: SubmitLotteryPage }
       ]
     };
   }
@@ -30,5 +33,7 @@ export default {
 <style lang="scss" scoped>
 h1 {
   text-align: center;
+  font-family: knowit, Arial;
+  margin: 3rem 0;
 }
 </style>
