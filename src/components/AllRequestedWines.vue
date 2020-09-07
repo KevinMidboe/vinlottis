@@ -29,7 +29,7 @@ export default {
       this.wines = this.wines.filter(item => item.wine._id !== wine._id)
     },
     async refreshData(){
-      [this.wines, this.isAdmin] = await allRequestedWines() || []
+      [this.wines, this.isAdmin] = await allRequestedWines() || [[], false]
     }
   },
   mounted() {

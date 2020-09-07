@@ -1,7 +1,6 @@
 const fetch = require('node-fetch')
 const path = require('path')
 const config = require(path.join(__dirname + "/../config/env/lottery.config"));
-const mustBeAuthenticated = require(path.join(__dirname + "/../middleware/mustBeAuthenticated"))
 
 const convertToOurWineObject = wine => {
   if(wine.basic.ageLimit === "18"){
