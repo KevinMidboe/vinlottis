@@ -1,6 +1,5 @@
-const express = require("express");
 const path = require("path");
-const router = express.Router();
+
 const Purchase = require(path.join(__dirname + "/../schemas/Purchase"));
 const Wine = require(path.join(__dirname + "/../schemas/Wine"));
 const Highscore = require(path.join(__dirname + "/../schemas/Highscore"));

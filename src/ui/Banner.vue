@@ -1,18 +1,36 @@
 <template>
-  <router-link to="/" class="link">
-    <div class="top-banner">
-      <img src="/public/assets/images/knowit.svg" alt="knowit logo" />
-      <div class="clock">
-        <h2 v-if="!fiveMinutesLeft || !tenMinutesOver">
-          <span v-if="days > 0">{{ pad(days) }}:</span>
-          <span>{{ pad(hours) }}</span>:
-          <span>{{ pad(minutes) }}</span>:
-          <span>{{ pad(seconds) }}</span>
-        </h2>
-        <h2 v-if="twoMinutesLeft || tenMinutesOver">Lotteriet er i gang!</h2>
-      </div>
+  <div class="top-banner">
+    <!-- Mobile -->
+    <div id="menuToggle" >
+      <input type="checkbox" />
+      <span></span>
+      <span></span>
+      <span></span>
+      <ul id="menu">
+        <router-link v-for="(route, index) in routes" :key="index" :to="route.route">
+          <li>{{route.name}}</li>
+        </router-link>
+      </ul>
     </div>
-  </router-link>
+    
+    <router-link to="/">
+      <img src="/public/assets/images/knowit.svg" alt="knowit logo" />
+    </router-link>
+    <div v-for="(route, index) in routes" :key="index" class="desktop">
+      <router-link :to="route.route" class="routes">
+        {{route.name}}
+      </router-link>
+    </div>
+    <div class="clock">
+      <h2 v-if="!fiveMinutesLeft || !tenMinutesOver">
+        <span v-if="days > 0">{{ pad(days) }}:</span>
+        <span>{{ pad(hours) }}</span>:
+        <span>{{ pad(minutes) }}</span>:
+        <span>{{ pad(seconds) }}</span>
+      </h2>
+      <h2 v-if="twoMinutesLeft || tenMinutesOver">Lotteriet er i gang!</h2>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -25,11 +43,14 @@ export default {
       minutes: 0,
       seconds: 0,
       distance: 0,
-      enabled: false,
-      code: "38384040373937396665",
-      codeDone: "",
-      interval: null
+      interval: null,
     };
+  },
+  props: {
+    routes: {
+      required: true,
+      type: Array
+    }
   },
   mounted() {
     this.initialize(), this.countdown();
@@ -54,19 +75,6 @@ export default {
         return `0${num}`;
       }
       return num;
-    },
-    listenerFunction: function(event) {
-      this.codeDone += event.keyCode;
-      if (this.code.substring(0, this.codeDone.length) == this.codeDone) {
-        if (this.code == this.codeDone && !this.enabled) {
-          this.enabled = true;
-          this.initialize();
-          this.countdown();
-          this.codeDone = "";
-        }
-      } else {
-        this.codeDone = "";
-      }
     },
     initialize: function() {
       let d = new Date();
@@ -115,7 +123,7 @@ export default {
         this.initialize();
       }
       this.interval = setTimeout(this.countdown, 500);
-    }
+    },
   }
 };
 </script>
@@ -123,41 +131,56 @@ export default {
 <style lang="scss" scoped>
 @import "../styles/media-queries.scss";
 @import "../styles/variables.scss";
+@import "../styles/banner.scss";
 
-.link {
-  text-decoration: none;
+@include mobile {
+  .desktop {
+    display: none;
+  }
+}
+
+@include desktop {
+  
+  .top-banner{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(100% - 20px);
+    
+    .routes {
+      text-decoration: none;
+      color: #333333;
+    }
+  }
 }
 
 .top-banner {
-  text-align: center;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: calc(100% - 80px);
-  margin-top: 0px;
-  padding: 0px 40px;
+  width: calc(100% - 20px);
+  padding: 5px 10px;
   background-color: $primary;
   -webkit-box-shadow: 0px 0px 22px -8px rgba(0, 0, 0, 0.65);
   -moz-box-shadow: 0px 0px 22px -8px rgba(0, 0, 0, 0.65);
   box-shadow: 0px 0px 22px -8px rgba(0, 0, 0, 0.65);
 
-  @include mobile {
-    padding: 0px 40px;
-
-    > img {
-      height: 23px;
+  .clock {
+    text-decoration: none;
+    color: #333333;
+    display: flex;
+    font-family: Arial;
+    margin-right: 2rem;
+    @include mobile {
+      font-size: 0.8em;
+      margin-right: 1rem;
+    }
+    h2 {
+      display: flex;
     }
   }
 }
 
-.clock {
-  text-decoration: none;
-  color: #333333;
-  display: flex;
-  font-family: Arial;
-  h2 {
-    display: flex;
-  }
-}
 </style>
