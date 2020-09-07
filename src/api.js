@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 const BASE_URL = __APIURL__ || window.location.origin;
 
 const statistics = () => {
@@ -22,6 +24,16 @@ const overallWineStatistics = () => {
   const url = new URL("/api/wines/statistics/overall", BASE_URL);
 
   return fetch(url.href).then(resp => resp.json());
+};
+
+const allRequestedWines = () => {
+  const url = new URL("/api/request/all", BASE_URL);
+
+  return fetch(url.href)
+    .then(resp => {
+      const isAdmin = resp.headers.get("Vinlottis-Admin") || false;
+      return Promise.all([resp.json(), isAdmin]);
+    });
 };
 
 const chartWinsByColor = () => {
@@ -108,6 +120,21 @@ const winners = () => {
   return fetch(url.href).then(resp => resp.json());
 };
 
+const deleteRequestedWine = wineToBeDeleted => {
+
+  const url = new URL("api/request/"+ wineToBeDeleted._id, BASE_URL);
+
+  const options = {
+    headers: {
+      "Content-Type": "application/json"
+    },
+    method: "DELETE",
+    body: JSON.stringify(wineToBeDeleted)
+  };
+
+  return fetch(url.href, options).then(resp => resp.json())
+}
+
 const deleteWinners = () => {
   const url = new URL("/api/virtual/winner/all", BASE_URL);
 
@@ -139,6 +166,23 @@ const attendees = () => {
 
   return fetch(url.href).then(resp => resp.json());
 };
+
+const requestNewWine = (wine) => {
+  const options = {
+    body: JSON.stringify({
+      wine: wine
+    }),
+     headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: "post"
+  }
+
+  const url = new URL("/api/request/new-wine", BASE_URL)
+
+  return fetch(url.href, options).then(resp => resp.json())
+}
 
 const logWines = wines => {
   const url = new URL("/api/log/wines", BASE_URL);
@@ -173,6 +217,21 @@ const barcodeToVinmonopolet = id => {
     }
   });
 };
+
+const searchForWine = searchString => {
+  const url = new URL("/api/wineinfo/search?query=" + searchString, BASE_URL);
+
+  return fetch(url.href).then(async resp => {
+    if (!resp.ok) {
+      if (resp.status == 404) {
+        throw await resp.json();
+      }
+    } else {
+      return resp.json();
+    }
+  });
+};
+
 
 const handleErrors = async resp => {
   if ([400, 409].includes(resp.status)) {
@@ -287,6 +346,9 @@ export {
   logWines,
   wineSchema,
   barcodeToVinmonopolet,
+  searchForWine,
+  requestNewWine,
+  allRequestedWines,
   login,
   register,
   addAttendee,
@@ -297,6 +359,7 @@ export {
   winnersSecure,
   deleteWinners,
   deleteAttendees,
+  deleteRequestedWine,
   getChatHistory,
   finishedDraw,
   getAmIWinner,

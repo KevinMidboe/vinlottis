@@ -9,7 +9,6 @@ const User = require(path.join(__dirname + "/schemas/User"));
 const apiRouter = require(path.join(__dirname + "/api/router.js"));
 
 const loginApi = require(path.join(__dirname + "/api/login"));
-const virtualApi = require(path.join(__dirname + "/api/virtualLottery"));
 const subscriptionApi = require(path.join(__dirname + "/api/subscriptions"));
 
 //This is required for the chat to work
