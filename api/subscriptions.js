@@ -5,10 +5,6 @@ const webpush = require("web-push"); //requiring the web-push module
 const mongoose = require("mongoose");
 const schedule = require("node-schedule");
 
-mongoose.connect("mongodb://localhost:27017/vinlottis", {
-  useNewUrlParser: true
-});
-
 const mustBeAuthenticated = require(path.join(
   __dirname + "/../middleware/mustBeAuthenticated"
 ));
