@@ -5,7 +5,7 @@
     </h1>
     <section class="requested-wines-container">
       <p v-if="wines == undefined || wines.length == 0">Ingen har foreslått noe enda!</p>
-      <RequestedWineCard v-for="requestedEl in wines" :key="requestedEl.id" :requestedElement="requestedEl" @wineDeleted="filterOutDeletedWine" />
+      <RequestedWineCard v-for="requestedEl in wines" :key="requestedEl.id" :requestedElement="requestedEl" @wineDeleted="filterOutDeletedWine" :showDeleteButton="isAdmin"/>
     </section>
   </main>
 </template>
@@ -20,7 +20,8 @@ export default {
   data(){
     return{
       wines: undefined,
-      canRequest: true
+      canRequest: true,
+      isAdmin: false
     }
   },
   methods: {
@@ -28,7 +29,7 @@ export default {
       this.wines = this.wines.filter(item => item.wine._id !== wine._id)
     },
     async refreshData(){
-      this.wines = await allRequestedWines() || []
+      [this.wines, this.isAdmin] = await allRequestedWines() || []
     }
   },
   mounted() {

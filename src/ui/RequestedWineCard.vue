@@ -19,7 +19,7 @@
           class="wine-link"
         >Les mer på polet</a>
         </section>
-        <button @click="deleteWine(wine)">
+        <button @click="deleteWine(wine)" v-if="showDeleteButton == true">
           Slett vinen
         </button>
       </section>
@@ -40,6 +40,11 @@ export default {
     requestedElement: {
       required: true,
       type: Object
+    },
+    showDeleteButton: {
+      required: false,
+      type: Boolean,
+      default: false
     }
   },
   methods: {

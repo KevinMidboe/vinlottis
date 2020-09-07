@@ -3,6 +3,7 @@ const path = require("path");
 
 // Middleware
 const mustBeAuthenticated = require(__dirname + "/../middleware/mustBeAuthenticated");
+const setAdminHeaderIfAuthenticated = require(__dirname + "/../middleware/setAdminHeaderIfAuthenticated");
 
 const update = require(path.join(__dirname + "/update"));
 const retrieve = require(path.join(__dirname + "/retrieve"));
@@ -21,7 +22,7 @@ const router = express.Router();
 
 router.get("/wineinfo/search", wineinfo.wineSearch);
 
-router.get("/request/all", request.getAllRequestedWines);
+router.get("/request/all", setAdminHeaderIfAuthenticated, request.getAllRequestedWines);
 router.post("/request/new-wine", request.requestNewWine);
 router.delete("/request/:id", request.deleteRequestedWineById);
 

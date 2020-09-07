@@ -29,7 +29,11 @@ const overallWineStatistics = () => {
 const allRequestedWines = () => {
   const url = new URL("/api/request/all", BASE_URL);
 
-  return fetch(url.href).then(resp => resp.json());
+  return fetch(url.href)
+    .then(resp => {
+      const isAdmin = resp.headers.get("Vinlottis-Admin") || false;
+      return Promise.all([resp.json(), isAdmin]);
+    });
 };
 
 const chartWinsByColor = () => {
