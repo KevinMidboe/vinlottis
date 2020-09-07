@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <banner />
+    <banner :routes="routes"/>
     <router-view />
     <UpdateToast
       v-if="showToast"
@@ -24,7 +24,29 @@ export default {
     return {
       showToast: false,
       toastText: null,
-      refreshToast: false
+      refreshToast: false,
+      routes: [
+        {
+          name: "Dagens viner",
+          route: "/dagens/"
+        },
+        {
+          name: "Historie",
+          route: "/history/"
+        },
+        {
+          name: "Lotteriet",
+          route: "/lottery/game/"
+        },
+        {
+          name: "Foreslå vin",
+          route: "/request"
+        },
+        {
+          name: "Foreslåtte viner",
+          route: "/requested-wines"
+        },
+      ]
     };
   },
   mounted() {
@@ -45,7 +67,7 @@ export default {
   methods: {
     closeToast: function() {
       this.showToast = false;
-    }
+    },
   }
 };
 </script>
