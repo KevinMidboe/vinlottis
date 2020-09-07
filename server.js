@@ -9,9 +9,6 @@ const User = require(path.join(__dirname + "/schemas/User"));
 const apiRouter = require(path.join(__dirname + "/api/router.js"));
 
 const loginApi = require(path.join(__dirname + "/api/login"));
-const wineinfoApi = require(path.join(__dirname + "/api/wineinfo"));
-const requestApi = require(path.join(__dirname + "/api/request"));
-const virtualApi = require(path.join(__dirname + "/api/virtualLottery"));
 const subscriptionApi = require(path.join(__dirname + "/api/subscriptions"));
 
 //This is required for the chat to work
@@ -90,10 +87,6 @@ passport.deserializeUser(User.deserializeUser());
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/dist", express.static(path.join(__dirname, "public/dist")));
 app.use("/", loginApi);
-// app.use("/api/", updateApi);
-// app.use("/api/", retrieveApi);
-// app.use("/api/", wineinfoApi);
-// app.use("/api/", requestApi);
 app.use("/api/", chatHistory);
 app.use("/api/", apiRouter);
 app.use("/subscription", subscriptionApi);
