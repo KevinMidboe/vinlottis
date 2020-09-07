@@ -19,9 +19,9 @@
           class="wine-link"
         >Les mer på polet</a>
         </section>
-        <!-- <button @click="deleteWine(wine)">
+        <button @click="deleteWine(wine)">
           Slett vinen
-        </button> -->
+        </button>
       </section>
     </div>
 </template>
@@ -63,9 +63,9 @@ export default {
       if (window.confirm("Er du sikker på at du vil slette vinen?")) {
         let response = await deleteRequestedWine(wine);
         if (response) {
-          this.$emit('deletedOne');
+          this.$emit('wineDeleted', wine);
         } else {
-          alert("Klarte ikke hente ut vinnere");
+          alert("Klarte ikke slette vinen");
         }
       }
     },

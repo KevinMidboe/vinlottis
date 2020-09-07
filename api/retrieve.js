@@ -9,7 +9,6 @@ mongoose.connect("mongodb://localhost:27017/vinlottis", {
 const Purchase = require(path.join(__dirname + "/../schemas/Purchase"));
 const Wine = require(path.join(__dirname + "/../schemas/Wine"));
 const Highscore = require(path.join(__dirname + "/../schemas/Highscore"));
-const RequestedWine = require(path.join(__dirname + "/../schemas/RequestedWine"));
 const PreLotteryWine = require(path.join(
   __dirname + "/../schemas/PreLotteryWine"
 ));

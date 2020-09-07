@@ -4,8 +4,8 @@
       Alle foreslåtte viner
     </h1>
     <section class="requested-wines-container">
-      <p v-if="this.wines == undefined || this.wines.length <= 0">Ingen har foreslått noe enda!</p>
-      <RequestedWineCard v-for="requestedEl in wines" :key="requestedEl.id" :requestedElement="requestedEl" @deletedOne="refreshData" />
+      <p v-if="wines == undefined || wines.length == 0">Ingen har foreslått noe enda!</p>
+      <RequestedWineCard v-for="requestedEl in wines" :key="requestedEl.id" :requestedElement="requestedEl" @wineDeleted="filterOutDeletedWine" />
     </section>
   </main>
 </template>
@@ -24,10 +24,11 @@ export default {
     }
   },
   methods: {
+    filterOutDeletedWine(wine){
+      this.wines = this.wines.filter(item => item.wine._id !== wine._id)
+    },
     async refreshData(){
-      this.wines = []
-      const wines = await allRequestedWines()
-      this.wines = wines
+      this.wines = await allRequestedWines() || []
     }
   },
   mounted() {

@@ -4,7 +4,6 @@ public/index.html
 public/sw/
 config/env/lottery.config.js
 config/env/push.config.js
-config/env/vinmonopolet.config.js
 
 # Logs
 logs
