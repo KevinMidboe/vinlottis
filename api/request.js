@@ -31,8 +31,6 @@ const getAllRequestedWines = async (req, res) => {
 
 const requestNewWine = async (req, res) => {
   const {wine} = req.body
-
-  console.log(req.body)
   
   let thisWineIsLOKO = await Wine.findOne({id: wine.id})
   
