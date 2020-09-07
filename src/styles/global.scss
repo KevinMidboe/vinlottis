@@ -74,6 +74,16 @@ body {
     margin-right: 2rem;
   }
 
+  &.column {
+    flex-direction: column;
+    align-items: center;
+
+    > * {
+      margin-right: unset;
+      margin-bottom: 1rem;
+    }
+  }
+
   @include mobile {
     &:not(.row) {
       flex-direction: column;
@@ -108,6 +118,7 @@ textarea {
   border: 0;
   width: fit-content;
   font-size: 1.3rem;
+  line-height: 1.3rem;
   height: 4rem;
   max-height: 4rem;
   cursor: pointer;
@@ -133,12 +144,16 @@ textarea {
       0 16px 32px rgba(0, 0, 0, 0.07), 0 32px 64px rgba(0, 0, 0, 0.07);
   }
 
-  &:hover {
+  &:hover:not(:disabled) {
     transform: scale(1.02) translateZ(0);
 
     &::after {
       opacity: 1;
     }
+  }
+  &:disabled{
+    opacity: 0.25;
+    cursor: not-allowed;
   }
 }
 

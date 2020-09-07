@@ -1,44 +1,16 @@
-const express = require("express");
 const path = require("path");
-const router = express.Router();
 const crypto = require("crypto");
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/vinlottis", {
-  useNewUrlParser: true
-});
-let io;
-const mustBeAuthenticated = require(path.join(
-  __dirname + "/../middleware/mustBeAuthenticated"
-));
+
 const config = require(path.join(__dirname + "/../config/defaults/lottery"));
+const Message = require(path.join(__dirname + "/message"));
+const { findAndNotifyNextWinner } = require(path.join(__dirname + "/virtualRegistration"));
 
 const Attendee = require(path.join(__dirname + "/../schemas/Attendee"));
-const VirtualWinner = require(path.join(
-  __dirname + "/../schemas/VirtualWinner"
-));
-const PreLotteryWine = require(path.join(
-  __dirname + "/../schemas/PreLotteryWine"
-));
+const VirtualWinner = require(path.join(__dirname + "/../schemas/VirtualWinner"));
+const PreLotteryWine = require(path.join(__dirname + "/../schemas/PreLotteryWine"));
 
-const Message = require(path.join(__dirname + "/../api/message"));
 
-router.use((req, res, next) => {
-  next();
-});
-
-router.route("/winners").delete(mustBeAuthenticated, async (req, res) => {
-  await VirtualWinner.deleteMany();
-  io.emit("refresh_data", {});
-  res.json(true);
-});
-
-router.route("/attendees").delete(mustBeAuthenticated, async (req, res) => {
-  await Attendee.deleteMany();
-  io.emit("refresh_data", {});
-  res.json(true);
-});
-
-router.route("/winners").get(async (req, res) => {
+const winners = async (req, res) => {
   let winners = await VirtualWinner.find();
   let winnersRedacted = [];
   let winner;
@@ -50,19 +22,82 @@ router.route("/winners").get(async (req, res) => {
     });
   }
   res.json(winnersRedacted);
-});
+};
 
-router.route("/winners/secure").get(mustBeAuthenticated, async (req, res) => {
+const winnersSecure = async (req, res) => {
   let winners = await VirtualWinner.find();
 
-  res.json(winners);
-});
+  return res.json(winners);
+};
 
-router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
+const deleteWinners = async (req, res) => {
+  await VirtualWinner.deleteMany();
+  var io = req.app.get('socketio');
+  io.emit("refresh_data", {});
+  return res.json(true);
+};
+
+const attendees = async (req, res) => {
+  let attendees = await Attendee.find();
+  let attendeesRedacted = [];
+  let attendee;
+  for (let i = 0; i < attendees.length; i++) {
+    attendee = attendees[i];
+    attendeesRedacted.push({
+      name: attendee.name,
+      ballots: attendee.red + attendee.blue + attendee.yellow + attendee.green,
+      red: attendee.red,
+      blue: attendee.blue,
+      green: attendee.green,
+      yellow: attendee.yellow
+    });
+  }
+  return res.json(attendeesRedacted);
+};
+
+const attendeesSecure = async (req, res) => {
+  let attendees = await Attendee.find();
+
+  return res.json(attendees);
+};
+
+const addAttendee = async (req, res) => {
+  const attendee = req.body;
+  const { red, blue, yellow, green } = attendee;
+
+  let newAttendee = new Attendee({
+    name: attendee.name,
+    red,
+    blue,
+    green,
+    yellow,
+    phoneNumber: attendee.phoneNumber,
+    winner: false
+  });
+  await newAttendee.save();
+
+
+  var io = req.app.get('socketio');
+  io.emit("new_attendee", {});
+
+  return res.send(true);
+};
+
+const deleteAttendees = async (req, res) => {
+  await Attendee.deleteMany();
+  var io = req.app.get('socketio');
+  io.emit("refresh_data", {});
+  return res.json(true);
+};
+
+const drawWinner = async (req, res) => {
   let allContestants = await Attendee.find({ winner: false });
+
   if (allContestants.length == 0) {
-    res.json(false);
-    return;
+    return res.json({
+      success: false,
+      message: "No attendees left that have not won."
+    });
   }
   let ballotColors = [];
   for (let i = 0; i < allContestants.length; i++) {
@@ -131,6 +166,7 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
       Math.floor(Math.random() * attendeeListDemocratic.length)
     ];
 
+  var io = req.app.get('socketio');
   io.emit("winner", { color: colorToChooseFrom, name: winner.name });
 
   let newWinnerElement = new VirtualWinner({
@@ -151,8 +187,40 @@ router.route("/winner").get(mustBeAuthenticated, async (req, res) => {
   );
 
   await newWinnerElement.save();
-  res.json(winner);
-});
+  return res.json(winner);
+};
+
+const finish = async (req, res) => {
+  if (!config.gatewayToken) {
+    return res.json({
+      message: "Missing api token for sms gateway.",
+      success: false
+    });
+  }
+
+  let winners = await VirtualWinner.find({ timestamp_sent: undefined }).sort({
+    timestamp_drawn: 1
+  });
+
+  if (winners.length == 0) {
+    return res.json({
+      message: "No winners to draw from.",
+      success: false
+    });
+  }
+
+  Message.sendInitialMessageToWinners(winners.slice(1));
+
+  return findAndNotifyNextWinner()
+    .then(() => res.json({
+      success: true,
+      message: "Sent wine select message to first winner and update message to rest of winners."
+    }))
+    .catch(error => res.json({
+      message: error["message"] || "Unable to send message to first winner.",
+      success: false
+    }))
+};
 
 const genRandomString = function(length) {
   return crypto
@@ -167,87 +235,6 @@ const sha512 = function(password, salt) {
   var value = hash.digest("hex");
   return value;
 };
-
-router.route("/finish").get(mustBeAuthenticated, async (req, res) => {
-  if (!config.gatewayToken) {
-    res.json(false);
-    return;
-  }
-  let winners = await VirtualWinner.find({ timestamp_sent: undefined }).sort({
-    timestamp_drawn: 1
-  });
-
-  if (winners.length == 0) {
-    res.json(false);
-    return;
-  }
-
-  let firstWinner = winners[0];
-  messageSent = false;
-  try {
-    let messageSent = await Message.sendMessage(firstWinner);
-    Message.sendUpdate(winners.slice(1));
-    if (!messageSent) {
-      res.json(false);
-      return;
-    }
-  } catch (e) {
-    res.json(false);
-    return;
-  }
-
-  firstWinner.timestamp_sent = new Date().getTime();
-  firstWinner.timestamp_limit = new Date().getTime() + 600000;
-
-  await firstWinner.save();
-  startTimeout(firstWinner.id);
-  res.json(true);
-  return;
-});
-
-router.route("/attendees").get(async (req, res) => {
-  let attendees = await Attendee.find();
-  let attendeesRedacted = [];
-  let attendee;
-  for (let i = 0; i < attendees.length; i++) {
-    attendee = attendees[i];
-    attendeesRedacted.push({
-      name: attendee.name,
-      ballots: attendee.red + attendee.blue + attendee.yellow + attendee.green,
-      red: attendee.red,
-      blue: attendee.blue,
-      green: attendee.green,
-      yellow: attendee.yellow
-    });
-  }
-  res.json(attendeesRedacted);
-});
-
-router.route("/attendees/secure").get(mustBeAuthenticated, async (req, res) => {
-  let attendees = await Attendee.find();
-
-  res.json(attendees);
-});
-
-router.route("/attendee").post(mustBeAuthenticated, async (req, res) => {
-  const attendee = req.body;
-  const { red, blue, yellow, green } = attendee;
-
-  let newAttendee = new Attendee({
-    name: attendee.name,
-    red,
-    blue,
-    green,
-    yellow,
-    phoneNumber: attendee.phoneNumber,
-    winner: false
-  });
-  await newAttendee.save();
-
-  io.emit("new_attendee", {});
-
-  res.send(true);
-});
 
 function shuffle(array) {
   let currentIndex = array.length,
@@ -269,43 +256,15 @@ function shuffle(array) {
   return array;
 }
 
-
-function startTimeout(id) {
-  console.log(`Starting timeout for user ${id}.`);
-  setTimeout(async () => {
-    let virtualWinner = await VirtualWinner.findOne({ id: id });
-    if (!virtualWinner) {
-      console.log(
-        `Timeout done for user ${id}, but user has already sent data.`
-      );
-      return;
-    }
-    console.log(`Timeout done for user ${id}, sending update to user.`);
-
-    Message.sendMessageTooLate(virtualWinner);
-
-    virtualWinner.timestamp_drawn = new Date().getTime();
-    virtualWinner.timestamp_limit = null;
-    virtualWinner.timestamp_sent = null;
-
-    await virtualWinner.save();
-
-    let prelotteryWine = await PreLotteryWine.find();
-    let nextWinner = await VirtualWinner.find().sort({ timestamp_drawn: 1 });
-    if (nextWinner.length == 1 && prelotteryWine.length == 1) {
-      chooseForUser(nextWinner[0], prelotteryWine[0]);
-    } else {
-      nextWinner[0].timestamp_sent = new Date().getTime();
-      nextWinner[0].timestamp_limit = new Date().getTime() + 600000;
-      await nextWinner[0].save();
-      Message.sendMessage(nextWinner[0]);
-      startTimeout(nextWinner[0].id); 
-    }
-    
-  }, 600000);
+module.exports = {
+  deleteWinners,
+  deleteAttendees,
+  winners,
+  winnersSecure,
+  drawWinner,
+  finish,
+  attendees,
+  attendeesSecure,
+  addAttendee
 }
 
-module.exports = function(_io) {
-  io = _io;
-  return router;
-};

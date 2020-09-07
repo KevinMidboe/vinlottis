@@ -62,11 +62,9 @@ export default {
     this.name = winnerObject.name;
     const _wines = await fetch("/api/wines/prelottery");
     this.wines = await _wines.json();
-    console.log(this.wines);
   },
   methods: {
     chosenWine: async function(name) {
-      console.log("chosen a wine");
       let posted = await postWineChosen(this.id, name);
       console.log("response", posted);
       if (posted.success) {
@@ -82,7 +80,8 @@ export default {
 .container {
   display: flex;
   justify-content: center;
-  margin-top: 4rem;
+  margin-top: 2rem;
+  padding: 2rem;
 }
 .sent-container {
   width: 100%;

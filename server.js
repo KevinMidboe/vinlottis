@@ -6,16 +6,10 @@ const path = require("path");
 const session = require("express-session");
 const User = require(path.join(__dirname + "/schemas/User"));
 
-const updateApi = require(path.join(__dirname + "/api/update"));
-const retrieveApi = require(path.join(__dirname + "/api/retrieve"));
-const subscriptionApi = require(path.join(__dirname + "/api/subscriptions"));
+const apiRouter = require(path.join(__dirname + "/api/router.js"));
+
 const loginApi = require(path.join(__dirname + "/api/login"));
-const wineinfoApi = require(path.join(__dirname + "/api/wineinfo"));
-const virtualApi = require(path.join(__dirname + "/api/virtualLottery"));
-const virtualRegistrationApi = require(path.join(
-  __dirname + "/api/virtualRegistration"
-));
-const lottery = require(path.join(__dirname + "/api/lottery"));
+const subscriptionApi = require(path.join(__dirname + "/api/subscriptions"));
 
 //This is required for the chat to work
 const chat = require(path.join(__dirname + "/api/chat"))(io);
@@ -76,6 +70,8 @@ app.use(
   })
 );
 
+app.set('socketio', io);
+
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
@@ -91,17 +87,15 @@ passport.deserializeUser(User.deserializeUser());
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/dist", express.static(path.join(__dirname, "public/dist")));
 app.use("/", loginApi);
-app.use("/api/", updateApi);
-app.use("/api/", retrieveApi);
-app.use("/api/", wineinfoApi);
 app.use("/api/", chatHistory);
-app.use("/api/lottery", lottery);
-app.use("/api/virtual/", virtualApi(io));
-app.use("/api/virtual-registration/", virtualRegistrationApi);
+app.use("/api/", apiRouter);
 app.use("/subscription", subscriptionApi);
 
 app.get("/dagens", function(req, res) {
   res.redirect("/#/dagens");
+});
+app.get("/winner/:id", function(req, res) {
+  res.redirect("/#/winner/" + req.params.id);
 });
 
 app.use("/service-worker.js", function(req, res) {

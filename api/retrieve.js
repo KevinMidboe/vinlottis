@@ -1,6 +1,4 @@
-const express = require("express");
 const path = require("path");
-const router = express.Router();
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/vinlottis", {
   useNewUrlParser: true
@@ -13,23 +11,19 @@ const PreLotteryWine = require(path.join(
   __dirname + "/../schemas/PreLotteryWine"
 ));
 
-router.use((req, res, next) => {
-  next();
-});
-
-router.route("/wines/prelottery").get(async (req, res) => {
+const prelotteryWines = async (req, res) => {
   let wines = await PreLotteryWine.find();
-  res.json(wines);
-});
+  return res.json(wines);
+};
 
-router.route("/purchase/statistics").get(async (req, res) => {
+const allPurchase = async (req, res) => {
   let purchases = await Purchase.find()
     .populate("wines")
     .sort({ date: 1 });
-  res.json(purchases);
-});
+  return res.json(purchases);
+};
 
-router.route("/purchase/statistics/color").get(async (req, res) => {
+const purchaseByColor = async (req, res) => {
   const countColor = await Purchase.find();
   let red = 0;
   let blue = 0;
@@ -75,7 +69,7 @@ router.route("/purchase/statistics/color").get(async (req, res) => {
 
   const total = red + yellow + blue + green;
 
-  res.json({
+  return res.json({
     red: {
       total: red,
       win: redWin
@@ -95,21 +89,21 @@ router.route("/purchase/statistics/color").get(async (req, res) => {
     stolen: stolen,
     total: total
   });
-});
+};
 
-router.route("/highscore/statistics").get(async (req, res) => {
+const highscore = async (req, res) => {
   const highscore = await Highscore.find().populate("wins.wine");
 
-  res.json(highscore);
-});
+  return res.json(highscore);
+};
 
-router.route("/wines/statistics").get(async (req, res) => {
+const allWines = async (req, res) => {
   const wines = await Wine.find();
 
-  res.json(wines);
-});
+  return res.json(wines);
+};
 
-router.route("/wines/statistics/overall").get(async (req, res) => {
+const allWinesSummary = async (req, res) => {
   const highscore = await Highscore.find().populate("wins.wine");
   let wines = {};
 
@@ -149,7 +143,14 @@ router.route("/wines/statistics/overall").get(async (req, res) => {
     }
   }
 
-  res.json(Object.values(wines));
-});
+  return res.json(Object.values(wines));
+};
 
-module.exports = router;
+module.exports = {
+  prelotteryWines,
+  allPurchase,
+  purchaseByColor,
+  highscore,
+  allWines,
+  allWinesSummary
+};

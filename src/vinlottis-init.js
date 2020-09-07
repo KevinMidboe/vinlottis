@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import { routes } from "@/routes/vinlottisRouter";
+import { routes } from "@/router.js";
 import Vinlottis from "@/Vinlottis";
 import VueAnalytics from "vue-analytics";
 
