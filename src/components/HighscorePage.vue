@@ -107,7 +107,6 @@ export default {
       return Math.round(Math.abs((new Date() - new Date(date)) / day));
     },
     selectWinner(winner) {
-      console.log(winner)
       if (this.selectedWinner != null && this.selectedWinner["name"] == winner["name"]) {
         this.selectedWinner = null;
       } else {
