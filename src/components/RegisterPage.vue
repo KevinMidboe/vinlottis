@@ -491,7 +491,7 @@ h2 {
   text-decoration: none;
   font-weight: bold;
   cursor: pointer;
-  border-bottom: 1px solid #ff5fff;
+  border-bottom: 1px solid $link-color;
 }
 
 hr {

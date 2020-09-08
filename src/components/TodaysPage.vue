@@ -33,6 +33,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "./src/styles/media-queries";
+@import "./src/styles/variables";
 
 .wine-image {
   height: 250px;
@@ -110,7 +111,7 @@ a:visited {
   font-family: Arial;
   text-decoration: none;
   font-weight: bold;
-  border-bottom: 1px solid #ff5fff;
+  border-bottom: 1px solid $link-color;
   width: fit-content;
 }
 </style>
