@@ -2,7 +2,7 @@
   <div v-if="wines.length > 0">
     <h3>
       <router-link to="viner"
-        >Topp 10 viner <span class="link">Se alle &gt;</span></router-link
+        >Topp 10 viner <span class="vin-link">Se alle &gt;</span></router-link
       >
     </h3>
     <ol>
@@ -183,13 +183,6 @@ export default {
   > *:first-child {
     display: flex;
   }
-}
-
-.link {
-  font-weight: bold;
-  border-bottom: 1px solid #ff5fff;
-  font-size: 1rem;
-  margin-left: 15px;
 }
 
 .close-modal {

@@ -1,6 +1,10 @@
 <template>
   <div class="highscores" v-if="highscore.length > 0">
-    <h3>Topp 10 vinnere</h3>
+    <h3>
+      <router-link to="highscore">
+        Topp 10 vinnere <span class="vin-link">Se alle &gt;</span>
+      </router-link>
+    </h3>
     <ol>
       <li v-for="person in highscore" :key="person">
         {{ person.name }} - {{ person.wins.length }}
@@ -37,6 +41,22 @@ div {
   font-family: Arial;
   display: inline-flex;
   flex-direction: column;
+}
+
+h3 {
+  text-align: left;
+
+  & a {
+    text-decoration: none;
+    color: #333333;
+
+    &:focus,
+    &:active,
+    &:visited {
+      text-decoration: none;
+      color: #333333;
+    }
+  }
 }
 
 ol {
