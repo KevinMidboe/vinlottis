@@ -13,6 +13,9 @@ import LotteryPage from "@/components/LotteryPage";
 import HistoryPage from "@/components/HistoryPage";
 import HighscorePage from "@/components/HighscorePage";
 
+import RequestWine from "@/components/RequestWine";
+import AllRequestedWines from "@/components/AllRequestedWines";
+
 const routes = [
   {
     path: "*",
@@ -57,6 +60,14 @@ const routes = [
   {
     path: "/highscore",
     component: HighscorePage
+  },
+  {
+    path: "/request",
+    component: RequestWine
+  },
+  {
+    path: "/requested-wines",
+    component: AllRequestedWines
   }
 ];
 
