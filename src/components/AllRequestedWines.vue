@@ -39,14 +39,42 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../styles/media-queries.scss";
+
+.requested-wines-container{
+  display: grid;
+  grid-gap: 1.5rem;
+  justify-items: center;
+
+  @media #{$mobileOnly}{
+    display: flex;
+    justify-content: space-around;
+    flex-flow: row wrap;
+    row-gap: 1.5rem;
+    margin: 2rem;
+  }
+
+  @media #{$tabletOnly}{
+    margin: 1em;
+    grid: 1fr / 1fr 1fr;
+    justify-items: center;
+  }
+
+  @media #{$desktopOnly}{
+    margin: 1em;
+    grid: 1fr / repeat(4, 1fr);
+  }
+
+  @media #{$widescreenAndUp}{
+    width: 80%;
+    margin: auto;
+    grid: 1fr / repeat(5, 1fr);
+    justify-items: center;
+  }
+}
+
 h1{
   text-align: center;
 }
 
-.requested-wines-container{
-  display: flex;
-  justify-content: space-around;
-  flex-flow: row wrap;
-  align-items: stretch
-}
 </style>

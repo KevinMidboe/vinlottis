@@ -66,6 +66,62 @@ export default {
 </script>
 
 <style lang="scss" scoped> 
-@import "../styles/requested-wine-card.scss";
+@import "../styles/global.scss";
+
+.requested-wine{
+  -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.65);
+  -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.65);
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.65);
+  text-align: center;
+  display: grid;
+  grid: auto-flow min-content / 2fr 1fr;
+  grid-template-areas: "top top"
+                       "middle-left middle-right1"
+                       "middle-left middle-right2"
+                       "bottom1 bottom1"
+                       "bottom2 bottom2";
+  grid-gap: 1em;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  
+  h3{
+    grid-area: top;
+    word-break: keep-all;
+    width: 90%;
+  }
+
+  img{
+    height: 13em;
+    grid-area: middle-left;
+  }
+
+  .requested-amount{
+    grid-area: middle-right1;
+    width: 90%;
+    word-break: keep-all;
+  }
+  
+  .wine-link{
+    grid-area: middle-right2;
+    color: #333333;
+    font-family: Arial;
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 1px solid $link-color;
+    height: 1em;
+  }
+
+  .vin-button{
+    grid-area: bottom1;
+    margin-bottom: 1em;
+
+    &.danger{
+      grid-area: bottom2;
+      background-color: red;
+
+    }
+  }
+}
 
 </style>
