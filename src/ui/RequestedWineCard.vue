@@ -118,8 +118,8 @@ export default {
 
     &.danger{
       grid-area: bottom2;
-      background-color: red;
-
+      background-color: $light-red;
+      color: $red;
     }
   }
 }
