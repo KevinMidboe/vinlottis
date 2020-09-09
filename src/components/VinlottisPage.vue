@@ -48,7 +48,6 @@ import PurchaseGraph from "@/ui/PurchaseGraph";
 import TotalBought from "@/ui/TotalBought";
 import Highscore from "@/ui/Highscore";
 import WinGraph from "@/ui/WinGraph";
-import Banner from "@/ui/Banner";
 import Wines from "@/ui/Wines";
 import Vipps from "@/ui/Vipps";
 import Countdown from "@/ui/Countdown";
@@ -60,7 +59,6 @@ export default {
     TotalBought,
     Highscore,
     WinGraph,
-    Banner,
     Wines,
     Vipps,
     Countdown
