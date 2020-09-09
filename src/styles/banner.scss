@@ -30,7 +30,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  row-gap: 4px;
   &:hover{
     cursor: pointer;
   }
@@ -52,10 +51,12 @@
   
   span:first-child{
     transform-origin: 0% 0%;
+    margin-bottom: 4px;
   }
 
   span:nth-last-child(2){
     transform-origin: 0% 100%;
+    margin-bottom: 4px;
   }
 
   &.open{
