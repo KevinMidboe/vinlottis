@@ -5,15 +5,15 @@
       <img src="/public/assets/images/knowit.svg" alt="knowit logo" />
     </router-link>
 
-    <a class="menu-toggle-container" aria-label="show-menu" @click="toggleMenu" :class="menuHeight">
+    <a class="menu-toggle-container" aria-label="show-menu" @click="toggleMenu" :class="{'open': isOpen, 'collapsed': !isOpen}" >
       <span class="menu-toggle"></span>
       <span class="menu-toggle"></span>
       <span class="menu-toggle"></span>
     </a>
 
-    <nav class="menu" :class="menuHeight">
+    <nav class="menu" :class="{'open': isOpen, 'collapsed': !isOpen}">
       <router-link v-for="(route, index) in routes" :key="index" :to="route.route" class="menu-item-link" >
-        <a @click="toggleMenu" class="single-route" :class="menuHeight">{{route.name}}</a>
+        <a @click="toggleMenu" class="single-route" :class="{'open': isOpen, 'collapsed': !isOpen}">{{route.name}}</a>
       </router-link>
     </nav>
     
@@ -33,7 +33,7 @@
 export default {
   data() {
     return {
-      menuHeight: 'collapsed',
+      isOpen: false,
       nextLottery: null,
       days: 0,
       hours: 0,
@@ -68,12 +68,7 @@ export default {
   },
   methods: {
     toggleMenu(){
-      console.log(this.menuHeight)
-      if(this.menuHeight === 'collapsed'){
-        this.menuHeight = 'open'
-      } else {
-        this.menuHeight = 'collapsed'
-      }
+      this.isOpen = this.isOpen ? false : true;
     },
     pad: function(num) {
       if (num < 10) {
