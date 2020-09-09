@@ -5,15 +5,15 @@
       <img src="/public/assets/images/knowit.svg" alt="knowit logo" />
     </router-link>
 
-    <a class="menu-toggle-container" aria-label="show-menu" @click="toggleMenu" :class="{'open': isOpen, 'collapsed': !isOpen}" >
+    <a class="menu-toggle-container" aria-label="show-menu" @click="toggleMenu" :class="isOpen ? 'open' : 'collapsed'" >
       <span class="menu-toggle"></span>
       <span class="menu-toggle"></span>
       <span class="menu-toggle"></span>
     </a>
 
-    <nav class="menu" :class="{'open': isOpen, 'collapsed': !isOpen}">
+    <nav class="menu" :class="isOpen ? 'open' : 'collapsed'" >
       <router-link v-for="(route, index) in routes" :key="index" :to="route.route" class="menu-item-link" >
-        <a @click="toggleMenu" class="single-route" :class="{'open': isOpen, 'collapsed': !isOpen}">{{route.name}}</a>
+        <a @click="toggleMenu" class="single-route" :class="isOpen ? 'open' : 'collapsed'">{{route.name}}</a>
       </router-link>
     </nav>
     
