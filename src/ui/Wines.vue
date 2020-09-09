@@ -153,6 +153,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "./src/styles/variables";
 @import "../styles/media-queries.scss";
 .wine-window-outer {
   position: fixed;
@@ -261,7 +262,7 @@ ol {
   text-decoration: none;
   font-weight: bold;
   cursor: pointer;
-  border-bottom: 1px solid #ff5fff;
+  border-bottom: 1px solid $link-color;
 }
 
 .truncate {

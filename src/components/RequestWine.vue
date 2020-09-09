@@ -158,7 +158,7 @@ input[type="text"] {
     font-family: Arial;
     text-decoration: none;
     font-weight: bold;
-    border-bottom: 1px solid #ff5fff;
+    border-bottom: 1px solid $link-color;
     width: fit-content;
   }
 
