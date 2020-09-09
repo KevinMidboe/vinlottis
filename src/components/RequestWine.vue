@@ -101,6 +101,12 @@ export default {
 @import "./src/styles/global";
 @import "./src/styles/variables";
 
+
+h1{
+  text-align: center;
+}
+
+
 .main-container{
   margin: auto;
   max-width: 1200px;
@@ -115,57 +121,23 @@ input[type="text"] {
   max-width: 90%;
 }
 
+
 .search-container{
   margin: 1rem;
-  margin-left: 2rem;
-}
-
-@media #{$mobileOnly}{
-  h2{
-    font-size: 1em;
-    max-width: 80%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis
-  }  
-}
-
-@media #{$tabletOnly}{
-  h2{
-    font-size: 1.2em;
-  }
-}
-@media #{$desktopAndUp}{
-  h2{
-    font-size: 1.6em;
-  }
 }
 
 .search-section{
   display: grid;
   grid: 1fr / 1fr .2fr;
-  grid-template-areas: "search-area button";
 
   @media #{$mobileOnly}{
     .vin-button{
       display: none;
     }
     .search-input-field{
-      // grid-row: 1 / -1;
-      width: 100%;
-      max-width: 100%;
+      grid-column: 1 / -1;
     }
   }
-
-  @media #{$tabletAndUp}{
-    .search-input-field{
-      grid-area: search-area;
-    }
-    .vin-button{
-      grid-area: button;
-    }
-  }
-  
 }
 
 .single-result{
@@ -199,7 +171,16 @@ input[type="text"] {
       grid-area: button1;
     }
 
+    h2{
+      font-size: 1em;
+      max-width: 80%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
   }
+ 
 
   .wine-image {
     height: 100px;
@@ -239,11 +220,18 @@ input[type="text"] {
   .vin-button{
     grid-area: button2;
   }
-}
-
-
-h1{
-  text-align: center;
+  
+  @media #{$tabletOnly}{
+    h2{
+      font-size: 1.2em;
+    }
+  }
+  
+  @media #{$desktopAndUp}{
+    h2{
+      font-size: 1.6em;
+    }
+  }
 }
 
 
