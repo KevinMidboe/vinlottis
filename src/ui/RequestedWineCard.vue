@@ -76,10 +76,10 @@ export default {
   display: grid;
   grid: auto-flow min-content / 2fr 1fr;
   grid-template-areas: "top top"
-                       "middle-left middle-right1"
-                       "middle-left middle-right2"
-                       "bottom1 bottom1"
-                       "bottom2 bottom2";
+                       "middle-left middle-right-top"
+                       "middle-left middle-right-bot"
+                       "bottom-top bottom-top"
+                       "bottom-bot bottom-bot";
   grid-gap: 1em;
   justify-items: center;
   align-items: center;
@@ -97,13 +97,13 @@ export default {
   }
 
   .requested-amount{
-    grid-area: middle-right1;
+    grid-area: middle-right-top;
     width: 90%;
     word-break: keep-all;
   }
   
   .wine-link{
-    grid-area: middle-right2;
+    grid-area: middle-right-bot;
     color: #333333;
     font-family: Arial;
     text-decoration: none;
@@ -113,11 +113,11 @@ export default {
   }
 
   .vin-button{
-    grid-area: bottom1;
+    grid-area: bottom-top;
     margin-bottom: 1em;
 
     &.danger{
-      grid-area: bottom2;
+      grid-area: bottom-bot;
       background-color: $light-red;
       color: $red;
     }

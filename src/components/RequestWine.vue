@@ -144,7 +144,7 @@ input[type="text"] {
   margin-top: 1rem;
   display: grid;
   grid: 1fr / .5fr 2fr .5fr .5fr;
-  grid-template-areas: "picture details button1 button2";
+  grid-template-areas: "picture details button-left button-right";
   justify-items: center;
   align-items: center;
   grid-gap: 1em;
@@ -156,11 +156,11 @@ input[type="text"] {
 
     grid: 1fr .5fr / .5fr 1fr;
     grid-template-areas: "picture details"
-                         "button1 button2";
+                         "button-left button-right";
     grid-gap: .5em;
 
     .vin-button{
-      grid-area: button2;
+      grid-area: button-right;
       padding: .5em;
       font-size: 1em;
       line-height: 1em;
@@ -168,7 +168,7 @@ input[type="text"] {
     }
 
     .wine-link{
-      grid-area: button1;
+      grid-area: button-left;
     }
 
     h2{
@@ -207,7 +207,7 @@ input[type="text"] {
     }
   }
   .wine-link {
-    grid-area: button1;
+    grid-area: button-left;
     color: #333333;
     font-family: Arial;
     text-decoration: none;
@@ -218,7 +218,7 @@ input[type="text"] {
   }
 
   .vin-button{
-    grid-area: button2;
+    grid-area: button-right;
   }
   
   @include tablet{
