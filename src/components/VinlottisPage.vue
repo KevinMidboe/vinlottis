@@ -110,6 +110,7 @@ export default {
   }
 
   @include tablet {
+    margin: 3em;
     .chart-container{
       display: flex;
       width: 100%;
