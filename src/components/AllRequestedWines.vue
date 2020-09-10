@@ -46,7 +46,7 @@ export default {
   grid-gap: 1.5rem;
   justify-items: center;
 
-  @media #{$mobileOnly}{
+  @include mobile {
     display: flex;
     justify-content: space-around;
     flex-flow: row wrap;
@@ -54,18 +54,18 @@ export default {
     margin: 2rem;
   }
 
-  @media #{$tabletOnly}{
+  @include tablet {
     margin: 1em;
     grid: 1fr / 1fr 1fr;
     justify-items: center;
   }
 
-  @media #{$desktopOnly}{
+  @include desktop {
     margin: 1em;
     grid: 1fr / repeat(4, 1fr);
   }
 
-  @media #{$widescreenAndUp}{
+  @include widescreen {
     width: 80%;
     margin: auto;
     grid: 1fr / repeat(5, 1fr);

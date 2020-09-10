@@ -130,7 +130,7 @@ input[type="text"] {
   display: grid;
   grid: 1fr / 1fr .2fr;
 
-  @media #{$mobileOnly}{
+  @include mobile{
     .vin-button{
       display: none;
     }
@@ -152,7 +152,7 @@ input[type="text"] {
   margin-bottom: 1em;
   box-shadow: 0 1px 0 0 rgba(0,0,0,0.2);
 
-  @media #{$mobileOnly}{
+  @include mobile{
 
     grid: 1fr .5fr / .5fr 1fr;
     grid-template-areas: "picture details"
@@ -221,13 +221,13 @@ input[type="text"] {
     grid-area: button2;
   }
   
-  @media #{$tabletOnly}{
+  @include tablet{
     h2{
       font-size: 1.2em;
     }
   }
   
-  @media #{$desktopAndUp}{
+  @include desktop{
     h2{
       font-size: 1.6em;
     }
