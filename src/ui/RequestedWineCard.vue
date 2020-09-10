@@ -7,22 +7,20 @@
       :class="{ 'fullscreen': fullscreen }"
     />
     <img v-else class="wine-placeholder" alt="Wine image" />
-    <section class="wine-info">
-      <h3 v-if="wine.name">{{ wine.name }}</h3>
-      <h3 v-else>(no name)</h3>
-      <p>Antall ganger denne har blitt foreslått: {{requestedElement.count}}</p>
-      <section class="buttons">
-          <button class="vin-button" @click="request(wine)" v-if="!locallyRequested">Foreslå denne</button>
-          <a
-          v-if="wine.vivinoLink"
-          :href="wine.vivinoLink"
-          class="wine-link"
-        >Les mer på polet</a>
-        </section>
-        <button @click="deleteWine(wine)" v-if="showDeleteButton == true">
-          Slett vinen
-        </button>
-      </section>
+    <h3 v-if="wine.name">{{ wine.name }}</h3>
+    <h3 v-else>(no name)</h3>
+    <p class="requested-amount">Foreslått: <strong>{{requestedElement.count}}</strong></p>
+
+    <button class="vin-button" @click="request(wine)" v-if="!locallyRequested">Foreslå denne</button>
+    <a
+    v-if="wine.vivinoLink"
+    :href="wine.vivinoLink"
+    class="wine-link">
+      Les mer
+    </a>
+    <button @click="deleteWine(wine)" v-if="showDeleteButton == true" class="vin-button danger">
+      Slett vinen
+    </button>
     </div>
 </template>
 
@@ -68,13 +66,62 @@ export default {
 </script>
 
 <style lang="scss" scoped> 
+@import "../styles/global.scss";
 
 .requested-wine{
-  padding: 20px;
-  border-radius: 1px;
-  margin: 1rem 0;
   -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.65);
   -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.65);
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.65);
+  text-align: center;
+  display: grid;
+  grid: auto-flow min-content / 2fr 1fr;
+  grid-template-areas: "top top"
+                       "middle-left middle-right-top"
+                       "middle-left middle-right-bot"
+                       "bottom-top bottom-top"
+                       "bottom-bot bottom-bot";
+  grid-gap: 1em;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  
+  h3{
+    grid-area: top;
+    word-break: keep-all;
+    width: 90%;
+  }
+
+  img{
+    height: 13em;
+    grid-area: middle-left;
+  }
+
+  .requested-amount{
+    grid-area: middle-right-top;
+    width: 90%;
+    word-break: keep-all;
+  }
+  
+  .wine-link{
+    grid-area: middle-right-bot;
+    color: #333333;
+    font-family: Arial;
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 1px solid $link-color;
+    height: 1em;
+  }
+
+  .vin-button{
+    grid-area: bottom-top;
+    margin-bottom: 1em;
+
+    &.danger{
+      grid-area: bottom-bot;
+      background-color: $light-red;
+      color: $red;
+    }
+  }
 }
+
 </style>
