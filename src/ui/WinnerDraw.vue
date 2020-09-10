@@ -15,6 +15,7 @@
       <br />
       <br />
     </div>
+    
     <div class="current-draw" v-if="drawingDone">
       <h2>VINNER</h2>
       <div
@@ -100,11 +101,7 @@ export default {
         }
         this.drawing = false;
         this.drawingDone = true;
-        if(this.currentName == "Amund Brandsrud"){
-          this.startUberConfetti();
-          return;
-        }
-        this.startConfetti();
+        this.startConfetti(this.currentName);
         return;
       }
       this.currentName = this.attendees[
@@ -154,10 +151,13 @@ export default {
           return "yellow";
       }
     },
-    startConfetti(){
+    startConfetti(currentName){
+      //duration is computed as x * 1000 miliseconds, in this case 7*1000 = 7000 miliseconds ==> 7 seconds. 
       var duration = 7 * 1000;
       var animationEnd = Date.now() + duration;
-      var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+      var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0, particleCount: 10};
+      var uberDefaults = { startVelocity: 65, spread: 75, particleCount: 35, angle: randomInRange(55, 125)}
+
       function randomInRange(min, max) {
         return Math.random() * (max - min) + min;
       }
@@ -166,29 +166,20 @@ export default {
         if (timeLeft <= 0) {
           return clearInterval(interval);
         } 
-        var particleCount = 50 * (timeLeft / duration);
-        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-      }, 250);
-    },
-    startUberConfetti(){
-      var duration = 7 * 1000;
-      var animationEnd = Date.now() + duration;
-      var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-      function randomInRange(min, max) {
-        return Math.random() * (max - min) + min;
-      }
-      var interval = setInterval(function() {
-        var timeLeft = animationEnd - Date.now();
-        if (timeLeft <= 0) {
-          return clearInterval(interval);
+        if(currentName == "Amund Brandsrud"){
+          runCannon(uberDefaults, {x: 0 });
+          runCannon(uberDefaults, {x: 1 });
+          runCannon(uberDefaults, {y: 1 });
+        }else{
+          runCannon(defaults, { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 });
+          runCannon(defaults, { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 });
         }
-        var particleCount = 50 * (timeLeft / duration);
-        confetti({startVelocity: 65, angle: randomInRange(55, 125),particleCount: particleCount, angle: 60, spread: 55, origin: { x: 0 }});
-        confetti({startVelocity: 65, angle: randomInRange(55, 125),particleCount: particleCount, angle: 120, spread: 55, origin: { x: 1 }});
-        confetti({startVelocity: 65, angle: randomInRange(55, 125),spread: randomInRange(50, 70),particleCount: randomInRange(5, 15),origin: { y: 1 }});
       }, 250);
-    }
+
+      function runCannon(x, y){
+        confetti(Object.assign({}, x, {origin: y }))
+      }
+    },
   }
 };
 
