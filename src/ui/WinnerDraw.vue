@@ -176,8 +176,8 @@ export default {
         }
       }, 250);
 
-      function runCannon(x, y){
-        confetti(Object.assign({}, x, {origin: y }))
+      function runCannon(confettiDefaultValues, originPoint){
+        confetti(Object.assign({}, confettiDefaultValues, {origin: originPoint }))
       }
     },
   }
