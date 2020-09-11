@@ -17,6 +17,7 @@
         <WinGraph class="win" />
       </section>
       <TotalBought class="total-bought" />
+      <Highscore class="highscore"/>
       <Wines class="wines-container" />
       <Vipps class="vipps-icon" />
     </div>
@@ -120,33 +121,39 @@ export default {
   @include desktop {
 
     display: grid;
-    grid: auto-flow min-content / 1fr 1fr;
-    grid-template-areas: "top top"
-                         "middle-top middle-top"
-                         "middle-bot-left middle-bot-right"
-                         "bot bot";
+    grid: auto-flow min-content / 1fr 1fr 1fr;
+    grid-template-areas: "top top top"
+                         "middle-top middle-top middle-top"
+                         "middle-bot middle-bot aside"
+                         "bot-left bot-right aside";
     grid-gap: 1em;
 
     .header-and-notification {
       grid-area: top;
     }
 
-    .total-bought{
-      grid-area: middle-bot-left;
-    }
-
-    .wines-container{
-      grid-area: middle-bot-right;
-    }
-
     .chart-container{
       grid-area: middle-top;
     }
 
-    .vipps-icon{
-      grid-area: bot;
+    .total-bought{
+      grid-area: middle-bot;
+      border-bottom: 1px solid rgb(237, 237, 237);
     }
 
+    .highscore {
+      grid-area: bot-left;
+    }
+
+    .wines-container{
+      grid-area: bot-right;
+    }
+
+    .vipps-icon{
+      grid-area: aside;
+      padding-left: 30px;
+      border-left: 1px solid rgb(237, 237, 237);
+    }
   }
   
   @include widescreen {
