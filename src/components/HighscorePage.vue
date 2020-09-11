@@ -86,6 +86,7 @@ export default {
   watch: {
     highscoreFilter(val) {
       if (val.length) {
+        val = val.toLowerCase();
         this.highscore = this.highscoreResponse.filter(person => person.name.toLowerCase().includes(val))
       } else {
         this.highscore = this.highscoreResponse
