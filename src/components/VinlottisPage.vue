@@ -17,9 +17,9 @@
         <WinGraph class="win" />
       </section>
       <TotalBought class="total-bought" />
+      <Vipps class="vipps-icon" />
       <Highscore class="highscore"/>
       <Wines class="wines-container" />
-      <Vipps class="vipps-icon" />
     </div>
     <Countdown :hardEnable="hardStart" @countdown="changeEnabled" />
   </div>
@@ -107,51 +107,92 @@ export default {
   }
 
   .vipps-icon{
-    margin: auto;
+    margin: 1em;
   }
 
   @include tablet {
-    margin: 3em;
-    .chart-container{
+    margin: .5em;
+    .chart-container {
       display: flex;
       width: 100%;
+    }
+
+    display: grid;
+    grid: auto-flow min-content / 1fr 1fr 1fr;
+    grid-template-areas: "top top top"
+                         "middle-top middle-top middle-top"
+                         "middle-bot-left middle-bot-left middle-bot-right"
+                         "bot-left bot-right bot-right";
+
+    .header-and-notification {
+      grid-area: top;
+    }
+
+    .chart-container {
+      grid-area: middle-top;
+    }
+
+    .total-bought {
+      grid-area: middle-bot-left;
+    }
+
+    .highscore {
+      border-top: 1px solid rgb(237, 237, 237);
+      grid-area: bot-left;
+    }
+
+    .wines-container {
+      border-top: 1px solid rgb(237, 237, 237);
+      padding-left: 1em;
+      border-left: 1px solid rgb(237, 237, 237);
+      grid-area: bot-right;
+    }
+
+    .vipps-icon {
+      padding-left: 1em;
+      align-self: center;
+      grid-area: middle-bot-right;
+      border-left: 1px solid rgb(237, 237, 237);
     }
   }
 
   @include desktop {
 
     display: grid;
-    grid: auto-flow min-content / 1fr 1fr 1fr;
+    grid: auto-flow min-content / .5fr 1.5fr 1fr;
     grid-template-areas: "top top top"
                          "middle-top middle-top middle-top"
                          "middle-bot middle-bot aside"
                          "bot-left bot-right aside";
     grid-gap: 1em;
+    align-items: center;
 
     .header-and-notification {
       grid-area: top;
     }
 
-    .chart-container{
+    .chart-container {
       grid-area: middle-top;
     }
 
-    .total-bought{
+    .total-bought {
       grid-area: middle-bot;
       border-bottom: 1px solid rgb(237, 237, 237);
     }
 
     .highscore {
+      border: none;
       grid-area: bot-left;
     }
 
-    .wines-container{
+    .wines-container {
+      border: none;
       grid-area: bot-right;
     }
 
-    .vipps-icon{
+    .vipps-icon {
       grid-area: aside;
-      padding-left: 30px;
+      padding-left: 3em;
       border-left: 1px solid rgb(237, 237, 237);
     }
   }
@@ -160,6 +201,12 @@ export default {
     width: 70%;
     max-width: 1800px;
     margin: auto;
+
+    .vipps-icon {
+      grid-area: aside;
+      padding-left: 6em;
+      border-left: 1px solid rgb(237, 237, 237);
+    }
   }
 }
 
