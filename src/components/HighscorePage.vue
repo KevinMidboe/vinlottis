@@ -218,6 +218,7 @@ input[type="text"] {
     width: 80%;
     margin: auto;
     grid-gap: 1em;
+    max-width: 1600px;
   }
 }
 
