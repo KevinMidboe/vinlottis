@@ -1,20 +1,20 @@
 <template>
-  <main>
-    <h1>
-      Foreslå en vin!
-    </h1>
+  <section class="main-container">
     <Modal 
       v-if="showModal" 
       modalText="Ønsket ditt har blitt lagt til" 
       :buttons="modalButtons"
       @click="emitFromModalButton"
     ></Modal>
-    <section>
+    <h1>
+      Foreslå en vin!
+    </h1>
+    <section class="search-container">
       <section class="search-section">
-        <input type="text" v-model="searchString" @keyup.enter="fetchWineFromVin()" placeholder="Søk etter en vin du liker her!🍷">
+        <input type="text" v-model="searchString" @keyup.enter="fetchWineFromVin()" placeholder="Søk etter en vin du liker her!🍷" class="search-input-field">
         <button :disabled="!searchString" @click="fetchWineFromVin()" class="vin-button">Søk</button>
       </section>
-      <section v-for="(wine, index) in this.wines" :key="index" class="search-results-container">
+      <section v-for="(wine, index) in this.wines" :key="index" class="single-result">
         <img
           v-if="wine.image"
           :src="wine.image"
@@ -25,26 +25,24 @@
         <section class="wine-info">
           <h2 v-if="wine.name">{{ wine.name }}</h2>
           <h2 v-else>(no name)</h2>
-          <div class="__details">
+          <div class="details">
             <span v-if="wine.rating">{{ wine.rating }}%</span>
             <span v-if="wine.price">{{ wine.price }} NOK</span>
             <span v-if="wine.country">{{ wine.country }}</span>
           </div>
         </section>
-        <section class="buttons">
           <button class="vin-button" @click="request(wine)">Foreslå denne</button>
           <a
           v-if="wine.vivinoLink"
           :href="wine.vivinoLink"
           class="wine-link"
-        >Les mer på polet</a>
-        </section>
+        >Les mer</a>
       </section>
       <p v-if="this.wines && this.wines.length == 0">
         Fant ingen viner med det navnet!
       </p>
     </section>
-  </main>
+  </section>
 </template>
 
 <script>
@@ -103,91 +101,136 @@ export default {
 @import "./src/styles/global";
 @import "./src/styles/variables";
 
-main{
-  margin: auto;
-  width: 80%;
+
+h1{
   text-align: center;
-  z-index: 0;
+}
+
+
+.main-container{
+  margin: auto;
+  max-width: 1200px;
 }
 
 input[type="text"] {
-  width: 100%;
+  width: 90%;
   color: black;
   border-radius: 4px;
-  padding: 0.5rem 1rem;
+  padding: 1rem 1rem;
   border: 1px solid black;
-  max-width: 80%;
+  max-width: 90%;
+}
+
+
+.search-container{
+  margin: 1rem;
 }
 
 .search-section{
-  display: flex;
-  justify-content: space-around;
-  flex-flow: row;
+  display: grid;
+  grid: 1fr / 1fr .2fr;
+
+  @include mobile{
+    .vin-button{
+      display: none;
+    }
+    .search-input-field{
+      grid-column: 1 / -1;
+    }
+  }
 }
 
-.search-results-container{
-  display: flex;
-  padding: 3px;
-  border-radius: 1px;
-  box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.3);   
-  margin: 1rem 0;
-  justify-content: space-around;
-  flex-flow: row wrap;
-  align-items: stretch;
+.single-result{
+  margin-top: 1rem;
+  display: grid;
+  grid: 1fr / .5fr 2fr .5fr .5fr;
+  grid-template-areas: "picture details button-left button-right";
+  justify-items: center;
+  align-items: center;
+  grid-gap: 1em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  box-shadow: 0 1px 0 0 rgba(0,0,0,0.2);
 
+  @include mobile{
+
+    grid: 1fr .5fr / .5fr 1fr;
+    grid-template-areas: "picture details"
+                         "button-left button-right";
+    grid-gap: .5em;
+
+    .vin-button{
+      grid-area: button-right;
+      padding: .5em;
+      font-size: 1em;
+      line-height: 1em;
+      height: 2em;
+    }
+
+    .wine-link{
+      grid-area: button-left;
+    }
+
+    h2{
+      font-size: 1em;
+      max-width: 80%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+  }
+ 
 
   .wine-image {
     height: 100px;
+    grid-area: picture;
   }
 
   .wine-placeholder {
     height: 100px;
     width: 70px;
+    grid-area: picture;
   }
 
   .wine-info{
-    display: flex;
-    flex-direction: column;
-    .__details{
+    grid-area: details;
+    width: 100%;
+    
+    h2{
+      margin: 0;
+    }
+    .details{
+      top: 0;
       display: flex;
       flex-direction: column;
     }
   }
   .wine-link {
+    grid-area: button-left;
     color: #333333;
     font-family: Arial;
     text-decoration: none;
     font-weight: bold;
     border-bottom: 1px solid $link-color;
-    width: fit-content;
+    height: 1.2em;
+    width: max-content;
   }
 
-  .buttons{
-    display: flex;
-    align-items: center;
-    order: 2;
-    justify-content: space-between;
-    width: 40%;
-    margin-right: 1rem;
+  .vin-button{
+    grid-area: button-right;
   }
-  @include mobile {
-    display: flex;
-    flex-direction: column;
-    .wine-image {
-      height: 100px;
-      width: 50px;
-      align-self: center;
+  
+  @include tablet{
+    h2{
+      font-size: 1.2em;
     }
-    .buttons{
-      display: flex;
-      flex-direction: column;
-      align-self: center;
-      margin: 1em;
-      .wine-link{
-        margin-top: 1em;
-      }
+  }
+  
+  @include desktop{
+    h2{
+      font-size: 1.6em;
     }
-    
   }
 }
 
