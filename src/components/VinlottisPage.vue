@@ -162,6 +162,7 @@ h1 {
     .highscore {
       border-top: 1px solid rgb(237, 237, 237);
       grid-area: bot-left;
+      align-self: baseline;
     }
 
     .wines-container {
