@@ -183,13 +183,13 @@ h1 {
   @include desktop {
 
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: auto-flow min-content;
-    grid-template-areas: "top-top top-top top-top"
-                         "top-bot top-bot top-bot"
-                         "middle-top middle-top middle-top"
-                         "middle-bot middle-bot aside"
-                         "bot-left bot-right aside";
+    grid-template-areas: "top-top top-top top-top top-top"
+                         "top-bot top-bot top-bot top-bot"
+                         "middle-top middle-top middle-top middle-top"
+                         "middle-bot middle-bot middle-bot aside"
+                         "bot-left bot-right bot-right aside";
     grid-gap: 1em;
     align-items: center;
 
