@@ -2,16 +2,19 @@
   <div class="outer">
     <div class="container">
       <section class="header-and-notification">
-        <h1 @click="startCountdown">Vinlotteri</h1>
-        <img
-          src="/public/assets/images/notification.svg"
-          alt="Notification-bell"
-          @click="requestNotificationAccess"
-          class="notification-request-button"
-          role="button"
-          v-if="notificationAllowed"
-        />
+          <h1 @click="startCountdown">Vinlotteri</h1>
+          <img
+            src="/public/assets/images/notification.svg"
+            alt="Notification-bell"
+            @click="requestNotificationAccess"
+            class="notification-request-button"
+            role="button"
+            v-if="notificationAllowed"
+          />
       </section>
+      <div class="to-lottery-container">
+        <a href="#/lottery" class="to-lottery">Vil du til lotteriet?<span class="vin-link">Trykk her</span></a>
+      </div>
       <section class="chart-container">
         <PurchaseGraph class="purchase" />
         <WinGraph class="win" />
@@ -102,12 +105,21 @@ h1 {
   font-family: "knowit";
 }
 
+.to-lottery{
+    color: #333;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    margin-bottom: 0;
+}
+
 .container{
   display: flex;
   flex-direction: column;
   
   .header-and-notification{
     display: flex;
+    flex-direction: row;
     margin: auto;
   }
 
@@ -123,13 +135,20 @@ h1 {
     }
 
     display: grid;
-    grid-template-areas: "top top top"
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto-flow min-content;
+    grid-template-areas: "top-top top-top top-top"
+                         "top-bot top-bot top-bot"
                          "middle-top middle-top middle-top"
                          "middle-bot-left middle-bot-left middle-bot-right"
                          "bot-left bot-right bot-right";
 
     .header-and-notification {
-      grid-area: top;
+      grid-area: top-top;
+    }
+
+    .to-lottery-container{
+      grid-area: top-bot;
     }
 
     .chart-container {
@@ -163,7 +182,10 @@ h1 {
   @include desktop {
 
     display: grid;
-    grid-template-areas: "top top top"
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto-flow min-content;
+    grid-template-areas: "top-top top-top top-top"
+                         "top-bot top-bot top-bot"
                          "middle-top middle-top middle-top"
                          "middle-bot middle-bot aside"
                          "bot-left bot-right aside";
@@ -171,7 +193,11 @@ h1 {
     align-items: center;
 
     .header-and-notification {
-      grid-area: top;
+      grid-area: top-top;
+    }
+
+    .to-lottery-container {
+      grid-area: top-bot;
     }
 
     .chart-container {
@@ -206,9 +232,7 @@ h1 {
     margin: auto;
 
     .vipps-icon {
-      grid-area: aside;
       padding-left: 6em;
-      border-left: 1px solid rgb(237, 237, 237);
     }
   }
 }
