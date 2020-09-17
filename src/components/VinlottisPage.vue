@@ -97,6 +97,11 @@ export default {
   margin: 1em;
 }
 
+h1 {
+  text-align: center;
+  font-family: "knowit";
+}
+
 .container{
   display: flex;
   flex-direction: column;
