@@ -123,7 +123,6 @@ h1 {
     }
 
     display: grid;
-    grid: auto-flow min-content / 1fr 1fr 1fr;
     grid-template-areas: "top top top"
                          "middle-top middle-top middle-top"
                          "middle-bot-left middle-bot-left middle-bot-right"
@@ -164,7 +163,6 @@ h1 {
   @include desktop {
 
     display: grid;
-    grid: auto-flow min-content / .5fr 1.5fr 1fr;
     grid-template-areas: "top top top"
                          "middle-top middle-top middle-top"
                          "middle-bot middle-bot aside"
