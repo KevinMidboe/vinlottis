@@ -213,7 +213,8 @@ input[type="text"] {
 
   @include tablet {
     display: grid;
-    grid: auto-flow min-content / .3fr 1fr;
+    grid-template-columns: .3fr 1fr;
+    grid-template-rows: auto-flow min-content;
     justify-items: center;
     width: 80%;
     margin: auto;
