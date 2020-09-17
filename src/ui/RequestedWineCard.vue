@@ -74,7 +74,6 @@ export default {
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.65);
   text-align: center;
   display: grid;
-  grid: auto-flow min-content / 2fr 1fr;
   grid-template-areas: "top top"
                        "middle-left middle-right-top"
                        "middle-left middle-right-bot"
