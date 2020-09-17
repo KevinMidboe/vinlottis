@@ -1,42 +1,28 @@
 <template>
   <div class="outer">
     <div class="container">
-      <div class="header-top">
-        <h1 class="title" @click="startCountdown">Vinlotteri</h1>
-        <img
-          src="/public/assets/images/notification.svg"
-          alt="Notification-bell"
-          @click="requestNotificationAccess"
-          class="notification-request-button"
-          role="button"
-          v-if="notificationAllowed"
-        />
+      <section class="header-and-notification">
+          <h1 @click="startCountdown">Vinlotteri</h1>
+          <img
+            src="/public/assets/images/notification.svg"
+            alt="Notification-bell"
+            @click="requestNotificationAccess"
+            class="notification-request-button"
+            role="button"
+            v-if="notificationAllowed"
+          />
+      </section>
+      <div class="to-lottery-container">
+        <a href="#/lottery" class="to-lottery">Vil du til lotteriet?<span class="vin-link">Trykk her</span></a>
       </div>
-      <router-link to="lottery" class="generate-link">
-        Vil du til lotteriet?
-        <span class="subtext generator-link">Trykk her</span>
-      </router-link>
-      <div class="chart-container">
+      <section class="chart-container">
         <PurchaseGraph class="purchase" />
         <WinGraph class="win" />
-      </div>
-      <router-link to="dagens" class="generate-link">
-        Lurer du på dagens fangst?
-        <span class="subtext generator-link">Se her</span>
-      </router-link>
-      <div class="bottom-container">
-        <div class="left-bottom">
-          <TotalBought />
-          <hr class="bought-and-highscore-separator" />
-          <div class="highscore-and-wines">
-            <Highscore class="highscore-container" />
-            <Wines class="wines-container" />
-          </div>
-        </div>
-        <div class="vipps-outer-container">
-          <Vipps class="vipps-inner-container" />
-        </div>
-      </div>
+      </section>
+      <TotalBought class="total-bought" />
+      <Vipps class="vipps-icon" />
+      <Highscore class="highscore"/>
+      <Wines class="wines-container" />
     </div>
     <Countdown :hardEnable="hardStart" @countdown="changeEnabled" />
   </div>
@@ -108,207 +94,148 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/global.scss";
 @import "../styles/media-queries.scss";
 
-.notification-request-button {
-  cursor: pointer;
-  margin-left: 15px;
-}
-
-.bottom-container {
-  display: flex;
-  flex-direction: row;
-  max-width: 1350px;
-  margin: auto;
-  justify-content: space-evenly;
-  align-items: center;
-  padding: 0 30px;
-
-  @include mobile {
-    padding: 0;
-  }
-}
-
-.header-top {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 2rem;
-  margin-top: 3.8rem;
-
-  @include mobile {
-    margin-top: 1.5rem;
-  }
-
-  .title {
-    cursor: pointer;
-    margin: auto 0;
-  }
-}
-
-.left-bottom {
-  width: 75%;
-
-  @include mobile {
-    width: calc(100% - 20px);
-    padding: 0;
-  }
-}
-
-.bought-and-highscore-separator {
-  border: none;
-
-  @include desktop {
-    border-bottom: 1px solid rgb(237, 237, 237);
-  }
-}
-
-.highscore-and-wines {
-  display: flex;
-  flex-direction: row;
-  padding-top: 1.5rem;
-  justify-content: space-between;
-
-  @include mobile {
-    padding: 0 20px;
-  }
-
-  .highscore-container {
-    @include mobile {
-      width: 100%;
-    }
-  }
-
-  .wines-container {
-    width: 65%;
-
-    @include mobile {
-      width: 100%;
-    }
-  }
-}
-
-.vipps-outer-container {
-  display: flex;
-  align-items: flex-start;
-
-  @include desktop {
-    margin-left: 20px;
-    border-left: 1px solid rgb(237, 237, 237);
-  }
-}
-
-.container {
-  margin-bottom: 2.5rem;
-}
-
 .outer {
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  margin: 1em;
 }
+
 h1 {
-  width: 100vw;
   text-align: center;
   font-family: "knowit";
 }
 
-.generate-link {
-  color: #333333;
-  text-decoration: none;
-  display: block;
-  width: 100vw;
-  text-align: center;
-  margin-bottom: 0px;
-
-  @include mobile {
-    width: 60vw;
-    margin: auto;
-  }
+.to-lottery{
+    color: #333;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    margin-bottom: 0;
 }
 
-.vipps-image {
-  width: 250px;
-  margin: auto;
-  display: block;
-  margin-top: 30px;
-}
-
-.generator-link {
-  font-weight: bold;
-  border-bottom: 1px solid $link-color;
-}
-
-.win,
-.purchase {
-  width: 48%;
-  display: inline-block;
-}
-
-.vipps-inner-container {
-  margin-top: 15px;
-  margin-bottom: 15px;
-  margin-left: 30px;
-
-  @include mobile {
-    margin: auto;
-  }
-}
-
-.chart-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 99vw;
-  max-width: 1400px;
-  margin: auto;
-  padding: 50px 0;
-}
-
-.wine-and-highscore-container {
+.container{
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding-bottom: 20vw;
-  border-right: 1px solid #333;
-}
-
-@include mobile {
-  .purchase,
-  .win {
-    width: 100vw;
+  
+  .header-and-notification{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
   }
 
-  .generate-link {
-    margin-bottom: 30px;
+  .vipps-icon{
+    margin: 1em;
   }
 
-  .chart-container {
-    flex-direction: column;
-    justify-content: center;
+  @include tablet {
+    margin: .5em;
+    .chart-container {
+      display: flex;
+      width: 100%;
+    }
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto-flow min-content;
+    grid-template-areas: "top-top top-top top-top"
+                         "top-bot top-bot top-bot"
+                         "middle-top middle-top middle-top"
+                         "middle-bot-left middle-bot-left middle-bot-right"
+                         "bot-left bot-right bot-right";
+
+    .header-and-notification {
+      grid-area: top-top;
+    }
+
+    .to-lottery-container{
+      grid-area: top-bot;
+    }
+
+    .chart-container {
+      grid-area: middle-top;
+    }
+
+    .total-bought {
+      grid-area: middle-bot-left;
+    }
+
+    .highscore {
+      border-top: 1px solid rgb(237, 237, 237);
+      grid-area: bot-left;
+    }
+
+    .wines-container {
+      border-top: 1px solid rgb(237, 237, 237);
+      padding-left: 1em;
+      border-left: 1px solid rgb(237, 237, 237);
+      grid-area: bot-right;
+    }
+
+    .vipps-icon {
+      padding-left: 1em;
+      align-self: center;
+      grid-area: middle-bot-right;
+      border-left: 1px solid rgb(237, 237, 237);
+    }
+  }
+
+  @include desktop {
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto-flow min-content;
+    grid-template-areas: "top-top top-top top-top"
+                         "top-bot top-bot top-bot"
+                         "middle-top middle-top middle-top"
+                         "middle-bot middle-bot aside"
+                         "bot-left bot-right aside";
+    grid-gap: 1em;
     align-items: center;
 
-    padding: 0;
-    margin-top: 30px;
-  }
+    .header-and-notification {
+      grid-area: top-top;
+    }
 
-  .outer {
-    justify-content: flex-start;
-  }
+    .to-lottery-container {
+      grid-area: top-bot;
+    }
 
-  .bottom-container,
-  .highscore-and-wines {
-    flex-direction: column;
-  }
+    .chart-container {
+      grid-area: middle-top;
+    }
 
-  .wines-container,
-  .vipps-outer-container,
-  .vipps-container {
-    margin-left: 0px;
+    .total-bought {
+      grid-area: middle-bot;
+      border-bottom: 1px solid rgb(237, 237, 237);
+    }
+
+    .highscore {
+      border: none;
+      grid-area: bot-left;
+    }
+
+    .wines-container {
+      border: none;
+      grid-area: bot-right;
+    }
+
+    .vipps-icon {
+      grid-area: aside;
+      padding-left: 3em;
+      border-left: 1px solid rgb(237, 237, 237);
+    }
+  }
+  
+  @include widescreen {
+    width: 70%;
+    max-width: 1800px;
+    margin: auto;
+
+    .vipps-icon {
+      padding-left: 6em;
+    }
   }
 }
+
+
 </style>
