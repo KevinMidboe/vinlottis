@@ -157,7 +157,11 @@ const sendNotificationToWinnerById = async (req, res) => {
 }
 
 function startTimeout(id) {
+  const minute = 60000;
+  const minutesForTimeout = 10;
+  
   console.log(`Starting timeout for user ${id}.`);
+  console.log(`Timeout duration: ${ minutesForTimeout * minute }`
   setTimeout(async () => {
     let virtualWinner = await VirtualWinner.findOne({ id: id });
     if (!virtualWinner) {
@@ -174,7 +178,7 @@ function startTimeout(id) {
     await virtualWinner.save();
 
     findAndNotifyNextWinner();
-  }, 60000);
+  }, minutesForTimeout * minute);
 
   return Promise.resolve()
 }
