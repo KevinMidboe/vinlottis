@@ -1,26 +1,22 @@
 <template>
   <div class="top-banner">
     <!-- Mobile -->
-    <div id="menuToggle" >
-      <input type="checkbox" />
-      <span></span>
-      <span></span>
-      <span></span>
-      <ul id="menu">
-        <router-link v-for="(route, index) in routes" :key="index" :to="route.route">
-          <li>{{route.name}}</li>
-        </router-link>
-      </ul>
-    </div>
-    
-    <router-link to="/">
+    <router-link to="/" class="company-logo">
       <img src="/public/assets/images/knowit.svg" alt="knowit logo" />
     </router-link>
-    <div v-for="(route, index) in routes" :key="index" class="desktop">
-      <router-link :to="route.route" class="routes">
-        {{route.name}}
+
+    <a class="menu-toggle-container" aria-label="show-menu" @click="toggleMenu" :class="isOpen ? 'open' : 'collapsed'" >
+      <span class="menu-toggle"></span>
+      <span class="menu-toggle"></span>
+      <span class="menu-toggle"></span>
+    </a>
+
+    <nav class="menu" :class="isOpen ? 'open' : 'collapsed'" >
+      <router-link v-for="(route, index) in routes" :key="index" :to="route.route" class="menu-item-link" >
+        <a @click="toggleMenu" class="single-route" :class="isOpen ? 'open' : 'collapsed'">{{route.name}}</a>
       </router-link>
-    </div>
+    </nav>
+    
     <div class="clock">
       <h2 v-if="!fiveMinutesLeft || !tenMinutesOver">
         <span v-if="days > 0">{{ pad(days) }}:</span>
@@ -37,6 +33,7 @@
 export default {
   data() {
     return {
+      isOpen: false,
       nextLottery: null,
       days: 0,
       hours: 0,
@@ -70,6 +67,9 @@ export default {
     }
   },
   methods: {
+    toggleMenu(){
+      this.isOpen = this.isOpen ? false : true;
+    },
     pad: function(num) {
       if (num < 10) {
         return `0${num}`;
@@ -129,58 +129,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/media-queries.scss";
-@import "../styles/variables.scss";
 @import "../styles/banner.scss";
-
-@include mobile {
-  .desktop {
-    display: none;
-  }
-}
-
-@include desktop {
-  
-  .top-banner{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: calc(100% - 20px);
-    
-    .routes {
-      text-decoration: none;
-      color: #333333;
-    }
-  }
-}
-
-.top-banner {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: calc(100% - 20px);
-  padding: 5px 10px;
-  background-color: $primary;
-  -webkit-box-shadow: 0px 0px 22px -8px rgba(0, 0, 0, 0.65);
-  -moz-box-shadow: 0px 0px 22px -8px rgba(0, 0, 0, 0.65);
-  box-shadow: 0px 0px 22px -8px rgba(0, 0, 0, 0.65);
-
-  .clock {
-    text-decoration: none;
-    color: #333333;
-    display: flex;
-    font-family: Arial;
-    margin-right: 2rem;
-    @include mobile {
-      font-size: 0.8em;
-      margin-right: 1rem;
-    }
-    h2 {
-      display: flex;
-    }
-  }
-}
-
 </style>

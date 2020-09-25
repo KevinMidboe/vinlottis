@@ -1,18 +1,29 @@
-$phone-xs-width: 480px;
-$tablet-p-width: 768px;
-$tablet-l-width: 1024px;
-$desktop-width:  1200px;
-$desktop-l-width: 1600px;
 $mobile-width: 768px;
+$tablet-max: 1200px;
+$desktop-max: 1704;
 
-@mixin desktop {
+
+@mixin mobile {
+  @media (max-width: #{$mobile-width}) {
+    @content;
+  }
+}
+
+@mixin tablet {
   @media (min-width: #{$mobile-width + 1px}) {
     @content;
   }
 }
 
-@mixin mobile {
-  @media (max-width: #{$mobile-width}) {
+
+@mixin desktop {
+  @media (min-width: #{$tablet-max + 1px}) {
+    @content;
+  }
+}
+
+@mixin widescreen {
+  @media (min-width: #{$desktop-max + 1px}){
     @content;
   }
 }

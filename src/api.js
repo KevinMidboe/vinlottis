@@ -31,8 +31,8 @@ const allRequestedWines = () => {
 
   return fetch(url.href)
     .then(resp => {
-      const isAdmin = resp.headers.get("vinlottis-admin") || false;
-      return Promise.all([resp.json(), Boolean(isAdmin)]);
+      const isAdmin = resp.headers.get("vinlottis-admin") == "true";
+      return Promise.all([resp.json(), isAdmin]);
     });
 };
 

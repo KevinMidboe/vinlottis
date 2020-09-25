@@ -46,6 +46,10 @@ export default {
           name: "Foreslåtte viner",
           route: "/requested-wines"
         },
+        {
+          name: "Highscore",
+          route: "/highscore"
+        }
       ]
     };
   },

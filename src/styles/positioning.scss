@@ -1,7 +1,23 @@
 .flex {
   display: flex;
 
-  &-column {
+  & .column {
     flex-direction: column;
+  }
+
+  & .row {
+    flex-direction: row;
+  }
+
+  & .wrap {
+    flex-wrap: wrap;
+  }
+
+  &.justify-center {
+    justify-content: center;
+  }
+
+  &.align-center {
+    align-items: center;
   }
 }

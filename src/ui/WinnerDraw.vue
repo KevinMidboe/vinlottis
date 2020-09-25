@@ -15,6 +15,7 @@
       <br />
       <br />
     </div>
+    
     <div class="current-draw" v-if="drawingDone">
       <h2>VINNER</h2>
       <div
@@ -34,6 +35,7 @@
 </template>
 
 <script>
+import confetti from "canvas-confetti";
 export default {
   props: {
     currentWinner: {
@@ -99,6 +101,7 @@ export default {
         }
         this.drawing = false;
         this.drawingDone = true;
+        this.startConfetti(this.currentName);
         return;
       }
       this.currentName = this.attendees[
@@ -147,9 +150,43 @@ export default {
         case 3:
           return "yellow";
       }
-    }
+    },
+    startConfetti(currentName){
+      //duration is computed as x * 1000 miliseconds, in this case 7*1000 = 7000 miliseconds ==> 7 seconds. 
+      var duration = 7 * 1000;
+      var animationEnd = Date.now() + duration;
+      var defaults = { startVelocity: 50, spread: 160, ticks: 50, zIndex: 0, particleCount: 20};
+      var uberDefaults = { startVelocity: 65, spread: 75, zIndex: 0, particleCount: 35}
+
+      function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+      var interval = setInterval(function() {
+        var timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        } 
+        if(currentName == "Amund Brandsrud"){
+          runCannon(uberDefaults, {x: 1, y: 1 }, {angle: 135});
+          runCannon(uberDefaults, {x: 0, y: 1 }, {angle: 45}); 
+          runCannon(uberDefaults, {y: 1 }, {angle: 90});
+          runCannon(uberDefaults, {x: 0 }, {angle: 45});
+          runCannon(uberDefaults, {x: 1 }, {angle: 135});     
+        }else{
+          runCannon(defaults, {x: 0 }, {angle: 45});
+          runCannon(defaults, {x: 1 }, {angle: 135});
+          runCannon(defaults, {y: 1 }, {angle: 90});
+   
+        }
+      }, 250);
+
+      function runCannon(confettiDefaultValues, originPoint, launchAngle){
+        confetti(Object.assign({}, confettiDefaultValues, {origin: originPoint }, launchAngle))
+      }
+    },
   }
 };
+
 </script>
 
 <style lang="scss" scoped>
