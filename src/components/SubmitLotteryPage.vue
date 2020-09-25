@@ -34,22 +34,22 @@
             <button
               class="blue"
               :class="{ active: winner.color == 'blue' }"
-              @click="winner.color = 'blue'"
+              @click="toggleWinnerColorSelected(winner, 'blue')"
             ></button>
             <button
               class="red"
               :class="{ active: winner.color == 'red' }"
-              @click="winner.color = 'red'"
+              @click="toggleWinnerColorSelected(winner, 'red')"
             ></button>
             <button
               class="green"
               :class="{ active: winner.color == 'green' }"
-              @click="winner.color = 'green'"
+              @click="toggleWinnerColorSelected(winner, 'green')"
             ></button>
             <button
               class="yellow"
               :class="{ active: winner.color == 'yellow' }"
-              @click="winner.color = 'yellow'"
+              @click="toggleWinnerColorSelected(winner, 'yellow')"
             ></button>
           </div>
           <div class="label-div">
@@ -325,6 +325,9 @@ export default {
           color.value = localColorValue == 0 ? null : localColorValue;
         });
       }
+    },
+    toggleWinnerColorSelected(winner, color) {
+      winner.color = winner.color == color ? null : color;
     },
     setWinnerdataToStorage() {
       localStorage.setItem("winners", JSON.stringify(this.winners));
