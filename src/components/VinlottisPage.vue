@@ -1,6 +1,29 @@
 <template>
   <div class="outer">
+    <section class="top-info">
+
+      <h1 class="want-to-win">
+        Vil du også vinne?
+      </h1>
+
+      <a href="#" class="participate-button">
+        <i> -> </i>
+        <p>Trykk her for å delta</p>
+      </a>
+
+      <a href="#" class="see-details-link">
+        
+        Se vipps detaljer og QR-kode
+      </a>
+
+
+    </section>
+    
     <div class="container">
+      <!-- <span> Scroll for å annen gøy statistikk</span> -->
+      
+
+      
       <section class="header-and-notification">
           <h1 @click="startCountdown">Vinlotteri</h1>
           <img
@@ -12,18 +35,24 @@
             v-if="notificationAllowed"
           />
       </section>
+
+
       <div class="to-lottery-container">
         <a href="#/lottery" class="to-lottery">Vil du til lotteriet?<span class="vin-link">Trykk her</span></a>
       </div>
+      
       <section class="chart-container">
         <PurchaseGraph class="purchase" />
         <WinGraph class="win" />
       </section>
+      
+      
       <TotalBought class="total-bought" />
       <Vipps class="vipps-icon" />
       <Highscore class="highscore"/>
       <Wines class="wines-container" />
     </div>
+    
     <Countdown :hardEnable="hardStart" @countdown="changeEnabled" />
   </div>
 </template>
@@ -95,9 +124,63 @@ export default {
 
 <style lang="scss" scoped>
 @import "../styles/media-queries.scss";
+@import "../styles/variables.scss";
 
-.outer {
-  margin: 1em;
+.top-info {
+  height: 30em;
+  background-color: $primary;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  align-items: center;
+  justify-items: start;
+
+  .want-to-win {
+    grid-column: 3 / 7;
+    grid-row: 4 / 6;
+    font-size: 3em;
+    font-weight: 400;
+  }
+
+  .participate-button {
+    
+    grid-column: 3 / 7;
+    grid-row: 6 / 8;
+    background: inherit;
+    border: 4px solid black;
+    padding: 0 1em 0 1em;
+    display: flex;
+    width: 15em;
+    justify-content: space-evenly;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    
+    i {
+      color: $link-color;
+    }
+
+    p {
+      font-size: 16px;
+    }
+  }
+
+  .see-details-link {
+    grid-column: 3 / 7;
+    grid-row: 8 / 10;
+    font-weight: bold;
+    color: black;
+    font-weight: 200;
+    font-size: 1.3em;
+
+    text-decoration: underline;
+    text-decoration-color: $link-color;
+    text-underline-position: under;
+  }
+
 }
 
 h1 {
