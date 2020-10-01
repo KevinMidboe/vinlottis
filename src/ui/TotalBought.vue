@@ -1,6 +1,15 @@
 <template>
-  <div class="outer-bought">
+  <section class="outer-bought">
     <h3>Loddstatistikk</h3>
+
+    <div class="inner-bought-container total-ballots">
+        Totalt&nbsp;
+        <span class="total">{{ total }}</span>
+        &nbsp;kjøpte og&nbsp;
+        <span>{{ totalWin }}&nbsp;vinn</span>
+    </div>
+
+
     <div class="bought-container">
       <div
         v-for="color in colors"
@@ -8,34 +17,23 @@
           color.name +
             '-container ' +
             color.name +
-            '-ballot inner-bought-container ballot-element'
+            '-ballot ballot-element-local'
         "
         :key="color.name"
       >
-        <div class="number-container">
-          <span class="color-total bought-number-span">
+        <p class="number-container">
+          {{translate(color.name)}} vinnersjanse
+          <!-- <span class="color-total bought-number-span">
             {{ color.total }}
-          </span>
-          <span>kjøpte</span>
-        </div>
+          </span> -->
+        </p>
+        <h3>{{ color.totalPercentage }}% vinn</h3>
         <div class="inner-text-container">
           <div>{{ color.win }} vinn</div>
-          <div>{{ color.totalPercentage }}% vinn</div>
-        </div>
-      </div>
-
-      <div class="inner-bought-container total-ballots">
-        <div class="total-container">
-          Totalt&nbsp;
-          <div>
-            <span class="total">{{ total }}</span> kjøpte
-          </div>
-          <div>{{ totalWin }} vinn</div>
-          <div>{{ stolen }} stjålet</div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 <script>
 import { colorStatistics } from "@/api";
@@ -114,6 +112,23 @@ export default {
     this.colors = this.colors.sort((a, b) => (a.win > b.win ? -1 : 1));
   },
   methods: {
+    translate(color){
+      switch(color) {
+        case "blue":
+          return "Blå"
+          break;
+        case "red":
+          return "Rød"
+          break;
+        case "green":
+          return "Grønn"
+          break;
+        case "yellow":
+          return "Gul"
+          break;
+        break;
+      }
+    },
     getPercentage: function(win, total) {
       return this.round(win == 0 ? 0 : (win / total) * 100);
     },
@@ -125,108 +140,138 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/global.scss";
+// @import "../styles/global.scss";
 @import "../styles/variables.scss";
 @import "../styles/media-queries.scss";
 
-.inner-bought-container {
+.total-ballots {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
-.ballot-element {
-  width: 140px;
-  height: 150px;
-  margin: 20px 0;
-}
+.bought-container {
+  margin-top: 2em;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 2em;
 
-.number-container {
-  display: flex;
-  align-items: flex-end;
+  .ballot-element-local {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    padding: .5em;
 
-  & span:last-child {
-    padding-bottom: 5px;
-    padding-left: 5px;
+    &.green-ballot {
+      background-color: $light-green;
+    }
+
+    &.blue-ballot {
+      background-color: $light-blue;
+    }
+
+    &.yellow-ballot {
+      background-color: $light-yellow;
+    }
+
+    &.red-ballot {
+      background-color: $light-red;
+    }
   }
 }
 
+.inner-bought-container {
+}
+
+.ballot-element {
+  // width: 140px;
+  // height: 150px;
+  // margin: 20px 0;
+}
+
+.number-container {
+  // display: flex;
+  // align-items: flex-end;
+
+  // & span:last-child {
+  //   padding-bottom: 5px;
+  //   padding-left: 5px;
+  // }
+}
+
 .inner-text-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
 
   // TODO fix styling for displaying in columns
   @include mobile {
-    & div {
-      padding: 0 5px;
-    }
+    // & div {
+    //   padding: 0 5px;
+    // }
   }
 }
 
 .total-ballots {
-  width: 150px;
-  height: 150px;
-  margin: 20px 0;
+  // width: 150px;
+  // height: 150px;
+  // margin: 20px 0;
 }
 
 .total-container {
-  align-items: flex-start;
+  // align-items: flex-start;
 }
 
 @include mobile {
-  .total-container {
-    > div:nth-of-type(2) {
-      margin-top: auto;
-      padding-bottom: 4px;
-      padding-left: 5px;
-    }
-  }
+  // .total-container {
+  //   > div:nth-of-type(2) {
+  //     margin-top: auto;
+  //     padding-bottom: 4px;
+  //     padding-left: 5px;
+  //   }
+  // }
 }
 
 .bought-number-span {
-  display: inline-flex;
+  // display: inline-flex;
 }
 
-.outer-bought {
-  @include mobile {
-    padding: 0 20px;
-  }
-}
+// .outer-bought {
+//   @include mobile {
+//     padding: 0 20px;
+//   }
+// }
 
 .bought-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
-  padding-bottom: 3rem;
-  max-width: 1400px;
-  margin: auto;
-  justify-content: space-between;
-  font-family: Arial;
+  // display: flex;
+  // flex-direction: row;
+  // flex-wrap: wrap;
+  // width: 100%;
+  // padding-bottom: 3rem;
+  // max-width: 1400px;
+  // margin: auto;
+  // justify-content: space-between;
+  // font-family: Arial;
 
   @include mobile {
-    padding-bottom: 0px;
+    // padding-bottom: 0px;
   }
 }
 
 .color-total,
 .total {
-  font-size: 2rem;
-  font-weight: bold;
+  // font-size: 2rem;
+  // font-weight: bold;
 }
 
 .small {
-  font-weight: bold;
-  font-size: 1.25rem;
-  display: inline-block;
+  // font-weight: bold;
+  // font-size: 1.25rem;
+  // display: inline-block;
 }
 
 @include mobile {
   .bought-container {
-    flex-wrap: wrap;
+    // flex-wrap: wrap;
   }
 }
 </style>

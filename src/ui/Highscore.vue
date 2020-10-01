@@ -1,13 +1,19 @@
 <template>
   <div class="highscores" v-if="highscore.length > 0">
-    <h3>
-      <router-link to="highscore">
-        Topp 10 vinnere <span class="vin-link">Se alle &gt;</span>
+
+    <section class="heading">
+      <h3>
+        Topp 5 vinnere
+      </h3>
+      <router-link to="highscore" class="">
+        <span class="vin-link">Se alle vinnere</span>
       </router-link>
-    </h3>
-    <ol>
-      <li v-for="person in highscore" :key="person">
-        {{ person.name }} - {{ person.wins.length }}
+    </section>
+    <ol class="winner-list-container">
+      <li v-for="(person, index) in highscore" :key="person" class="single-winner">
+        <span class="placement">{{index + 1}}</span>
+        <span class="winner-icon"> ic </span>
+        <p class="winner-name">{{ person.name }}</p>
       </li>
     </ol>
   </div>
@@ -29,60 +35,69 @@ export default {
     response = response.filter(
       person => person.name != null && person.name != ""
     );
-    this.highscore = response.slice(0, 10);
+    this.highscore = response.slice(0, 5);
   }
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../styles/media-queries.scss";
-div {
-  margin: 0;
-  font-family: Arial;
-  display: inline-flex;
-  flex-direction: column;
+@import "../styles/variables.scss";
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-h3 {
-  text-align: left;
+a {
+  text-decoration: none;
+  color: #333333;
 
-  & a {
+  &:focus,
+  &:active,
+  &:visited {
     text-decoration: none;
     color: #333333;
-
-    &:focus,
-    &:active,
-    &:visited {
-      text-decoration: none;
-      color: #333333;
-    }
   }
 }
 
 ol {
-  padding-left: 1.375rem !important;
+  list-style-type: none;
   margin-left: 0;
-  margin: 0 0 1.5em;
   padding: 0;
-  counter-reset: item;
-  & > li {
-    padding: 2.5px 0;
-    width: max-content;
-    margin: 0 0 0 -1.25rem;
-    padding: 0;
-    list-style-type: none;
-    counter-increment: item;
-    &:before {
-      display: inline-block;
-      width: 1em;
-      padding-right: 0.5rem;
-      font-weight: bold;
-      text-align: right;
-      content: counter(item) ".";
+}
+
+.winner-list-container {
+  width: 100%;
+  display: grid;
+  grid-template: 1fr / repeat(5, 1fr);
+  column-gap: 2em;
+  margin: 0;
+
+  .single-winner {
+    width: 10em;
+    background: $primary;
+    padding: 1em;
+    display: grid;
+    grid-template: 1fr .3fr / 1fr 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+
+    .placement {
+      grid-row: 1;
+      grid-column: 1 / 3;
+      font-size: 3em;
     }
 
-    @include mobile {
-      padding: 5px 0;
+    .winner-name {
+      grid-row: 2;
+      grid-column: 1 / -1;
+    }
+
+    .winner-icon {
+      grid-row: 1;
+      grid-column: 3;
     }
   }
 }
