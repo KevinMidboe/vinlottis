@@ -111,6 +111,7 @@ const byName = (req, res) => {
 
         return res.send({
           message: `Lottery winnings by name: ${name}`,
+          name: name,
           highscore: highscoreWithResolvedWines
          })
       } else {
