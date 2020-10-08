@@ -4,7 +4,7 @@
 
     <div class="backdrop">
       <router-link to="/highscore">
-        ⬅ <h3 class="vin-link">Tilbake til topplisten</h3>
+        ⬅ <h3 class="vin-link go-back">Tilbake til topplisten</h3>
       </router-link>
 
       <section v-if="winner">
@@ -96,16 +96,26 @@ export default {
 @import "./src/styles/variables";
 @import "./src/styles/media-queries";
 
+
 $elementSpacing: 4rem;
 
 .el-spacing {
   margin-bottom: $elementSpacing;
 }
 
+.go-back {
+  font-weight: normal;
+  font-size: 1.1rem;
+  border-width: 2px;
+
+  &:not(:hover) {
+    border-color: $matte-text-color;
+  }
+}
 .container {
   width: 90vw;  
   margin: 0 auto;
-  max-width: 1500px;
+  max-width: 1200px;
 
   @include desktop {
     width: 80vw;
@@ -180,7 +190,7 @@ h3 {
     display: inline-block;
 
     @include tablet {
-      width: calc(100% - 160px);
+      width: calc(100% - 160px - 80px);
     }
     
     & > * {
@@ -194,7 +204,7 @@ h3 {
     }
 
     a {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       border-width: 2px;
       font-weight: normal;
     }
