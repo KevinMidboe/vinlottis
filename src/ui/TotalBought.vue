@@ -8,7 +8,7 @@
           color.name +
             '-container ' +
             color.name +
-            '-ballot inner-bought-container ballot-element'
+            '-raffle inner-bought-container ballot-element'
         "
         :key="color.name"
       >
@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div class="inner-bought-container total-ballots">
+      <div class="inner-bought-container total-raffles">
         <div class="total-container">
           Totalt&nbsp;
           <div>
@@ -136,7 +136,7 @@ export default {
   align-items: center;
 }
 
-.ballot-element {
+.raffle-element {
   width: 140px;
   height: 150px;
   margin: 20px 0;
@@ -166,7 +166,7 @@ export default {
   }
 }
 
-.total-ballots {
+.total-raffles {
   width: 150px;
   height: 150px;
   margin: 20px 0;

@@ -18,7 +18,7 @@
     <h2 v-if="winners.length > 0">Vinnere</h2>
     <div class="winners" v-if="winners.length > 0">
       <div class="winner" v-for="(winner, index) in winners" :key="index">
-        <div :class="winner.color + '-ballot'" class="ballot-element">
+        <div :class="winner.color + '-raffle'" class="raffle-element">
           <span>{{ winner.name }}</span>
           <span>{{ winner.phoneNumber }}</span>
           <span>Rød: {{ winner.red }}</span>
@@ -47,11 +47,11 @@
           <span class="name">{{ attendee.name }}</span>
           <span class="phoneNumber">{{ attendee.phoneNumber }}</span>
         </div>
-        <div class="ballots-container">
-          <div class="red-ballot ballot-element small">{{ attendee.red }}</div>
-          <div class="blue-ballot ballot-element small">{{ attendee.blue }}</div>
-          <div class="green-ballot ballot-element small">{{ attendee.green }}</div>
-          <div class="yellow-ballot ballot-element small">{{ attendee.yellow }}</div>
+        <div class="raffles-container">
+          <div class="red-raffle raffle-element small">{{ attendee.red }}</div>
+          <div class="blue-raffle raffle-element small">{{ attendee.blue }}</div>
+          <div class="green-raffle raffle-element small">{{ attendee.green }}</div>
+          <div class="yellow-raffle raffle-element small">{{ attendee.yellow }}</div>
         </div>
       </div>
     </div>
@@ -140,7 +140,7 @@ export default {
       blue: 0,
       green: 0,
       yellow: 0,
-      ballots: 0,
+      raffles: 0,
       randomColors: false,
       attendees: [],
       winners: [],
@@ -197,7 +197,7 @@ export default {
         blue: this.blue,
         green: this.green,
         yellow: this.yellow,
-        ballots: this.ballots
+        raffles: this.raffles
       });
 
       if (response == true) {
@@ -354,7 +354,7 @@ hr {
   }
 }
 
-.ballot-element {
+.raffle-element {
   width: 140px;
   height: 150px;
   margin: 20px 0;
@@ -378,19 +378,19 @@ hr {
     font-size: 1rem;
   }
 
-  &.green-ballot {
+  &.green-raffle {
     background-color: $light-green;
   }
 
-  &.blue-ballot {
+  &.blue-raffle {
     background-color: $light-blue;
   }
 
-  &.yellow-ballot {
+  &.yellow-raffle {
     background-color: $light-yellow;
   }
 
-  &.red-ballot {
+  &.red-raffle {
     background-color: $light-red;
   }
 }
@@ -422,7 +422,7 @@ button {
   margin: 0 auto;
 
   & .name-and-phone,
-  & .ballots-container {
+  & .raffles-container {
     display: flex;
     justify-content: center;
   }
@@ -431,7 +431,7 @@ button {
     flex-direction: column;
   }
 
-  & .ballots-container {
+  & .raffles-container {
     flex-direction: row;
   }
 }
