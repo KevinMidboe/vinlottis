@@ -58,6 +58,7 @@
 <script>
 
 import { highscoreStatistics } from "@/api";
+import { humanReadableDate, daysAgo } from "@/utils";
 import Wine from "@/ui/Wine";
 
 export default {
@@ -92,18 +93,12 @@ export default {
     }
   },
   methods: {
+    humanReadableDate: humanReadableDate,
+    daysAgo: daysAgo,
     resetFilter() {
       this.highscore = this.highscoreResponse;
       this.highscoreFilter = '';
       document.getElementsByTagName('input')[0].focus();
-    },
-    humanReadableDate(date) {
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      return new Date(date).toLocaleDateString(undefined, options);
-    },
-    daysAgo(date) {
-      const day = 24 * 60 * 60 * 1000;
-      return Math.round(Math.abs((new Date() - new Date(date)) / day));
     },
     selectWinner(winner) {
       if (this.selectedWinner != null && this.selectedWinner["name"] == winner["name"]) {
