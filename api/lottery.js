@@ -82,11 +82,13 @@ const byEpochDate = (req, res) => {
     .then(highscore => getHighscoreByDates(highscore))
     .then(async (lotteries) => {
       const lottery = lotteries[date];
+      let highscoreWithResolvedWines = await resolveWineReferences(lottery)
+      highscoreWithResolvedWines = highscoreWithResolvedWines.reverse()
 
       if (lottery != null) {
         return res.send({
           message: `Lottery for date: ${dateString}`,
-          lottery: await resolveWineReferences(lottery)
+          lottery: highscoreWithResolvedWines
         })
       } else {
         return res.status(404).send({
@@ -104,7 +106,8 @@ const byName = (req, res) => {
     .then(async (highscore) => {
       highscore = highscore[0]
       if (highscore) {
-        const highscoreWithResolvedWines = await resolveWineReferences(highscore.wins)
+        let highscoreWithResolvedWines = await resolveWineReferences(highscore.wins)
+        highscoreWithResolvedWines = highscoreWithResolvedWines.reverse()
 
         return res.send({
           message: `Lottery winnings by name: ${name}`,
