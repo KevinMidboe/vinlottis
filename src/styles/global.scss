@@ -18,6 +18,10 @@ body {
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 .title {
   text-align: center;
   width: fit-content;
@@ -173,6 +177,8 @@ textarea {
   border-bottom: 1px solid $link-color;
   font-size: 1rem;
   margin-left: 15px;
+  text-decoration: none;
+  color: $matte-text-color;
 }
 
 

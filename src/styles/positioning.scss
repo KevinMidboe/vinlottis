@@ -1,23 +1,30 @@
 .flex {
   display: flex;
 
-  & .column {
+  &.column {
     flex-direction: column;
   }
 
-  & .row {
+  &.row {
     flex-direction: row;
   }
 
-  & .wrap {
+  &.wrap {
     flex-wrap: wrap;
   }
 
   &.justify-center {
     justify-content: center;
   }
+  &.justify-space-between {
+    justify-content: space-between;
+  }
 
   &.align-center {
     align-items: center;
   }
+}
+
+.inline-block {
+  display: inline-block;
 }
