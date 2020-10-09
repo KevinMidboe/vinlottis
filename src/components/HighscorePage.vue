@@ -49,7 +49,7 @@
       </div>
 
       <div v-else class="center">
-        <h1>👈 Se dine vinn, trykk på navnet ditt</h1>
+        <h1>👈 Se dine vin(n), trykk på navnet ditt</h1>
       </div>
     </div>
   </div>
