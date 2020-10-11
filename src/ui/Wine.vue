@@ -61,7 +61,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "./src/styles/media-queries";
-@import "./src/styles/global";
 @import "./src/styles/variables";
 
 .wine {
@@ -96,16 +95,16 @@ export default {
   }
 }
 
-.wine-details {
-  display: flex;
-  flex-direction: column;
-}
-
 h2 {
   font-weight: normal;
   font-size: 1.4rem;
   margin: 2rem 0;
   color: $matte-text-color;
+}
+
+.wine-details {
+  display: flex;
+  flex-direction: column;
 }
 
 .bottom-section {
