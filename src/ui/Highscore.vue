@@ -7,7 +7,7 @@
     </h3>
     <ol>
       <li v-for="person in highscore" :key="person">
-        {{ person.name }} - {{ person.wins.length }}
+        <b>{{ person.rank }}.</b> {{ person.name }} - {{ person.wins.length }}
       </li>
     </ol>
   </div>
@@ -23,13 +23,26 @@ export default {
   },
   async mounted() {
     let response = await highscoreStatistics();
-    response.sort((a, b) => {
-      return a.wins.length > b.wins.length ? -1 : 1;
-    });
-    response = response.filter(
-      person => person.name != null && person.name != ""
-    );
-    this.highscore = response.slice(0, 10);
+    response.sort((a, b) => a.wins.length < b.wins.length ? 1 : -1)
+    this.highscore = this.generateScoreBoard(response.slice(0, 10));
+  },
+  methods: {
+    generateScoreBoard(highscore=this.highscore) {
+      let place = 0;
+      let highestWinCount = -1;
+
+      return highscore.map(win => {
+        const wins = win.wins.length
+        if (wins != highestWinCount) {
+          place += 1
+          highestWinCount = wins
+        }
+
+        const placeString = place.toString().padStart(2, "0");
+        win.rank = placeString;
+        return win
+      })
+    }
   }
 };
 </script>
@@ -67,19 +80,8 @@ ol {
   counter-reset: item;
   & > li {
     padding: 2.5px 0;
-    width: max-content;
     margin: 0 0 0 -1.25rem;
-    padding: 0;
     list-style-type: none;
-    counter-increment: item;
-    &:before {
-      display: inline-block;
-      width: 1em;
-      padding-right: 0.5rem;
-      font-weight: bold;
-      text-align: right;
-      content: counter(item) ".";
-    }
 
     @include mobile {
       padding: 5px 0;
