@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { getAmIWinner, postWineChosen } from "@/api";
+import { getAmIWinner, postWineChosen, prelottery } from "@/api";
 import Wine from "@/ui/Wine";
 export default {
   components: { Wine },
@@ -60,8 +60,7 @@ export default {
     }
     this.turn = true;
     this.name = winnerObject.name;
-    const _wines = await fetch("/api/wines/prelottery");
-    this.wines = await _wines.json();
+    this.wines = await prelottery();
   },
   methods: {
     chosenWine: async function(name) {

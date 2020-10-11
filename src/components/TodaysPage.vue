@@ -11,6 +11,7 @@
 
 <script>
 import { page, event } from "vue-analytics";
+import { prelottery } from "@/api";
 import Banner from "@/ui/Banner";
 import Wine from "@/ui/Wine";
 
@@ -25,8 +26,7 @@ export default {
     };
   },
   async mounted() {
-    const _wines = await fetch("/api/wines/prelottery");
-    this.wines = await _wines.json();
+    prelottery().then(wines => this.wines = wines);
   }
 };
 </script>

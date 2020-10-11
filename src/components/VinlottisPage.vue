@@ -13,7 +13,7 @@
           />
       </section>
       <div class="to-lottery-container">
-        <a href="#/lottery" class="to-lottery">Vil du til lotteriet?<span class="vin-link">Trykk her</span></a>
+        <router-link to="/lottery" class="to-lottery">Vil du til lotteriet?<span class="vin-link">Trykk her</span></router-link>
       </div>
       <section class="chart-container">
         <PurchaseGraph class="purchase" />
