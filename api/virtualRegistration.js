@@ -80,6 +80,7 @@ const registerWinnerSelection = async (req, res) => {
   let wonWine = await _wineFunctions.findSaveWine(prelotteryWine);
   await prelotteryWine.delete();
   await _personFunctions.findSavePerson(foundWinner, wonWine, date);
+  await Message.sendWineConfirmation(foundWinner, wonWine, date);
 
   await foundWinner.delete();
   console.info("Saved winners choice.");
