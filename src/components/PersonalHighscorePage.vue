@@ -3,7 +3,7 @@
     <h1>Vinlottis highscore</h1>
 
     <div class="backdrop">
-      <a @click="navigateBack" @keydown.enter="navigateBack">
+      <a @click="navigateBack" @keydown.enter="navigateBack" tabindex="0">
         ⬅ <span class="vin-link navigate-back">Tilbake til {{ previousRoute.name }}</span>
       </a>
 
