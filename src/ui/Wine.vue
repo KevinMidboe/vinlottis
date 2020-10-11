@@ -88,7 +88,6 @@ h2 {
 .bottom-section {
   width: 100%;
   margin-top: 1rem;
-  background-color: NavajoWhite;
 
   .link {
     color: $matte-text-color;
