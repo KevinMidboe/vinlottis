@@ -40,6 +40,10 @@
           </div>
         </div>
       </section>
+
+      <h2 v-else-if="error" class="error">
+        {{ error }}
+      </h2>
     </div>
   </div>
 </template>
@@ -58,13 +62,20 @@ export default {
   },
   data() {
     return {
-      winner: undefined
+      winner: undefined,
+      error: undefined
     }
   },
   computed: {
     numberOfWins() {
       return this.winner.highscore.length
     }
+  },
+  created() {
+    const nameFromURL = this.$route.params.name;
+    getWinnerByName(nameFromURL)
+      .then(winner => this.setWinner(winner))
+      .catch(err => this.error = `Ingen med navn: "${nameFromURL}" funnet.`)
   },
   methods: {
     setWinner(winner) {
@@ -94,11 +105,6 @@ export default {
     },
     humanReadableDate: humanReadableDate,
     daysAgo: daysAgo
-  },
-  created() {
-    const nameFromURL = this.$route.params.name;
-    if (this.winnerObject === undefined && nameFromURL !== null)
-      getWinnerByName(nameFromURL).then(winner => this.setWinner(winner))
   }
 }
 </script>
