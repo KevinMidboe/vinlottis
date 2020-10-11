@@ -187,7 +187,10 @@ const drawWinner = async (req, res) => {
   );
 
   await newWinnerElement.save();
-  return res.json(winner);
+  return res.json({
+    success: true,
+    winner
+  });
 };
 
 const finish = async (req, res) => {

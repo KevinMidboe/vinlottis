@@ -229,7 +229,8 @@ export default {
         this.drawingWinner = true;
         let response = await getVirtualWinner();
 
-        if (response) {
+        if (response.success) {
+          console.log("Winner:", response.winner);
           if (this.currentWinners < this.numberOfWinners) {
             this.countdown();
           } else {
@@ -245,7 +246,7 @@ export default {
           this.getAttendees();
         } else {
           this.drawingWinner = false;
-          alert("Noe gikk galt under trekningen..!");
+          alert("Noe gikk galt under trekningen..! " + response["message"]);
         }
       }
     },
