@@ -23,7 +23,7 @@ async function sendLastWinnerMessage(winnerObject, wineObject) {
 
   return sendMessageToUser(
     winnerObject.phoneNumber,
-    `Gratulerer som heldig vinner av vinlotteriet ${winnerObject.name}! Du har vunnet vinen ${wineObject.name}, og vil få nærmere info om hvordan/hvor du kan hente vinen snarest. Ha en ellers fin helg!`
+    `Gratulerer som heldig vinner av vinlotteriet ${winnerObject.name}! Du har vunnet vinen ${wineObject.name}, vinen kan hentes hos ${ config.name } på kontoret. Ha en ellers fin helg!`
   );
 }
 
