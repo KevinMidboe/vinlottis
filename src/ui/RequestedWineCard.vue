@@ -20,10 +20,6 @@
          :class="{ 'active': locallyRequested }">
         Anbefal
       </a>
-
-      <a aria-role="button" tabindex="0" class="link float-left" @click="request"
-         :class="{ 'active': locallyRequested }">
-      </a>
     </template>
   </Wine>
 </template>
@@ -78,6 +74,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "./src/styles/variables";
+
 .requested-count {
   display: inline-block;
   margin-top: -0.5rem;
@@ -96,5 +94,9 @@ export default {
   .icon {
     font-style: unset;
   }
+}
+
+.link .active {
+  border-color: $link-color;
 }
 </style>
