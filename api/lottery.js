@@ -120,7 +120,7 @@ const byName = (req, res) => {
     .then(highscore => res.send({
       message: `Lottery winnings for name: ${ name }.`,
       name: highscore.name,
-      wins: highscore.wins
+      highscore: highscore.wins
     }))
 }
 
