@@ -117,10 +117,13 @@ const findAndNotifyNextWinner = async () => {
   let winesLeft = await PreLotteryWine.find();
 
   if (winnersLeft.length > 1) {
+    console.log("multiple winners left, choose next in line")
     nextWinner = winnersLeft[0]; // multiple winners left, choose next in line
   } else if (winnersLeft.length == 1 && winesLeft.length > 1) {
+    console.log("one winner left, but multiple wines")
     nextWinner = winnersLeft[0] // one winner left, but multiple wines
   } else if (winnersLeft.length == 1 && winesLeft.length == 1) {
+    console.log("one winner and one wine left, choose for user")
     nextWinner = winnersLeft[0] // one winner and one wine left, choose for user
     wine = winesLeft[0]
     return chooseLastWineForUser(nextWinner, wine);
