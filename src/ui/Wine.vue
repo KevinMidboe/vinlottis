@@ -10,7 +10,7 @@
 
     <div class="wine-details">
       <h2 v-if="wine.name">{{ wine.name }}</h2>
-      <span v-if="wine.rating"><b>Rating:</b>{{ wine.rating }} rating</span>
+      <span v-if="wine.rating"><b>Rating:</b> {{ wine.rating }} rating</span>
       <span v-if="wine.price"><b>Pris:</b> {{ wine.price }} NOK</span>
       <span v-if="wine.country"><b>Land:</b> {{ wine.country }}</span>
     </div>
