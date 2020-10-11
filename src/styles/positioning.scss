@@ -1,15 +1,15 @@
 .flex {
   display: flex;
 
-  & .column {
+  &.column {
     flex-direction: column;
   }
 
-  & .row {
+  &.row {
     flex-direction: row;
   }
 
-  & .wrap {
+  &.wrap {
     flex-wrap: wrap;
   }
 
