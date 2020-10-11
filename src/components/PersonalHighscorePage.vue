@@ -22,7 +22,9 @@
         <h4 class="el-spacing">Flasker vunnet:</h4>
 
         <div v-for="win in winner.highscore">
-          <span class="date-won">{{ humanReadableDate(win.date) }} - {{ daysAgo(win.date) }} dager siden</span>
+          <router-link :to="winDateUrl(win.date)" class="days-ago">
+            {{ humanReadableDate(win.date) }} - {{ daysAgo(win.date) }} dager siden
+          </router-link>
           
           <div class="won-wine">
             <img :src="win.wine.image">
@@ -80,6 +82,10 @@ export default {
         }
       })
       return colorOccurences
+    },
+    winDateUrl(date) {
+      const timestamp = new Date(date).getTime();
+      return `/history/${timestamp}`
     },
     humanReadableDate: humanReadableDate,
     daysAgo: daysAgo
