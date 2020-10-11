@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1>Vinlottis highscore</h1>
-    
+
     <div class="filter flex el-spacing">
       <input type="text" v-model="filterInput" placeholder="Filtrer på navn" />
       <button v-if="filterInput" @click="resetFilter" class="vin-button auto-height margin-left-sm">
