@@ -95,15 +95,19 @@ const registerWinnerSelection = async (req, res) => {
     }))
 };
 
-const chooseLastWineForUser = (winner, prelotteryWine) => {
+const chooseLastWineForUser = (winner, preLotteryWine) => {
   let date = new Date();
   date.setHours(5, 0, 0, 0);
 
   return _wineFunctions.findSaveWine(preLotteryWine)
     .then(wonWine => _personFunctions.findSavePerson(winner, wonWine, date))
-    .then(() => prelotteryWine.delete())
+    .then(() => preLotteryWine.delete())
     .then(() => Message.sendLastWinnerMessage(winner, preLotteryWine))
-    .then(() => winner.delete());
+    .then(() => winner.delete())
+    .catch(err => {
+      console.log("Error thrown from chooseLastWineForUser: " + err);
+      throw err;
+    })
 }
 
 const findAndNotifyNextWinner = async () => {
