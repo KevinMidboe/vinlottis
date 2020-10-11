@@ -54,12 +54,16 @@ export default {
     }
   },
   methods: {
-    request(wine){
+    request(){
+      if (this.locallyRequested)
+        return
+      console.log("requesting", this.wine)
       this.locallyRequested = true
       this.requestedElement.count = this.requestedElement.count +1
-      requestNewWine(wine)
+      requestNewWine(this.wine)
     },
-    async deleteWine(wine) {
+    async deleteWine() {
+      const wine = this.wine
       if (window.confirm("Er du sikker på at du vil slette vinen?")) {
         let response = await deleteRequestedWine(wine);
         if (response['success'] == true) {
@@ -82,7 +86,7 @@ export default {
   font-size: 1.1rem;
   padding-left: 1rem;
   padding-right: 1rem;
-  
+
   span {
     padding: 0.6rem 0;
     padding-right: 0.25rem;
