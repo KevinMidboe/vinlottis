@@ -4,10 +4,10 @@
     <div class="attendees-container" ref="attendees">
       <div class="attendee" v-for="(attendee, index) in flipList(attendees)" :key="index">
         <span class="attendee-name">{{ attendee.name }}</span>
-        <div class="red-ballot ballot-element small">{{ attendee.red }}</div>
-        <div class="blue-ballot ballot-element small">{{ attendee.blue }}</div>
-        <div class="green-ballot ballot-element small">{{ attendee.green }}</div>
-        <div class="yellow-ballot ballot-element small">{{ attendee.yellow }}</div>
+        <div class="red-raffle ballot-element small">{{ attendee.red }}</div>
+        <div class="blue-raffle ballot-element small">{{ attendee.blue }}</div>
+        <div class="green-raffle ballot-element small">{{ attendee.green }}</div>
+        <div class="yellow-raffle ballot-element small">{{ attendee.yellow }}</div>
       </div>
     </div>
   </div>
@@ -46,7 +46,7 @@ export default {
   width: 60%;
 }
 
-.ballot-element {
+.raffle-element {
   font-size: 0.75rem;
   width: 45px;
   height: 45px;

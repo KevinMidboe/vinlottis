@@ -1,9 +1,5 @@
 const express = require("express");
 const path = require("path");
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/vinlottis", {
-  useNewUrlParser: true
-});
 
 const sub = require(path.join(__dirname + "/../api/subscriptions"));
 

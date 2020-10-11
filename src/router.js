@@ -14,6 +14,7 @@ import WinnerPage from "@/components/WinnerPage";
 import LotteryPage from "@/components/LotteryPage";
 import HistoryPage from "@/components/HistoryPage";
 import HighscorePage from "@/components/HighscorePage";
+import PersonalHighscorePage from "@/components/PersonalHighscorePage";
 
 import RequestWine from "@/components/RequestWine";
 import AllRequestedWines from "@/components/AllRequestedWines";
