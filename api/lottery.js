@@ -104,6 +104,7 @@ const byEpochDate = (req, res) => {
 
 const byName = (req, res) => {
   const { name } = req.params;
+  const regexName = new RegExp(name, "i"); // lowercase regex of the name
 
   return Highscore.find({ name })
     .then(highscore => {

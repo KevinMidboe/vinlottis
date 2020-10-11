@@ -42,7 +42,7 @@ h2 {
   flex-wrap: wrap;
 }
 
-.ballot-element {
+.raffle-element {
   font-size: 1rem;
   width: 145px;
   height: 145px;

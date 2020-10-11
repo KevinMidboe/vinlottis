@@ -7,6 +7,18 @@ const dateString = (date) => {
   return `${ye}-${mo}-${da}`
 }
 
+function humanReadableDate(date) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(date).toLocaleDateString(undefined, options);
+}
+
+function daysAgo(date) {
+  const day = 24 * 60 * 60 * 1000;
+  return Math.round(Math.abs((new Date() - new Date(date)) / day));
+}
+
 module.exports = {
-  dateString
+  dateString,
+  humanReadableDate,
+  daysAgo
 }
