@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import VinlottisRouter from "@/router.js";
+import { routes } from "@/router.js";
 import Vinlottis from "@/Vinlottis";
 import VueAnalytics from "vue-analytics";
 
@@ -9,9 +9,13 @@ Vue.use(VueAnalytics, {
   id: "UA-156846886-1"
 });
 
+const router = new VueRouter({
+  routes: routes
+});
+
 new Vue({
   el: "#app",
-  router: VinlottisRouter,
+  router,
   components: { Vinlottis },
   template: "<Vinlottis/>",
   render: h => h(Vinlottis)
