@@ -53,6 +53,7 @@ export default {
       let val = this.filterInput;
 
       if (val.length) {
+        val = val.toLowerCase()
         const nameIncludesString = (person) => person.name.toLowerCase().includes(val);
         highscore = highscore.filter(nameIncludesString)
       }
