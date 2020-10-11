@@ -345,6 +345,19 @@ const historyByDate = (date) => {
   });
 }
 
+const getWinnerByName = (name) => {
+  const encodedName = encodeURIComponent(name)
+  const url = new URL(`/api/lottery/by-name/${name}`, BASE_URL);
+
+  return fetch(url.href).then(resp => {
+   if (resp.ok) {
+    return resp.json();
+   } else {
+    return handleErrors(resp);
+   }
+  })
+}
+
 export {
   statistics,
   colorStatistics,
@@ -377,5 +390,6 @@ export {
   getAmIWinner,
   postWineChosen,
   historyAll,
-  historyByDate
+  historyByDate,
+  getWinnerByName
 };
