@@ -333,6 +333,18 @@ const historyAll = () => {
   });
 }
 
+const historyByDate = (date) => {
+  const url = new URL(`/api/lottery/by-date/${ date }`, BASE_URL);
+
+  return fetch(url.href).then(resp => {
+    if (resp.ok) {
+      return resp.json();
+    } else {
+      return handleErrors(resp);
+    }
+  });
+}
+
 export {
   statistics,
   colorStatistics,
@@ -364,5 +376,6 @@ export {
   finishedDraw,
   getAmIWinner,
   postWineChosen,
-  historyAll
+  historyAll,
+  historyByDate
 };
