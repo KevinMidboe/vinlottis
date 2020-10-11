@@ -99,7 +99,11 @@ async function gatewayRequest(body) {
       res.setEncoding('utf8');
 
       if (res.statusCode == 200) {
-        res.on("data", (d) => resolve(JSON.parse(d)));
+        res.on("data", (data) => {
+          console.log("Response from message gateway:", data)
+
+          resolve(JSON.parse(data))
+        });
       } else {
         res.on("data", (data) => {
           data = JSON.parse(data);
