@@ -1,8 +1,4 @@
 const path = require("path");
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/vinlottis", {
-  useNewUrlParser: true
-});
 
 const Purchase = require(path.join(__dirname + "/../schemas/Purchase"));
 const Wine = require(path.join(__dirname + "/../schemas/Wine"));
