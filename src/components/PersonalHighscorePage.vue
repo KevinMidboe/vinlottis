@@ -66,7 +66,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      if (from.name !== null)
+      if (from.name != null)
         vm.previousRoute = from
     })
   },
