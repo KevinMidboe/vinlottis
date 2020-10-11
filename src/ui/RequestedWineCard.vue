@@ -1,33 +1,41 @@
 <template>
-  <div class="requested-wine">
-    <img
-      v-if="wine.image"
-      :src="wine.image"
-      class="wine-image"
-      :class="{ 'fullscreen': fullscreen }"
-    />
-    <img v-else class="wine-placeholder" alt="Wine image" />
-    <h3 v-if="wine.name">{{ wine.name }}</h3>
-    <h3 v-else>(no name)</h3>
-    <p class="requested-amount">Foreslått: <strong>{{requestedElement.count}}</strong></p>
+  <Wine :wine="wine">
+    <template v-slot:top>
+      <div class="flex justify-end">
+        <div class="requested-count cursor-pointer" @click="request">
+          <span>{{ requestedElement.count }}</span>
+          <i class="icon icon--heart">{{ locallyRequested ? "💜" : "🤍" }}</i>
+        </div>
+      </div>
+    </template>
 
-    <button class="vin-button" @click="request(wine)" v-if="!locallyRequested">Foreslå denne</button>
-    <a
-    v-if="wine.vivinoLink"
-    :href="wine.vivinoLink"
-    class="wine-link">
-      Les mer
-    </a>
-    <button @click="deleteWine(wine)" v-if="showDeleteButton == true" class="vin-button danger">
-      Slett vinen
-    </button>
-    </div>
+    <template v-slot:default>
+      <button @click="deleteWine(wine)" v-if="showDeleteButton == true" class="vin-button small danger">
+        Slett vinen
+      </button>
+    </template>
+
+    <template v-slot:bottom>
+      <a aria-role="button" tabindex="0" class="link float-left" @click="request"
+         :class="{ 'active': locallyRequested }">
+        Anbefal
+      </a>
+
+      <a aria-role="button" tabindex="0" class="link float-left" @click="request"
+         :class="{ 'active': locallyRequested }">
+      </a>
+    </template>
+  </Wine>
 </template>
 
 <script>
 import { deleteRequestedWine, requestNewWine } from "@/api";
+import Wine from "@/ui/Wine";
 
 export default {
+  components: {
+    Wine
+  },
   data(){
     return {
       wine: this.requestedElement.wine,
@@ -65,62 +73,24 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped> 
-@import "../styles/global.scss";
-
-.requested-wine{
-  -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.65);
-  -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.65);
-  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.65);
-  text-align: center;
-  display: grid;
-  grid-template-areas: "top top"
-                       "middle-left middle-right-top"
-                       "middle-left middle-right-bot"
-                       "bottom-top bottom-top"
-                       "bottom-bot bottom-bot";
-  grid-gap: 1em;
-  justify-items: center;
-  align-items: center;
-  width: 100%;
+<style lang="scss" scoped>
+.requested-count {
+  display: inline-block;
+  margin-top: -0.5rem;
+  background-color: rgb(244,244,244);
+  border-radius: 1.1rem;
+  font-size: 1.1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   
-  h3{
-    grid-area: top;
-    word-break: keep-all;
-    width: 90%;
+  span {
+    padding: 0.6rem 0;
+    padding-right: 0.25rem;
+    display: inline-block;
   }
 
-  img{
-    height: 13em;
-    grid-area: middle-left;
-  }
-
-  .requested-amount{
-    grid-area: middle-right-top;
-    width: 90%;
-    word-break: keep-all;
-  }
-  
-  .wine-link{
-    grid-area: middle-right-bot;
-    color: #333333;
-    font-family: Arial;
-    text-decoration: none;
-    font-weight: bold;
-    border-bottom: 1px solid $link-color;
-    height: 1em;
-  }
-
-  .vin-button{
-    grid-area: bottom-top;
-    margin-bottom: 1em;
-
-    &.danger{
-      grid-area: bottom-bot;
-      background-color: $light-red;
-      color: $red;
-    }
+  .icon {
+    font-style: unset;
   }
 }
-
 </style>
