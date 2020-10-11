@@ -3,9 +3,9 @@
     <h1>Vinlottis highscore</h1>
 
     <div class="backdrop">
-      <router-link to="/highscore">
-        ⬅ <h3 class="vin-link go-back">Tilbake til topplisten</h3>
-      </router-link>
+      <a @click="navigateBack" @keydown.enter="navigateBack">
+        ⬅ <span class="vin-link navigate-back">Tilbake til {{ previousRoute.name }}</span>
+      </a>
 
       <section v-if="winner">
         <h2 class="name">{{ winner.name }}</h2>
@@ -53,18 +53,22 @@ import { getWinnerByName } from "@/api";
 import { humanReadableDate, daysAgo } from "@/utils";
 
 export default {
-  props: {
-    winnerObject: {
-      type: Object,
-      required: false,
-      default: undefined
-    }
-  },
   data() {
     return {
       winner: undefined,
-      error: undefined
+      error: undefined,
+      previousRoute: {
+        default: true,
+        name: "topplisten",
+        path: "/highscore"
+      }
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (from.name !== null)
+        vm.previousRoute = from
+    })
   },
   computed: {
     numberOfWins() {
@@ -79,7 +83,11 @@ export default {
   },
   methods: {
     setWinner(winner) {
-      this.winner = winner
+      this.winner = {
+        name: winner.name,
+        highscore: [],
+        ...winner
+      }
       this.winningColors = this.findWinningColors()
     },
     smallerWineImage(image) {
@@ -102,6 +110,13 @@ export default {
     winDateUrl(date) {
       const timestamp = new Date(date).getTime();
       return `/history/${timestamp}`
+    },
+    navigateBack() {
+      if (this.previousRoute.default) {
+        this.$router.push({ path: this.previousRoute.path });
+      } else {
+        this.$router.go(-1);
+      }
     },
     humanReadableDate: humanReadableDate,
     daysAgo: daysAgo
