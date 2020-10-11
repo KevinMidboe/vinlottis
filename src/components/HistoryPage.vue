@@ -3,7 +3,7 @@
     <h1>Historie fra tidligere lotteri</h1>
 
     <div v-if="lotteries.length || lotteries != null" v-for="lottery in lotteries">
-      <Winners :winners="lottery.winners" :title="`Vinnere fra ${humanReadableDate(lottery.date)}`" />
+      <Winners :winners="lottery.winners" :title="`Vinnere fra ${ humanReadableDate(lottery.date) }`" />
     </div>
   </div>
 </template>
