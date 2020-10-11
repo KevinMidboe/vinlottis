@@ -29,7 +29,7 @@
           <div class="won-wine">
             <img :src="smallerWineImage(win.wine.image)">
 
-            <div class="wine-details">
+            <div class="won-wine-details">
               <h3>{{ win.wine.name }}</h3>
               <a :href="win.wine.vivinoLink" class="vin-link no-margin">
                 Les mer på vinmonopolet.no
@@ -128,25 +128,24 @@ export default {
 @import "./src/styles/variables";
 @import "./src/styles/media-queries";
 
-
-$elementSpacing: 4rem;
+$elementSpacing: 3rem;
 
 .el-spacing {
   margin-bottom: $elementSpacing;
 }
 
-.go-back {
+.navigate-back {
   font-weight: normal;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   border-width: 2px;
-
-  &:not(:hover) {
-    border-color: $matte-text-color;
-  }
+  border-color: gray;
 }
+
 .container {
   width: 90vw;  
-  margin: 0 auto;
+  margin: 3rem auto;
+  margin-bottom: 0;
+  padding-bottom: 3rem;
   max-width: 1200px;
 
   @include desktop {
@@ -155,24 +154,27 @@ $elementSpacing: 4rem;
 }
 
 h1 {
-  font-size: 2.8rem;
+  font-size: 3rem;
   font-family: "knowit";
   font-weight: normal;
-}
-
-h3 {
-  display: inline-block;
 }
 
 .name {
   text-transform: capitalize;
-  font-size: 2.2rem;
+  font-size: 3.5rem;
   font-family: "knowit";
+  font-weight: normal;
+  margin: 2rem 0 1rem 0;
+}
+
+.error {
+  font-size: 2.5rem;
   font-weight: normal;
 }
 
 .win-count {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  margin-top: 0;
 }
 
 .raffle-container {
@@ -180,18 +182,17 @@ h3 {
   margin-top: 1rem;
 
   div:not(:last-of-type) {
-    margin-right: 1rem;
+    margin-right: 1.5rem;
   }
 }
 .raffle-element {
-  width: 80px;
-  height: 60px;
+  width: 5rem;
+  height: 4rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   margin-top: 0;
-  margin-bottom: 0;
 
   &.small {
     height: 40px;
@@ -199,10 +200,19 @@ h3 {
   }
 }
 
+.days-ago {
+  color: $matte-text-color;
+  border-bottom: 2px solid transparent;
+
+  &:hover {
+    border-color: $link-color;
+  }
+}
+
 .won-wine {
   --spacing: 1rem;
   background-color: white;
-  margin: var(--spacing) 0 4rem 0;
+  margin: var(--spacing) 0 3rem 0;
   padding: var(--spacing);
 
   position: relative;
@@ -212,12 +222,11 @@ h3 {
   }
 
   img {
-    // width: 60px;
     margin: 0 3rem;
     height: 160px;
   }
 
-  .wine-details {
+  &-details {
     vertical-align: top;
     display: inline-block;
 
@@ -244,8 +253,8 @@ h3 {
 
   .raffle-element {
     position: absolute;
-    top: var(--spacing);
-    right: var(--spacing);
+    top: calc(var(--spacing) * 2);
+    right: calc(var(--spacing) * 2);
     margin: 0;
   }
 }
@@ -254,14 +263,11 @@ h3 {
 .backdrop {
   $background: rgb(244,244,244);
   
-  --horizontal-padding: 2rem;
+  --padding: 2rem;
   @include desktop {
-    $horizontal-padding: 5rem;
+    --padding: 5rem;
   }
   background-color: $background;
-  height: 100%;
-  width: calc(100% - calc(var(--horizontal-padding) * 2);
-
-  padding: 2rem var(--horizontal-padding);
+  padding: var(--padding);
 }
 </style>
