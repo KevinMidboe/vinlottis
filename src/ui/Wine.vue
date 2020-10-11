@@ -99,13 +99,10 @@ export default {
 .wine-details {
   display: flex;
   flex-direction: column;
-}
 
-h2 {
-  font-weight: normal;
-  font-size: 1.4rem;
-  margin: 2rem 0;
-  color: $matte-text-color;
+  > span {
+    margin-bottom: 0.5rem;
+  }
 }
 
 .bottom-section {
