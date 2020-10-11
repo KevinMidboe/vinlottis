@@ -27,7 +27,7 @@
           </router-link>
           
           <div class="won-wine">
-            <img :src="win.wine.image">
+            <img :src="smallerWineImage(win.wine.image)">
 
             <div class="wine-details">
               <h3>{{ win.wine.name }}</h3>
@@ -70,6 +70,11 @@ export default {
     setWinner(winner) {
       this.winner = winner
       this.winningColors = this.findWinningColors()
+    },
+    smallerWineImage(image) {
+      if (image && image.includes(`515x515`))
+        return image.replace(`515x515`, `175x175`)
+      return image
     },
     findWinningColors() {
       const colors = this.winner.highscore.map(win => win.color)
