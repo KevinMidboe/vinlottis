@@ -1,26 +1,32 @@
 <template>
-  <div class="outer">
-    <div class="container">
-      <h1 class="title">Alle viner</h1>
-      <div class="wines-container">
-        <Wine :wine="wine" v-for="wine in wines" :key="wine" :fullscreen="true" :inlineSlot="true">
-          <div class="winners-container">
-            <div class="color-wins" :class="{ 'big': fullscreen }"
-              v-if="wine.blue || wine.red || wine.green || wine.yellow">
-              <span class="label">Vinnende lodd:</span>
-              <span class="color-win blue">{{wine.blue == undefined ? 0 : wine.blue}}</span>
-              <span class="color-win red">{{wine.red == undefined ? 0 : wine.red}}</span>
-              <span class="color-win green">{{wine.green == undefined ? 0 : wine.green}}</span>
-              <span class="color-win yellow">{{wine.yellow == undefined ? 0 : wine.yellow}}</span>
-            </div>
-            <div class="name-wins" v-if="wine.winners">
-              <span class="label">Vunnet av:</span>
-              <span class="names" v-for="winner in wine.winners">- {{ winner }}</span>
-              </span>
-            </div>
+  <div class="container">
+    <h1 class="">Alle viner</h1>
+
+    <div id="wines-container">
+      <Wine :wine="wine" v-for="(wine, _, index) in wines" :key="wine._id">
+        <div class="winners-container">
+
+          <span class="label">Vinnende lodd:</span>
+          <div class="flex row">
+            <span class="raffle-element blue-raffle">{{ wine.blue == null ? 0 : wine.blue }}</span>
+            <span class="raffle-element red-raffle">{{ wine.red == null ? 0 : wine.red }}</span>
+            <span class="raffle-element green-raffle">{{ wine.green == null ? 0 : wine.green }}</span>
+            <span class="raffle-element yellow-raffle">{{ wine.yellow == null ? 0 : wine.yellow }}</span>
           </div>
-        </Wine>
-      </div>
+
+          <div class="name-wins">
+            <span class="label">Vunnet av:</span>
+            <ul class="names">
+              <li v-for="(winner, index) in wine.winners">
+                <router-link class="vin-link" :to="`/highscore/` + winner">{{ winner }}</router-link>
+                 -&nbsp;
+                <router-link class="vin-link" :to="winDateUrl(wine.dates[index])">{{ dateString(wine.dates[index]) }}</router-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </Wine>
+
     </div>
   </div>
 </template>
@@ -30,6 +36,7 @@ import { page, event } from "vue-analytics";
 import Banner from "@/ui/Banner";
 import Wine from "@/ui/Wine";
 import { overallWineStatistics } from "@/api";
+import { dateString } from "@/utils";
 
 export default {
   components: {
@@ -41,133 +48,97 @@ export default {
       wines: []
     };
   },
+  methods: {
+    winDateUrl(date) {
+      const timestamp = new Date(date).getTime();
+      return `/history/${timestamp}`
+    },
+    dateString: dateString
+  },
   async mounted() {
-    const wines = await overallWineStatistics();
-    this.wines = wines.sort((a, b) =>
-      a.rating > b.rating ? -1 : 1
-    );
+    this.wines = await overallWineStatistics();
   }
 };
 </script>
 
 <style lang="scss" scoped>
 @import "./src/styles/media-queries";
+@import "./src/styles/variables";
+
+.container {
+  width: 90vw;
+  margin: 3rem auto;
+  margin-bottom: 0;
+  padding-bottom: 4rem;
+}
 
 h1 {
+  font-size: 3rem;
+  font-family: "knowit";
+  font-weight: normal;
+
   font-family: knowit, Arial;
   margin-bottom: 25px;
 }
 
-.wines-container {
+.label {
+  font-weight: 600;
+}
+
+#wines-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  align-items: center;
-  width: 100%;
-  margin: 0 auto;
+  align-items: flex-start;
 
   @include desktop {
     margin: 0 2rem;
+  }
 
-    > div {
-      max-width: max-content;
-    }
+  > div {
+    justify-content: flex-start;
   }
 }
 
 .winners-container {
   display: flex;
-  flex-direction: row;
-  margin-top: 2rem;
+  flex-direction: column;
+  margin-top: 1rem;
 
-  @include mobile {
-    flex-direction: row;
-    width: max-content;
-    margin: 0.75rem;
-
-    &:not(&:first-child) {
-      margin-top: 0.5rem;
-    }
+  > div:not(:last-of-type) {
+    margin-bottom: 1rem;
   }
-}
-
-.label {
-  margin-bottom: 0.25rem;
-  font-weight: 600;
-  width: 100%;
 }
 
 .name-wins {
   display: flex;
   flex-direction: column;
-  width: max-content;
 
-  .names {
-    margin-left: 0.5rem;
+  a {
+    font-weight: normal;
+    &:not(:hover) {
+      border-color: transparent;
+    }
+  }
+
+  ul {
+    padding-left: 0;
+
+    li {
+      padding-left: 1.5rem;
+      list-style: none;
+
+      &:before {
+        content: "- ";
+        margin-left: -0.5rem;
+      }
+    }
   }
 }
 
-.color-wins {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: flex-end;
-
-  margin-left: -3px;   // offset span.color-win margin
-
-  @include mobile {
-    width: 25vw;
-    margin-left: -2px; // offset span.color-win margin
-  }
-  @include desktop {
-    width: 30%;
-  }
-}
-
-.color-wins.big {
-  width: unset;
-}
-
-span.color-win {
-  border: 2px solid transparent;
-  color: #333;
-  display: block;
-  padding: 25px;
+.raffle-element {
+  padding: 1rem;
   font-size: 1.3rem;
-  display: inline-flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  /* max-height: calc(3rem + 18px); */
-  /* max-width: calc(3rem + 18px); */
-  width: 1rem;
   margin: 3px;
-  touch-action: manipulation;
-  height: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 900;
-
-  @include mobile {
-    margin: 2px;
-    padding: 10px;
-    font-size: 1rem;
-    flex-direction: row;
-    flex-wrap: wrap;
-    grow: 0.5;
-  }
-
-  &.green {
-    background: #c8f9df;
-  }
-  &.blue {
-    background: #d4f2fe;
-  }
-  &.red {
-    background: #fbd7de;
-  }
-  &.yellow {
-    background: #fff6d6;
-  }
 }
 </style>

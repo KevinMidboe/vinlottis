@@ -139,7 +139,9 @@ const allWinesSummary = async (req, res) => {
     }
   }
 
-  return res.json(Object.values(wines));
+  wines = Object.values(wines).reverse()
+
+  return res.json(wines);
 };
 
 module.exports = {
