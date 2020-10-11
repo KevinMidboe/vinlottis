@@ -116,11 +116,16 @@ h1 {
 .container{
   display: flex;
   flex-direction: column;
-  
+  width: 100%;
+
   .header-and-notification{
     display: flex;
     flex-direction: row;
     margin: auto;
+  }
+
+  h1 {
+    margin-top: 0;
   }
 
   .vipps-icon{

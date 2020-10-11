@@ -66,23 +66,7 @@ export default {
 @import "./src/styles/variables";
 
 .container {
-  width: 90vw;
-  margin: 3rem auto;
-  margin-bottom: 0;
-  padding-bottom: 4rem;
-}
-
-h1 {
-  font-size: 3rem;
-  font-family: "knowit";
-  font-weight: normal;
-
-  font-family: knowit, Arial;
-  margin-bottom: 25px;
-}
-
-.label {
-  font-weight: 600;
+  max-width: unset;
 }
 
 #wines-container {
@@ -90,10 +74,6 @@ h1 {
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: flex-start;
-
-  @include desktop {
-    margin: 0 2rem;
-  }
 
   > div {
     justify-content: flex-start;

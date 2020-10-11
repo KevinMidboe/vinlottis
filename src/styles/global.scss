@@ -37,6 +37,33 @@ a {
   }
 }
 
+.container {
+  width: 90vw;
+  margin: 3rem auto;
+  margin-bottom: 0;
+  padding-bottom: 3rem;
+  max-width: 1700px;
+
+  @include desktop {
+    width: 80vw;
+  }
+
+  h1 {
+    font-family: "knowit";
+    font-weight: normal;
+    font-size: 2rem;
+
+    @include desktop {
+      font-size: 3rem;
+    }
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+
 .subtext {
   margin-top: 0.5rem;
   font-size: 1.22rem;

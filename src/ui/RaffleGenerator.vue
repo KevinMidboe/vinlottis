@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="flex column">
     <div class="input-line">
       <label for="redCheckbox">
         <input type="checkbox" id="redCheckbox" v-model="redCheckbox" @click="generateColors"/>
@@ -207,12 +207,6 @@ export default {
 @import "../styles/variables.scss";
 @import "../styles/global.scss";
 @import "../styles/media-queries.scss";
-
-.container {
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-}
 
 .input-line {
   margin: auto;
