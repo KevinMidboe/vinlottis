@@ -85,7 +85,7 @@
     <h3>Vinnere</h3>
     <a class="wine-link" @click="fetchColorsAndWinners()">Refresh data fra virtuelt lotteri</a>
     <div class="winner-container" v-if="winners.length > 0">
-      <wine v-for="winner in winners" :key="winner" :wine="winner.wine" :inlineSlot="true">
+      <wine v-for="winner in winners" :key="winner" :wine="winner.wine">
         <div class="winner-element">
           <div class="color-selector">
             <div class="label-div">
@@ -500,6 +500,10 @@ hr {
   color: grey;
 }
 
+.button-container {
+  margin-top: 1rem;
+}
+
 .page-container {
   padding: 0 1.5rem 3rem;
 
@@ -537,10 +541,10 @@ hr {
 }
 .winner-element {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 
-  @include desktop {
-    margin-top: 1.5rem;
+  > div {
+    margin-bottom: 1rem;
   }
 
   @include mobile {

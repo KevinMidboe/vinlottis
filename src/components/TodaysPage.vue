@@ -1,10 +1,8 @@
 <template>
-  <div class="outer">
-    <div class="container">
-      <h1 class="title">Dagens viner</h1>
-      <div class="wines-container">
-        <Wine :wine="wine" v-for="wine in wines" :key="wine" :fullscreen="true" :inlineSlot="true" />
-      </div>
+  <div class="container">
+    <h1 class="title">Dagens viner</h1>
+    <div class="wines-container">
+      <Wine :wine="wine" v-for="wine in wines" :key="wine" />
     </div>
   </div>
 </template>
@@ -47,7 +45,7 @@ h1 {
 .wines-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-evenly;
   margin: 0 2rem;
 
   @media (min-width: 1500px) {
