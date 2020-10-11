@@ -39,7 +39,7 @@ const submitWines = async (req, res) => {
     const message = JSON.stringify({
       message: "Dagens vin er lagt til, se den på lottis.vin/dagens!",
       title: "Ny vin!",
-      link: "/#/dagens"
+      link: "/dagens"
     });
 
     try {
