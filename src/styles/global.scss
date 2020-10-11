@@ -199,7 +199,7 @@ textarea {
   margin: 0 !important;
 }
 
-.ballot-element {
+.raffle-element {
   margin: 20px 0;
   -webkit-mask-image: url(/../../public/assets/images/lodd.svg);
   background-repeat: no-repeat;
@@ -208,19 +208,19 @@ textarea {
   mask-repeat: no-repeat;
   color: #333333;
 
-  &.green-ballot {
+  &.green-raffle {
     background-color: $light-green;
   }
 
-  &.blue-ballot {
+  &.blue-raffle {
     background-color: $light-blue;
   }
 
-  &.yellow-ballot {
+  &.yellow-raffle {
     background-color: $light-yellow;
   }
 
-  &.red-ballot {
+  &.red-raffle {
     background-color: $light-red;
   }
 }
