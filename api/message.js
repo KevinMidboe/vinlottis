@@ -7,7 +7,7 @@ async function sendWineSelectMessage(winnerObject) {
   winnerObject.timestamp_limit = new Date().getTime() * 600000;
   await winnerObject.save();
 
-  let url = new URL(`/#/winner/${winnerObject.id}`, "https://lottis.vin");
+  let url = new URL(`/winner/${winnerObject.id}`, "https://lottis.vin");
 
   return sendMessageToUser(
     winnerObject.phoneNumber,
