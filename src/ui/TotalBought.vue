@@ -8,7 +8,7 @@
           color.name +
             '-container ' +
             color.name +
-            '-raffle inner-bought-container ballot-element'
+            '-raffle inner-bought-container raffle-element'
         "
         :key="color.name"
       >

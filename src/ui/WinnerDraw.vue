@@ -4,7 +4,7 @@
       <h2>TREKKER</h2>
       <div
         :class="currentColor + '-raffle'"
-        class="ballot-element center-new-winner"
+        class="raffle-element center-new-winner"
         :style="{ transform: 'rotate(' + getRotation() + 'deg)' }"
       >
         <span v-if="currentName && colorDone">{{ currentName }}</span>
@@ -20,7 +20,7 @@
       <h2>VINNER</h2>
       <div
         :class="currentColor + '-raffle'"
-        class="ballot-element center-new-winner"
+        class="raffle-element center-new-winner"
         :style="{ transform: 'rotate(' + getRotation() + 'deg)' }"
       >
         <span v-if="currentName && colorDone">{{ currentName }}</span>

@@ -4,7 +4,7 @@
     <div class="winners" v-if="winners.length > 0">
       <div v-for="(winner, index) in winners" :key="index">
         <router-link :to="`/highscore/${ encodeURIComponent(winner.name) }`">
-          <div :class="winner.color + '-ballot'" class="ballot-element">{{ winner.name }}</div>
+          <div :class="winner.color + '-raffle'" class="raffle-element">{{ winner.name }}</div>
         </router-link>
       </div>
     </div>

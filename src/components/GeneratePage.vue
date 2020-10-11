@@ -5,9 +5,9 @@
       Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'
     </p>
 
-    <RaffleGenerator @numberOfBallots="val => this.numberOfBallots = val" />
+    <RaffleGenerator @numberOfRaffles="val => this.numberOfRaffles = val" />
 
-    <Vipps class="vipps" :amount="numberOfBallots" />
+    <Vipps class="vipps" :amount="numberOfRaffles" />
     <Countdown :hardEnable="hardStart" @countdown="changeEnabled" />
   </div>
 </template>
@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       hardStart: false,
-      numberOfBallots: null
+      numberOfRaffles: null
     };
   },
   mounted() {
