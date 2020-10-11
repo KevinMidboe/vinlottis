@@ -1,39 +1,27 @@
 <template>
-  <div class="wine-container" :class="{ 'big': fullscreen }">
-    <div class="left">
+  <div class="wine">
+    <div class="wine-image">
       <img
         v-if="wine.image"
         :src="wine.image"
-        class="wine-image"
-        :class="{ 'fullscreen': fullscreen }"
       />
       <img v-else class="wine-placeholder" alt="Wine image" />
     </div>
-    <div class="right">
-      <div>
-        <h2 v-if="wine.name">{{ wine.name }}</h2>
-        <h2 v-else>(no name)</h2>
-        <span v-if="wine.rating">{{ wine.rating }} rating</span>
-        <span v-if="wine.price">{{ wine.price }} NOK</span>
-        <span v-if="wine.country">{{ wine.country }}</span>
 
-        <a
-          v-if="wine.vivinoLink"
-          :href="wine.vivinoLink"
-          class="wine-link"
-        >Les mer på {{ hostname(wine.vivinoLink) }}</a>
-
-        <button
-          v-if="winner"
-          @click="choseWine(wine.name)"
-          class="vin-button"
-        >Velg dette som din vin</button>
-      </div>
-
-      <slot v-if="shouldUseInlineSlot()"></slot>
+    <div class="wine-details">
+      <h2 v-if="wine.name">{{ wine.name }}</h2>
+      <span v-if="wine.rating"><b>Rating:</b>{{ wine.rating }} rating</span>
+      <span v-if="wine.price"><b>Pris:</b> {{ wine.price }} NOK</span>
+      <span v-if="wine.country"><b>Land:</b> {{ wine.country }}</span>
     </div>
 
-    <slot v-if="!shouldUseInlineSlot()"></slot>
+    <slot></slot>
+
+    <div class="bottom-section">
+      <a v-if="wine.vivinoLink" :href="wine.vivinoLink" class="link float-right">
+        Les mer
+      </a>
+    </div>
   </div>
 </template>
 
@@ -43,36 +31,6 @@ export default {
     wine: {
       type: Object,
       required: true
-    },
-    fullscreen: {
-      type: Boolean,
-      required: false
-    },
-    inlineSlot: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    winner: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  },
-  methods: {
-    shouldUseInlineSlot() {
-      return this.inlineSlot && window.innerWidth > 768;
-    },
-    hostname(url) {
-      const urlHostname = new URL(url).hostname;
-      return urlHostname.split(".")[
-        (urlHostname.match(/\./g) || []).length - 1
-      ];
-    },
-    choseWine(name) {
-      if (window.confirm(`Er du sikker på at du vil ha ${name}?`)) {
-        this.$emit("chosen", name);
-      }
     }
   }
 };
@@ -83,100 +41,67 @@ export default {
 @import "./src/styles/global";
 @import "./src/styles/variables";
 
-.wine-image {
-  height: 250px;
+.wine {
+  padding: 2rem;
+  margin: 1rem 0rem;
+  position: relative;
+  -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
 
-  @include mobile {
-    max-width: 90px;
-    object-fit: cover;
-  }
-
-  &.fullscreen {
-    @include desktop {
-      height: 100%;
-      max-height: 65vh;
-      max-width: 275px;
-      object-fit: cover;
-    }
+  @include tablet {
+    width: 250px;
+    height: 100%;
+    margin: 1rem 2rem;
   }
 }
-.wine-placeholder {
-  height: 250px;
-  width: 70px;
+
+.wine-image {
+  display: flex;
+  justify-content: center;
+
+  img {
+    height: 250px;
+    @include mobile {
+      object-fit: cover;
+      max-width: 90px;
+    }
+  }
+  .wine-placeholder {
+    height: 250px;
+    width: 70px;
+  }
+}
+
+.wine-details {
+  display: flex;
+  flex-direction: column;
 }
 
 h2 {
+  font-weight: normal;
+  font-size: 1.4rem;
+  margin: 2rem 0;
+  color: $matte-text-color;
+}
+
+.bottom-section {
   width: 100%;
-  max-width: 30vw;
-
-  @include mobile {
-    max-width: 50vw;
-  }
-}
-
-.wine-container {
-  margin-bottom: 30px;
-  font-family: Arial;
-  width: 100%;
-  max-width: max-content;
-
-  &.big {
-    align-items: center;
-  }
-
-  @include desktop {
-    max-width: 550px;
-  }
-}
-
-.left {
-  float: left;
-  margin-right: 3rem;
-
-  @include mobile {
-    margin-right: 2rem;
-  }
-}
-
-.right {
-  margin-bottom: 2rem;
-  display: flex;
-  flex-direction: column;
-  height: max-content;
-
-  > div:first-of-type {
-    display: flex;
-    flex-direction: column;
-  }
-}
-
-a,
-a:focus,
-a:hover,
-a:visited {
-  color: #333333;
-  font-family: Arial;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.wine-link {
-  color: #333333;
-  font-family: Arial;
-  text-decoration: none;
-  font-weight: bold;
-  border-bottom: 1px solid $link-color;
-  width: fit-content;
-}
-
-.button-container {
-  & button.red {
-    background-color: $light-red;
-    color: $red;
-  }
-}
-
-.vin-button {
   margin-top: 1rem;
+  background-color: NavajoWhite;
+
+  .link {
+    color: $matte-text-color;
+    font-family: Arial;
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-weight: normal;
+    border-bottom: 2px solid $matte-text-color;
+
+    &:hover {
+      font-weight: normal;
+      border-color: $link-color;
+    }
+  }
 }
 </style>
