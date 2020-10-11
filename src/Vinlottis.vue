@@ -96,7 +96,7 @@ export default {
 }
 
 body {
-  background-color: #dbeede;
+  background-color: $primary;
 }
 </style>
 
