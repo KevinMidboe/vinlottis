@@ -2,7 +2,7 @@
   <div class="wine">
     <div class="wine-image">
       <img
-        v-if="wine.image"
+        v-if="wine.image && loadImage"
         :src="wine.image"
       />
       <img v-else class="wine-placeholder" alt="Wine image" />
@@ -32,6 +32,29 @@ export default {
       type: Object,
       required: true
     }
+  },
+  data() {
+    return {
+      loadImage: false
+    }
+  },
+  methods: {
+    setImage(entries) {
+      const { target, isIntersecting } = entries[0];
+      if (!isIntersecting) return;
+
+      this.loadImage = true;
+      this.observer.unobserve(target);
+    }
+  },
+  created() {
+    this.observer = new IntersectionObserver(this.setImage, {
+      root: this.$el,
+      threshold: 0
+    })
+  },
+  mounted() {
+    this.observer.observe(this.$el);
   }
 };
 </script>
