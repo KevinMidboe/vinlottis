@@ -2,14 +2,15 @@
   <div>
     <h1>Historie fra tidligere lotteri</h1>
 
-    <div v-if="lotteries.length" v-for="lottery in lotteries">
-      <Winners :winners="lottery.winners" :title="`Vinnere fra ${lottery.dateString}`" />
+    <div v-if="lotteries.length || lotteries != null" v-for="lottery in lotteries">
+      <Winners :winners="lottery.winners" :title="`Vinnere fra ${ humanReadableDate(lottery.date) }`" />
     </div>
   </div>
 </template>
 
 <script>
-import { historyAll } from '@/api'
+import { historyByDate, historyAll } from '@/api'
+import { humanReadableDate } from "@/utils";
 import Winners from '@/ui/Winners'
 
 export default {
@@ -20,9 +21,18 @@ export default {
       lotteries: [],
     }
   },
+  methods: {
+    humanReadableDate: humanReadableDate
+  },
   created() {
-    historyAll()
-      .then(history => this.lotteries = history.lotteries.reverse())
+    const dateFromUrl = this.$route.params.date;
+
+    if (dateFromUrl !== undefined)
+      historyByDate(dateFromUrl)
+        .then(history => this.lotteries = { "lottery": history })
+    else
+      historyAll()
+        .then(history => this.lotteries = history.lotteries)
   }
 }
 </script>
