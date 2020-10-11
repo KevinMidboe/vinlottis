@@ -124,10 +124,6 @@ h1 {
     margin: auto;
   }
 
-  h1 {
-    margin-top: 0;
-  }
-
   .vipps-icon{
     margin: 1em;
   }
