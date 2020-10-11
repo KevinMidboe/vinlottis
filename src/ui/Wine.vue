@@ -1,5 +1,6 @@
 <template>
   <div class="wine">
+    <slot name="top"></slot>
     <div class="wine-image">
       <img
         v-if="wine.image && loadImage"
@@ -18,6 +19,7 @@
     <slot></slot>
 
     <div class="bottom-section">
+      <slot name="bottom"></slot>
       <a v-if="wine.vivinoLink" :href="wine.vivinoLink" class="link float-right">
         Les mer
       </a>
