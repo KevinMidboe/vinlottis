@@ -133,6 +133,15 @@ textarea {
   // disable-dbl-tap-zoom
   touch-action: manipulation;
 
+  &.auto-height {
+    height: auto;
+  }
+
+  &.danger {
+    background-color: $red;
+    color: white;
+  }
+
   &::after {
     content: "";
     position: absolute;
@@ -176,9 +185,14 @@ textarea {
   font-weight: bold;
   border-bottom: 1px solid $link-color;
   font-size: 1rem;
-  margin-left: 15px;
+  cursor: pointer;
+
   text-decoration: none;
   color: $matte-text-color;
+
+  &:focus, &:hover {
+    border-color: $link-color;
+  }
 }
 
 
@@ -186,8 +200,35 @@ textarea {
   &-md {
     margin-top: 3rem;
   }
+  &-sm {
+    margin-top: 1rem;
+  }
+  &-0 {
+    margin-top: 0;
+  }
 }
-
+.margin-left {
+  &-md {
+    margin-left: 3rem;
+  }
+  &-sm {
+    margin-left: 1rem;
+  }
+  &-0 {
+    margin-left: 0;
+  }
+}
+.margin-right {
+  &-md {
+    margin-right: 3rem;
+  }
+  &-sm {
+    margin-right: 1rem;
+  }
+  &-0 {
+    margin-right: 0;
+  }
+}
 .margin-bottom {
   &-md {
     margin-bottom: 3rem;
@@ -228,5 +269,17 @@ textarea {
 
   &.red-raffle {
     background-color: $light-red;
+  }
+}
+
+.desktop-only {
+  @include mobile {
+    display: none;
+  }
+}
+
+.mobile-only {
+  @include desktop {
+    display: none;
   }
 }

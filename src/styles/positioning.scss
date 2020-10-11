@@ -19,6 +19,12 @@
   &.justify-space-between {
     justify-content: space-between;
   }
+  &.justify-end {
+    justify-content: flex-end;
+  }
+  &.justify-start {
+    justify-content: flex-start;
+  }
 
   &.align-center {
     align-items: center;
@@ -27,4 +33,14 @@
 
 .inline-block {
   display: inline-block;
+}
+
+.float {
+  &-left {
+    float: left;
+  }
+
+  &-right {
+    float: right;
+  }
 }
