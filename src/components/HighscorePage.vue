@@ -121,7 +121,7 @@ $elementSpacing: 3.5rem;
   padding-left: 0;
 
   li {
-    width: intrinsic;
+    width: fit-content;
     display: inline-block;
     margin-bottom: calc(1rem - 2px);
     font-size: 1.25rem;
