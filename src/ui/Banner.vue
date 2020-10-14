@@ -2,7 +2,7 @@
   <div class="top-banner">
     <!-- Mobile -->
     <router-link to="/" class="company-logo">
-      <img src="/public/assets/images/knowit.svg" alt="knowit logo" />
+      <img src="/assets/images/knowit.svg" alt="knowit logo" />
     </router-link>
 
     <a class="menu-toggle-container" aria-label="show-menu" @click="toggleMenu" :class="isOpen ? 'open' : 'collapsed'" >

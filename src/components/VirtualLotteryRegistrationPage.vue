@@ -359,9 +359,9 @@ hr {
   width: 140px;
   height: 150px;
   margin: 20px 0;
-  -webkit-mask-image: url(/../../public/assets/images/lodd.svg);
+  -webkit-mask-image: url(/assets/images/lodd.svg);
   background-repeat: no-repeat;
-  mask-image: url(/../../public/assets/images/lodd.svg);
+  mask-image: url(/assets/images/lodd.svg);
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   color: #333333;

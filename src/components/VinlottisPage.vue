@@ -4,7 +4,7 @@
       <section class="header-and-notification">
           <h1 @click="startCountdown">Vinlotteri</h1>
           <img
-            src="/public/assets/images/notification.svg"
+            src="/assets/images/notification.svg"
             alt="Notification-bell"
             @click="requestNotificationAccess"
             class="notification-request-button"
