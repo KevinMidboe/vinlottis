@@ -120,7 +120,7 @@ const byName = (req, res) => {
     .then(highscore => res.send({
       message: `Lottery winnings for name: ${ name }.`,
       name: highscore.name,
-      highscore: highscore.wins
+      highscore: sortNewestFirst(highscore.wins)
     }))
 }
 
