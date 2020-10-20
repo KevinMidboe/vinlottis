@@ -7,20 +7,36 @@
       </h1>
 
       <a href="#" class="participate-button">
-        <i> -> </i>
+        <i class="icon icon--arrow-right"></i>
         <p>Trykk her for å delta</p>
       </a>
 
       <a href="#" class="see-details-link">
-        
         Se vipps detaljer og QR-kode
       </a>
+
+      <div class="icons-container">
+        <i class="icon icon--heart-sparks"></i>
+        <i class="icon icon--face-1"></i>
+        <i class="icon icon--face-3"></i>
+        <i class="icon icon--ballon"></i>
+
+        <i class="icon icon--bottle"></i>
+        <i class="icon icon--bottle"></i>
+        <i class="icon icon--bottle"></i>
+        <i class="icon icon--bottle"></i>
+        <i class="icon icon--bottle"></i>
+      </div>
 
 
     </section>
     
     <section class="container">
-      <p class="scroll-info"> | Scroll for å se annen gøy statistikk</p>
+
+      <div class="scroll-info">  
+        <i class ="icon icon--arrow-long-right"></i>
+        <p>Scroll for å se vinnere og annen gøy statistikk</p>
+      </div>
 
       <Highscore class="highscore"/>
       <TotalBought class="total-bought" />
@@ -126,21 +142,21 @@ export default {
   }
 
   .participate-button {
-    
     grid-column: 3 / 7;
     grid-row: 6 / 8;
     background: inherit;
     border: 4px solid black;
     padding: 0 1em 0 1em;
     display: flex;
-    width: 15em;
-    justify-content: space-evenly;
+    width: 12.5em;
+    column-gap: 15px;
     align-items: center;
     text-decoration: none;
     color: black;
     
-    i {
+    i {
       color: $link-color;
+      margin-left: 5px;
     }
 
     p {
@@ -161,6 +177,65 @@ export default {
     text-underline-position: under;
   }
 
+  .icons-container {
+    grid-column: 7 / 12;
+    grid-row: 4 / 12;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid: repeat(6, 1fr) / repeat(12, 1fr);
+
+    i {
+      font-size: 5em;
+
+      &.icon--heart-sparks{
+        grid-column: 2 / 4;
+        grid-row: 2 / 4;
+        align-self: center;
+        justify-self: center;
+
+      }
+      &.icon--face-1{
+        grid-column: 4 / 7;
+        grid-row: 2 / 4;
+        justify-self: center;
+
+      }
+      &.icon--face-3{
+        grid-column: 7 / 10;
+        grid-row: 1 / 4;
+        align-self: center;
+      }
+      &.icon--ballon{
+        grid-column: 9 / 11;
+        grid-row: 3 / 5;
+
+      }
+      &.icon--bottle{
+        grid-row: 4 / 6;
+
+        &:nth-of-type(5) {
+          grid-column: 4 / 5;
+          align-self: center;
+        }
+        &:nth-of-type(6) {
+          grid-column: 5 / 6;
+        }
+        &:nth-of-type(7) {
+          grid-column: 6 / 7;
+          align-self: center;
+        }
+        &:nth-of-type(8) {
+          grid-column: 7 / 8;
+        }
+        &:nth-of-type(9){
+          grid-column: 8 / 9;
+          align-self: center;
+        }
+      }
+    }
+  }
+
 }
 
 h1 {
@@ -177,24 +252,49 @@ h1 {
 }
 
 .container{
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  row-gap: 5em;
+
+  .scroll-info {
+      display: flex;
+      align-items: center;
+      column-gap: 10px;
+      grid-column: 2 / -2;
+  }
+
+  .chart-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    grid-column: 2 / -2;
+  }
+  .total-bought {
+    grid-column: 2 / -2;
+  }
+
+  .highscore {
+    grid-column: 2 / -2;
+  }
+
+  .wines-container {
+    grid-column: 2 / -2;
+  }
+
+  .icon--arrow-long-right {
+    rotate: 90deg;
+    color: $link-color;
+  }
 
   @include tablet {
-    .chart-container {
-      display: flex;
-      width: 100%;
-    }
 
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-
-    .scroll-info {
+    .scroll-info{
       grid-column: 3 / -3;
     }
 
     .chart-container {
       grid-column: 3 / -3;
+      flex-direction: row;
     }
 
     .total-bought {
@@ -203,7 +303,7 @@ h1 {
 
     .highscore {
       grid-column: 3 / -3;
-      align-self: baseline;
+      // margin-top: 5em;
     }
 
     .wines-container {

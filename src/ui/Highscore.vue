@@ -11,8 +11,8 @@
     </section>
     <ol class="winner-list-container">
       <li v-for="(person, index) in highscore" :key="person" class="single-winner">
-        <span class="placement">{{index + 1}}</span>
-        <span class="winner-icon"> ic </span>
+        <span class="placement">{{index + 1}}.</span>
+        <i class="icon icon--medal"></i>
         <p class="winner-name">{{ person.name }}</p>
       </li>
     </ol>
@@ -69,20 +69,25 @@ ol {
 
 .winner-list-container {
   width: 100%;
-  display: grid;
-  grid-template: 1fr / repeat(5, 1fr);
-  column-gap: 2em;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  column-gap: 1em;
+  row-gap: 1em;
   margin: 0;
+  // align-items: baseline;
 
   .single-winner {
-    width: 10em;
+    width: 12.5em;
     background: $primary;
     padding: 1em;
     display: grid;
     grid-template: 1fr .3fr / 1fr 1fr 1fr;
-    justify-content: center;
     align-items: center;
-    justify-items: center;
+
+    i {
+      font-size: 3em;
+    }
 
     .placement {
       grid-row: 1;
