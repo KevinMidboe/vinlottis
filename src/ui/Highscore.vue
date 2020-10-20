@@ -73,9 +73,8 @@ ol {
   gap: 5%;
 
   .single-winner {
-    width: 12.5em;
+    width: 100%;
     background: $primary;
-    padding: 1em 0 0 1em;
     display: grid;
     grid-template: 1fr .3fr / 1fr 1fr 1fr;
     align-items: center;
@@ -88,11 +87,15 @@ ol {
       grid-row: 1;
       grid-column: 1 / 3;
       font-size: 3em;
+      margin-left: 5px;
+      padding: .2em 0 0 5px;
     }
 
     .winner-name {
       grid-row: 2;
       grid-column: 1 / -1;
+      margin-left: 5px;
+      padding-left: 5px;
     }
 
     .winner-icon {
