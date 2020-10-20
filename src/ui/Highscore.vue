@@ -68,19 +68,14 @@ ol {
 }
 
 .winner-list-container {
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  column-gap: 1em;
-  row-gap: 1em;
-  margin: 0;
-  // align-items: baseline;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12.5em, 1fr));
+  gap: 5%;
 
   .single-winner {
     width: 12.5em;
     background: $primary;
-    padding: 1em;
+    padding: 1em 0 0 1em;
     display: grid;
     grid-template: 1fr .3fr / 1fr 1fr 1fr;
     align-items: center;
