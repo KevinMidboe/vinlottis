@@ -1,5 +1,6 @@
 <template>
   <div class="main-container">
+
     <section class="top-container">
 
       <h1 class="want-to-win">
@@ -28,7 +29,6 @@
         <i class="icon icon--bottle"></i>
       </div>
 
-
     </section>
     
     <section class="content-container">
@@ -47,9 +47,11 @@
       </section>
       
       <Wines class="wines-container" />
+
     </section>
     
     <Countdown :hardEnable="hardStart" @countdown="changeEnabled" />
+    
   </div>
 </template>
 
@@ -149,10 +151,6 @@ export default {
       grid-row: 2 / 4;
       grid-column: 3 / -3;
     }
-
-    // @include widescreen {
-    //   grid-column: 4 / -4;
-    // }
   }
 
   .participate-button {
@@ -182,10 +180,6 @@ export default {
       grid-row: 4 / 6;
       grid-column: 3 / -3;
     }
-
-    // @include widescreen {
-    //   grid-column: 4 / -4;
-    // }
   }
 
   .see-details-link {
@@ -201,10 +195,6 @@ export default {
       grid-column: 3 / -3;
     }
 
-    // @include widescreen {
-    //   grid-column: 4 / -4;
-    // }
-
     font-weight: bold;
     color: black;
     font-weight: 200;
@@ -213,8 +203,6 @@ export default {
     text-decoration: underline;
     text-decoration-color: $link-color;
     text-underline-position: under;
-
-    
   }
 
   .icons-container {
@@ -362,23 +350,11 @@ h1 {
 
     .highscore {
       grid-column: 3 / -3;
-      // margin-top: 5em;
     }
 
     .wines-container {
       grid-column: 3 / -3;
     }
   }
-
-  // @include desktop {
-
-  
-  // }
-  
-  // @include widescreen {
-  
-  // }
 }
-
-
 </style>
