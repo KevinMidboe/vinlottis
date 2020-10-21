@@ -237,7 +237,7 @@ export default {
     }
 
     @include widescreen {
-      grid-column: 6 / -6;
+      grid-column: 6 / 10;
     }
 
     width: 100%;
