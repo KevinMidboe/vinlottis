@@ -122,8 +122,6 @@ export default {
 @import "../styles/media-queries.scss";
 @import "../styles/variables.scss";
 
-
-
 .top-container {
   height: 30em;
   background-color: $primary;

@@ -1,21 +1,29 @@
 <template>
-  <div v-if="wines.length > 0">
-    <h3>
-      <router-link to="viner"
-        >Topp 10 viner <span class="vin-link">Se alle &gt;</span></router-link
-      >
-    </h3>
-    <ol class="list-container">
-      <li v-for="(wine, index) in wines" :key="wine" class="single-item">
-        <span class="wine-occurences">{{ index + 1}}.</span>
+  <div v-if="wines.length > 0" class="wines-main-container">
+    <div class="info-and-link">
+      <h3>
+        Topp 5 viner
+      </h3>
+      <router-link to="viner">
+        <span class="vin-link">Se alle viner </span>
+      </router-link>
+    </div>
+    <div class="wine-container">
+      <div v-for="wine in wines" :key="wine" class="single-item">
+        <!-- <span class="wine-occurences">{{ index + 1}}.</span> -->
+        <div class="hearts-container">
+          <span>{{wine.occurences}}</span>
+          <i class="icon icon--heart"></i>
+        </div>
+        <img :src="wine.image" class="wine-image">
+        <!-- <span class="wine-win-info"> {{ wine.occurences }} {{amount(wine.occurences)}}</span> -->
         <span class="wine-name">{{ wine.name }}</span>
-        <span class="wine-win-info"> {{ wine.occurences }} {{amount(wine.occurences)}}</span>
-        <a
+        <!-- <a
           class="wine-link"
           :href="wine.vivinoLink"
-          >Les mer</a>
-      </li>
-    </ol>
+          >Les mer</a> -->
+      </div>
+    </div>
   </div>
 </template>
 
@@ -29,7 +37,10 @@ export default {
     Wine
   },
   data() {
-    return { wines: [], clickedWine: null, wineOpen: false };
+    return { 
+      wines: [], 
+      clickedWine: null, 
+    };
   },
   async mounted() {
     let response = await overallWineStatistics();
@@ -49,7 +60,7 @@ export default {
           }
         )
       );
-    this.wines = response.slice(0, 10);
+    this.wines = response.slice(0, 5);
   },
   methods: {
     amount(occurences){
@@ -124,39 +135,61 @@ export default {
 @import "./src/styles/global.scss";
 @import "../styles/media-queries.scss";
 
-h3 {
-  & a {
-    text-decoration: none;
-    color: #333333;
-  }
+.wines-main-container {
+  margin-bottom: 10em;
 }
 
-.list-container{
+.info-and-link{
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.wine-container {
   display: grid;
-  grid: auto-flow min-content / 1fr;
-  row-gap: 5px;
-  padding: 0; 
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 2rem;
 
   .single-item{
+    height: 400px;
     display: grid;
-    grid: 1fr / .1fr 1fr .3fr .3fr;
+    grid-template-rows: .3fr 1fr .3fr;
 
-    .wine-occurences{
-      font-weight: bold;
+    grid-gap: 1em;
+    -webkit-box-shadow: 0px 2px 21px -1px rgba(127,127,127,0.5);
+    -moz-box-shadow: 0px 2px 21px -1px rgba(127,127,127,0.5);
+    box-shadow: 0px 2px 21px -1px rgba(127,127,127,0.5);
+
+    .hearts-container{
+      margin: 10px 10px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      justify-self: end;
+
+      width: 80px;
+      height: 30px;
+      background-color: #f4f4f4;
+      border-radius: 20px;
+
+      .icon--heart{
+        font-size: 30px;
+        color: $link-color;
+      }
+    }
+
+    .wine-image {
+      width: 60px;
+      height: 200px;
+      align-self: center;
+      justify-self: center;
     }
 
     .wine-name{
-      display: inline-block;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-
-    .wine-link {
-      color: #333333;
-      text-decoration: underline 1px solid $link-color;
-      font-weight: bold;
-      cursor: pointer;
+      margin-left: 1em;
+      margin-right: .5em;
+      padding-bottom: 1em;
+      font-size: 20px;
     }
   }
 }

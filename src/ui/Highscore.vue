@@ -89,7 +89,7 @@ ol {
 
 .winner-list-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12.5em, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(12.5em, 1fr));
   gap: 5%;
 
   .single-winner {
