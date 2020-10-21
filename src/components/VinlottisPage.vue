@@ -31,7 +31,7 @@
 
     </section>
     
-    <section class="container">
+    <section class="content-container">
 
       <div class="scroll-info">  
         <i class ="icon icon--arrow-long-right"></i>
@@ -312,11 +312,11 @@ h1 {
     margin-bottom: 0;
 }
 
-.container{
+.content-container {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   row-gap: 5em;
-
+  
   .scroll-info {
       display: flex;
       align-items: center;

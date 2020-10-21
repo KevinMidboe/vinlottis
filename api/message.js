@@ -2,6 +2,17 @@ const https = require("https");
 const path = require("path");
 const config = require(path.join(__dirname + "/../config/defaults/lottery"));
 
+const dateString = (date) => {
+  if (typeof(date) == "string") {
+    date = new Date(date);
+  }
+  const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date)
+  const mo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(date)
+  const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date)
+
+  return `${da}-${mo}-${ye}`
+}
+
 async function sendWineSelectMessage(winnerObject) {
   winnerObject.timestamp_sent = new Date().getTime();
   winnerObject.timestamp_limit = new Date().getTime() * 600000;
@@ -15,6 +26,12 @@ async function sendWineSelectMessage(winnerObject) {
   )
 }
 
+async function sendWineConfirmation(winnerObject, wineObject, date) {
+  date = dateString(date);
+  return sendMessageToUser(winnerObject.phoneNumber,
+    `Bekreftelse på din vin ${ winnerObject.name }.\nDato vunnet: ${ date }.\nVin valgt: ${ wineObject.name }.\nKan hentes hos ${ config.name } på kontoret. Ha en ellers fin helg!`)
+}
+
 async function sendLastWinnerMessage(winnerObject, wineObject) {
   console.log(`User ${winnerObject.id} is only one left, chosing wine for him/her.`);
   winnerObject.timestamp_sent = new Date().getTime();
@@ -23,7 +40,7 @@ async function sendLastWinnerMessage(winnerObject, wineObject) {
 
   return sendMessageToUser(
     winnerObject.phoneNumber,
-    `Gratulerer som heldig vinner av vinlotteriet ${winnerObject.name}! Du har vunnet vinen ${wineObject.name}, og vil få nærmere info om hvordan/hvor du kan hente vinen snarest. Ha en ellers fin helg!`
+    `Gratulerer som heldig vinner av vinlotteriet ${winnerObject.name}! Du har vunnet vinen ${wineObject.name}, vinen kan hentes hos ${ config.name } på kontoret. Ha en ellers fin helg!`
   );
 }
 
@@ -82,7 +99,11 @@ async function gatewayRequest(body) {
       res.setEncoding('utf8');
 
       if (res.statusCode == 200) {
-        res.on("data", (d) => resolve(JSON.parse(d)));
+        res.on("data", (data) => {
+          console.log("Response from message gateway:", data)
+
+          resolve(JSON.parse(data))
+        });
       } else {
         res.on("data", (data) => {
           data = JSON.parse(data);
@@ -103,6 +124,7 @@ async function gatewayRequest(body) {
 
 module.exports = {
   sendWineSelectMessage,
+  sendWineConfirmation,
   sendLastWinnerMessage,
   sendWineSelectMessageTooLate,
   sendInitialMessageToWinners

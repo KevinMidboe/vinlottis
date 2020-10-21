@@ -2,8 +2,10 @@
   <div>
     <h2 v-if="winners.length > 0"> {{ title ? title : 'Vinnere' }}</h2>
     <div class="winners" v-if="winners.length > 0">
-      <div class="winner" v-for="(winner, index) in winners" :key="index">
-        <div :class="winner.color + '-ballot'" class="ballot-element">{{ winner.name }}</div>
+      <div v-for="(winner, index) in winners" :key="index">
+        <router-link :to="`/highscore/${ encodeURIComponent(winner.name) }`">
+          <div :class="winner.color + '-raffle'" class="raffle-element">{{ winner.name }}</div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -40,7 +42,7 @@ h2 {
   flex-wrap: wrap;
 }
 
-.ballot-element {
+.raffle-element {
   font-size: 1rem;
   width: 145px;
   height: 145px;

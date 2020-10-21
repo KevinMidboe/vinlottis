@@ -18,6 +18,10 @@ body {
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 .title {
   text-align: center;
   width: fit-content;
@@ -32,6 +36,33 @@ body {
     font-size: 1.6rem;
   }
 }
+
+.container {
+  width: 90vw;
+  margin: 3rem auto;
+  margin-bottom: 0;
+  padding-bottom: 3rem;
+  max-width: 1700px;
+
+  @include desktop {
+    width: 80vw;
+  }
+
+  h1 {
+    font-family: "knowit";
+    font-weight: normal;
+    font-size: 2rem;
+
+    @include desktop {
+      font-size: 3rem;
+    }
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
 
 .subtext {
   margin-top: 0.5rem;
@@ -129,6 +160,15 @@ textarea {
   // disable-dbl-tap-zoom
   touch-action: manipulation;
 
+  &.auto-height {
+    height: auto;
+  }
+
+  &.danger {
+    background-color: $red;
+    color: white;
+  }
+
   &::after {
     content: "";
     position: absolute;
@@ -172,7 +212,14 @@ textarea {
   font-weight: bold;
   border-bottom: 1px solid $link-color;
   font-size: 1rem;
-  margin-left: 15px;
+  cursor: pointer;
+
+  text-decoration: none;
+  color: $matte-text-color;
+
+  &:focus, &:hover {
+    border-color: $link-color;
+  }
 }
 
 
@@ -180,8 +227,35 @@ textarea {
   &-md {
     margin-top: 3rem;
   }
+  &-sm {
+    margin-top: 1rem;
+  }
+  &-0 {
+    margin-top: 0;
+  }
 }
-
+.margin-left {
+  &-md {
+    margin-left: 3rem;
+  }
+  &-sm {
+    margin-left: 1rem;
+  }
+  &-0 {
+    margin-left: 0;
+  }
+}
+.margin-right {
+  &-md {
+    margin-right: 3rem;
+  }
+  &-sm {
+    margin-right: 1rem;
+  }
+  &-0 {
+    margin-right: 0;
+  }
+}
 .margin-bottom {
   &-md {
     margin-bottom: 3rem;
@@ -199,7 +273,7 @@ textarea {
   margin: 0 !important;
 }
 
-.ballot-element {
+.raffle-element {
   margin: 20px 0;
   -webkit-mask-image: url(/../../public/assets/images/lodd.svg);
   background-repeat: no-repeat;
@@ -208,19 +282,19 @@ textarea {
   mask-repeat: no-repeat;
   color: #333333;
 
-  &.green-ballot {
+  &.green-raffle {
     background-color: $light-green;
   }
 
-  &.blue-ballot {
+  &.blue-raffle {
     background-color: $light-blue;
   }
 
-  &.yellow-ballot {
+  &.yellow-raffle {
     background-color: $light-yellow;
   }
 
-  &.red-ballot {
+  &.red-raffle {
     background-color: $light-red;
   }
 }
@@ -244,5 +318,17 @@ textarea {
     background-size: 50px 50px;
     background-position: 25px -25px;
     bottom: -25px
+  }
+}
+
+.desktop-only {
+  @include mobile {
+    display: none;
+  }
+}
+
+.mobile-only {
+  @include desktop {
+    display: none;
   }
 }

@@ -45,7 +45,7 @@ const attendees = async (req, res) => {
     attendee = attendees[i];
     attendeesRedacted.push({
       name: attendee.name,
-      ballots: attendee.red + attendee.blue + attendee.yellow + attendee.green,
+      raffles: attendee.red + attendee.blue + attendee.yellow + attendee.green,
       red: attendee.red,
       blue: attendee.blue,
       green: attendee.green,
@@ -99,27 +99,27 @@ const drawWinner = async (req, res) => {
       message: "No attendees left that have not won."
     });
   }
-  let ballotColors = [];
+  let raffleColors = [];
   for (let i = 0; i < allContestants.length; i++) {
     let currentContestant = allContestants[i];
     for (let blue = 0; blue < currentContestant.blue; blue++) {
-      ballotColors.push("blue");
+      raffleColors.push("blue");
     }
     for (let red = 0; red < currentContestant.red; red++) {
-      ballotColors.push("red");
+      raffleColors.push("red");
     }
     for (let green = 0; green < currentContestant.green; green++) {
-      ballotColors.push("green");
+      raffleColors.push("green");
     }
     for (let yellow = 0; yellow < currentContestant.yellow; yellow++) {
-      ballotColors.push("yellow");
+      raffleColors.push("yellow");
     }
   }
 
-  ballotColors = shuffle(ballotColors);
+  raffleColors = shuffle(raffleColors);
 
   let colorToChooseFrom =
-    ballotColors[Math.floor(Math.random() * ballotColors.length)];
+    raffleColors[Math.floor(Math.random() * raffleColors.length)];
   let findObject = { winner: false };
 
   findObject[colorToChooseFrom] = { $gt: 0 };
@@ -187,7 +187,10 @@ const drawWinner = async (req, res) => {
   );
 
   await newWinnerElement.save();
-  return res.json(winner);
+  return res.json({
+    success: true,
+    winner
+  });
 };
 
 const finish = async (req, res) => {

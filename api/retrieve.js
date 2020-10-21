@@ -1,8 +1,4 @@
 const path = require("path");
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/vinlottis", {
-  useNewUrlParser: true
-});
 
 const Purchase = require(path.join(__dirname + "/../schemas/Purchase"));
 const Wine = require(path.join(__dirname + "/../schemas/Wine"));
@@ -143,7 +139,9 @@ const allWinesSummary = async (req, res) => {
     }
   }
 
-  return res.json(Object.values(wines));
+  wines = Object.values(wines).reverse()
+
+  return res.json(wines);
 };
 
 module.exports = {

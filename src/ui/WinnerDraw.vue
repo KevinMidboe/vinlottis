@@ -3,8 +3,8 @@
     <div class="current-draw" v-if="drawing">
       <h2>TREKKER</h2>
       <div
-        :class="currentColor + '-ballot'"
-        class="ballot-element center-new-winner"
+        :class="currentColor + '-raffle'"
+        class="raffle-element center-new-winner"
         :style="{ transform: 'rotate(' + getRotation() + 'deg)' }"
       >
         <span v-if="currentName && colorDone">{{ currentName }}</span>
@@ -19,8 +19,8 @@
     <div class="current-draw" v-if="drawingDone">
       <h2>VINNER</h2>
       <div
-        :class="currentColor + '-ballot'"
-        class="ballot-element center-new-winner"
+        :class="currentColor + '-raffle'"
+        class="raffle-element center-new-winner"
         :style="{ transform: 'rotate(' + getRotation() + 'deg)' }"
       >
         <span v-if="currentName && colorDone">{{ currentName }}</span>
@@ -204,7 +204,7 @@ h2 {
   align-items: center;
 }
 
-.ballot-element {
+.raffle-element {
   width: 140px;
   height: 140px;
   font-size: 1.2rem;

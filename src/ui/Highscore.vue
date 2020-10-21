@@ -36,6 +36,26 @@ export default {
       person => person.name != null && person.name != ""
     );
     this.highscore = response.slice(0, 5);
+    // response.sort((a, b) => a.wins.length < b.wins.length ? 1 : -1)
+    // this.highscore = this.generateScoreBoard(response.slice(0, 10));
+  },
+  methods: {
+    generateScoreBoard(highscore=this.highscore) {
+      let place = 0;
+      let highestWinCount = -1;
+
+      return highscore.map(win => {
+        const wins = win.wins.length
+        if (wins != highestWinCount) {
+          place += 1
+          highestWinCount = wins
+        }
+
+        const placeString = place.toString().padStart(2, "0");
+        win.rank = placeString;
+        return win
+      })
+    }
   }
 };
 </script>
@@ -97,6 +117,7 @@ ol {
       margin-left: 5px;
       padding-left: 5px;
     }
+
 
     .winner-icon {
       grid-row: 1;

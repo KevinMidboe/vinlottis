@@ -2,23 +2,18 @@
   <div class="container">
     <div v-if="!posted">
       <h1 v-if="name">Gratulerer {{name}}!</h1>
-      <p
-        v-if="name"
-      >Her er valgene for dagens lotteri, du har 10 minutter å velge etter du fikk SMS-en.</p>
+      <p v-if="name">
+        Her er valgene for dagens lotteri, du har 10 minutter å velge etter du fikk SMS-en.
+      </p>
       <h1 v-else-if="!turn && !existing" class="sent-container">Finner ikke noen vinner her..</h1>
       <h1 v-else-if="!turn" class="sent-container">Du må vente på tur..</h1>
       <div class="wines-container" v-if="name">
-        <br />
-        <br />
-        <Wine
-          :wine="wine"
-          v-for="wine in wines"
-          :key="wine"
-          :winner="true"
-          :fullscreen="true"
-          :inlineSlot="true"
-          v-on:chosen="chosenWine"
-        />
+        <Wine :wine="wine" v-for="wine in wines" :key="wine">
+          <button
+            @click="chooseWine(wine.name)"
+            class="vin-button select-wine"
+          >Velg denne vinnen</button>
+        </Wine>
       </div>
     </div>
     <div v-else-if="posted" class="sent-container">
@@ -29,7 +24,7 @@
 </template>
 
 <script>
-import { getAmIWinner, postWineChosen } from "@/api";
+import { getAmIWinner, postWineChosen, prelottery } from "@/api";
 import Wine from "@/ui/Wine";
 export default {
   components: { Wine },
@@ -60,11 +55,10 @@ export default {
     }
     this.turn = true;
     this.name = winnerObject.name;
-    const _wines = await fetch("/api/wines/prelottery");
-    this.wines = await _wines.json();
+    this.wines = await prelottery();
   },
   methods: {
-    chosenWine: async function(name) {
+    chooseWine: async function(name) {
       let posted = await postWineChosen(this.id, name);
       console.log("response", posted);
       if (posted.success) {
@@ -83,6 +77,11 @@ export default {
   margin-top: 2rem;
   padding: 2rem;
 }
+
+h1 {
+  color: $matte-text-color;
+}
+
 .sent-container {
   width: 100%;
   height: 90vh;
@@ -93,9 +92,14 @@ export default {
   flex-direction: column;
 }
 
+.select-wine {
+  margin-top: 1rem;
+}
+
 .wines-container {
-  justify-content: center;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
 }
 </style>

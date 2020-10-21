@@ -1,13 +1,13 @@
 <template>
   <div class="container">
-    <h1 class="title" @click="startCountdown">Loddgenerator</h1>
+    <h1 class="text-center title" @click="startCountdown">Loddgenerator</h1>
     <p class="subtext">
       Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'
     </p>
 
-    <RaffleGenerator @numberOfBallots="val => this.numberOfBallots = val" />
+    <RaffleGenerator @numberOfRaffles="val => this.numberOfRaffles = val" />
 
-    <Vipps class="vipps" :amount="numberOfBallots" />
+    <Vipps class="vipps" :amount="numberOfRaffles" />
     <Countdown :hardEnable="hardStart" @countdown="changeEnabled" />
   </div>
 </template>
@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       hardStart: false,
-      numberOfBallots: null
+      numberOfRaffles: null
     };
   },
   mounted() {
@@ -54,12 +54,15 @@ export default {
 @import "../styles/variables.scss";
 @import "../styles/global.scss";
 @import "../styles/media-queries.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0;
+}
+
 h1 {
   cursor: pointer;
-}
-.header-link {
-  color: #333333;
-  text-decoration: none;
 }
 
 p {
@@ -73,11 +76,5 @@ p {
   @include mobile {
     margin-top: 2rem;
   }
-}
-
-.container {
-  margin: auto;
-  display: flex;
-  flex-direction: column;
 }
 </style>
