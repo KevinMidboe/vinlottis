@@ -2,7 +2,7 @@
   <section class="outer-bought">
     <h3>Loddstatistikk</h3>
 
-    <div class="inner-bought-container total-ballots">
+    <div class="total-ballots">
         Totalt&nbsp;
         <span class="total">{{ total }}</span>
         &nbsp;kjøpte og&nbsp;
@@ -144,6 +144,12 @@ export default {
 <style lang="scss" scoped>
 @import "../styles/variables.scss";
 @import "../styles/media-queries.scss";
+
+@include mobile{
+  section {
+    margin-top: 5em;
+  }
+}
 
 .total-ballots {
   display: flex;

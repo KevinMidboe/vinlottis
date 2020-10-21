@@ -1,6 +1,6 @@
 <template>
-  <div class="outer">
-    <section class="top-info">
+  <div class="main-container">
+    <section class="top-container">
 
       <h1 class="want-to-win">
         Vil du også vinne?
@@ -122,7 +122,9 @@ export default {
 @import "../styles/media-queries.scss";
 @import "../styles/variables.scss";
 
-.top-info {
+
+
+.top-container {
   height: 30em;
   background-color: $primary;
   width: 100vw;
@@ -134,16 +136,31 @@ export default {
   align-items: center;
   justify-items: start;
 
+  @include mobile{
+    padding-bottom: 2em;
+  }
+
   .want-to-win {
-    grid-column: 3 / 7;
-    grid-row: 4 / 6;
-    font-size: 3em;
+    grid-row: 2 / 4;
+    grid-column: 2 / -1;
+    font-size: 2em;
     font-weight: 400;
+
+    @include tablet {
+      font-size: 3em;
+      grid-row: 2 / 4;
+      grid-column: 3 / -3;
+    }
+
+    // @include widescreen {
+    //   grid-column: 4 / -4;
+    // }
   }
 
   .participate-button {
-    grid-column: 3 / 7;
-    grid-row: 6 / 8;
+    grid-row: 4 / 6;
+    grid-column: 2 / -1;
+
     background: inherit;
     border: 4px solid black;
     padding: 0 1em 0 1em;
@@ -162,11 +179,34 @@ export default {
     p {
       font-size: 16px;
     }
+
+    @include tablet {
+      grid-row: 4 / 6;
+      grid-column: 3 / -3;
+    }
+
+    // @include widescreen {
+    //   grid-column: 4 / -4;
+    // }
   }
 
   .see-details-link {
-    grid-column: 3 / 7;
-    grid-row: 8 / 10;
+    grid-row: 6 / 8;
+    grid-column: 2 / -1;
+    
+    @include tablet {
+      grid-row: 6 / 8;
+      grid-column: 2 / 10;
+    }
+
+    @include tablet {
+      grid-column: 3 / -3;
+    }
+
+    // @include widescreen {
+    //   grid-column: 4 / -4;
+    // }
+
     font-weight: bold;
     color: black;
     font-weight: 200;
@@ -175,12 +215,33 @@ export default {
     text-decoration: underline;
     text-decoration-color: $link-color;
     text-underline-position: under;
+
+    
   }
 
   .icons-container {
-    grid-column: 7 / 12;
-    grid-row: 4 / 12;
+    grid-column: 1 / -1;
+    grid-row: 7 / -1;
+    @include mobile{
+      margin-top: 2em;
+    }
+
+    @include tablet {
+      grid-row: 6 / -1;
+      grid-column: 7 / -1;
+    }
+
+    @include desktop{
+      grid-row: 4 / -3;
+      grid-column: 7 / 11;
+    }
+
+    @include widescreen {
+      grid-column: 6 / -6;
+    }
+
     width: 100%;
+    min-width: 375px;
     height: 100%;
     display: grid;
     grid: repeat(6, 1fr) / repeat(12, 1fr);
@@ -212,7 +273,7 @@ export default {
 
       }
       &.icon--bottle{
-        grid-row: 4 / 6;
+        grid-row: 4 / -1;
 
         &:nth-of-type(5) {
           grid-column: 4 / 5;
