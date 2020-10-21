@@ -20,7 +20,7 @@
             '-ballot ballot-element-local'
         "
         :key="color.name"
-      >
+        >
         <p class="winner-chance">
           {{translate(color.name)}} vinnersjanse
         </p>
@@ -144,6 +144,7 @@ export default {
 <style lang="scss" scoped>
 @import "../styles/variables.scss";
 @import "../styles/media-queries.scss";
+@import "../styles/global.scss";
 
 @include mobile{
   section {
@@ -164,12 +165,15 @@ export default {
   .ballot-element-local {
     height: 250px;
     width: 100%;
-
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    @include raffle;
+    
     .win-percentage {
       margin-left: 30px;
       font-size: 50px;
     }
-    
 
     p {
       margin-left: 30px;
