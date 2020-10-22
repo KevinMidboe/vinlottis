@@ -1,11 +1,12 @@
 let client;
 try {
   const redis = require("redis");
-  console.log("trying to create redis");
+  console.log("Trying to establish connection with redis.");
   client = redis.createClient();
   client.on("error", function(err) {
     client.quit();
     console.error("Missing redis-configurations..");
+
     client = {
       rpush: function() {
         console.log("redis-dummy lpush", arguments);
