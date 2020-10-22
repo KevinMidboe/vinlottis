@@ -11,7 +11,7 @@ const VinlottisConfig = {
     minimizer: [
       new HtmlWebpackPlugin({
         chunks: ["vinlottis"],
-        filename: "../index.html",
+        filename: "index.html",
         template: "./src/templates/Create.html",
         inject: true,
         minify: {
