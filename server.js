@@ -19,32 +19,12 @@ const bodyParser = require("body-parser");
 
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo")(session);
-const cors = require("cors");
 
-const referrerPolicy = require("referrer-policy");
-const helmet = require("helmet");
-const featurePolicy = require("feature-policy");
-
-const compression = require("compression");
-app.use(compression());
-
-app.use(
-  featurePolicy({
-    features: {
-      fullscreen: ["*"],
-      //vibrate: ["'none'"],
-      payment: ["'none'"],
-      microphone: ["'none'"],
-      camera: ["'self'"],
-      speaker: ["*"],
-      syncXhr: ["'self'"]
-      //notifications: ["'self'"]
-    }
-  })
-);
-app.use(helmet());
-app.use(helmet.frameguard({ action: "sameorigin" }));
-app.use(referrerPolicy({ policy: "origin" }));
+// middleware
+const setupCORS = require(path.join(__dirname, "/middleware/setupCORS"));
+const setupHeaders = require(path.join(__dirname, "/middleware/setupHeaders"));
+app.use(setupCORS)
+app.use(setupHeaders)
 
 app.use(cors());
 mongoose.promise = global.Promise;
