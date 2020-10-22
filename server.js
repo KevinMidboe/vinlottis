@@ -15,10 +15,23 @@ const subscriptionApi = require(path.join(__dirname + "/api/subscriptions"));
 const chat = require(path.join(__dirname + "/api/chat"))(io);
 const chatHistory = require(path.join(__dirname + "/api/chatHistory"));
 
-const bodyParser = require("body-parser");
-
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo")(session);
+
+// mongoose / database
+mongoose.promise = global.Promise;
+mongoose.connect("mongodb://localhost/vinlottis", {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 10000 // initial connection timeout
+}).then(_ => console.log("Mongodb connection established!"))
+.catch(err => {
+  console.log(err);
+  console.error("ERROR! Mongodb required to run.");
+  process.exit(1);
+})
+mongoose.set("debug", process.env.NODE_ENV === "development");
 
 // middleware
 const setupCORS = require(path.join(__dirname, "/middleware/setupCORS"));
@@ -26,17 +39,8 @@ const setupHeaders = require(path.join(__dirname, "/middleware/setupHeaders"));
 app.use(setupCORS)
 app.use(setupHeaders)
 
-app.use(cors());
-mongoose.promise = global.Promise;
-mongoose.connect("mongodb://localhost/vinlottis");
-mongoose.set("debug", true);
-
-app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
-);
-app.use(bodyParser.json());
+// parse application/json
+app.use(express.json());
 
 app.use(
   session({
