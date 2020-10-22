@@ -9,14 +9,13 @@ const update = require(path.join(__dirname + "/update"));
 const retrieve = require(path.join(__dirname + "/retrieve"));
 const request = require(path.join(__dirname + "/request"));
 const subscriptionApi = require(path.join(__dirname + "/subscriptions"));
-const loginApi = require(path.join(__dirname + "/login"));
+const userApi = require(path.join(__dirname + "/user"));
 const wineinfo = require(path.join(__dirname + "/wineinfo"));
 const virtualApi = require(path.join(__dirname + "/virtualLottery"));
 const virtualRegistrationApi = require(path.join(
   __dirname + "/virtualRegistration"
 ));
 const lottery = require(path.join(__dirname + "/lottery"));
-
 
 const router = express.Router();
 
@@ -61,10 +60,8 @@ router.post('/winner/notify/:id', virtualRegistrationApi.sendNotificationToWinne
 router.get('/winner/:id', virtualRegistrationApi.getWinesToWinnerById);
 router.post('/winner/:id', virtualRegistrationApi.registerWinnerSelection);
 
-// router.use("/api/", updateApi);
-// router.use("/api/", retrieveApi);
-// router.use("/api/", wineinfoApi);
-// router.use("/api/lottery", lottery);
-// router.use("/virtual-registration/", virtualRegistrationApi);
+router.post('/login', userApi.login);
+router.post('/register', mustBeAuthenticated, userApi.register);
+router.get('/logout', userApi.logout);
 
 module.exports = router;
