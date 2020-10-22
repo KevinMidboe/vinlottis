@@ -72,6 +72,7 @@ const webpackConfig = function(isDev) {
     plugins: [
       new VueLoaderPlugin(),
       new webpack.DefinePlugin({
+        __ENV__: JSON.stringify(process.env.NODE_ENV),
         __NAME__: JSON.stringify(env.name),
         __PHONE__: JSON.stringify(env.phone),
         __PRICE__: env.price,

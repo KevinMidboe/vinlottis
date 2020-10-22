@@ -11,6 +11,10 @@ var serviceWorkerRegistrationMixin = {
     }
     this.registerPushListener();
     this.registerServiceWorker();
+    if (__ENV__ == "development") {
+      console.info("Service worker manually disabled while on localhost.")
+    } else {
+    }
   },
   methods: {
     registerPushListener: function() {
