@@ -20,7 +20,7 @@ function daysAgo(date) {
   return Math.round(Math.abs((new Date() - new Date(date)) / day));
 }
 
-module.exports = {
+export {
   dateString,
   humanReadableDate,
   daysAgo

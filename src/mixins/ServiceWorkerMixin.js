@@ -92,4 +92,4 @@ var serviceWorkerRegistrationMixin = {
   }
 };
 
-module.exports = serviceWorkerRegistrationMixin;
+export default serviceWorkerRegistrationMixin;
