@@ -4,6 +4,8 @@ import { routes } from "@/router.js";
 import Vinlottis from "@/Vinlottis";
 import VueAnalytics from "vue-analytics";
 
+import "core-js/stable"; // babel polyfill
+
 Vue.use(VueRouter);
 Vue.use(VueAnalytics, {
   id: "UA-156846886-1"

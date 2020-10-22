@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/polyfill": "~7.2",
     "@zxing/library": "^0.15.2",
     "canvas-confetti": "^1.2.0",
     "chart.js": "^2.9.3",
@@ -39,15 +38,16 @@
     "web-push": "^3.4.3"
   },
   "devDependencies": {
-    "@babel/core": "~7.2",
+    "@babel/core": "~7.12",
     "@babel/plugin-proposal-class-properties": "~7.3",
     "@babel/plugin-proposal-decorators": "~7.3",
     "@babel/plugin-proposal-json-strings": "~7.2",
     "@babel/plugin-syntax-dynamic-import": "~7.2",
     "@babel/plugin-syntax-import-meta": "~7.2",
-    "@babel/preset-env": "~7.3",
+    "@babel/preset-env": "~7.12",
     "babel-loader": "~8.0",
     "compression-webpack-plugin": "^3.1.0",
+    "core-js": "3",
     "cross-env": "^6.0.3",
     "css-loader": "^3.2.0",
     "file-loader": "^4.2.0",

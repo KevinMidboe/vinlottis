@@ -41,7 +41,7 @@ let webpackConfig = merge(commonConfig(true), {
 
 webpackConfig = merge(webpackConfig, {
   entry: {
-    main: ["@babel/polyfill", helpers.root("src", "vinlottis-init")]
+    main: helpers.root("src", "vinlottis-init")
   },
   plugins: [
     new HtmlPlugin({

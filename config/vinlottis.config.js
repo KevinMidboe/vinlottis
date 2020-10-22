@@ -5,7 +5,7 @@ const helpers = require("./helpers");
 
 const VinlottisConfig = {
   entry: {
-    vinlottis: ["@babel/polyfill", helpers.root("src", "vinlottis-init")]
+    vinlottis: helpers.root("src", "vinlottis-init")
   },
   optimization: {
     minimizer: [
