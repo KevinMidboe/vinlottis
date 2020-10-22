@@ -17,10 +17,9 @@ const environment = isProd
 const webpackConfig = merge(commonConfig(false), {
   mode: "production",
   output: {
-    path: helpers.root("public/dist"),
+    path: helpers.root("dist"),
     publicPath: "/dist/",
     filename: "js/[name].bundle.[hash:7].js"
-    //filename: "js/[name].bundle.js"
   },
   optimization: {
     splitChunks: {
@@ -51,7 +50,6 @@ const webpackConfig = merge(commonConfig(false), {
     new webpack.EnvironmentPlugin(environment),
     new MiniCSSExtractPlugin({
       filename: "css/[name].[hash:7].css"
-      //filename: "css/[name].css"
     })
   ]
 });
