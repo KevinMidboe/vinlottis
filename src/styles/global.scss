@@ -245,6 +245,21 @@ textarea {
   }
 }
 
+.width {
+  &-100 {
+    width: 100%;
+  }
+  &-75 {
+    width: 75%;
+  }
+  &-50 {
+    width: 50%;
+  }
+  &-25 {
+    width: 25%;
+  }
+}
+
 .cursor {
   &-pointer {
     cursor: pointer;
