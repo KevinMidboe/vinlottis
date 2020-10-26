@@ -168,6 +168,10 @@ textarea {
     opacity: 0.25;
     cursor: not-allowed;
   }
+
+  &.small {
+    height: min-content;
+  }
 }
 
 
