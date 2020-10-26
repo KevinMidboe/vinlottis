@@ -5,7 +5,7 @@
     <section class="requested-wines-container">
       <p v-if="wines == undefined || wines.length == 0">Ingen har foreslått noe enda!</p>
 
-      <RequestedWineCard v-for="requestedEl in wines" :key="requestedEl.id" :requestedElement="requestedEl" @wineDeleted="filterOutDeletedWine" :showDeleteButton="isAdmin"/>
+      <RequestedWineCard v-for="requestedEl in wines" :key="requestedEl.wine._id" :requestedElement="requestedEl" @wineDeleted="filterOutDeletedWine" :showDeleteButton="isAdmin"/>
     </section>
   </main>
 </template>
