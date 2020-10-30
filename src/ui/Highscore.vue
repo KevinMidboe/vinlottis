@@ -29,15 +29,8 @@ export default {
   },
   async mounted() {
     let response = await highscoreStatistics();
-    response.sort((a, b) => {
-      return a.wins.length > b.wins.length ? -1 : 1;
-    });
-    response = response.filter(
-      person => person.name != null && person.name != ""
-    );
-    this.highscore = response.slice(0, 5);
-    // response.sort((a, b) => a.wins.length < b.wins.length ? 1 : -1)
-    // this.highscore = this.generateScoreBoard(response.slice(0, 10));
+    response.sort((a, b) => a.wins.length < b.wins.length ? 1 : -1)
+    this.highscore = this.generateScoreBoard(response.slice(0, 5));
   },
   methods: {
     generateScoreBoard(highscore=this.highscore) {
