@@ -2,19 +2,19 @@
   <div class="main-container">
 
     <section class="top-container">
-
+      
       <h1 class="want-to-win">
         Vil du også vinne?
       </h1>
 
-      <a href="#" class="participate-button">
-        <i class="icon icon--arrow-right"></i>
-        <p>Trykk her for å delta</p>
-      </a>
+      <router-link to="/lottery/game" class="participate-button">
+          <i class="icon icon--arrow-right"></i>
+          <p>Trykk her for å delta</p>
+      </router-link>
 
-      <a href="#" class="see-details-link">
+      <router-link to="/lottery/generate" class="see-details-link">
         Se vipps detaljer og QR-kode
-      </a>
+      </router-link>
 
       <div class="icons-container">
         <i class="icon icon--heart-sparks"></i>

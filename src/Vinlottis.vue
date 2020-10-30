@@ -108,5 +108,7 @@ body {
 .app-container {
   background-color: white;
   min-height: 100vh;
+  display: grid;
+  grid-template-rows: 80px auto 100px;
 }
 </style>
