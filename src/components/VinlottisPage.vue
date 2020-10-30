@@ -138,6 +138,8 @@ export default {
 
   @include mobile{
     padding-bottom: 2em;
+    height: 15em;
+    grid-template-rows: repeat(7, 1fr);
   }
 
   .want-to-win {
@@ -210,6 +212,7 @@ export default {
     grid-row: 7 / -1;
     @include mobile{
       margin-top: 2em;
+      display: none;
     }
 
     @include tablet {
