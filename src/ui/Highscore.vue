@@ -61,7 +61,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/media-queries.scss";
 @import "../styles/variables.scss";
 .heading {
   display: flex;
@@ -93,29 +92,29 @@ ol {
   gap: 5%;
 
   .single-winner {
+    box-sizing: border-box;
     width: 100%;
     background: $primary;
     display: grid;
-    grid-template: 1fr .3fr / 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
+    padding: 1em; 
 
     i {
       font-size: 3em;
+      width: max-content;
+      justify-self: end;
     }
 
     .placement {
       grid-row: 1;
       grid-column: 1 / 3;
       font-size: 3em;
-      margin-left: 5px;
-      padding: .2em 0 0 5px;
     }
 
     .winner-name {
       grid-row: 2;
       grid-column: 1 / -1;
-      margin-left: 5px;
-      padding-left: 5px;
     }
 
 
