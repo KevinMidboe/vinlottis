@@ -1,11 +1,11 @@
 <template>
-  <main>
-    <h1>
-      Alle foreslåtte viner
-    </h1>
+  <main class="container">
+    <h1>Alle foreslåtte viner</h1>
+
     <section class="requested-wines-container">
       <p v-if="wines == undefined || wines.length == 0">Ingen har foreslått noe enda!</p>
-      <RequestedWineCard v-for="requestedEl in wines" :key="requestedEl.id" :requestedElement="requestedEl" @wineDeleted="filterOutDeletedWine" :showDeleteButton="isAdmin"/>
+
+      <RequestedWineCard v-for="requestedEl in wines" :key="requestedEl.wine._id" :requestedElement="requestedEl" @wineDeleted="filterOutDeletedWine" :showDeleteButton="isAdmin"/>
     </section>
   </main>
 </template>
@@ -40,41 +40,26 @@ export default {
 
 <style lang="scss" scoped>
 @import "../styles/media-queries.scss";
+@import "./src/styles/variables.scss";
+
+.container {
+  width: 90vw;
+  margin: 3rem auto;
+  margin-bottom: 0;
+  padding-bottom: 3rem;
+}
+
+h1 {
+  font-size: 3rem;
+  font-family: "knowit";
+  color: $matte-text-color;
+  font-weight: normal;
+}
 
 .requested-wines-container{
-  display: grid;
-  grid-gap: 1.5rem;
-  justify-items: center;
-
-  @include mobile {
-    display: flex;
-    justify-content: space-around;
-    flex-flow: row wrap;
-    row-gap: 1.5rem;
-    margin: 2rem;
-  }
-
-  @include tablet {
-    margin: 1em;
-    grid: 1fr / 1fr 1fr;
-    justify-items: center;
-  }
-
-  @include desktop {
-    margin: 1em;
-    grid: 1fr / repeat(4, 1fr);
-  }
-
-  @include widescreen {
-    width: 80%;
-    margin: auto;
-    grid: 1fr / repeat(5, 1fr);
-    justify-items: center;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
 }
-
-h1{
-  text-align: center;
-}
-
 </style>

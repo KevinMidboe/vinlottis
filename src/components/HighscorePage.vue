@@ -101,6 +101,25 @@ $elementSpacing: 3.5rem;
   margin-bottom: $elementSpacing;
 }
 
+.container {
+  width: 90vw;
+  margin: 3rem auto;
+  max-width: 1200px;
+  margin-bottom: 0;
+  padding-bottom: 3rem;
+
+  @include desktop {
+    width: 80vw;
+  }
+}
+
+h1 {
+  font-size: 3rem;
+  font-family: "knowit";
+  color: $matte-text-color;
+  font-weight: normal;
+}
+
 .filter input {
   font-size: 1rem;
   width: 30%;

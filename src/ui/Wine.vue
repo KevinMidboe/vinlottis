@@ -1,5 +1,6 @@
 <template>
   <div class="wine">
+    <slot name="top"></slot>
     <div class="wine-image">
       <img
         v-if="wine.image && loadImage"
@@ -18,6 +19,7 @@
     <slot></slot>
 
     <div class="bottom-section">
+      <slot name="bottom"></slot>
       <a v-if="wine.vivinoLink" :href="wine.vivinoLink" class="link float-right">
         Les mer
       </a>
@@ -61,7 +63,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "./src/styles/media-queries";
-@import "./src/styles/global";
 @import "./src/styles/variables";
 
 .wine {
@@ -103,6 +104,11 @@ export default {
   > span {
     margin-bottom: 0.5rem;
   }
+}
+
+.wine-details {
+  display: flex;
+  flex-direction: column;
 }
 
 .bottom-section {

@@ -77,11 +77,6 @@ export default {
   margin-top: 2rem;
   padding: 2rem;
 }
-
-h1 {
-  color: $matte-text-color;
-}
-
 .sent-container {
   width: 100%;
   height: 90vh;
