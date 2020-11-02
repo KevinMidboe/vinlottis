@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <main class="main-container">
 
     <section class="top-container">
       
@@ -52,7 +52,7 @@
     
     <Countdown :hardEnable="hardStart" @countdown="changeEnabled" />
     
-  </div>
+  </main>
 </template>
 
 <script>
