@@ -9,20 +9,16 @@
       </router-link>
     </div>
     <div class="wine-container">
-      <div v-for="wine in wines" :key="wine" class="single-item">
-        <!-- <span class="wine-occurences">{{ index + 1}}.</span> -->
-        <div class="hearts-container">
-          <span>{{wine.occurences}}</span>
-          <i class="icon icon--heart"></i>
-        </div>
-        <img :src="wine.image" class="wine-image">
-        <!-- <span class="wine-win-info"> {{ wine.occurences }} {{amount(wine.occurences)}}</span> -->
-        <span class="wine-name">{{ wine.name }}</span>
-        <!-- <a
-          class="wine-link"
-          :href="wine.vivinoLink"
-          >Les mer</a> -->
-      </div>
+      <Wine v-for="wine in wines" :key="wine" :wine="wine">
+        <template v-slot:top>
+          <div class="flex justify-end">
+            <div class="requested-count cursor-pointer">
+              <span> {{ wine.occurences }} </span>
+              <i class="icon icon--heart" />
+            </div>
+          </div>
+        </template>
+      </Wine>
     </div>
   </div>
 </template>
@@ -63,9 +59,6 @@ export default {
     this.wines = response.slice(0, 5);
   },
   methods: {
-    amount(occurences){
-      return occurences > 1 ? "ganger" : "gang";
-    },
     predicate: function() {
       var fields = [],
         n_fields = arguments.length,
@@ -149,47 +142,26 @@ export default {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 2rem;
 
-  .single-item{
-    height: 400px;
-    display: grid;
-    grid-template-rows: .3fr 1fr .3fr;
+  .requested-count {
+    display: flex;
+    align-items: center;
+    margin-top: -0.5rem;
+    background-color: rgb(244,244,244);
+    border-radius: 1.1rem;
+    padding: 0.25rem 1rem;
+    font-size: 1.25em;
 
-    grid-gap: 1em;
-    -webkit-box-shadow: 0px 2px 21px -1px rgba(127,127,127,0.5);
-    -moz-box-shadow: 0px 2px 21px -1px rgba(127,127,127,0.5);
-    box-shadow: 0px 2px 21px -1px rgba(127,127,127,0.5);
-
-    .hearts-container{
-      margin: 10px 10px 0 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-evenly;
-      justify-self: end;
-
-      width: 80px;
-      height: 30px;
-      background-color: #f4f4f4;
-      border-radius: 20px;
-
-      .icon--heart{
-        font-size: 30px;
-        color: $link-color;
-      }
+    span {
+      padding-right: 0.5rem;
+      line-height: 1.25em;
     }
-
-    .wine-image {
-      width: 60px;
-      height: 200px;
-      align-self: center;
-      justify-self: center;
-    }
-
-    .wine-name{
-      margin-left: 1em;
-      margin-right: .5em;
-      padding-bottom: 1em;
-      font-size: 20px;
+    .icon--heart{
+      font-size: 1.5rem;
+      color: $link-color;
     }
   }
 }
+
+
+
 </style>
