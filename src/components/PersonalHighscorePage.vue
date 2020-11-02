@@ -141,6 +141,24 @@ $elementSpacing: 3rem;
   border-color: gray;
 }
 
+.container {
+  width: 90vw;  
+  margin: 3rem auto;
+  margin-bottom: 0;
+  padding-bottom: 3rem;
+  max-width: 1200px;
+
+  @include desktop {
+    width: 80vw;
+  }
+}
+
+h1 {
+  font-size: 3rem;
+  font-family: "knowit";
+  font-weight: normal;
+}
+
 .name {
   text-transform: capitalize;
   font-size: 3.5rem;

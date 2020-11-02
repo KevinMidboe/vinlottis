@@ -37,33 +37,6 @@ a {
   }
 }
 
-.container {
-  width: 90vw;
-  margin: 3rem auto;
-  margin-bottom: 0;
-  padding-bottom: 3rem;
-  max-width: 1700px;
-
-  @include desktop {
-    width: 80vw;
-  }
-
-  h1 {
-    font-family: "knowit";
-    font-weight: normal;
-    font-size: 2rem;
-
-    @include desktop {
-      font-size: 3rem;
-    }
-  }
-}
-
-.text-center {
-  text-align: center;
-}
-
-
 .subtext {
   margin-top: 0.5rem;
   font-size: 1.22rem;
@@ -195,6 +168,10 @@ textarea {
     opacity: 0.25;
     cursor: not-allowed;
   }
+
+  &.small {
+    height: min-content;
+  }
 }
 
 
@@ -268,6 +245,26 @@ textarea {
   }
 }
 
+.width {
+  &-100 {
+    width: 100%;
+  }
+  &-75 {
+    width: 75%;
+  }
+  &-50 {
+    width: 50%;
+  }
+  &-25 {
+    width: 25%;
+  }
+}
+
+.cursor {
+  &-pointer {
+    cursor: pointer;
+  }
+}
 
 .no-margin {
   margin: 0 !important;

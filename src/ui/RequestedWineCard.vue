@@ -1,33 +1,40 @@
 <template>
-  <div class="requested-wine">
-    <img
-      v-if="wine.image"
-      :src="wine.image"
-      class="wine-image"
-      :class="{ 'fullscreen': fullscreen }"
-    />
-    <img v-else class="wine-placeholder" alt="Wine image" />
-    <h3 v-if="wine.name">{{ wine.name }}</h3>
-    <h3 v-else>(no name)</h3>
-    <p class="requested-amount">Foreslått: <strong>{{requestedElement.count}}</strong></p>
+  <Wine :wine="wine">
+    <template v-slot:top>
+      <div class="flex justify-end">
+        <div class="requested-count cursor-pointer" @click="request">
+          <span>{{ requestedElement.count }}</span>
+          <i class="icon icon--heart" :class="{ 'active': locallyRequested }" />
+        </div>
+      </div>
+    </template>
 
-    <button class="vin-button" @click="request(wine)" v-if="!locallyRequested">Foreslå denne</button>
-    <a
-    v-if="wine.vivinoLink"
-    :href="wine.vivinoLink"
-    class="wine-link">
-      Les mer
-    </a>
-    <button @click="deleteWine(wine)" v-if="showDeleteButton == true" class="vin-button danger">
-      Slett vinen
-    </button>
-    </div>
+    <template v-slot:default>
+      <button @click="deleteWine(wine)" v-if="showDeleteButton == true" class="vin-button small danger width-100">
+        Slett vinen
+      </button>
+    </template>
+
+    <template v-slot:bottom>
+      <div class="float-left request">
+        <i class="icon icon--heart request-icon" :class="{ 'active': locallyRequested }"></i>
+        <a aria-role="button" tabindex="0" class="link" @click="request"
+           :class="{ 'active': locallyRequested }">
+          {{ locallyRequested ? 'Anbefalt' : 'Anbefal' }}
+        </a>
+      </div>
+    </template>
+  </Wine>
 </template>
 
 <script>
 import { deleteRequestedWine, requestNewWine } from "@/api";
+import Wine from "@/ui/Wine";
 
 export default {
+  components: {
+    Wine
+  },
   data(){
     return {
       wine: this.requestedElement.wine,
@@ -46,12 +53,16 @@ export default {
     }
   },
   methods: {
-    request(wine){
+    request(){
+      if (this.locallyRequested)
+        return
+      console.log("requesting", this.wine)
       this.locallyRequested = true
       this.requestedElement.count = this.requestedElement.count +1
-      requestNewWine(wine)
+      requestNewWine(this.wine)
     },
-    async deleteWine(wine) {
+    async deleteWine() {
+      const wine = this.wine
       if (window.confirm("Er du sikker på at du vil slette vinen?")) {
         let response = await deleteRequestedWine(wine);
         if (response['success'] == true) {
@@ -65,62 +76,49 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped> 
-@import "../styles/global.scss";
+<style lang="scss" scoped>
+@import "./src/styles/variables";
 
-.requested-wine{
-  -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.65);
-  -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.65);
-  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.65);
-  text-align: center;
-  display: grid;
-  grid-template-areas: "top top"
-                       "middle-left middle-right-top"
-                       "middle-left middle-right-bot"
-                       "bottom-top bottom-top"
-                       "bottom-bot bottom-bot";
-  grid-gap: 1em;
-  justify-items: center;
+.requested-count {
+  display: flex;
   align-items: center;
-  width: 100%;
-  
-  h3{
-    grid-area: top;
-    word-break: keep-all;
-    width: 90%;
+  margin-top: -0.5rem;
+  background-color: rgb(244,244,244);
+  border-radius: 1.1rem;
+  padding: 0.25rem 1rem;
+  font-size: 1.25em;
+
+  span {
+    padding-right: 0.5rem;
+    line-height: 1.25em;
   }
 
-  img{
-    height: 13em;
-    grid-area: middle-left;
-  }
-
-  .requested-amount{
-    grid-area: middle-right-top;
-    width: 90%;
-    word-break: keep-all;
-  }
-  
-  .wine-link{
-    grid-area: middle-right-bot;
-    color: #333333;
-    font-family: Arial;
-    text-decoration: none;
-    font-weight: bold;
-    border-bottom: 1px solid $link-color;
-    height: 1em;
-  }
-
-  .vin-button{
-    grid-area: bottom-top;
-    margin-bottom: 1em;
-
-    &.danger{
-      grid-area: bottom-bot;
-      background-color: $light-red;
-      color: $red;
-    }
+  .icon--heart{
+    color: grey;
   }
 }
 
+.active {
+  &.link {
+    border-color: $link-color
+  }
+
+  &.icon--heart {
+    color: $link-color;
+  }
+}
+
+.request {
+  display: flex;
+  align-items: center;
+
+  &-icon {
+    font-size: 1.5rem;
+    color: grey;
+  }
+
+  a {
+    margin-left: 0.5rem;
+  }
+}
 </style>

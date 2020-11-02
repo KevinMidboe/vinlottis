@@ -20,20 +20,20 @@ const deleteRequestedWineById = async (req, res) => {
   return res.json({
     message: `Slettet vin med id: ${id}`,
     success: true
-  }); 
+  });
 }
 
 const getAllRequestedWines = async (req, res) => {
   const allWines = await RequestedWine.find({}).populate("wine");
-  
+
   return res.json(allWines);
 }
 
 const requestNewWine = async (req, res) => {
   const {wine} = req.body
-  
+
   let thisWineIsLOKO = await Wine.findOne({id: wine.id})
-  
+
   if(thisWineIsLOKO == undefined){
     thisWineIsLOKO = new Wine({
       name: wine.name,
@@ -45,9 +45,9 @@ const requestNewWine = async (req, res) => {
     });
     await thisWineIsLOKO.save()
   }
-  
+
   let requestedWine = await RequestedWine.findOne({ "wineId": wine.id})
-  
+
   if(requestedWine == undefined){
     requestedWine = new RequestedWine({
       count: 1,
@@ -58,7 +58,7 @@ const requestNewWine = async (req, res) => {
     requestedWine.count += 1;
   }
   await requestedWine.save()
-  
+
   return res.send(requestedWine);
 }
 
