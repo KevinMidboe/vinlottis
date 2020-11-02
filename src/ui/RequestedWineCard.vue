@@ -4,7 +4,7 @@
       <div class="flex justify-end">
         <div class="requested-count cursor-pointer" @click="request">
           <span>{{ requestedElement.count }}</span>
-          <i class="icon icon--heart" />
+          <i class="icon icon--heart" :class="{ 'active': locallyRequested }" />
         </div>
       </div>
     </template>
@@ -17,10 +17,10 @@
 
     <template v-slot:bottom>
       <div class="float-left request">
-        <i class="icon icon--heart request-icon"></i>
+        <i class="icon icon--heart request-icon" :class="{ 'active': locallyRequested }"></i>
         <a aria-role="button" tabindex="0" class="link" @click="request"
            :class="{ 'active': locallyRequested }">
-          Anbefal
+          {{ locallyRequested ? 'Anbefalt' : 'Anbefal' }}
         </a>
       </div>
     </template>
@@ -94,26 +94,31 @@ export default {
   }
 
   .icon--heart{
-    color: $link-color;
+    color: grey;
   }
 }
 
-.link .active {
-  border-color: $link-color;
-}
+.active {
+  &.link {
+    border-color: $link-color
+  }
 
+  &.icon--heart {
+    color: $link-color;
+  }
+}
 
 .request {
   display: flex;
   align-items: center;
 
   &-icon {
-    font-size: 2rem;
-    color: $link-color;
+    font-size: 1.5rem;
+    color: grey;
   }
 
   a {
-    margin-left: 0.75rem;
+    margin-left: 0.5rem;
   }
 }
 </style>
