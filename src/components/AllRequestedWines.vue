@@ -40,6 +40,21 @@ export default {
 
 <style lang="scss" scoped>
 @import "../styles/media-queries.scss";
+@import "./src/styles/variables.scss";
+
+.container {
+  width: 90vw;
+  margin: 3rem auto;
+  margin-bottom: 0;
+  padding-bottom: 3rem;
+}
+
+h1 {
+  font-size: 3rem;
+  font-family: "knowit";
+  color: $matte-text-color;
+  font-weight: normal;
+}
 
 .requested-wines-container{
   display: flex;
