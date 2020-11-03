@@ -35,11 +35,10 @@
         type="number"
         placeholder="Antall lodd"
         @keyup.enter="generateColors"
-        v-model="numberOfBallots"
+        v-model="numberOfRaffles"
       />
       <button class="vin-button" @click="generateColors">Generer</button>
     </div>
-
     <div class="colors">
       <div
         v-for="color in colors"
@@ -69,7 +68,7 @@ export default {
   },
   data() {
     return {
-      numberOfBallots: 4,
+      numberOfRaffles: 4,
       colors: [],
       blue: 0,
       red: 0,
@@ -85,14 +84,14 @@ export default {
     };
   },
   beforeMount() {
-    this.$emit("numberOfBallots", this.numberOfBallots);
+    this.$emit("numberOfRaffles", this.numberOfRaffles);
     if (this.generateOnInit) {
       this.generateColors();
     }
   },
   watch: {
-    numberOfBallots: function() {
-      this.$emit("numberOfBallots", this.numberOfBallots);
+    numberOfRaffles: function() {
+      this.$emit("numberOfRaffles", this.numberOfRaffles);
       this.generateColors();
     }
   },
@@ -102,7 +101,7 @@ export default {
       if (time == 5) {
         this.generating = false;
         this.generated = true;
-        if (this.numberOfBallots > 1 &&
+        if (this.numberOfRaffles > 1 &&
           [this.redCheckbox, this.greenCheckbox, this.yellowCheckbox, this.blueCheckbox].filter(value => value == true).length == 1) {
           return
         }
@@ -117,7 +116,7 @@ export default {
           return;
         }
         this.$ga.event({
-          eventCategory: "Ballots",
+          eventCategory: "Raffles",
           eventAction: "Generate",
           eventValue: JSON.stringify(this.colors)
         });
@@ -148,8 +147,8 @@ export default {
         alert("Du må velge MINST 1 farge");
         return;
       }
-      if (this.numberOfBallots > 0) {
-        for (let i = 0; i < this.numberOfBallots; i++) {
+      if (this.numberOfRaffles > 0) {
+        for (let i = 0; i < this.numberOfRaffles; i++) {
           let color =
             randomArray[Math.floor(Math.random() * randomArray.length)];
           this.colors.push(color);
