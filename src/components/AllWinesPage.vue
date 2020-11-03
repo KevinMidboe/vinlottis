@@ -97,16 +97,7 @@ h1 {
 
   > div {
     justify-content: flex-start;
-  }
-}
-
-.winners-container {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;
-
-  > div:not(:last-of-type) {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
   }
 }
 
