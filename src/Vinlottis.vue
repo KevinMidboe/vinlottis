@@ -79,9 +79,9 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./styles/global.scss";
-@import "./styles/positioning.scss";
-@import "./styles/vinlottis-icons.css";
+@import "styles/global.scss";
+@import "styles/positioning.scss";
+@import "styles/vinlottis-icons";
 
 @font-face {
   font-family: "knowit";
