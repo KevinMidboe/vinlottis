@@ -3,9 +3,19 @@
 
     <section class="top-container">
       
-      <h1 class="want-to-win">
-        Vil du også vinne?
-      </h1>
+      <div class="want-to-win">
+        <h1>
+          Vil du også vinne?
+        </h1>
+        <img
+          src="/public/assets/images/notification.svg"
+          alt="Notification-bell"
+          @click="requestNotificationAccess"
+          class="notification-request-button"
+          role="button"
+          v-if="notificationAllowed"
+        />
+      </div>
 
       <router-link to="/lottery/game" class="participate-button">
           <i class="icon icon--arrow-right"></i>
@@ -145,14 +155,24 @@ export default {
   .want-to-win {
     grid-row: 2 / 4;
     grid-column: 2 / -1;
-    font-size: 2em;
-    font-weight: 400;
+    display: flex;
 
+    h1{
+      font-size: 2em;
+      font-weight: 400;
+    }
+    
     @include tablet {
-      font-size: 3em;
+      h1{
+        font-size: 3em;
+      }
       grid-row: 2 / 4;
       grid-column: 3 / -3;
     }
+  }
+
+  .notification-request-button{
+    cursor: pointer;
   }
 
   .participate-button {
