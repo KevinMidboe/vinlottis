@@ -5,8 +5,9 @@
     <div class="total-raffles">
         Totalt&nbsp;
         <span class="total">{{ total }}</span>
-        &nbsp;kjøpte og&nbsp;
-        <span>{{ totalWin }}&nbsp;vinn</span>
+        &nbsp;kjøpte,&nbsp;
+        <span>{{ totalWin }}&nbsp;vinn og&nbsp;</span>
+        <span> {{ stolen }} stjålet </span>
     </div>
 
 
