@@ -106,7 +106,6 @@ h1{
   text-align: center;
 }
 
-
 .main-container{
   margin: auto;
   max-width: 1200px;

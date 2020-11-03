@@ -1,6 +1,15 @@
 <template>
-  <div class="outer-bought">
+  <section class="outer-bought">
     <h3>Loddstatistikk</h3>
+
+    <div class="total-raffles">
+        Totalt&nbsp;
+        <span class="total">{{ total }}</span>
+        &nbsp;kjøpte og&nbsp;
+        <span>{{ totalWin }}&nbsp;vinn</span>
+    </div>
+
+
     <div class="bought-container">
       <div
         v-for="color in colors"
@@ -8,34 +17,19 @@
           color.name +
             '-container ' +
             color.name +
-            '-raffle inner-bought-container raffle-element'
+            '-raffle raffle-element-local'
         "
         :key="color.name"
-      >
-        <div class="number-container">
-          <span class="color-total bought-number-span">
-            {{ color.total }}
-          </span>
-          <span>kjøpte</span>
-        </div>
-        <div class="inner-text-container">
-          <div>{{ color.win }} vinn</div>
-          <div>{{ color.totalPercentage }}% vinn</div>
-        </div>
-      </div>
-
-      <div class="inner-bought-container total-raffles">
-        <div class="total-container">
-          Totalt&nbsp;
-          <div>
-            <span class="total">{{ total }}</span> kjøpte
-          </div>
-          <div>{{ totalWin }} vinn</div>
-          <div>{{ stolen }} stjålet</div>
-        </div>
+        >
+        <p class="winner-chance">
+          {{translate(color.name)}} vinnersjanse
+        </p>
+        <span class="win-percentage">{{ color.totalPercentage }}% </span>
+        <p class="total-bought-color">{{ color.total }} kjøpte</p>
+        <p class="amount-of-wins"> {{ color.win }} vinn </p>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 <script>
 import { colorStatistics } from "@/api";
@@ -60,11 +54,13 @@ export default {
   },
   async mounted() {
     let response = await colorStatistics();
+
     this.red = response.red;
     this.blue = response.blue;
     this.green = response.green;
     this.yellow = response.yellow;
     this.total = response.total;
+
     this.totalWin =
       this.red.win + this.yellow.win + this.blue.win + this.green.win;
     this.stolen = response.stolen;
@@ -114,119 +110,106 @@ export default {
     this.colors = this.colors.sort((a, b) => (a.win > b.win ? -1 : 1));
   },
   methods: {
+    translate(color){
+      switch(color) {
+        case "blue":
+          return "Blå"
+          break;
+        case "red":
+          return "Rød"
+          break;
+        case "green":
+          return "Grønn"
+          break;
+        case "yellow":
+          return "Gul"
+          break;
+        break;
+      }
+    },
     getPercentage: function(win, total) {
       return this.round(win == 0 ? 0 : (win / total) * 100);
     },
     round: function(number) {
-      return Math.round(number * 100) / 100;
+
+      //this can make the odds added together more than 100%, maybe rework?
+      let actualPercentage = Math.round(number * 100) / 100;
+      let rounded = actualPercentage.toFixed(0);
+      return rounded;
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/global.scss";
 @import "../styles/variables.scss";
 @import "../styles/media-queries.scss";
+@import "../styles/global.scss";
 
-.inner-bought-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.raffle-element {
-  width: 140px;
-  height: 150px;
-  margin: 20px 0;
-}
-
-.number-container {
-  display: flex;
-  align-items: flex-end;
-
-  & span:last-child {
-    padding-bottom: 5px;
-    padding-left: 5px;
-  }
-}
-
-.inner-text-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  // TODO fix styling for displaying in columns
-  @include mobile {
-    & div {
-      padding: 0 5px;
-    }
+@include mobile{
+  section {
+    margin-top: 5em;
   }
 }
 
 .total-raffles {
-  width: 150px;
-  height: 150px;
-  margin: 20px 0;
-}
-
-.total-container {
-  align-items: flex-start;
-}
-
-@include mobile {
-  .total-container {
-    > div:nth-of-type(2) {
-      margin-top: auto;
-      padding-bottom: 4px;
-      padding-left: 5px;
-    }
-  }
-}
-
-.bought-number-span {
-  display: inline-flex;
-}
-
-.outer-bought {
-  @include mobile {
-    padding: 0 20px;
-  }
+  display: flex;
 }
 
 .bought-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
-  padding-bottom: 3rem;
-  max-width: 1400px;
-  margin: auto;
-  justify-content: space-between;
-  font-family: Arial;
+  margin-top: 2em;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 50px;
 
-  @include mobile {
-    padding-bottom: 0px;
-  }
-}
+  .raffle-element-local {
+    height: 250px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    @include raffle;
+    
+    .win-percentage {
+      margin-left: 30px;
+      font-size: 50px;
+    }
 
-.color-total,
-.total {
-  font-size: 2rem;
-  font-weight: bold;
-}
+    p {
+      margin-left: 30px;
+      &.winner-chance {
+        margin-top: 40px;
+      }
 
-.small {
-  font-weight: bold;
-  font-size: 1.25rem;
-  display: inline-block;
-}
+      &.total-bought-color{
+        font-weight: bold;
+        margin-top: 25px;
+      }
 
-@include mobile {
-  .bought-container {
-    flex-wrap: wrap;
+      &.amount-of-wins {
+        font-weight: bold;
+      }
+    }
+
+    h3 {
+      margin-left: 15px;
+    }
+
+    &.green-raffle {
+      background-color: $light-green;
+    }
+
+    &.blue-raffle {
+      background-color: $light-blue;
+    }
+
+    &.yellow-raffle {
+      background-color: $light-yellow;
+    }
+
+    &.red-raffle {
+      background-color: $light-red;
+    }
   }
 }
 </style>

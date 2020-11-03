@@ -1,31 +1,68 @@
 <template>
-  <div class="outer">
-    <div class="container">
-      <section class="header-and-notification">
-          <h1 @click="startCountdown">Vinlotteri</h1>
-          <img
-            src="/public/assets/images/notification.svg"
-            alt="Notification-bell"
-            @click="requestNotificationAccess"
-            class="notification-request-button"
-            role="button"
-            v-if="notificationAllowed"
-          />
-      </section>
-      <div class="to-lottery-container">
-        <a href="#/lottery" class="to-lottery">Vil du til lotteriet?<span class="vin-link">Trykk her</span></a>
+  <main class="main-container">
+
+    <section class="top-container">
+      
+      <div class="want-to-win">
+        <h1>
+          Vil du også vinne?
+        </h1>
+        <img
+          src="/public/assets/images/notification.svg"
+          alt="Notification-bell"
+          @click="requestNotificationAccess"
+          class="notification-request-button"
+          role="button"
+          v-if="notificationAllowed"
+        />
       </div>
+
+      <router-link to="/lottery/game" class="participate-button">
+          <i class="icon icon--arrow-right"></i>
+          <p>Trykk her for å delta</p>
+      </router-link>
+
+      <router-link to="/lottery/generate" class="see-details-link">
+        Se vipps detaljer og QR-kode
+      </router-link>
+
+      <div class="icons-container">
+        <i class="icon icon--heart-sparks"></i>
+        <i class="icon icon--face-1"></i>
+        <i class="icon icon--face-3"></i>
+        <i class="icon icon--ballon"></i>
+
+        <i class="icon icon--bottle"></i>
+        <i class="icon icon--bottle"></i>
+        <i class="icon icon--bottle"></i>
+        <i class="icon icon--bottle"></i>
+        <i class="icon icon--bottle"></i>
+      </div>
+
+    </section>
+    
+    <section class="content-container">
+
+      <div class="scroll-info">  
+        <i class ="icon icon--arrow-long-right"></i>
+        <p>Scroll for å se vinnere og annen gøy statistikk</p>
+      </div>
+
+      <Highscore class="highscore"/>
+      <TotalBought class="total-bought" />
+      
       <section class="chart-container">
         <PurchaseGraph class="purchase" />
         <WinGraph class="win" />
       </section>
-      <TotalBought class="total-bought" />
-      <Vipps class="vipps-icon" />
-      <Highscore class="highscore"/>
+      
       <Wines class="wines-container" />
-    </div>
+
+    </section>
+    
     <Countdown :hardEnable="hardStart" @countdown="changeEnabled" />
-  </div>
+    
+  </main>
 </template>
 
 <script>
@@ -95,9 +132,180 @@ export default {
 
 <style lang="scss" scoped>
 @import "../styles/media-queries.scss";
+@import "../styles/variables.scss";
 
-.outer {
-  margin: 1em;
+.top-container {
+  height: 30em;
+  background-color: $primary;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  align-items: center;
+  justify-items: start;
+
+  @include mobile{
+    padding-bottom: 2em;
+    height: 15em;
+    grid-template-rows: repeat(7, 1fr);
+  }
+
+  .want-to-win {
+    grid-row: 2 / 4;
+    grid-column: 2 / -1;
+    display: flex;
+
+    h1{
+      font-size: 2em;
+      font-weight: 400;
+    }
+    
+    @include tablet {
+      h1{
+        font-size: 3em;
+      }
+      grid-row: 2 / 4;
+      grid-column: 3 / -3;
+    }
+  }
+
+  .notification-request-button{
+    cursor: pointer;
+  }
+
+  .participate-button {
+    grid-row: 4 / 6;
+    grid-column: 2 / -1;
+
+    background: inherit;
+    border: 4px solid black;
+    padding: 0 1em 0 1em;
+    display: flex;
+    width: 12.5em;
+    column-gap: 15px;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    
+    i {
+      color: $link-color;
+      margin-left: 5px;
+    }
+
+    p {
+      font-size: 16px;
+    }
+
+    @include tablet {
+      grid-row: 4 / 6;
+      grid-column: 3 / -3;
+    }
+  }
+
+  .see-details-link {
+    grid-row: 6 / 8;
+    grid-column: 2 / -1;
+    
+    @include tablet {
+      grid-row: 6 / 8;
+      grid-column: 2 / 10;
+    }
+
+    @include tablet {
+      grid-column: 3 / -3;
+    }
+
+    font-weight: bold;
+    color: black;
+    font-weight: 200;
+    font-size: 1.3em;
+
+    text-decoration: underline;
+    text-decoration-color: $link-color;
+    text-underline-position: under;
+  }
+
+  .icons-container {
+    grid-column: 1 / -1;
+    grid-row: 7 / -1;
+    @include mobile{
+      margin-top: 2em;
+      display: none;
+    }
+
+    @include tablet {
+      grid-row: 6 / -1;
+      grid-column: 7 / -1;
+    }
+
+    @include desktop{
+      grid-row: 4 / -3;
+      grid-column: 7 / 11;
+    }
+
+    @include widescreen {
+      grid-column: 6 / 10;
+    }
+
+    width: 100%;
+    min-width: 375px;
+    height: 100%;
+    display: grid;
+    grid: repeat(6, 1fr) / repeat(12, 1fr);
+
+    i {
+      font-size: 5em;
+
+      &.icon--heart-sparks{
+        grid-column: 2 / 4;
+        grid-row: 2 / 4;
+        align-self: center;
+        justify-self: center;
+
+      }
+      &.icon--face-1{
+        grid-column: 4 / 7;
+        grid-row: 2 / 4;
+        justify-self: center;
+
+      }
+      &.icon--face-3{
+        grid-column: 7 / 10;
+        grid-row: 1 / 4;
+        align-self: center;
+      }
+      &.icon--ballon{
+        grid-column: 9 / 11;
+        grid-row: 3 / 5;
+
+      }
+      &.icon--bottle{
+        grid-row: 4 / -1;
+
+        &:nth-of-type(5) {
+          grid-column: 4 / 5;
+          align-self: center;
+        }
+        &:nth-of-type(6) {
+          grid-column: 5 / 6;
+        }
+        &:nth-of-type(7) {
+          grid-column: 6 / 7;
+          align-self: center;
+        }
+        &:nth-of-type(8) {
+          grid-column: 7 / 8;
+        }
+        &:nth-of-type(9){
+          grid-column: 8 / 9;
+          align-self: center;
+        }
+      }
+    }
+  }
+
 }
 
 h1 {
@@ -113,130 +321,63 @@ h1 {
     margin-bottom: 0;
 }
 
-.container{
-  display: flex;
-  flex-direction: column;
+.content-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  row-gap: 5em;
   
-  .header-and-notification{
-    display: flex;
-    flex-direction: row;
-    margin: auto;
+  .scroll-info {
+      display: flex;
+      align-items: center;
+      column-gap: 10px;
+      grid-column: 2 / -2;
   }
 
-  .vipps-icon{
-    margin: 1em;
+  .chart-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    grid-column: 2 / -2;
+  }
+  .total-bought {
+    grid-column: 2 / -2;
+  }
+
+  .highscore {
+    grid-column: 2 / -2;
+  }
+
+  .wines-container {
+    grid-column: 2 / -2;
+  }
+
+  .icon--arrow-long-right {
+    rotate: 90deg;
+    color: $link-color;
   }
 
   @include tablet {
-    margin: .5em;
-    .chart-container {
-      display: flex;
-      width: 100%;
-    }
 
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto-flow min-content;
-    grid-template-areas: "top-top top-top top-top"
-                         "top-bot top-bot top-bot"
-                         "middle-top middle-top middle-top"
-                         "middle-bot-left middle-bot-left middle-bot-right"
-                         "bot-left bot-right bot-right";
-
-    .header-and-notification {
-      grid-area: top-top;
-    }
-
-    .to-lottery-container{
-      grid-area: top-bot;
+    .scroll-info{
+      grid-column: 3 / -3;
     }
 
     .chart-container {
-      grid-area: middle-top;
+      grid-column: 3 / -3;
+      flex-direction: row;
     }
 
     .total-bought {
-      grid-area: middle-bot-left;
+      grid-column: 3 / -3;
     }
 
     .highscore {
-      border-top: 1px solid rgb(237, 237, 237);
-      grid-area: bot-left;
-      align-self: baseline;
+      grid-column: 3 / -3;
     }
 
     .wines-container {
-      border-top: 1px solid rgb(237, 237, 237);
-      padding-left: 1em;
-      border-left: 1px solid rgb(237, 237, 237);
-      grid-area: bot-right;
-    }
-
-    .vipps-icon {
-      padding-left: 1em;
-      align-self: center;
-      grid-area: middle-bot-right;
-      border-left: 1px solid rgb(237, 237, 237);
-    }
-  }
-
-  @include desktop {
-
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto-flow min-content;
-    grid-template-areas: "top-top top-top top-top top-top"
-                         "top-bot top-bot top-bot top-bot"
-                         "middle-top middle-top middle-top middle-top"
-                         "middle-bot middle-bot middle-bot aside"
-                         "bot-left bot-right bot-right aside";
-    grid-gap: 1em;
-    align-items: center;
-
-    .header-and-notification {
-      grid-area: top-top;
-    }
-
-    .to-lottery-container {
-      grid-area: top-bot;
-    }
-
-    .chart-container {
-      grid-area: middle-top;
-    }
-
-    .total-bought {
-      grid-area: middle-bot;
-      border-bottom: 1px solid rgb(237, 237, 237);
-    }
-
-    .highscore {
-      border: none;
-      grid-area: bot-left;
-    }
-
-    .wines-container {
-      border: none;
-      grid-area: bot-right;
-    }
-
-    .vipps-icon {
-      grid-area: aside;
-      padding-left: 3em;
-      border-left: 1px solid rgb(237, 237, 237);
-    }
-  }
-  
-  @include widescreen {
-    width: 70%;
-    max-width: 1800px;
-    margin: auto;
-
-    .vipps-icon {
-      padding-left: 6em;
+      grid-column: 3 / -3;
     }
   }
 }
-
-
 </style>

@@ -2,6 +2,7 @@
   <div class="app-container">
     <banner :routes="routes"/>
     <router-view />
+    <Footer />
     <UpdateToast
       v-if="showToast"
       :text="toastText"
@@ -14,11 +15,12 @@
 <script>
 import ServiceWorkerMixin from "@/mixins/ServiceWorkerMixin";
 import banner from "@/ui/Banner";
+import Footer from "@/ui/Footer";
 import UpdateToast from "@/ui/UpdateToast";
 
 export default {
   name: "vinlottis",
-  components: { banner, UpdateToast },
+  components: { banner, UpdateToast, Footer },
   props: {},
   data() {
     return {
@@ -102,9 +104,16 @@ body {
 }
 </style>
 
-<style scoped>
+<style lang="scss" scoped>
 .app-container {
   background-color: white;
   min-height: 100vh;
+  display: grid;
+  grid-template-rows: 80px auto 100px;
+
+  .main-container{
+    height: 100%;
+    width: 100%;
+  }
 }
 </style>

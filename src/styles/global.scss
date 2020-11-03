@@ -296,6 +296,28 @@ textarea {
   }
 }
 
+@mixin raffle {
+  padding-bottom: 50px;
+  &::before, &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 25px;
+    height: 50px;
+    background: radial-gradient(closest-side, #fff, #fff 50%, transparent 50%);
+    background-size: 50px 50px;
+    background-position: 0 25px;
+    background-repeat: repeat-x;
+  }
+  &::after{
+    background: radial-gradient(closest-side, transparent, transparent 50%, #fff 50%);
+    background-size: 50px 50px;
+    background-position: 25px -25px;
+    bottom: -25px
+  }
+}
+
 .desktop-only {
   @include mobile {
     display: none;
