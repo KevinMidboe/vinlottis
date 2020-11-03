@@ -4,6 +4,7 @@
 .top-banner{
   position: sticky;
   top: 0;
+  z-index: 1;
   display: grid;
   grid-template-columns: 0.5fr 1fr 0.5fr;
   grid-template-areas: "menu logo clock";
