@@ -2,7 +2,7 @@
   <div class="app-container">
     <banner :routes="routes"/>
     <router-view />
-    <WineFooter />
+    <Footer />
     <UpdateToast
       v-if="showToast"
       :text="toastText"
@@ -15,12 +15,12 @@
 <script>
 import ServiceWorkerMixin from "@/mixins/ServiceWorkerMixin";
 import banner from "@/ui/Banner";
-import WineFooter from "@/ui/WineFooter";
+import Footer from "@/ui/Footer";
 import UpdateToast from "@/ui/UpdateToast";
 
 export default {
   name: "vinlottis",
-  components: { banner, UpdateToast, WineFooter },
+  components: { banner, UpdateToast, Footer },
   props: {},
   data() {
     return {

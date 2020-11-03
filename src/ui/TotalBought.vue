@@ -2,7 +2,7 @@
   <section class="outer-bought">
     <h3>Loddstatistikk</h3>
 
-    <div class="total-ballots">
+    <div class="total-raffles">
         Totalt&nbsp;
         <span class="total">{{ total }}</span>
         &nbsp;kjøpte og&nbsp;
@@ -17,7 +17,7 @@
           color.name +
             '-container ' +
             color.name +
-            '-ballot ballot-element-local'
+            '-raffle raffle-element-local'
         "
         :key="color.name"
         >
@@ -49,7 +49,7 @@ export default {
       redPercentage: 0,
       yellowPercentage: 0,
       greenPercentage: 0,
-      bluePercentage: 0,
+      bluePercentage: 0
     };
   },
   async mounted() {
@@ -152,7 +152,7 @@ export default {
   }
 }
 
-.total-ballots {
+.total-raffles {
   display: flex;
 }
 
@@ -162,7 +162,7 @@ export default {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 50px;
 
-  .ballot-element-local {
+  .raffle-element-local {
     height: 250px;
     width: 100%;
     display: flex;
@@ -195,19 +195,19 @@ export default {
       margin-left: 15px;
     }
 
-    &.green-ballot {
+    &.green-raffle {
       background-color: $light-green;
     }
 
-    &.blue-ballot {
+    &.blue-raffle {
       background-color: $light-blue;
     }
 
-    &.yellow-ballot {
+    &.yellow-raffle {
       background-color: $light-yellow;
     }
 
-    &.red-ballot {
+    &.red-raffle {
       background-color: $light-red;
     }
   }

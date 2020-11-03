@@ -21,7 +21,7 @@
 
         <h4 class="el-spacing">Flasker vunnet:</h4>
 
-        <div v-for="win in winner.highscore" :key="win">
+        <div v-for="win in winner.highscore" :key="win._id">
           <router-link :to="winDateUrl(win.date)" class="days-ago">
             {{ humanReadableDate(win.date) }} - {{ daysAgo(win.date) }} dager siden
           </router-link>

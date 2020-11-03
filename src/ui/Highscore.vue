@@ -10,7 +10,7 @@
       </router-link>
     </section>
     <ol class="winner-list-container">
-      <li v-for="(person, index) in highscore" :key="person" class="single-winner">
+      <li v-for="(person, index) in highscore" :key="person._id" class="single-winner">
         <span class="placement">{{index + 1}}.</span>
         <i class="icon icon--medal"></i>
         <p class="winner-name">{{ person.name }}</p>
