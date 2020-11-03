@@ -184,7 +184,6 @@ export default {
     padding: 0 1em 0 1em;
     display: flex;
     width: 12.5em;
-    column-gap: 15px;
     align-items: center;
     text-decoration: none;
     color: black;
@@ -196,6 +195,7 @@ export default {
 
     p {
       font-size: 16px;
+      margin-left: 15px;
     }
 
     @include tablet {
@@ -352,7 +352,7 @@ h1 {
   }
 
   .icon--arrow-long-right {
-    rotate: 90deg;
+    transform: rotate(90deg);
     color: $link-color;
   }
 
