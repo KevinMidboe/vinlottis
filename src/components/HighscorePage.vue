@@ -122,10 +122,14 @@ h1 {
 
 .filter input {
   font-size: 1rem;
-  width: 30%;
+  width: 100%;
   border-color: black;
   border-width: 1.5px;
   padding: 0.75rem 1rem;
+
+  @include desktop {
+    width: 30%;
+  }
 }
 
 .highscore-header {
