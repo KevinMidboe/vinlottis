@@ -129,8 +129,8 @@ self.addEventListener("fetch", event => {
 function showLocalNotification(title, body, link, swRegistration) {
   const options = {
     body,
-    icon: "https://lottis.vin/assets/images/favicon.png",
-    image: "https://lottis.vin/assets/images/favicon.png",
+    icon: "https://lottis.vin/public/assets/images/favicon.png",
+    image: "https://lottis.vin/public/assets/images/favicon.png",
     vibrate: [300],
     data: { link: link }
   };

@@ -6,7 +6,7 @@
       @click="openVipps"
     >
       <img
-        src="/assets/images/vipps-logo.svg"
+        src="/public/assets/images/vipps-logo.svg"
         class="vipps-logo"
         alt="vipps logo"
       />
@@ -21,7 +21,7 @@
         pr. lodd
       </span>
       <ing
-        src="/assets/images/vipps-qr.png"
+        src="/public/assets/images/vipps-qr.png"
         class="qr-logo"
         v-if="qrFailed"
       />

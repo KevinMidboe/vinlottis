@@ -4,13 +4,13 @@
 @font-face {
   font-family: "knowit";
   font-weight: 600;
-  src: url("/assets/fonts/bold.woff");
+  src: url("/public/assets/fonts/bold.woff");
 }
 
 @font-face {
   font-family: "knowit";
   font-weight: 300;
-  src: url("/assets/fonts/regular.eot");
+  src: url("/public/assets/fonts/regular.eot");
 }
 
 body {
@@ -272,9 +272,9 @@ textarea {
 
 .raffle-element {
   margin: 20px 0;
-  -webkit-mask-image: url(/assets/images/lodd.svg);
+  -webkit-mask-image: url(/public/assets/images/lodd.svg);
   background-repeat: no-repeat;
-  mask-image: url(/assets/images/lodd.svg);
+  mask-image: url(/public/assets/images/lodd.svg);
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   color: #333333;
