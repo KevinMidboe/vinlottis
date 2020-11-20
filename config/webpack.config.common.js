@@ -15,6 +15,9 @@ const webpackConfig = function(isDev) {
         "@": helpers.root("src")
       }
     },
+     externals: {
+        moment: 'moment' // comes with chart.js
+    },
     module: {
       rules: [
         {
