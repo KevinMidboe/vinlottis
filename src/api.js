@@ -243,7 +243,7 @@ const handleErrors = async resp => {
 };
 
 const login = (username, password) => {
-  const url = new URL("/login", BASE_URL);
+  const url = new URL("/api/login", BASE_URL);
   const options = {
     headers: {
       "Content-Type": "application/json"
@@ -262,7 +262,7 @@ const login = (username, password) => {
 };
 
 const register = (username, password) => {
-  const url = new URL("/register", BASE_URL);
+  const url = new URL("/api/register", BASE_URL);
   const options = {
     headers: {
       "Content-Type": "application/json"
