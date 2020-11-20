@@ -87,13 +87,15 @@ export default {
     };
   },
   created() {
-    getChatHistory(0, 100).then(messages => (this.chatHistory = messages));
+    getChatHistory(0, this.historyPageSize)
+      .then(messages => this.chatHistory = messages);
   },
   mounted() {
     this.track();
     this.getAttendees();
     this.getWinners();
-    this.socket = io(`${window.location.hostname}:${window.location.port}`);
+    const BASE_URL = __APIURL__ || window.location.origin;
+    this.socket = io(`${BASE_URL}`);
     this.socket.on("color_winner", msg => {});
 
     this.socket.on("chat", msg => {
@@ -167,10 +169,11 @@ export default {
       const { historyPage, historyPageSize } = this;
       const page = historyPage + 1;
 
-      getChatHistory(page * historyPageSize, historyPageSize).then(messages => {
-        this.chatHistory = messages.concat(this.chatHistory);
-        this.historyPage = page;
-      });
+      getChatHistory(page * historyPageSize, historyPageSize)
+        .then(messages => {
+          this.chatHistory = messages.concat(this.chatHistory);
+          this.historyPage = page;
+        });
     },
     getWinners: async function() {
       let response = await winners();
