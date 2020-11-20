@@ -1,33 +1,29 @@
-const express = require("express");
 const path = require("path");
-const router = express.Router();
-
 const { history, clearHistory } = require(path.join(__dirname + "/../api/redis"));
 
-router.use((req, res, next) => {
-  next();
-});
-
-router.route("/chat/history").get(async (req, res) => {
+const getAllHistory = (req, res) => {
   let { skip, take } = req.query;
   skip = !isNaN(skip) ? Number(skip) : undefined;
   take = !isNaN(take) ? Number(take) : undefined;
 
-  try {
-    const messages = await history(skip, take);
-    res.json(messages)
-  } catch(error) {
-    res.status(500).send(error);
-  }
-});
+  return history(skip, take)
+    .then(messages => res.json(messages))
+    .catch(error =>  res.status(500).json({
+      message: error.message,
+      success: false
+    }));
+};
 
-router.route("/chat/history").delete(async (req, res) => {
-  try {
-    const messages = await clearHistory();
-    res.json(messages)
-  } catch(error) {
-    res.status(500).send(error);
-  }
-});
+const deleteHistory = (req, res) => {
+  return clearHistory()
+    .then(message => res.json(message))
+    .catch(error => res.status(500).json({
+      message: error.message,
+      success: false
+    }));
+};
 
-module.exports = router;
+module.exports = {
+  getAllHistory,
+  deleteHistory
+};

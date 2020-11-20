@@ -16,6 +16,7 @@ const virtualRegistrationApi = require(path.join(
   __dirname + "/virtualRegistration"
 ));
 const lottery = require(path.join(__dirname + "/lottery"));
+const chatHistoryApi = require(path.join(__dirname + "/chatHistory"));
 
 const router = express.Router();
 
@@ -59,6 +60,9 @@ router.post('/virtual/attendee/add', mustBeAuthenticated, virtualApi.addAttendee
 router.post('/winner/notify/:id', virtualRegistrationApi.sendNotificationToWinnerById);
 router.get('/winner/:id', virtualRegistrationApi.getWinesToWinnerById);
 router.post('/winner/:id', virtualRegistrationApi.registerWinnerSelection);
+
+router.get('/chat/history', chatHistoryApi.getAllHistory)
+router.delete('/chat/history', mustBeAuthenticated, chatHistoryApi.deleteHistory)
 
 router.post('/login', userApi.login);
 router.post('/register', mustBeAuthenticated, userApi.register);
