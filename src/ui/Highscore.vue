@@ -1,13 +1,19 @@
 <template>
   <div class="highscores" v-if="highscore.length > 0">
-    <h3>
-      <router-link to="highscore">
-        Topp 10 vinnere <span class="vin-link">Se alle &gt;</span>
+
+    <section class="heading">
+      <h3>
+        Topp 5 vinnere
+      </h3>
+      <router-link to="highscore" class="">
+        <span class="vin-link">Se alle vinnere</span>
       </router-link>
-    </h3>
-    <ol>
-      <li v-for="person in highscore" :key="person">
-        <b>{{ person.rank }}.</b> {{ person.name }} - {{ person.wins.length }}
+    </section>
+    <ol class="winner-list-container">
+      <li v-for="(person, index) in highscore" :key="person._id" class="single-winner">
+        <span class="placement">{{index + 1}}.</span>
+        <i class="icon icon--medal"></i>
+        <p class="winner-name">{{ person.name }}</p>
       </li>
     </ol>
   </div>
@@ -24,7 +30,7 @@ export default {
   async mounted() {
     let response = await highscoreStatistics();
     response.sort((a, b) => a.wins.length < b.wins.length ? 1 : -1)
-    this.highscore = this.generateScoreBoard(response.slice(0, 10));
+    this.highscore = this.generateScoreBoard(response.slice(0, 5));
   },
   methods: {
     generateScoreBoard(highscore=this.highscore) {
@@ -48,43 +54,66 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/media-queries.scss";
-div {
-  margin: 0;
-  font-family: Arial;
-  display: inline-flex;
-  flex-direction: column;
+@import "../styles/variables.scss";
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-h3 {
-  text-align: left;
+a {
+  text-decoration: none;
+  color: #333333;
 
-  & a {
+  &:focus,
+  &:active,
+  &:visited {
     text-decoration: none;
     color: #333333;
-
-    &:focus,
-    &:active,
-    &:visited {
-      text-decoration: none;
-      color: #333333;
-    }
   }
 }
 
 ol {
-  padding-left: 1.375rem !important;
+  list-style-type: none;
   margin-left: 0;
-  margin: 0 0 1.5em;
   padding: 0;
-  counter-reset: item;
-  & > li {
-    padding: 2.5px 0;
-    margin: 0 0 0 -1.25rem;
-    list-style-type: none;
+}
 
-    @include mobile {
-      padding: 5px 0;
+.winner-list-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12.5em, 1fr));
+  gap: 5%;
+
+  .single-winner {
+    box-sizing: border-box;
+    width: 100%;
+    background: $primary;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    padding: 1em; 
+
+    i {
+      font-size: 3em;
+      width: max-content;
+      justify-self: end;
+    }
+
+    .placement {
+      grid-row: 1;
+      grid-column: 1 / 3;
+      font-size: 3em;
+    }
+
+    .winner-name {
+      grid-row: 2;
+      grid-column: 1 / -1;
+    }
+
+
+    .winner-icon {
+      grid-row: 1;
+      grid-column: 3;
     }
   }
 }

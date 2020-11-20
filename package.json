@@ -9,10 +9,15 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server",
     "start-dev": "cross-env NODE_ENV=development node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "cross-env NODE_ENV=production webpack --hide-modules"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "~7.2",
+    "@sentry/browser": "^5.27.4",
+    "@sentry/integrations": "^5.27.4",
+    "@sentry/tracing": "^5.27.4",
     "@zxing/library": "^0.15.2",
     "canvas-confetti": "^1.2.0",
     "chart.js": "^2.9.3",

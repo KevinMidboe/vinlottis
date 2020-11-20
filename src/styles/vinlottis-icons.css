@@ -1,0 +1,122 @@
+@font-face {
+  font-family: 'vinlottis-icons';
+  src:
+    url('/public/assets/fonts/vinlottis-icons/vinlottis-icons.ttf?95xu5r') format('truetype'),
+    url('/public/assets/fonts/vinlottis-icons/vinlottis-icons.woff?95xu5r') format('woff'),
+    url('/public/assets/fonts/vinlottis-icons/vinlottis-icons.svg?95xu5r#vinlottis-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.icon {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'vinlottis-icons' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon--arrow-long-right:before {
+  content: "\e907";
+}
+.icon--arrow-long-left:before {
+  content: "\e908";
+}
+.icon--arrow-right:before {
+  content: "\e909";
+}
+.icon--arrow-left:before {
+  content: "\e900";
+}
+.icon--ballon:before {
+  content: "\e90b";
+}
+.icon--bars:before {
+  content: "\e90c";
+}
+.icon--bottle:before {
+  content: "\e90d";
+}
+.icon--cake-chart:before {
+  content: "\e90f";
+}
+.icon--stopwatch:before {
+  content: "\e911";
+}
+.icon--cloud:before {
+  content: "\e912";
+}
+.icon--dart:before {
+  content: "\e914";
+}
+.icon--eye-1:before {
+  content: "\e919";
+}
+.icon--eye-2:before {
+  content: "\e91a";
+}
+.icon--eye-3:before {
+  content: "\e91b";
+}
+.icon--eye-4:before {
+  content: "\e91c";
+}
+.icon--eye-5:before {
+  content: "\e91d";
+}
+.icon--eye-6:before {
+  content: "\e91e";
+}
+.icon--eye-7:before {
+  content: "\e91f";
+}
+.icon--eye-8:before {
+  content: "\e920";
+}
+.icon--face-1:before {
+  content: "\e922";
+}
+.icon--face-2:before {
+  content: "\e923";
+}
+.icon--face-3:before {
+  content: "\e924";
+}
+.icon--heart-sparks:before {
+  content: "\e928";
+}
+.icon--heart:before {
+  content: "\e929";
+}
+.icon--medal:before {
+  content: "\e936";
+}
+.icon--megaphone:before {
+  content: "\e937";
+}
+.icon--phone:before {
+  content: "\e93a";
+}
+.icon--plus:before {
+  content: "\e93e";
+}
+.icon--spark:before {
+  content: "\e946";
+}
+.icon--tag:before {
+  content: "\e949";
+}
+.icon--talk:before {
+  content: "\e94b";
+}
+.icon--cross:before {
+  content: "\e952";
+}

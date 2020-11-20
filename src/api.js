@@ -122,7 +122,7 @@ const winners = () => {
 
 const deleteRequestedWine = wineToBeDeleted => {
 
-  const url = new URL("api/request/"+ wineToBeDeleted._id, BASE_URL);
+  const url = new URL("api/request/"+ wineToBeDeleted.id, BASE_URL);
 
   const options = {
     headers: {

@@ -66,27 +66,34 @@ export default {
 @import "./src/styles/variables";
 
 .container {
-  max-width: unset;
+  width: 90vw;
+  margin: 3rem auto;
+  margin-bottom: 0;
+  padding-bottom: 4rem;
+}
+
+h1 {
+  font-size: 3rem;
+  font-family: "knowit";
+  font-weight: normal;
+
+  font-family: knowit, Arial;
+  margin-bottom: 25px;
+}
+
+.label {
+  font-weight: 600;
 }
 
 #wines-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 2rem;
+
 
   > div {
     justify-content: flex-start;
-  }
-}
-
-.winners-container {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;
-
-  > div:not(:last-of-type) {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
   }
 }
 

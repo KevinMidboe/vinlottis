@@ -1,5 +1,5 @@
 <template>
-  <div class="top-banner">
+  <header class="top-banner">
     <!-- Mobile -->
     <router-link to="/" class="company-logo">
       <img src="/assets/images/knowit.svg" alt="knowit logo" />
@@ -26,7 +26,7 @@
       </h2>
       <h2 v-if="twoMinutesLeft || tenMinutesOver">Lotteriet er i gang!</h2>
     </div>
-  </div>
+  </header>
 </template>
 
 <script>

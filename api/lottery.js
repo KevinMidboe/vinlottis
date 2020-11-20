@@ -69,7 +69,7 @@ const all = (req, res) => {
 
 const latest = (req, res) => {
   return groupHighscoreByDate()
-    .then(lotteries => lotteries.shift())
+    .then(lotteries => lotteries.shift()) // first element in list
     .then(latestLottery => resolveWineReferences(latestLottery, "winners"))
     .then(lottery => res.send({
         message: "Latest lottery!",
@@ -120,7 +120,7 @@ const byName = (req, res) => {
     .then(highscore => res.send({
       message: `Lottery winnings for name: ${ name }.`,
       name: highscore.name,
-      highscore: highscore.wins
+      highscore: sortNewestFirst(highscore.wins)
     }))
 }
 

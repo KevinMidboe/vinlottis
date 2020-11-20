@@ -1,21 +1,25 @@
 <template>
-  <div v-if="wines.length > 0">
-    <h3>
-      <router-link to="viner"
-        >Topp 10 viner <span class="vin-link">Se alle &gt;</span></router-link
-      >
-    </h3>
-    <ol class="list-container">
-      <li v-for="(wine, index) in wines" :key="wine" class="single-item">
-        <span class="wine-occurences">{{ index + 1}}.</span>
-        <span class="wine-name">{{ wine.name }}</span>
-        <span class="wine-win-info"> {{ wine.occurences }} {{amount(wine.occurences)}}</span>
-        <a
-          class="wine-link"
-          :href="wine.vivinoLink"
-          >Les mer</a>
-      </li>
-    </ol>
+  <div v-if="wines.length > 0" class="wines-main-container">
+    <div class="info-and-link">
+      <h3>
+        Topp 5 viner
+      </h3>
+      <router-link to="viner">
+        <span class="vin-link">Se alle viner </span>
+      </router-link>
+    </div>
+    <div class="wine-container">
+      <Wine v-for="wine in wines" :key="wine" :wine="wine">
+        <template v-slot:top>
+          <div class="flex justify-end">
+            <div class="requested-count cursor-pointer">
+              <span> {{ wine.occurences }} </span>
+              <i class="icon icon--heart" />
+            </div>
+          </div>
+        </template>
+      </Wine>
+    </div>
   </div>
 </template>
 
@@ -29,7 +33,10 @@ export default {
     Wine
   },
   data() {
-    return { wines: [], clickedWine: null, wineOpen: false };
+    return { 
+      wines: [], 
+      clickedWine: null, 
+    };
   },
   async mounted() {
     let response = await overallWineStatistics();
@@ -49,12 +56,9 @@ export default {
           }
         )
       );
-    this.wines = response.slice(0, 10);
+    this.wines = response.slice(0, 5);
   },
   methods: {
-    amount(occurences){
-      return occurences > 1 ? "ganger" : "gang";
-    },
     predicate: function() {
       var fields = [],
         n_fields = arguments.length,
@@ -124,40 +128,40 @@ export default {
 @import "./src/styles/global.scss";
 @import "../styles/media-queries.scss";
 
-h3 {
-  & a {
-    text-decoration: none;
-    color: #333333;
-  }
+.wines-main-container {
+  margin-bottom: 10em;
 }
 
-.list-container{
+.info-and-link{
+  display: flex;
+  justify-content: space-between;
+}
+
+.wine-container {
   display: grid;
-  grid: auto-flow min-content / 1fr;
-  row-gap: 5px;
-  padding: 0; 
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 2rem;
 
-  .single-item{
-    display: grid;
-    grid: 1fr / .1fr 1fr .3fr .3fr;
+  .requested-count {
+    display: flex;
+    align-items: center;
+    margin-top: -0.5rem;
+    background-color: rgb(244,244,244);
+    border-radius: 1.1rem;
+    padding: 0.25rem 1rem;
+    font-size: 1.25em;
 
-    .wine-occurences{
-      font-weight: bold;
+    span {
+      padding-right: 0.5rem;
+      line-height: 1.25em;
     }
-
-    .wine-name{
-      display: inline-block;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-
-    .wine-link {
-      color: #333333;
-      text-decoration: underline 1px solid $link-color;
-      font-weight: bold;
-      cursor: pointer;
+    .icon--heart{
+      font-size: 1.5rem;
+      color: $link-color;
     }
   }
 }
+
+
+
 </style>

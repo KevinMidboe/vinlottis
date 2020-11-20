@@ -14,14 +14,14 @@
 
         <h4 class="margin-bottom-0">Vinnende farger:</h4>
         <div class="raffle-container el-spacing">
-          <div class="raffle-element" :class="color + `-raffle`" v-for="[color, occurences] in Object.entries(winningColors)">
+          <div class="raffle-element" :class="color + `-raffle`" v-for="[color, occurences] in Object.entries(winningColors)" :key="color">
             {{ occurences }}
           </div>
         </div>
 
         <h4 class="el-spacing">Flasker vunnet:</h4>
 
-        <div v-for="win in winner.highscore">
+        <div v-for="win in winner.highscore" :key="win._id">
           <router-link :to="winDateUrl(win.date)" class="days-ago">
             {{ humanReadableDate(win.date) }} - {{ daysAgo(win.date) }} dager siden
           </router-link>
@@ -139,6 +139,24 @@ $elementSpacing: 3rem;
   font-size: 1.2rem;
   border-width: 2px;
   border-color: gray;
+}
+
+.container {
+  width: 90vw;  
+  margin: 3rem auto;
+  margin-bottom: 0;
+  padding-bottom: 3rem;
+  max-width: 1200px;
+
+  @include desktop {
+    width: 80vw;
+  }
+}
+
+h1 {
+  font-size: 3rem;
+  font-family: "knowit";
+  font-weight: normal;
 }
 
 .name {

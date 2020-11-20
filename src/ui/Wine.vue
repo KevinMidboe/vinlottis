@@ -1,5 +1,6 @@
 <template>
   <div class="wine">
+    <slot name="top"></slot>
     <div class="wine-image">
       <img
         v-if="wine.image && loadImage"
@@ -9,8 +10,8 @@
     </div>
 
     <div class="wine-details">
-      <h2 v-if="wine.name">{{ wine.name }}</h2>
-      <span v-if="wine.rating"><b>Rating:</b> {{ wine.rating }} rating</span>
+      <span v-if="wine.name" class="wine-name">{{ wine.name }}</span>
+      <span v-if="wine.rating"><b>Rating:</b> {{ wine.rating }}</span>
       <span v-if="wine.price"><b>Pris:</b> {{ wine.price }} NOK</span>
       <span v-if="wine.country"><b>Land:</b> {{ wine.country }}</span>
     </div>
@@ -18,6 +19,7 @@
     <slot></slot>
 
     <div class="bottom-section">
+      <slot name="bottom"></slot>
       <a v-if="wine.vivinoLink" :href="wine.vivinoLink" class="link float-right">
         Les mer
       </a>
@@ -61,12 +63,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "./src/styles/media-queries";
-@import "./src/styles/global";
 @import "./src/styles/variables";
 
 .wine {
-  padding: 2rem;
-  margin: 1rem 0rem;
+  padding: 1rem;
+  box-sizing: border-box;
   position: relative;
   -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
@@ -75,13 +76,13 @@ export default {
   @include tablet {
     width: 250px;
     height: 100%;
-    margin: 1rem 2rem;
   }
 }
 
 .wine-image {
   display: flex;
   justify-content: center;
+  margin-top: 10px;
 
   img {
     height: 250px;
@@ -96,6 +97,7 @@ export default {
   }
 }
 
+
 .wine-details {
   display: flex;
   flex-direction: column;
@@ -103,6 +105,16 @@ export default {
   > span {
     margin-bottom: 0.5rem;
   }
+}
+
+.wine-name{
+  font-size: 20px;
+  margin: 1em 0;
+}
+
+.wine-details {
+  display: flex;
+  flex-direction: column;
 }
 
 .bottom-section {
