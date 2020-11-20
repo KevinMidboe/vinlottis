@@ -83,7 +83,9 @@ const webpackConfig = function(isDev) {
         __DATE__: env.date,
         __HOURS__: env.hours,
         __APIURL__: JSON.stringify(env.apiUrl),
-        __PUSHENABLED__: JSON.stringify(require("./defaults/push") != false)
+        __PUSHENABLED__: JSON.stringify(require("./defaults/push") != false),
+        __GA_TRACKINGID__: JSON.stringify(env.googleanalytics_trackingId),
+        __GA_COOKIELIFETIME__: env.googleanalytics_cookieLifetime
       })
     ]
   };

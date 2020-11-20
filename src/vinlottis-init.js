@@ -2,17 +2,14 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import { routes } from "@/router.js";
 import Vinlottis from "@/Vinlottis";
-import VueAnalytics from "vue-analytics";
 
 import * as Sentry from "@sentry/browser";
 import { Vue as VueIntegration } from "@sentry/integrations";
 import { Integrations } from "@sentry/tracing";
 
 Vue.use(VueRouter);
-Vue.use(VueAnalytics, {
-  id: "UA-156846886-1"
-});
 
+const ENV = window.location.href.includes("localhost") ? "development" : "production";
 Sentry.init({
   dsn: "https://7debc951f0074fb68d7a76a1e3ace6fa@o364834.ingest.sentry.io/4905091",
   integrations: [
@@ -23,6 +20,25 @@ Sentry.init({
     new Integrations.BrowserTracing(),
   ]
 })
+
+// Add global GA variables
+window.ga = window.ga || function(){
+  window.ga.q = window.ga.q || [];
+  window.ga.q.push(arguments);
+};
+ga.l = 1 * new Date();
+
+// Initiate
+ga('create', __GA_TRACKINGID__, {
+  'allowAnchor': false,
+  'cookieExpires': __GA_COOKIELIFETIME__, // Time in seconds
+  'cookieFlags': 'SameSite=Strict; Secure'
+});
+ga('set', 'anonymizeIp', true); // Enable IP Anonymization/IP masking
+ga('send', 'pageview');
+
+if (ENV == 'development')
+  window[`ga-disable-${__GA_TRACKINGID__}`] = true;
 
 const router = new VueRouter({
   routes: routes
@@ -35,4 +51,3 @@ new Vue({
   template: "<Vinlottis/>",
   render: h => h(Vinlottis)
 });
-
