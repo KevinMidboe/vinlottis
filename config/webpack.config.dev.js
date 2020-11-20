@@ -45,8 +45,7 @@ webpackConfig = merge(webpackConfig, {
   },
   plugins: [
     new HtmlPlugin({
-      template: "src/templates/Create.html",
-      chunksSortMode: "dependency"
+      template: "src/templates/Index.html"
     })
   ]
 });
