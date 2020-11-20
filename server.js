@@ -51,11 +51,10 @@ app.use(
   })
 );
 
-app.set('socketio', io);
+app.set('socketio', io);  // set io instance to key "socketio"
 
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-
 app.use(passport.initialize());
 app.use(passport.session());
 
