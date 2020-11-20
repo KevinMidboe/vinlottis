@@ -7,13 +7,10 @@ const session = require("express-session");
 const User = require(path.join(__dirname + "/schemas/User"));
 
 const apiRouter = require(path.join(__dirname + "/api/router.js"));
-
-const loginApi = require(path.join(__dirname + "/api/login"));
 const subscriptionApi = require(path.join(__dirname + "/api/subscriptions"));
 
 //This is required for the chat to work
 const chat = require(path.join(__dirname + "/api/chat"))(io);
-const chatHistory = require(path.join(__dirname + "/api/chatHistory"));
 
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo")(session);
