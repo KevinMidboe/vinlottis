@@ -9,11 +9,11 @@ var serviceWorkerRegistrationMixin = {
         localStorage.removeItem("push");
       }
     }
-    this.registerPushListener();
-    this.registerServiceWorker();
-    if (__ENV__ == "development") {
+    if (window.location.href.includes('localhost')) {
       console.info("Service worker manually disabled while on localhost.")
     } else {
+      this.registerPushListener();
+      this.registerServiceWorker();
     }
   },
   methods: {

@@ -75,15 +75,10 @@ app.use("/api/", apiRouter);
 app.get("/dagens", (req, res) => res.redirect("/#/dagens"));
 app.get("/winner/:id", (req, res) => res.redirect("/#/winner/" + req.params.id));
 
-// push-notifications & service workers
+// push-notifications
 app.use("/subscription", subscriptionApi);
-app.use("/service-worker.js", function(req, res) {
-  if (process.env.NODE_ENV == "development") {
-    return res.end(); // cancel serving service worker if localhost
-  }
-  res.sendFile(path.join(__dirname, "src/serviceWorker.js"));
-});
 
-app.use("/", (req, res) => res.sendFile(path.join(__dirname + "/dist/index.html")));
+// No other route defined, return index file
+app.use("/", (req, res) => res.sendFile(path.join(__dirname + "/public/dist/index.html")));
 
 server.listen(30030);
