@@ -71,17 +71,20 @@ app.use("/dist", express.static(path.join(__dirname, "dist")));
 
 // api endpoints
 app.use("/api/", apiRouter);
+
+// redirects
+app.get("/dagens", (req, res) => res.redirect("/#/dagens"));
+app.get("/winner/:id", (req, res) => res.redirect("/#/winner/" + req.params.id));
+
+// push-notifications & service workers
 app.use("/subscription", subscriptionApi);
-
-app.get("/dagens", function(req, res) {
-  res.redirect("/#/dagens");
-});
-app.get("/winner/:id", function(req, res) {
-  res.redirect("/#/winner/" + req.params.id);
-});
-
 app.use("/service-worker.js", function(req, res) {
-  res.sendFile(path.join(__dirname, "public/sw/serviceWorker.js"));
+  if (process.env.NODE_ENV == "development") {
+    return res.end(); // cancel serving service worker if localhost
+  }
+  res.sendFile(path.join(__dirname, "src/serviceWorker.js"));
 });
+
+app.use("/", (req, res) => res.sendFile(path.join(__dirname + "/dist/index.html")));
 
 server.listen(30030);
