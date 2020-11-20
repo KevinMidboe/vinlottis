@@ -65,8 +65,8 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // files
-app.use("/assets", express.static(path.join(__dirname, "assets")));
-app.use("/dist", express.static(path.join(__dirname, "dist")));
+app.use("/public", express.static(path.join(__dirname, "public")));
+app.use("/service-worker.js", express.static(path.join(__dirname, "public/sw/serviceWorker.js")));
 
 // api endpoints
 app.use("/api/", apiRouter);

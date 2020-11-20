@@ -16,9 +16,10 @@ const environment = isProd
 
 const webpackConfig = merge(commonConfig(false), {
   mode: "production",
+  stats: { children: false },
   output: {
-    path: helpers.root("dist"),
-    publicPath: "/dist/",
+    path: helpers.root("public/dist"),
+    publicPath: "/public/dist/",
     filename: "js/[name].bundle.[hash:7].js"
   },
   optimization: {
