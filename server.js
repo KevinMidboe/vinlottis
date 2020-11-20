@@ -58,17 +58,18 @@ const LocalStrategy = require("passport-local");
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 // use static authenticate method of model in LocalStrategy
 passport.use(new LocalStrategy(User.authenticate()));
-
 // use static serialize and deserialize of model for passport session support
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use("/public", express.static(path.join(__dirname, "public")));
-app.use("/dist", express.static(path.join(__dirname, "public/dist")));
-app.use("/", loginApi);
-app.use("/api/", chatHistory);
+// files
+app.use("/assets", express.static(path.join(__dirname, "assets")));
+app.use("/dist", express.static(path.join(__dirname, "dist")));
+
+// api endpoints
 app.use("/api/", apiRouter);
 app.use("/subscription", subscriptionApi);
 
