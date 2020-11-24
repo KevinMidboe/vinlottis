@@ -2,7 +2,7 @@
 
 const webpack = require("webpack");
 const helpers = require("./helpers");
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 const ServiceWorkerConfig = {
   resolve: {
@@ -31,11 +31,10 @@ const ServiceWorkerConfig = {
     //filename: "js/[name].bundle.js"
   },
   optimization: {
+    minimize: true,
     minimizer: [
-      new UglifyJSPlugin({
-        cache: true,
-        parallel: false,
-        sourceMap: false
+      new TerserPlugin({
+        test: /\.js(\?.*)?$/i,
       })
     ]
   },
