@@ -55,7 +55,6 @@
 </template>
 
 <script>
-import { page, event } from "vue-analytics";
 import { attendees, winners, getChatHistory, prelottery } from "@/api";
 import Chat from "@/ui/Chat";
 import Vipps from "@/ui/Vipps";

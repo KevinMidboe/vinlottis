@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import { page, event } from "vue-analytics";
 import RaffleGenerator from "@/ui/RaffleGenerator";
 import Vipps from "@/ui/Vipps";
 import Countdown from "@/ui/Countdown";
@@ -44,7 +43,7 @@ export default {
       this.hardStart = true;
     },
     track() {
-      this.$ga.page("/lottery/generate");
+      window.ga('send', 'pageview', '/lottery/generate');
     }
   }
 };

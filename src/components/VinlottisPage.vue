@@ -66,7 +66,6 @@
 </template>
 
 <script>
-import { page, event } from "vue-analytics";
 import PurchaseGraph from "@/ui/PurchaseGraph";
 import TotalBought from "@/ui/TotalBought";
 import Highscore from "@/ui/Highscore";
@@ -121,7 +120,7 @@ export default {
       this.hardStart = way;
     },
     track() {
-      this.$ga.page("/");
+      window.ga('send', 'pageview', '/');
     },
     startCountdown() {
       this.hardStart = true;

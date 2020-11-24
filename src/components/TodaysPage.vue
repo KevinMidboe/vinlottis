@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import { page, event } from "vue-analytics";
 import { prelottery } from "@/api";
 import Banner from "@/ui/Banner";
 import Wine from "@/ui/Wine";

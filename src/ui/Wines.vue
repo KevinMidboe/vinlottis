@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import { event } from "vue-analytics";
 import Wine from "@/ui/Wine";
 import { overallWineStatistics } from "@/api";
 

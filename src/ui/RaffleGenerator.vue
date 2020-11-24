@@ -112,13 +112,11 @@ export default {
 
         this.emitColors()
 
-        if (window.location.hostname == "localhost") {
-          return;
-        }
-        this.$ga.event({
+        window.ga('send', {
+          hitType: "event",
           eventCategory: "Raffles",
           eventAction: "Generate",
-          eventValue: JSON.stringify(this.colors)
+          eventLabel: JSON.stringify(this.colors)
         });
         return;
       }

@@ -1,4 +1,4 @@
- 
+
 const dateString = (date) => {
   if (typeof(date) == "string") {
     date = new Date(date);

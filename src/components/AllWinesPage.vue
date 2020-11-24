@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import { page, event } from "vue-analytics";
 import Banner from "@/ui/Banner";
 import Wine from "@/ui/Wine";
 import { overallWineStatistics } from "@/api";
