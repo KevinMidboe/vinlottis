@@ -5,7 +5,6 @@ import Vinlottis from "@/Vinlottis";
 
 import * as Sentry from "@sentry/browser";
 import { Vue as VueIntegration } from "@sentry/integrations";
-import { Integrations } from "@sentry/tracing";
 
 Vue.use(VueRouter);
 
@@ -13,12 +12,15 @@ const ENV = window.location.href.includes("localhost") ? "development" : "produc
 Sentry.init({
   dsn: "https://7debc951f0074fb68d7a76a1e3ace6fa@o364834.ingest.sentry.io/4905091",
   integrations: [
-    new VueIntegration({
-      Vue,
-      tracing: true
-    }),
-    new Integrations.BrowserTracing(),
-  ]
+    new VueIntegration({ Vue })
+  ],
+  beforeSend: event => {
+    console.error(event);
+    if (ENV) {
+      return null;
+    }
+    return event;
+  }
 })
 
 // Add global GA variables
