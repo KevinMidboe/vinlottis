@@ -36,7 +36,7 @@ const webpackConfig = function(isDev) {
         },
         {
           test: /\.js$/,
-          loader: "babel-loader",
+          use: [ "babel-loader" ],
           include: [helpers.root("src")]
         },
         {
