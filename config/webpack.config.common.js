@@ -15,7 +15,10 @@ const webpackConfig = function(isDev) {
         "@": helpers.root("src")
       }
     },
-     externals: {
+    entry: {
+      vinlottis: helpers.root("src", "vinlottis-init")
+    },
+    externals: {
         moment: 'moment' // comes with chart.js
     },
     module: {

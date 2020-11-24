@@ -40,9 +40,6 @@ let webpackConfig = merge(commonConfig(true), {
 });
 
 webpackConfig = merge(webpackConfig, {
-  entry: {
-    main: helpers.root("src", "vinlottis-init")
-  },
   plugins: [
     new HtmlPlugin({
       template: "src/templates/Index.html"
