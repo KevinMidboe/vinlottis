@@ -1,3 +1,4 @@
+// https://www.google-analytics.com/analytics.js - 24.11.2020
 (function(){/*
 
  Copyright The Closure Library Authors.
