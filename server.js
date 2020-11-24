@@ -4,7 +4,7 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const path = require("path");
 const session = require("express-session");
-const User = require(path.join(__dirname + "/schemas/User"));
+const User = require(path.join(__dirname + "/api/schemas/User"));
 
 const apiRouter = require(path.join(__dirname + "/api/router.js"));
 const subscriptionApi = require(path.join(__dirname + "/api/subscriptions"));
@@ -31,8 +31,8 @@ mongoose.connect("mongodb://localhost/vinlottis", {
 mongoose.set("debug", process.env.NODE_ENV === "development");
 
 // middleware
-const setupCORS = require(path.join(__dirname, "/middleware/setupCORS"));
-const setupHeaders = require(path.join(__dirname, "/middleware/setupHeaders"));
+const setupCORS = require(path.join(__dirname, "/api/middleware/setupCORS"));
+const setupHeaders = require(path.join(__dirname, "/api/middleware/setupHeaders"));
 app.use(setupCORS)
 app.use(setupHeaders)
 

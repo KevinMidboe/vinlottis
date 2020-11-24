@@ -1,10 +1,10 @@
 const path = require("path");
 
-const Purchase = require(path.join(__dirname + "/../schemas/Purchase"));
-const Wine = require(path.join(__dirname + "/../schemas/Wine"));
-const Highscore = require(path.join(__dirname + "/../schemas/Highscore"));
+const Purchase = require(path.join(__dirname, "/schemas/Purchase"));
+const Wine = require(path.join(__dirname, "/schemas/Wine"));
+const Highscore = require(path.join(__dirname, "/schemas/Highscore"));
 const PreLotteryWine = require(path.join(
-  __dirname + "/../schemas/PreLotteryWine"
+  __dirname, "/schemas/PreLotteryWine"
 ));
 
 const prelotteryWines = async (req, res) => {

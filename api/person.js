@@ -1,5 +1,5 @@
 const path = require("path");
-const Highscore = require(path.join(__dirname + "/../schemas/Highscore"));
+const Highscore = require(path.join(__dirname, "/schemas/Highscore"));
 
 async function findSavePerson(foundWinner, wonWine, date) {
   let person = await Highscore.findOne({

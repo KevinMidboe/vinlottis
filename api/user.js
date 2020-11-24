@@ -1,6 +1,6 @@
 const passport = require("passport");
 const path = require("path");
-const User = require(path.join(__dirname + "/../schemas/User"));
+const User = require(path.join(__dirname, "/schemas/User"));
 const router = require("express").Router();
 
 const register = (req, res, next) => {

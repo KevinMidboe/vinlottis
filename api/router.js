@@ -1,22 +1,21 @@
 const express = require("express");
 const path = require("path");
 
-// Middleware
-const mustBeAuthenticated = require(__dirname + "/../middleware/mustBeAuthenticated");
-const setAdminHeaderIfAuthenticated = require(__dirname + "/../middleware/setAdminHeaderIfAuthenticated");
+const mustBeAuthenticated = require(path.join(__dirname, "/middleware/mustBeAuthenticated"));
+const setAdminHeaderIfAuthenticated = require(path.join(__dirname, "/middleware/setAdminHeaderIfAuthenticated"));
 
-const update = require(path.join(__dirname + "/update"));
-const retrieve = require(path.join(__dirname + "/retrieve"));
-const request = require(path.join(__dirname + "/request"));
-const subscriptionApi = require(path.join(__dirname + "/subscriptions"));
-const userApi = require(path.join(__dirname + "/user"));
-const wineinfo = require(path.join(__dirname + "/wineinfo"));
-const virtualApi = require(path.join(__dirname + "/virtualLottery"));
+const update = require(path.join(__dirname, "/update"));
+const retrieve = require(path.join(__dirname, "/retrieve"));
+const request = require(path.join(__dirname, "/request"));
+const subscriptionApi = require(path.join(__dirname, "/subscriptions"));
+const userApi = require(path.join(__dirname, "/user"));
+const wineinfo = require(path.join(__dirname, "/wineinfo"));
+const virtualApi = require(path.join(__dirname, "/virtualLottery"));
 const virtualRegistrationApi = require(path.join(
-  __dirname + "/virtualRegistration"
+  __dirname, "/virtualRegistration"
 ));
-const lottery = require(path.join(__dirname + "/lottery"));
-const chatHistoryApi = require(path.join(__dirname + "/chatHistory"));
+const lottery = require(path.join(__dirname, "/lottery"));
+const chatHistoryApi = require(path.join(__dirname, "/chatHistory"));
 
 const router = express.Router();
 
