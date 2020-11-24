@@ -4,12 +4,14 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const path = require("path");
 const webpack = require("webpack");
 const merge = require("webpack-merge");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
 const helpers = require("./helpers");
 const commonConfig = require("./webpack.config.common");
+
 const isProd = process.env.NODE_ENV === "production";
 const environment = isProd
   ? require("./env/prod.env")
@@ -36,6 +38,18 @@ const webpackConfig = merge(commonConfig(false), {
     },
     minimize: true,
     minimizer: [
+      new HtmlWebpackPlugin({
+        chunks: ["vinlottis"],
+        filename: "index.html",
+        template: "./src/templates/Index.html",
+        inject: true,
+        minify: {
+          removeComments: true,
+          collapseWhitespace: false,
+          preserveLineBreaks: true,
+          removeAttributeQuotes: true
+        }
+      }),
       new OptimizeCSSAssetsPlugin({
         cssProcessorPluginOptions: {
           preset: ["default", { discardComments: { removeAll: true } }]
@@ -47,7 +61,7 @@ const webpackConfig = merge(commonConfig(false), {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin(), // clean output folder
     new webpack.EnvironmentPlugin(environment),
     new MiniCSSExtractPlugin({
       filename: "css/[name].[hash:7].css"
