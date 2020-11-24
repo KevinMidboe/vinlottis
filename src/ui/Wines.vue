@@ -124,8 +124,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/styles/variables.scss";
-@import "./src/styles/global.scss";
+@import "@/styles/variables.scss";
+@import "@/styles/global.scss";
 @import "../styles/media-queries.scss";
 
 .wines-main-container {

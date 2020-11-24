@@ -94,8 +94,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/styles/variables";
-@import "./src/styles/global";
+@import "@/styles/variables";
+@import "@/styles/global";
 
 video {
   width: 100%;

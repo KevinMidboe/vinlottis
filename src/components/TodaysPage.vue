@@ -30,8 +30,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/styles/media-queries";
-@import "./src/styles/variables";
+@import "@/styles/media-queries";
+@import "@/styles/variables";
 
 .wine-image {
   height: 250px;

@@ -125,8 +125,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/styles/variables";
-@import "./src/styles/media-queries";
+@import "@/styles/variables";
+@import "@/styles/media-queries";
 
 $elementSpacing: 3rem;
 

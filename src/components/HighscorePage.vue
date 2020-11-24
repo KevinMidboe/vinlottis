@@ -93,8 +93,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/styles/media-queries.scss";
-@import "./src/styles/variables.scss";
+@import "@/styles/media-queries.scss";
+@import "@/styles/variables.scss";
 $elementSpacing: 3.5rem;
 
 .el-spacing {

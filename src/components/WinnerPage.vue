@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/styles/global";
+@import "@/styles/global";
 .container {
   display: flex;
   justify-content: center;

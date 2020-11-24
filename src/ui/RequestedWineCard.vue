@@ -77,7 +77,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/styles/variables";
+@import "@/styles/variables";
 
 .requested-count {
   display: flex;

@@ -97,9 +97,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "./src/styles/media-queries";
-@import "./src/styles/global";
-@import "./src/styles/variables";
+@import "@/styles/media-queries";
+@import "@/styles/global";
+@import "@/styles/variables";
 
 
 h1{

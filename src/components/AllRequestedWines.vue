@@ -39,8 +39,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/media-queries.scss";
-@import "./src/styles/variables.scss";
+@import "@/styles/media-queries.scss";
+@import "@/styles/variables.scss";
 
 .container {
   width: 90vw;
