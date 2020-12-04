@@ -280,10 +280,10 @@ const register = (username, password) => {
   });
 };
 
-const getChatHistory = (skip = null, take = null) => {
+const getChatHistory = (page=1, limit=10) => {
   const url = new URL("/api/chat/history", BASE_URL);
-  if (!isNaN(skip)) url.searchParams.append("skip", skip);
-  if (!isNaN(take)) url.searchParams.append("take", take);
+  if (!isNaN(page)) url.searchParams.append("page", page);
+  if (!isNaN(limit)) url.searchParams.append("limit", limit);
 
   return fetch(url.href).then(resp => resp.json());
 };

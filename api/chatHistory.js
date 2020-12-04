@@ -2,11 +2,11 @@ const path = require("path");
 const { history, clearHistory } = require(path.join(__dirname + "/../api/redis"));
 
 const getAllHistory = (req, res) => {
-  let { skip, take } = req.query;
-  skip = !isNaN(skip) ? Number(skip) : undefined;
-  take = !isNaN(take) ? Number(take) : undefined;
+  let { page, limit } = req.query;
+  page = !isNaN(page) ? Number(page) : undefined;
+  limit = !isNaN(limit) ? Number(limit) : undefined;
 
-  return history(skip, take)
+  return history(page, limit)
     .then(messages => res.json(messages))
     .catch(error =>  res.status(500).json({
       message: error.message,
