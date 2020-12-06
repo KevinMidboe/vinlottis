@@ -94,8 +94,7 @@ export default {
     this.socket = null;
   },
   mounted() {
-    const BASE_URL = __APIURL__ || window.location.origin;
-    this.socket = io(`${BASE_URL}`);
+    this.socket = io(window.location.origin);
     this.socket.on("chat", msg => {
       this.chatHistory.push(msg);
     });

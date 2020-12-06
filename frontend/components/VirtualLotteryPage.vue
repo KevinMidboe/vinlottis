@@ -74,8 +74,7 @@ export default {
     this.track();
     this.getAttendees();
     this.getWinners();
-    const BASE_URL = __APIURL__ || window.location.origin;
-    this.socket = io(`${BASE_URL}`);
+    this.socket = io(window.location.origin);
     this.socket.on("color_winner", msg => {});
 
     this.socket.on("disconnect", msg => {

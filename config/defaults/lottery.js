@@ -11,7 +11,6 @@ try {
     message: "INSERT MESSAGE",
     date: 5,
     hours: 15,
-    apiUrl: "http://localhost:30030",
     gatewayToken: "asd"
   };
 }

@@ -33,11 +33,24 @@ let webpackConfig = merge(commonConfig(true), {
   devServer: {
     compress: true,
     historyApiFallback: true,
+    host: "0.0.0.0",
     hot: true,
     overlay: true,
     stats: {
       normal: true
-    }
+    },
+    proxy: {
+      "/api": {
+        target: "http://localhost:30030",
+        changeOrigin: true
+      },
+      "/socket.io": {
+        target: "ws://localhost:30030",
+        changeOrigin: false,
+        ws: true
+      }
+    },
+    writeToDisk: false
   }
 });
 

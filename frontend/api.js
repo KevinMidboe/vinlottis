@@ -1,35 +1,29 @@
 import fetch from "node-fetch";
 
-const BASE_URL = __APIURL__ || window.location.origin;
+const BASE_URL = window.location.origin;
 
 const statistics = () => {
-  const url = new URL("/api/purchase/statistics", BASE_URL);
-
-  return fetch(url.href).then(resp => resp.json());
+  return fetch("/api/purchase/statistics")
+    .then(resp => resp.json());
 };
 
 const colorStatistics = () => {
-  const url = new URL("/api/purchase/statistics/color", BASE_URL);
-
-  return fetch(url.href).then(resp => resp.json());
+  return fetch("/api/purchase/statistics/color")
+    .then(resp => resp.json());
 };
 
 const highscoreStatistics = () => {
-  const url = new URL("/api/highscore/statistics", BASE_URL);
-
-  return fetch(url.href).then(resp => resp.json());
+  return fetch("/api/highscore/statistics")
+    .then(resp => resp.json());
 };
 
 const overallWineStatistics = () => {
-  const url = new URL("/api/wines/statistics/overall", BASE_URL);
-
-  return fetch(url.href).then(resp => resp.json());
+  return fetch("/api/wines/statistics/overall")
+    .then(resp => resp.json());
 };
 
-const allRequestedWines = () => {
-  const url = new URL("/api/request/all", BASE_URL);
-
-  return fetch(url.href)
+const allRequestedWines = () => {;
+  return fetch("/api/request/all")
     .then(resp => {
       const isAdmin = resp.headers.get("vinlottis-admin") == "true";
       return Promise.all([resp.json(), isAdmin]);
@@ -37,26 +31,21 @@ const allRequestedWines = () => {
 };
 
 const chartWinsByColor = () => {
-  const url = new URL("/api/purchase/statistics/color", BASE_URL);
-
-  return fetch(url.href).then(resp => resp.json());
+  return fetch("/api/purchase/statistics/color")
+    .then(resp => resp.json());
 };
 
 const chartPurchaseByColor = () => {
-  const url = new URL("/api/purchase/statistics", BASE_URL);
-
-  return fetch(url.href).then(resp => resp.json());
+  return fetch("/api/purchase/statistics")
+    .then(resp => resp.json());
 };
 
 const prelottery = () => {
-  const url = new URL("/api/wines/prelottery", BASE_URL);
-
-  return fetch(url.href).then(resp => resp.json());
+  return fetch("/api/wines/prelottery")
+    .then(resp => resp.json());
 };
 
 const sendLottery = sendObject => {
-  const url = new URL("/api/lottery", BASE_URL);
-
   const options = {
     headers: {
       "Content-Type": "application/json"
@@ -65,12 +54,11 @@ const sendLottery = sendObject => {
     body: JSON.stringify(sendObject)
   };
 
-  return fetch(url.href, options).then(resp => resp.json());
+  return fetch("/api/lottery", options)
+    .then(resp => resp.json());
 };
 
 const sendLotteryWinners = sendObject => {
-  const url = new URL("/api/lottery/winners", BASE_URL);
-
   const options = {
     headers: {
       "Content-Type": "application/json"
@@ -79,12 +67,11 @@ const sendLotteryWinners = sendObject => {
     body: JSON.stringify(sendObject)
   };
 
-  return fetch(url.href, options).then(resp => resp.json());
+  return fetch("/api/lottery/winners", options)
+    .then(resp => resp.json());
 };
 
 const addAttendee = sendObject => {
-  const url = new URL("/api/virtual/attendee/add", BASE_URL);
-
   const options = {
     headers: {
       "Content-Type": "application/json"
@@ -93,37 +80,31 @@ const addAttendee = sendObject => {
     body: JSON.stringify(sendObject)
   };
 
-  return fetch(url.href, options).then(resp => resp.json());
+  return fetch("/api/virtual/attendee/add", options)
+    .then(resp => resp.json());
 };
 
 const getVirtualWinner = () => {
-  const url = new URL("/api/virtual/winner/draw", BASE_URL);
-
-  return fetch(url.href).then(resp => resp.json());
+  return fetch("/api/virtual/winner/draw")
+    .then(resp => resp.json());
 };
 
 const attendeesSecure = () => {
-  const url = new URL("/api/virtual/attendee/all/secure", BASE_URL);
-
-  return fetch(url.href).then(resp => resp.json());
+  return fetch("/api/virtual/attendee/all/secure")
+    .then(resp => resp.json());
 };
 
 const winnersSecure = () => {
-  const url = new URL("/api/virtual/winner/all/secure", BASE_URL);
-
-  return fetch(url.href).then(resp => resp.json());
+  return fetch("/api/virtual/winner/all/secure")
+    .then(resp => resp.json());
 };
 
 const winners = () => {
-  const url = new URL("/api/virtual/winner/all", BASE_URL);
-
-  return fetch(url.href).then(resp => resp.json());
+  return fetch("/api/virtual/winner/all")
+    .then(resp => resp.json());
 };
 
 const deleteRequestedWine = wineToBeDeleted => {
-
-  const url = new URL("api/request/"+ wineToBeDeleted.id, BASE_URL);
-
   const options = {
     headers: {
       "Content-Type": "application/json"
@@ -132,12 +113,11 @@ const deleteRequestedWine = wineToBeDeleted => {
     body: JSON.stringify(wineToBeDeleted)
   };
 
-  return fetch(url.href, options).then(resp => resp.json())
+  return fetch("api/request/" + wineToBeDeleted.id, options)
+    .then(resp => resp.json());
 }
 
 const deleteWinners = () => {
-  const url = new URL("/api/virtual/winner/all", BASE_URL);
-
   const options = {
     headers: {
       "Content-Type": "application/json"
@@ -145,12 +125,11 @@ const deleteWinners = () => {
     method: "DELETE"
   };
 
-  return fetch(url.href, options).then(resp => resp.json());
+  return fetch("/api/virtual/winner/all", options)
+    .then(resp => resp.json());
 };
 
 const deleteAttendees = () => {
-  const url = new URL("/api/virtual/attendee/all", BASE_URL);
-
   const options = {
     headers: {
       "Content-Type": "application/json"
@@ -158,13 +137,13 @@ const deleteAttendees = () => {
     method: "DELETE"
   };
 
-  return fetch(url.href, options).then(resp => resp.json());
+  return fetch("/api/virtual/attendee/all", options)
+    .then(resp => resp.json());
 };
 
 const attendees = () => {
-  const url = new URL("/api/virtual/attendee/all", BASE_URL);
-
-  return fetch(url.href).then(resp => resp.json());
+  return fetch("/api/virtual/attendee/all")
+    .then(resp => resp.json());
 };
 
 const requestNewWine = (wine) => {
@@ -179,14 +158,11 @@ const requestNewWine = (wine) => {
     method: "post"
   }
 
-  const url = new URL("/api/request/new-wine", BASE_URL)
-
-  return fetch(url.href, options).then(resp => resp.json())
+  return fetch("/api/request/new-wine", options)
+    .then(resp => resp.json())
 }
 
 const logWines = wines => {
-  const url = new URL("/api/log/wines", BASE_URL);
-
   const options = {
     headers: {
       "Content-Type": "application/json"
@@ -195,7 +171,8 @@ const logWines = wines => {
     body: JSON.stringify(wines)
   };
 
-  return fetch(url.href, options).then(resp => resp.json());
+  return fetch("/api/log/wines", options)
+    .then(resp => resp.json());
 };
 
 const wineSchema = () => {
@@ -205,31 +182,29 @@ const wineSchema = () => {
 };
 
 const barcodeToVinmonopolet = id => {
-  const url = new URL("/api/wineinfo/" + id, BASE_URL);
-
-  return fetch(url.href).then(async resp => {
-    if (!resp.ok) {
-      if (resp.status == 404) {
-        throw await resp.json();
+  return fetch("/api/wineinfo/")
+    .then(async resp => {
+      if (!resp.ok) {
+        if (resp.status == 404) {
+          throw await resp.json();
+        }
+      } else {
+        return resp.json();
       }
-    } else {
-      return resp.json();
-    }
-  });
+    });
 };
 
 const searchForWine = searchString => {
-  const url = new URL("/api/wineinfo/search?query=" + searchString, BASE_URL);
-
-  return fetch(url.href).then(async resp => {
-    if (!resp.ok) {
-      if (resp.status == 404) {
-        throw await resp.json();
+  return fetch("/api/wineinfo/search?query=" + searchString)
+    .then(async resp => {
+      if (!resp.ok) {
+        if (resp.status == 404) {
+          throw await resp.json();
+        }
+      } else {
+        return resp.json();
       }
-    } else {
-      return resp.json();
-    }
-  });
+    });
 };
 
 
@@ -243,7 +218,6 @@ const handleErrors = async resp => {
 };
 
 const login = (username, password) => {
-  const url = new URL("/api/login", BASE_URL);
   const options = {
     headers: {
       "Content-Type": "application/json"
@@ -252,17 +226,17 @@ const login = (username, password) => {
     body: JSON.stringify({ username, password })
   };
 
-  return fetch(url.href, options).then(resp => {
-    if (resp.ok) {
-      return resp.json();
-    } else {
-      return handleErrors(resp);
-    }
-  });
+  return fetch("/api/login", options)
+    .then(resp => {
+      if (resp.ok) {
+        return resp.json();
+      } else {
+        return handleErrors(resp);
+      }
+    });
 };
 
 const register = (username, password) => {
-  const url = new URL("/api/register", BASE_URL);
   const options = {
     headers: {
       "Content-Type": "application/json"
@@ -271,13 +245,14 @@ const register = (username, password) => {
     body: JSON.stringify({ username, password })
   };
 
-  return fetch(url.href, options).then(resp => {
-    if (resp.ok) {
-      return resp.json();
-    } else {
-      return handleErrors(resp);
-    }
-  });
+  return fetch("/api/register", options)
+    .then(resp => {
+      if (resp.ok) {
+        return resp.json();
+      } else {
+        return handleErrors(resp);
+      }
+    });
 };
 
 const getChatHistory = (page=1, limit=10) => {
@@ -285,25 +260,25 @@ const getChatHistory = (page=1, limit=10) => {
   if (!isNaN(page)) url.searchParams.append("page", page);
   if (!isNaN(limit)) url.searchParams.append("limit", limit);
 
-  return fetch(url.href).then(resp => resp.json());
+  return fetch(url.href)
+    .then(resp => resp.json());
 };
 
 const finishedDraw = () => {
-  const url = new URL("/api/virtual/finish", BASE_URL);
   const options = {
     method: 'POST'
   }
 
-  return fetch(url.href, options).then(resp => resp.json());
+  return fetch("/api/virtual/finish", options)
+    .then(resp => resp.json());
 };
 
 const getAmIWinner = id => {
-  const url = new URL(`/api/winner/${id}`, BASE_URL);
-  return fetch(url.href).then(resp => resp.json());
+  return fetch(`/api/winner/${id}`)
+    .then(resp => resp.json());
 };
 
 const postWineChosen = (id, wineName) => {
-  const url = new URL(`/api/winner/${id}`, BASE_URL);
   const options = {
     headers: {
       "Content-Type": "application/json"
@@ -312,50 +287,49 @@ const postWineChosen = (id, wineName) => {
     body: JSON.stringify({ wineName: wineName })
   };
 
-  return fetch(url.href, options).then(resp => {
-    if (resp.ok) {
-      return resp.json();
-    } else {
-      return handleErrors(resp);
-    }
-  });
+  return fetch(`/api/winner/${id}`, options)
+    .then(resp => {
+      if (resp.ok) {
+        return resp.json();
+      } else {
+        return handleErrors(resp);
+      }
+    });
 };
 
 const historyAll = () => {
-  const url = new URL(`/api/lottery/all`, BASE_URL);
-
-  return fetch(url.href).then(resp => {
-    if (resp.ok) {
-      return resp.json();
-    } else {
-      return handleErrors(resp);
-    }
-  });
+  return fetch(`/api/lottery/all`)
+    .then(resp => {
+      if (resp.ok) {
+        return resp.json();
+      } else {
+        return handleErrors(resp);
+      }
+    });
 }
 
 const historyByDate = (date) => {
-  const url = new URL(`/api/lottery/by-date/${ date }`, BASE_URL);
-
-  return fetch(url.href).then(resp => {
-    if (resp.ok) {
-      return resp.json();
-    } else {
-      return handleErrors(resp);
-    }
-  });
+  return fetch(`/api/lottery/by-date/${ date }`)
+    .then(resp => {
+      if (resp.ok) {
+        return resp.json();
+      } else {
+        return handleErrors(resp);
+      }
+    });
 }
 
 const getWinnerByName = (name) => {
   const encodedName = encodeURIComponent(name)
-  const url = new URL(`/api/lottery/by-name/${name}`, BASE_URL);
 
-  return fetch(url.href).then(resp => {
-   if (resp.ok) {
-    return resp.json();
-   } else {
-    return handleErrors(resp);
-   }
-  })
+  return fetch(`/api/lottery/by-name/${name}`)
+    .then(resp => {
+     if (resp.ok) {
+      return resp.json();
+     } else {
+      return handleErrors(resp);
+     }
+    })
 }
 
 export {
