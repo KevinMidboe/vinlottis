@@ -4,12 +4,12 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --progress",
+    "build-report": "cross-env NODE_ENV=production BUILD_REPORT=true webpack --progress",
+    "dev": "yarn webpack serve --mode development --env development",
     "start": "node server.js",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server",
-    "start-dev": "cross-env NODE_ENV=development node server.js",
+    "start-noauth": "cross-env NODE_ENV=development node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
-    "build": "cross-env NODE_ENV=production webpack --hide-modules"
   },
   "author": "",
   "license": "ISC",

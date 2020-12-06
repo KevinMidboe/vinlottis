@@ -1,6 +1,7 @@
 const mustBeAuthenticated = (req, res, next) => {
   if (process.env.NODE_ENV == "development") {
-    console.info(`Restricted endpoint ${req.originalUrl}, but running in dev mode.`)
+    console.info(`Restricted endpoint ${req.originalUrl}, allowing with environment development.`)
+    req.isAuthenticated = () => true;
     return next();
   }
 

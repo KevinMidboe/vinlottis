@@ -71,12 +71,12 @@ const webpackConfig = merge(commonConfig(false), {
 
 if (!isProd) {
   webpackConfig.devtool = "source-map";
+}
 
-  if (process.env.npm_config_report) {
-    const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-      .BundleAnalyzerPlugin;
-    webpackConfig.plugins.push(new BundleAnalyzerPlugin());
-  }
+if (process.env.BUILD_REPORT) {
+  const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+    .BundleAnalyzerPlugin;
+  webpackConfig.plugins.push(new BundleAnalyzerPlugin());
 }
 
 module.exports = webpackConfig;
