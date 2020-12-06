@@ -141,7 +141,7 @@ export default {
       this.attendeesFetched = true;
     },
     track() {
-      this.$ga.page("/lottery/game");
+      window.ga('send', 'pageview', '/lottery/game');
     }
   }
 };
