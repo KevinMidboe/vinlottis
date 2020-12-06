@@ -2,7 +2,7 @@ try {
   module.exports = require("../env/lottery.config");
 } catch (e) {
   console.error(
-    "You haven't defined lottery-configs, you sure you want to continue without them?"
+    "⚠️ You haven't defined lottery-configs, you sure you want to continue without them?\n"
   );
   module.exports = {
     name: "NAME MISSING",

@@ -83,22 +83,6 @@ export default {
 @import "styles/positioning.scss";
 @import "styles/vinlottis-icons";
 
-@font-face {
-  font-family: "knowit";
-  font-weight: 600;
-  src: url("/public/assets/fonts/bold.woff"),
-    url("/public/assets/fonts/bold.woff") format("woff"), local("Arial");
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "knowit";
-  font-weight: 300;
-  src: url("/public/assets/fonts/regular.eot"),
-    url("/public/assets/fonts/regular.woff") format("woff"), local("Arial");
-  font-display: swap;
-}
-
 body {
   background-color: $primary;
 }
