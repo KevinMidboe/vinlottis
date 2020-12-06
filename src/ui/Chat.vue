@@ -32,6 +32,10 @@
         maxlength="30"
         placeholder="Ditt navn.."
       />
+
+      <div class="validation-error" v-if="validationError">
+        {{ validationError }}
+      </div>
       <button @click="setUsername">Lagre brukernavn</button>
     </div>
   </div>
@@ -51,7 +55,8 @@ export default {
       page: 1,
       pageSize: 10,
       temporaryUsername: null,
-      username: null
+      username: null,
+      validationError: undefined
     };
   },
   created() {
@@ -84,6 +89,10 @@ export default {
       deep: true
     }
   },
+  beforeDestroy() {
+    this.socket.disconnect();
+    this.socket = null;
+  },
   mounted() {
     const BASE_URL = __APIURL__ || window.location.origin;
     this.socket = io(`${BASE_URL}`);
@@ -110,10 +119,11 @@ export default {
 
       if (success !== true) {
         this.username = null;
-        alert(reason)
+        this.validationError = reason;
       } else {
         this.usernameAllowed = true;
         this.username = username;
+        this.validationError = null;
         window.localStorage.setItem("username", username);
       }
     });
@@ -195,7 +205,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/media-queries.scss";
+@import "/src/styles/media-queries.scss";
+@import "/src/styles/variables.scss";
 h2 {
   text-align: center;
 }
@@ -281,6 +292,28 @@ input {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  position: relative;
+
+  .validation-error {
+    position: absolute;
+    background-color: $light-red;
+    color: $red;
+    top: -3.5rem;
+    left: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 4px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 2.1rem;
+      left: 2rem;
+      width: 1rem;
+      height: 1rem;
+      transform: rotate(45deg);
+      background-color: $light-red;
+    }
+  }
 }
 
 button {
