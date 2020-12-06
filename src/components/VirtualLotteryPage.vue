@@ -40,22 +40,14 @@
     <hr />
     <div class="middle-elements">
       <Attendees :attendees="attendees" class="outer-attendees" />
-      <Chat
-        class="outer-chat"
-        :chatHistory="chatHistory"
-        :historyPageSize="historyPageSize"
-        :usernameAllowed="usernameAllowed"
-        @loadMoreHistory="loadMoreHistory"
-        @message="sendMessage"
-        @username="setUsername"
-      />
+      <Chat class="outer-chat" />
     </div>
     <Vipps class="vipps" :amount="1" />
   </div>
 </template>
 
 <script>
-import { attendees, winners, getChatHistory, prelottery } from "@/api";
+import { attendees, winners, prelottery } from "@/api";
 import Chat from "@/ui/Chat";
 import Vipps from "@/ui/Vipps";
 import Attendees from "@/ui/Attendees";
@@ -74,20 +66,9 @@ export default {
       socket: null,
       attendeesFetched: false,
       winnersFetched: false,
-      chatHistory: [],
-      historyPage: 0,
-      historyPageSize: 100,
-      lastHistoryPage: false,
-      usernameAccepted: false,
-      username: null,
       wasDisconnected: false,
-      emitUsernameOnConnect: false,
       ticketsBought: {}
     };
-  },
-  created() {
-    getChatHistory(0, this.historyPageSize)
-      .then(messages => this.chatHistory = messages);
   },
   mounted() {
     this.track();
@@ -97,21 +78,8 @@ export default {
     this.socket = io(`${BASE_URL}`);
     this.socket.on("color_winner", msg => {});
 
-    this.socket.on("chat", msg => {
-      this.chatHistory.push(msg);
-    });
-
     this.socket.on("disconnect", msg => {
       this.wasDisconnected = true;
-    });
-
-    this.socket.on("connect", msg => {
-      if (
-        this.emitUsernameOnConnect ||
-        (this.wasDisconnected && this.username != null)
-      ) {
-        this.setUsername(this.username);
-      }
     });
 
     this.socket.on("winner", async msg => {
@@ -132,14 +100,6 @@ export default {
     this.socket.on("new_attendee", async msg => {
       this.getAttendees();
     });
-    this.socket.on("accept_username", accepted => {
-      this.usernameAccepted = accepted;
-      if (!accepted) {
-        this.username = null;
-      } else {
-        window.localStorage.setItem("username", this.username);
-      }
-    });
   },
   beforeDestroy() {
     this.socket.disconnect();
@@ -153,27 +113,6 @@ export default {
     }
   },
   methods: {
-    setUsername: function(username) {
-      this.username = username;
-      if (!this.socket || !this.socket.emit) {
-        this.emitUsernameOnConnect = true;
-        return;
-      }
-      this.socket.emit("username", { username });
-    },
-    sendMessage: function(msg) {
-      this.socket.emit("chat", { message: msg });
-    },
-    loadMoreHistory: function() {
-      const { historyPage, historyPageSize } = this;
-      const page = historyPage + 1;
-
-      getChatHistory(page * historyPageSize, historyPageSize)
-        .then(messages => {
-          this.chatHistory = messages.concat(this.chatHistory);
-          this.historyPage = page;
-        });
-    },
     getWinners: async function() {
       let response = await winners();
       if (response) {

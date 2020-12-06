@@ -2,23 +2,24 @@
   <div class="chat-container">
     <hr />
     <h2>Chat</h2>
-    <div class="history" ref="history">
+    <div class="history" ref="history" v-if="chatHistory.length > 0">
       <div class="opaque-skirt"></div>
-      <div v-if="existsMore" class="fetch-older-history">
-        <button @click="$emit('loadMoreHistory')">Hent eldre meldinger</button>
+      <div v-if="hasMorePages" class="fetch-older-history">
+        <button @click="loadMoreHistory">Hent eldre meldinger</button>
       </div>
+
       <div class="history-message"
         v-for="(history, index) in chatHistory"
         :key="`${history.username}-${history.timestamp}-${index}`"
       >
         <div>
-          <span class="user-name">{{ history.username }}</span>
+          <span class="username">{{ history.username }}</span>
           <span class="timestamp">{{ getTime(history.timestamp) }}</span>
         </div>
         <span class="message">{{ history.message }}</span>
       </div>
     </div>
-    <div v-if="usernameSet" class="input">
+    <div v-if="username" class="input">
       <input @keyup.enter="sendMessage" type="text" v-model="message" placeholder="Melding.." />
       <button @click="sendMessage">Send</button>
       <button @click="removeUsername">Logg ut</button>
@@ -37,63 +38,103 @@
 </template>
 
 <script>
+import { getChatHistory } from "@/api";
+import io from "socket.io-client";
+
 export default {
-  props: {
-    usernameAllowed: {
-      type: Boolean
-    },
-    chatHistory: {
-      type: Array
-    },
-    historyPageSize: {
-      type: Number
-    }
-  },
   data() {
     return {
+      socket: null,
+      chatHistory: [],
+      hasMorePages: true,
       message: "",
+      page: 1,
+      pageSize: 10,
       temporaryUsername: null,
-      username: null,
-      usernameSet: false,
-      existsMore: true
+      username: null
     };
+  },
+  created() {
+    getChatHistory(1, this.pageSize)
+      .then(resp => {
+        this.chatHistory = resp.messages;
+        this.hasMorePages = resp.total != resp.messages.length;
+      });
+    const username = window.localStorage.getItem('username');
+    if (username) {
+      this.username = username;
+      this.emitUsernameOnConnect = true;
+    }
   },
   watch: {
     chatHistory: {
       handler: function(newVal, oldVal) {
-        if (this.$refs && this.$refs.history) {
-          const firstMessages = oldVal.length == 0;
-          const diffLargerThanOne = newVal.length - oldVal.length > 1;
-
-          setTimeout(() => {
-            if (firstMessages || diffLargerThanOne == false) {
-              this.scrollToBottomOfHistory();
-            } else {
-              this.scrollToStartOfNewMessages();
-              // what shows the load more button - if we scroll page and less than page size
-              // come back we have reached a limit
-              this.existsMore = newVal.length - oldVal.length == this.historyPageSize
-            }
-          }, 100);
+        if (oldVal.length == 0) {
+          this.scrollToBottomOfHistory();
+        }
+        else if (newVal && newVal.length == oldVal.length) {
+          if (this.isScrollPositionAtBottom()) {
+            this.scrollToBottomOfHistory();
+          }
+        } else {
+          const prevOldestMessage = oldVal[0];
+          this.scrollToMessageElement(prevOldestMessage);
         }
       },
       deep: true
     }
   },
   mounted() {
-    let username = window.localStorage.getItem("username");
-    if (username) {
-      this.username = username;
-      this.usernameSet = true;
-      this.$emit("username", username);
-    }
+    const BASE_URL = __APIURL__ || window.location.origin;
+    this.socket = io(`${BASE_URL}`);
+    this.socket.on("chat", msg => {
+      this.chatHistory.push(msg);
+    });
+
+    this.socket.on("disconnect", msg => {
+      this.wasDisconnected = true;
+    });
+
+    this.socket.on("connect", msg => {
+      if (
+        this.emitUsernameOnConnect ||
+        (this.wasDisconnected && this.username != null)
+      ) {
+        this.setUsername(this.username);
+      }
+    });
+
+    this.socket.on("accept_username", msg => {
+      const { reason, success, username } = msg;
+      this.usernameAccepted = success;
+
+      if (success !== true) {
+        this.username = null;
+        alert(reason)
+      } else {
+        this.usernameAllowed = true;
+        this.username = username;
+        window.localStorage.setItem("username", username);
+      }
+    });
   },
   methods: {
-    pad: function(num) {
+    loadMoreHistory() {
+      let { page, pageSize } = this;
+      page = page + 1;
+
+      getChatHistory(page, pageSize)
+        .then(resp => {
+          this.chatHistory = resp.messages.concat(this.chatHistory);
+          this.page = page;
+          this.hasMorePages = resp.total != this.chatHistory.length;
+        });
+    },
+    pad(num) {
       if (num > 9) return num;
       return `0${num}`;
     },
-    getTime: function(timestamp) {
+    getTime(timestamp) {
       let date = new Date(timestamp);
       const timeString = `${this.pad(date.getHours())}:${this.pad(
         date.getMinutes()
@@ -104,40 +145,50 @@ export default {
       }
       return `${date.toLocaleDateString()} ${timeString}`;
     },
-    sendMessage: function() {
-      this.$emit("message", this.message);
-      this.message = "";
+    sendMessage() {
+      const message = { message: this.message };
+      this.socket.emit("chat", message);
+      this.message = '';
+      this.scrollToBottomOfHistory();
     },
-    removeUsername: function() {
+    setUsername(username=undefined) {
+      if (this.temporaryUsername) {
+        username = this.temporaryUsername;
+      }
+      const message = { username: username };
+      this.socket.emit("username", message);
+    },
+    removeUsername() {
       this.username = null;
       this.temporaryUsername = null;
-      this.usernameSet = false;
       window.localStorage.removeItem("username");
-      this.$emit("username", null);
     },
-    setUsername: function() {
-      if (
-        this.temporaryUsername.length > 3 &&
-        this.temporaryUsername.length < 30
-      ) {
-        this.username = this.temporaryUsername;
-        this.usernameSet = true;
-        this.$emit("username", this.username);
+    isScrollPositionAtBottom() {
+      const { history } = this.$refs;
+      if (history) {
+        return history.offsetHeight + history.scrollTop >= history.scrollHeight;
       }
+      return false
     },
     scrollToBottomOfHistory() {
-      if (this.$refs && this.$refs.history) {
+      setTimeout(() => {
         const { history } = this.$refs;
         history.scrollTop = history.scrollHeight;
-      }
+      }, 1);
     },
-    scrollToStartOfNewMessages() {
-      const { history } = this.$refs;
-      const histLength = history.children.length;
-      const pages = Math.floor(histLength / 100);
+    scrollToMessageElement(message) {
+      const elemTimestamp = this.getTime(message.timestamp);
+      const self = this;
+      const getTimeStamp = (elem) => elem.getElementsByClassName('timestamp')[0].innerText;
+      const prevOldestMessageInNewList = (elem) => getTimeStamp(elem) == elemTimestamp;
 
-      const messageToScrollTo = history.children[histLength - ((pages * 100) + 3)]
-      history.scrollTop = messageToScrollTo.offsetTop;
+      setTimeout(() => {
+        const { history } = self.$refs;
+        const childrenElements = Array.from(history.getElementsByClassName('history-message'));
+
+        const elemInNewList = childrenElements.find(prevOldestMessageInNewList);
+        history.scrollTop = elemInNewList.offsetTop - 70
+      }, 1);
     }
   }
 };
@@ -179,6 +230,7 @@ input {
 .history {
   height: 75%;
   overflow-y: scroll;
+  position: relative;
 
   &-message {
     display: flex;
@@ -186,7 +238,7 @@ input {
     margin: 0.35rem 0;
     position: relative;
 
-    .user-name {
+    .username {
       font-weight: bold;
       font-size: 1.05rem;
       margin-right: 0.3rem;
@@ -217,7 +269,7 @@ input {
   & .fetch-older-history {
     display: flex;
     justify-content: center;
-    margin: 0.2rem 0 0.5rem;
+    margin: 1rem 0;
   }
 
   @include mobile {
