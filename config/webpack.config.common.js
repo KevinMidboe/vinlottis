@@ -11,7 +11,7 @@ const webpackConfig = function(isDev) {
     resolve: {
       extensions: [".js", ".vue"],
       alias: {
-        vue$: isDev ? "vue/dist/vue.min.js" : "vue/dist/vue.min.js",
+        vue$: "vue/dist/vue.min.js",
         "@": helpers.root("frontend")
       }
     },
@@ -45,14 +45,14 @@ const webpackConfig = function(isDev) {
         {
           test: /\.css$/,
           use: [
-            isDev ? "vue-style-loader" : MiniCSSExtractPlugin.loader,
+            MiniCSSExtractPlugin.loader,
             { loader: "css-loader", options: { sourceMap: isDev } }
           ]
         },
         {
           test: /\.scss$/,
           use: [
-            isDev ? "vue-style-loader" : MiniCSSExtractPlugin.loader,
+            MiniCSSExtractPlugin.loader,
             { loader: "css-loader", options: { sourceMap: isDev } },
             { loader: "sass-loader", options: { sourceMap: isDev } }
           ]

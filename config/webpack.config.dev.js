@@ -1,12 +1,13 @@
 "use strict";
 
 const webpack = require("webpack");
-const merge = require("webpack-merge");
+const { merge } = require("webpack-merge");
 const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const helpers = require("./helpers");
 const commonConfig = require("./webpack.config.common");
 const environment = require("./env/dev.env");
+const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 
 let webpackConfig = merge(commonConfig(true), {
   mode: "development",
@@ -14,19 +15,20 @@ let webpackConfig = merge(commonConfig(true), {
   output: {
     path: helpers.root("dist"),
     publicPath: "/",
-    filename: "js/[name].bundle.js",
-    chunkFilename: "js/[id].chunk.js"
+    filename: "js/[name].bundle.js"
   },
   optimization: {
-    runtimeChunk: "single",
+    concatenateModules: true,
     splitChunks: {
-      chunks: "all"
+      chunks: "initial"
     }
   },
   plugins: [
     new webpack.EnvironmentPlugin(environment),
-    new webpack.HotModuleReplacementPlugin(),
-    new FriendlyErrorsPlugin()
+    new FriendlyErrorsPlugin(),
+    new MiniCSSExtractPlugin({
+      filename: "css/[name].css"
+    })
   ],
   devServer: {
     compress: true,
@@ -42,7 +44,7 @@ let webpackConfig = merge(commonConfig(true), {
 webpackConfig = merge(webpackConfig, {
   plugins: [
     new HtmlWebpackPlugin({
-      template: "src/templates/Index.html"
+      template: "frontend/templates/Index.html"
     })
   ]
 });

@@ -1,11 +1,11 @@
 const VinlottisPage = () => import(
-  /* webpackChunkName: "lading-page" */
+  /* webpackChunkName: "landing-page" */
   "@/components/VinlottisPage");
 const LotteryPage = () => import(
-  /* webpackChunkName: "lading-page" */
+  /* webpackChunkName: "landing-page" */
   "@/components/LotteryPage");
 const GeneratePage = () => import(
-  /* webpackChunkName: "lading-page" */
+  /* webpackChunkName: "landing-page" */
   "@/components/GeneratePage");
 
 const TodaysPage = () => import(
