@@ -16,6 +16,7 @@ const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo")(session);
 
 // mongoose / database
+console.log("Trying to connect with mongodb..");
 mongoose.promise = global.Promise;
 mongoose.connect("mongodb://localhost/vinlottis", {
   useCreateIndex: true,
@@ -28,7 +29,7 @@ mongoose.connect("mongodb://localhost/vinlottis", {
   console.error("ERROR! Mongodb required to run.");
   process.exit(1);
 })
-mongoose.set("debug", process.env.NODE_ENV === "development");
+mongoose.set("debug", false);
 
 // middleware
 const setupCORS = require(path.join(__dirname, "/api/middleware/setupCORS"));

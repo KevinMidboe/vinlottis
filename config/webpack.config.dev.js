@@ -41,7 +41,7 @@ let webpackConfig = merge(commonConfig(true), {
 
 webpackConfig = merge(webpackConfig, {
   plugins: [
-    new HtmlPlugin({
+    new HtmlWebpackPlugin({
       template: "src/templates/Index.html"
     })
   ]
