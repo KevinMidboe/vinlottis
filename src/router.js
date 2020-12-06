@@ -1,21 +1,49 @@
-import VinlottisPage from "@/components/VinlottisPage";
-import GeneratePage from "@/components/GeneratePage";
-import TodaysPage from "@/components/TodaysPage";
-import AllWinesPage from "@/components/AllWinesPage";
+const VinlottisPage = () => import(
+  /* webpackChunkName: "lading-page" */
+  "@/components/VinlottisPage");
+const LotteryPage = () => import(
+  /* webpackChunkName: "lading-page" */
+  "@/components/LotteryPage");
+const GeneratePage = () => import(
+  /* webpackChunkName: "lading-page" */
+  "@/components/GeneratePage");
 
-import LoginPage from "@/components/LoginPage";
-import CreatePage from "@/components/CreatePage";
+const TodaysPage = () => import(
+  /* webpackChunkName: "sub-pages" */
+  "@/components/TodaysPage");
+const AllWinesPage = () => import(
+  /* webpackChunkName: "sub-pages" */
+  "@/components/AllWinesPage");
+const HistoryPage = () => import(
+  /* webpackChunkName: "sub-pages" */
+  "@/components/HistoryPage");
+const WinnerPage = () => import(
+  /* webpackChunkName: "sub-pages" */
+  "@/components/WinnerPage");
 
-import AdminPage from "@/components/AdminPage";
+const LoginPage = () => import(
+  /* webpackChunkName: "user" */
+  "@/components/LoginPage");
+const CreatePage = () => import(
+  /* webpackChunkName: "user" */
+  "@/components/CreatePage");
+const AdminPage = () => import(
+  /* webpackChunkName: "admin" */
+  "@/components/AdminPage");
 
-import WinnerPage from "@/components/WinnerPage";
-import LotteryPage from "@/components/LotteryPage";
-import HistoryPage from "@/components/HistoryPage";
-import HighscorePage from "@/components/HighscorePage";
-import PersonalHighscorePage from "@/components/PersonalHighscorePage";
+const PersonalHighscorePage = () => import(
+  /* webpackChunkName: "highscore" */
+  "@/components/PersonalHighscorePage");
+const HighscorePage = () => import(
+  /* webpackChunkName: "highscore" */
+  "@/components/HighscorePage");
 
-import RequestWine from "@/components/RequestWine";
-import AllRequestedWines from "@/components/AllRequestedWines";
+const RequestWine = () => import(
+  /* webpackChunkName: "request" */
+  "@/components/RequestWine");
+const AllRequestedWines = () => import(
+  /* webpackChunkName: "request" */
+  "@/components/AllRequestedWines");
 
 const routes = [
   {
