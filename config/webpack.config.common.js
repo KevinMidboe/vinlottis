@@ -12,11 +12,11 @@ const webpackConfig = function(isDev) {
       extensions: [".js", ".vue"],
       alias: {
         vue$: isDev ? "vue/dist/vue.min.js" : "vue/dist/vue.min.js",
-        "@": helpers.root("src")
+        "@": helpers.root("frontend")
       }
     },
     entry: {
-      vinlottis: helpers.root("src", "vinlottis-init")
+      vinlottis: helpers.root("frontend", "vinlottis-init")
     },
     externals: {
         moment: 'moment' // comes with chart.js
@@ -40,7 +40,7 @@ const webpackConfig = function(isDev) {
         {
           test: /\.js$/,
           use: [ "babel-loader" ],
-          include: [helpers.root("src")]
+          include: [helpers.root("frontend")]
         },
         {
           test: /\.css$/,

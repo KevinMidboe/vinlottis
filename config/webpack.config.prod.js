@@ -41,7 +41,7 @@ const webpackConfig = merge(commonConfig(false), {
       new HtmlWebpackPlugin({
         chunks: ["vinlottis"],
         filename: "index.html",
-        template: "./src/templates/Index.html",
+        template: "./frontend/templates/Index.html",
         inject: true,
         minify: {
           removeComments: true,

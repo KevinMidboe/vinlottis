@@ -205,8 +205,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "/src/styles/media-queries.scss";
-@import "/src/styles/variables.scss";
+@import "@/styles/media-queries.scss";
+@import "@/styles/variables.scss";
 h2 {
   text-align: center;
 }
