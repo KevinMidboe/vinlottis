@@ -9,19 +9,18 @@ import { Vue as VueIntegration } from "@sentry/integrations";
 Vue.use(VueRouter);
 
 const ENV = window.location.href.includes("localhost") ? "development" : "production";
-Sentry.init({
-  dsn: "https://7debc951f0074fb68d7a76a1e3ace6fa@o364834.ingest.sentry.io/4905091",
-  integrations: [
-    new VueIntegration({ Vue })
-  ],
-  beforeSend: event => {
-    console.error(event);
-    if (ENV) {
-      return null;
+if (ENV !== "development") {
+  Sentry.init({
+    dsn: "https://7debc951f0074fb68d7a76a1e3ace6fa@o364834.ingest.sentry.io/4905091",
+    integrations: [
+      new VueIntegration({ Vue })
+    ],
+    beforeSend: event => {
+      console.error(event);
+      return event;
     }
-    return event;
-  }
-})
+  })
+}
 
 // Add global GA variables
 window.ga = window.ga || function(){
