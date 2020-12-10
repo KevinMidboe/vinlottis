@@ -1,52 +1,63 @@
 "use strict";
 
 const webpack = require("webpack");
-const merge = require("webpack-merge");
+const { merge } = require("webpack-merge");
 const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
-const HtmlPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const helpers = require("./helpers");
 const commonConfig = require("./webpack.config.common");
 const environment = require("./env/dev.env");
+const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 
 let webpackConfig = merge(commonConfig(true), {
   mode: "development",
-  devtool: "cheap-module-eval-source-map",
+  devtool: "eval-cheap-module-source-map",
   output: {
     path: helpers.root("dist"),
     publicPath: "/",
-    filename: "js/[name].bundle.js",
-    chunkFilename: "js/[id].chunk.js"
+    filename: "js/[name].bundle.js"
   },
   optimization: {
-    runtimeChunk: "single",
+    concatenateModules: true,
     splitChunks: {
-      chunks: "all"
+      chunks: "initial"
     }
   },
   plugins: [
     new webpack.EnvironmentPlugin(environment),
-    new webpack.HotModuleReplacementPlugin(),
-    new FriendlyErrorsPlugin()
+    new FriendlyErrorsPlugin(),
+    new MiniCSSExtractPlugin({
+      filename: "css/[name].css"
+    })
   ],
   devServer: {
     compress: true,
     historyApiFallback: true,
+    host: "0.0.0.0",
     hot: true,
     overlay: true,
     stats: {
       normal: true
-    }
+    },
+    proxy: {
+      "/api": {
+        target: "http://localhost:30030",
+        changeOrigin: true
+      },
+      "/socket.io": {
+        target: "ws://localhost:30030",
+        changeOrigin: false,
+        ws: true
+      }
+    },
+    writeToDisk: false
   }
 });
 
 webpackConfig = merge(webpackConfig, {
-  entry: {
-    main: ["@babel/polyfill", helpers.root("src", "vinlottis-init")]
-  },
   plugins: [
-    new HtmlPlugin({
-      template: "src/templates/Create.html",
-      chunksSortMode: "dependency"
+    new HtmlWebpackPlugin({
+      template: "frontend/templates/Index.html"
     })
   ]
 });

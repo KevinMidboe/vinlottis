@@ -5,7 +5,8 @@ module.exports = {
   message: "VINLOTTERI",
   date: 5,
   hours: 15,
-  apiUrl: undefined,
   gatewayToken: undefined,
-  vinmonopoletToken: undefined
+  vinmonopoletToken: undefined,
+  googleanalytics_trackingId: undefined,
+  googleanalytics_cookieLifetime: 60 * 60 * 24 * 14
 };

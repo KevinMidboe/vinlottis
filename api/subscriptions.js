@@ -5,11 +5,11 @@ const webpush = require("web-push"); //requiring the web-push module
 const schedule = require("node-schedule");
 
 const mustBeAuthenticated = require(path.join(
-  __dirname + "/../middleware/mustBeAuthenticated"
+  __dirname, "/middleware/mustBeAuthenticated"
 ));
 
 const config = require(path.join(__dirname + "/../config/defaults/push"));
-const Subscription = require(path.join(__dirname + "/../schemas/Subscription"));
+const Subscription = require(path.join(__dirname, "/schemas/Subscription"));
 const lotteryConfig = require(path.join(
   __dirname + "/../config/defaults/lottery"
 ));
