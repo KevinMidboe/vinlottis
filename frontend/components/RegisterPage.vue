@@ -513,8 +513,7 @@ hr {
   }
 }
 .winner-container {
-  width: max-content;
-  max-width: 100%;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -527,7 +526,13 @@ hr {
   margin-top: 2rem;
   display: flex;
   justify-content: center;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  > .wine {
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+  }
 }
 .edit {
   width: 100%;
