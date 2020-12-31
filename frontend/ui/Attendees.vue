@@ -1,6 +1,5 @@
 <template>
   <div class="attendees" v-if="attendees.length > 0">
-    <h2>Deltakere ({{ attendees.length }})</h2>
     <div class="attendees-container" ref="attendees">
       <div class="attendee" v-for="(attendee, index) in flipList(attendees)" :key="index">
         <span class="attendee-name">{{ attendee.name }}</span>
@@ -42,8 +41,14 @@ export default {
 @import "../styles/global.scss";
 @import "../styles/variables.scss";
 @import "../styles/media-queries.scss";
+
 .attendee-name {
   width: 60%;
+}
+
+hr {
+  border: 2px solid black;
+  width: 100%;
 }
 
 .raffle-element {
@@ -56,20 +61,24 @@ export default {
   font-weight: bold;
   font-size: 0.75rem;
   text-align: center;
+
+  &:not(:last-of-type) {
+    margin-right: 1rem;
+  }
 }
 
 .attendees {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 65%;
-  height: 100%;
+  height: auto;
 }
 
 .attendees-container {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
+  max-height: 550px;
 }
 
 .attendee {
@@ -78,5 +87,9 @@ export default {
   align-items: center;
   width: 100%;
   margin: 0 auto;
+
+  &:not(:last-of-type) {
+    border-bottom: 2px solid #d7d8d7;
+  }
 }
 </style>
