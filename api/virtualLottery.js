@@ -166,8 +166,16 @@ const drawWinner = async (req, res) => {
       Math.floor(Math.random() * attendeeListDemocratic.length)
     ];
 
+  let winners = await VirtualWinner.find({ timestamp_sent: undefined }).sort({
+    timestamp_drawn: 1
+  });
+
   var io = req.app.get('socketio');
-  io.emit("winner", { color: colorToChooseFrom, name: winner.name });
+  io.emit("winner", {
+    color: colorToChooseFrom,
+    name: winner.name,
+    winner_count: winners.length + 1
+  });
 
   let newWinnerElement = new VirtualWinner({
     name: winner.name,

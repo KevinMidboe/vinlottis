@@ -1,36 +1,18 @@
 <template>
-  <div class="current-drawn-container">
-    <div class="current-draw" v-if="drawing">
-      <h2>TREKKER</h2>
-      <div
-        :class="currentColor + '-raffle'"
-        class="raffle-element center-new-winner"
-        :style="{ transform: 'rotate(' + getRotation() + 'deg)' }"
-      >
-        <span v-if="currentName && colorDone">{{ currentName }}</span>
-      </div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
+  <div class="current-drawn-container" v-if="drawing">
+    <h2 v-if="vinnersNameDrawn !== true">TREKKER {{ ordinalNumber() }} VINNER</h2>
+    <h2 v-else>VINNER</h2>
+
+    <div
+      :class="currentColor + '-raffle'"
+      class="raffle-element"
+      :style="{ transform: 'rotate(' + getRotation() + 'deg)' }"
+    >
+      <span v-if="currentName && colorDone">{{ currentName }}</span>
     </div>
-    
-    <div class="current-draw" v-if="drawingDone">
-      <h2>VINNER</h2>
-      <div
-        :class="currentColor + '-raffle'"
-        class="raffle-element center-new-winner"
-        :style="{ transform: 'rotate(' + getRotation() + 'deg)' }"
-      >
-        <span v-if="currentName && colorDone">{{ currentName }}</span>
-      </div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-    </div>
+
+    <br />
+    <br />
   </div>
 </template>
 
@@ -184,6 +166,23 @@ export default {
         confetti(Object.assign({}, confettiDefaultValues, {origin: originPoint }, launchAngle))
       }
     },
+    ordinalNumber(number=this.currentWinnerLocal.winnerCount) {
+      const dictonary = {
+        1: "første",
+        2: "andre",
+        3: "tredje",
+        4: "fjerde",
+        5: "femte",
+        6: "sjette",
+        7: "syvende",
+        8: "åttende",
+        9: "niende",
+        10: "tiende",
+        11: "ellevte",
+        12: "tolvte"
+      };
+      return number in dictonary ? dictonary[number] : number;
+    }
   }
 };
 
@@ -196,22 +195,27 @@ export default {
 
 h2 {
   text-align: center;
+  text-transform: uppercase;
 }
 
 .current-drawn-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  grid-column: 1 / 5;
+  display: grid;
+  place-items: center;
+  position: relative;
 }
 
 .raffle-element {
-  width: 140px;
-  height: 140px;
-  font-size: 1.2rem;
+  width: 280px;
+  height: 300px;
+  font-size: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.75rem;
   text-align: center;
+
+  -webkit-mask-size: cover;
+  -moz-mask-size: cover;
+  mask-size: cover;
 }
 </style>
