@@ -1,7 +1,5 @@
 <template>
   <div class="chat-container">
-    <hr />
-    <h2>Chat</h2>
     <div class="history" ref="history" v-if="chatHistory.length > 0">
       <div class="opaque-skirt"></div>
       <div v-if="hasMorePages" class="fetch-older-history">
@@ -206,26 +204,9 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/media-queries.scss";
 @import "@/styles/variables.scss";
-h2 {
-  text-align: center;
-}
 
-hr {
-  display: none;
-
-  @include mobile {
-    display: block;
-    width: 80%;
-  }
-}
 .chat-container {
-  height: 100%;
-  width: 50%;
   position: relative;
-
-  @include mobile {
-    width: 100%;
-  }
 }
 
 input {
@@ -241,6 +222,7 @@ input {
   height: 75%;
   overflow-y: scroll;
   position: relative;
+  max-height: 550px;
 
   &-message {
     display: flex;
