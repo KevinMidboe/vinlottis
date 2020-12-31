@@ -63,16 +63,18 @@ import { attendees, winners, prelottery } from "@/api";
 import Chat from "@/ui/Chat";
 import Vipps from "@/ui/Vipps";
 import Attendees from "@/ui/Attendees";
+import Wine from "@/ui/Wine";
 import Winners from "@/ui/Winners";
 import WinnerDraw from "@/ui/WinnerDraw";
 import io from "socket.io-client";
 
 export default {
-  components: { Chat, Attendees, Winners, WinnerDraw, Vipps },
+  components: { Chat, Attendees, Winners, WinnerDraw, Vipps, Wine },
   data() {
     return {
       attendees: [],
       winners: [],
+      wines: [],
       currentWinnerDrawn: false,
       currentWinner: {},
       socket: null,
@@ -85,6 +87,7 @@ export default {
   mounted() {
     this.track();
     this.getAttendees();
+    this.getTodaysWines();
     this.getWinners();
     this.socket = io(window.location.origin);
     this.socket.on("color_winner", msg => {});
@@ -116,13 +119,6 @@ export default {
     this.socket.disconnect();
     this.socket = null;
   },
-  computed: {
-    todayExists: () => {
-      return prelottery()
-        .then(wines => wines.length > 0)
-        .catch(() => false);
-    }
-  },
   methods: {
     getWinners: async function() {
       let response = await winners();
@@ -130,6 +126,14 @@ export default {
         this.winners = response;
       }
       this.winnersFetched = true;
+    },
+    getTodaysWines() {
+      prelottery()
+        .then(wines => {
+          this.wines = wines;
+          this.todayExists = wines.length > 0;
+        })
+        .catch(_ => this.todayExists = false)
     },
     getAttendees: async function() {
       let response = await attendees();
