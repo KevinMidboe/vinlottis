@@ -51,7 +51,7 @@ export default {
       hasMorePages: true,
       message: "",
       page: 1,
-      pageSize: 10,
+      pageSize: 100,
       temporaryUsername: null,
       username: null,
       validationError: undefined
