@@ -59,6 +59,7 @@ h3 {
   margin: auto;
   color: $matte-text-color;
   font-size: 1.6rem;
+  text-align: center;
 }
 
 .winning-raffles {
