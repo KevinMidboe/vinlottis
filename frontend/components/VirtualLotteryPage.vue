@@ -2,22 +2,22 @@
   <div>
     <header ref="header">
       <div class="container">
-        <div class="left">
+        <div class="instructions">
           <h1 class="title">Virtuelt lotteri</h1>
           <ol>
-            <li>Vurder om du ønsker å bruke vår <router-link to="/generate" class="vin-link">loddgenerator</router-link>, eller se <router-link to="/dagens" class="vin-link">dagens fangst.</router-link></li>
-            <li>Send vipps med melding "Vinlotteri" for å bli registrert til virtuelt lotteri.</li>
+            <li>Vurder om du ønsker å bruke <router-link to="/generate" class="vin-link">loddgeneratoren</router-link>, eller sjekke ut <router-link to="/dagens" class="vin-link">dagens fangst.</router-link></li>
+            <li>Send vipps med melding "Vinlotteri" for å bli registrert til lotteriet.</li>
             <li>Send gjerne melding om fargeønske også.</li>
           </ol>
+        </div>
 
-          <p>
+        <Vipps :amount="1" class="vipps-qr desktop-only" />
+
+        <VippsPill class="vipps-pill mobile-only" />
+
+         <p class="call-to-action">
             <span class="vin-link">Følg med på utviklingen</span> og <span class="vin-link">chat om trekningen</span>
             <i class="icon icon--arrow-left" @click="scrollToContent"></i></p>
-        </div>
-
-        <div class="right">
-          <Vipps :amount="1" />
-        </div>
       </div>
     </header>
 
@@ -62,6 +62,7 @@
 import { attendees, winners, prelottery } from "@/api";
 import Chat from "@/ui/Chat";
 import Vipps from "@/ui/Vipps";
+import VippsPill from "@/ui/VippsPill";
 import Attendees from "@/ui/Attendees";
 import Wine from "@/ui/Wine";
 import Winners from "@/ui/Winners";
@@ -69,17 +70,16 @@ import WinnerDraw from "@/ui/WinnerDraw";
 import io from "socket.io-client";
 
 export default {
-  components: { Chat, Attendees, Winners, WinnerDraw, Vipps, Wine },
+  components: { Chat, Attendees, Winners, WinnerDraw, Vipps, VippsPill, Wine },
   data() {
     return {
       attendees: [],
       winners: [],
       wines: [],
       currentWinnerDrawn: false,
-      currentWinner: {},
+      currentWinner: null,
       socket: null,
       attendeesFetched: false,
-      winnersFetched: false,
       wasDisconnected: false,
       ticketsBought: {}
     };
@@ -98,14 +98,18 @@ export default {
 
     this.socket.on("winner", async msg => {
       this.currentWinnerDrawn = true;
-      this.currentWinner = { name: msg.name, color: msg.color };
+      this.currentWinner = {
+        name: msg.name,
+        color: msg.color,
+        winnerCount: msg.winner_count
+      };
 
       setTimeout(() => {
         this.getWinners();
         this.getAttendees();
         this.currentWinner = null;
         this.currentWinnerDrawn = false;
-      }, 12000);
+      }, 19250);
     });
     this.socket.on("refresh_data", async msg => {
       this.getAttendees();
@@ -125,7 +129,6 @@ export default {
       if (response) {
         this.winners = response;
       }
-      this.winnersFetched = true;
     },
     getTodaysWines() {
       prelottery()
@@ -177,7 +180,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/global.scss";
+
 @import "../styles/variables.scss";
 @import "../styles/media-queries.scss";
 
@@ -185,8 +188,19 @@ export default {
   width: 80vw;
   padding: 0 10vw;
 
+  @include mobile {
+    width: 90vw;
+    padding: 0 5vw;
+  }
+
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+
+  > div, > section {
+    @include mobile {
+      grid-column: span 5;
+    }
+  }
 }
 
 h2 {
@@ -195,39 +209,52 @@ h2 {
 }
 
 header {
+  h1 {
+    text-align: left;
+    font-weight: 500;
+    font-size: 3rem;
+    margin: 4rem 0 2rem;
+
+    @include mobile {
+      margin-top: 1rem;
+      font-size: 2.75rem;
+    }
+  }
+
   background-color: $primary;
   padding-bottom: 3rem;
   margin-bottom: 3rem;
 
-  .left {
+  .instructions {
     grid-column: 1 / 4;
-    margin-right: 1rem;
 
     @include mobile {
-      grid-column: 1 / 5;
-      margin-right: 0;
+      grid-column: span 5;
     }
   }
 
-  .right {
+  .vipps-qr {
     grid-column: 4;
-
-    @include mobile {
-      display: none;
-    }
+    margin-left: 1rem;
   }
 
-  h1 {
-    text-align: left !important;
-    font-weight: 500 !important;
-    font-size: 3rem;
-    margin: 4rem 0 2rem !important;
+  .vipps-pill {
+    margin: 0 auto 2rem;
+    max-width: 80vw;
+  }
+
+  .call-to-action {
+    grid-column: span 5;
   }
 
   ol {
     font-size: 1.4rem;
     line-height: 3rem;
     color: $matte-text-color;
+
+    @include mobile {
+      line-height: 2rem;
+    }
   }
 
   p {
@@ -237,7 +264,7 @@ header {
     position: relative;
 
     .vin-link {
-      cursor: default !important;
+      cursor: default;
     }
 
     .icon {
@@ -252,13 +279,17 @@ header {
   }
 
   .vin-link {
-    font-weight: 400 !important;
+    font-weight: 400;
     border-width: 2px;
   }
 }
 
 .todays-raffles {
   grid-column: 1;
+
+  @include mobile {
+    order: 2;
+  }
 }
 
 .raffle-container {
@@ -268,6 +299,11 @@ header {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+
+  @include mobile {
+    width: 100%;
+    height: 100%;
+  }
 
   .raffle-element {
     font-size: 1.6rem;
@@ -284,35 +320,50 @@ header {
 
 .winners {
   grid-column: 2 / 5;
+
+  @include mobile {
+    order: 1;
+  }
 }
 
 .container-attendees {
   grid-column: 1 / 3;
   margin-right: 1rem;
   margin-top: 2rem;
-}
 
-.attendees {
-  padding: 2rem;
+  @include mobile {
+    margin-right: 0;
+    order: 4;
+  }
 
-  -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
-  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
+  > div {
+    padding: 1rem;
+
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
+  }
 }
 
 .container-chat {
   grid-column: 3 / 5;
   margin-left: 1rem;
   margin-top: 2rem;
+
+  @include mobile {
+    margin-left: 0;
+    order: 3;
+  }
+
+  > div {
+    padding: 1rem;
+
+    -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
+  }
 }
 
-.chat {
-  padding: 2rem;
-
-  -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
-  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
-}
 
 .wines-container {
   margin-bottom: 4rem;
