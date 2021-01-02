@@ -118,13 +118,13 @@
 
     &:hover {
       .icon {
-        opacity: 100%;
+        opacity: 1;
         right: -2.5rem;
       }
     }
 
     .icon {
-      opacity: 0%;
+      opacity: 0;
       position: absolute;
       top: 35%;
       right: 0;
