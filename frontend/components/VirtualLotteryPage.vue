@@ -52,7 +52,7 @@
     </div>
 
     <div class="container wines-container">
-      <h2>Dagens fangst</h2>
+      <h2>Dagens fangst ({{ wines.length }})</h2>
       <Wine :wine="wine" v-for="wine in wines" :key="wine" />
     </div>
   </div>
