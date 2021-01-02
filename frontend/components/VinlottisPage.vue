@@ -17,12 +17,12 @@
         />
       </div>
 
-      <router-link to="/lottery/game" class="participate-button">
+      <router-link to="/lottery" class="participate-button">
           <i class="icon icon--arrow-right"></i>
           <p>Trykk her for å delta</p>
       </router-link>
 
-      <router-link to="/lottery/generate" class="see-details-link">
+      <router-link to="/generate" class="see-details-link">
         Se vipps detaljer og QR-kode
       </router-link>
 

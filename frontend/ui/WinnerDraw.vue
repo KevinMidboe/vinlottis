@@ -1,36 +1,18 @@
 <template>
-  <div class="current-drawn-container">
-    <div class="current-draw" v-if="drawing">
-      <h2>TREKKER</h2>
-      <div
-        :class="currentColor + '-raffle'"
-        class="raffle-element center-new-winner"
-        :style="{ transform: 'rotate(' + getRotation() + 'deg)' }"
-      >
-        <span v-if="currentName && colorDone">{{ currentName }}</span>
-      </div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
+  <div class="current-drawn-container" v-if="drawing">
+    <h2 v-if="winnersNameDrawn !== true">TREKKER {{ ordinalNumber() }} VINNER</h2>
+    <h2 v-else>VINNER</h2>
+
+    <div
+      :class="currentColor + '-raffle'"
+      class="raffle-element"
+      :style="{ transform: 'rotate(' + getRotation() + 'deg)' }"
+    >
+      <span v-if="currentName && colorDone">{{ currentName }}</span>
     </div>
-    
-    <div class="current-draw" v-if="drawingDone">
-      <h2>VINNER</h2>
-      <div
-        :class="currentColor + '-raffle'"
-        class="raffle-element center-new-winner"
-        :style="{ transform: 'rotate(' + getRotation() + 'deg)' }"
-      >
-        <span v-if="currentName && colorDone">{{ currentName }}</span>
-      </div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-    </div>
+
+    <br />
+    <br />
   </div>
 </template>
 
@@ -61,14 +43,13 @@ export default {
       nameTimeout: null,
       colorDone: false,
       drawing: false,
-      drawingDone: false,
+      winnersNameDrawn: false,
       winnerQueue: []
     };
   },
   watch: {
     currentWinner: function(currentWinner) {
       if (currentWinner == null) {
-        this.drawingDone = false;
         return;
       }
       if (this.drawing) {
@@ -76,6 +57,7 @@ export default {
         return;
       }
       this.drawing = true;
+      this.winnersNameDrawn = false;
       this.currentName = null;
       this.currentColor = null;
       this.nameRounds = 0;
@@ -99,8 +81,7 @@ export default {
           this.drawColor(this.currentWinnerLocal.color);
           return;
         }
-        this.drawing = false;
-        this.drawingDone = true;
+        this.winnersNameDrawn = true;
         this.startConfetti(this.currentName);
         return;
       }
@@ -114,7 +95,7 @@ export default {
       }, 50);
     },
     drawColor: function(winnerColor) {
-      this.drawingDone = false;
+      this.winnersNameDrawn = false;
       if (this.colorRounds == 100) {
         this.currentColor = winnerColor;
         this.colorDone = true;
@@ -129,7 +110,7 @@ export default {
       clearTimeout(this.colorTimeout);
       this.colorTimeout = setTimeout(() => {
         this.drawColor(winnerColor);
-      }, 50);
+      }, 70);
     },
     getRotation: function() {
       if (this.colorDone) {
@@ -151,8 +132,8 @@ export default {
           return "yellow";
       }
     },
-    startConfetti(currentName){
-      //duration is computed as x * 1000 miliseconds, in this case 7*1000 = 7000 miliseconds ==> 7 seconds. 
+    startConfetti(currentName) {
+      //duration is computed as x * 1000 miliseconds, in this case 7*1000 = 7000 miliseconds ==> 7 seconds.
       var duration = 7 * 1000;
       var animationEnd = Date.now() + duration;
       var defaults = { startVelocity: 50, spread: 160, ticks: 50, zIndex: 0, particleCount: 20};
@@ -161,22 +142,25 @@ export default {
       function randomInRange(min, max) {
         return Math.random() * (max - min) + min;
       }
+
+      const self = this;
       var interval = setInterval(function() {
         var timeLeft = animationEnd - Date.now();
         if (timeLeft <= 0) {
+          self.drawing = false;
+          console.time("drawing finished")
           return clearInterval(interval);
-        } 
-        if(currentName == "Amund Brandsrud"){
+        }
+        if (currentName == "Amund Brandsrud") {
           runCannon(uberDefaults, {x: 1, y: 1 }, {angle: 135});
-          runCannon(uberDefaults, {x: 0, y: 1 }, {angle: 45}); 
+          runCannon(uberDefaults, {x: 0, y: 1 }, {angle: 45});
           runCannon(uberDefaults, {y: 1 }, {angle: 90});
           runCannon(uberDefaults, {x: 0 }, {angle: 45});
-          runCannon(uberDefaults, {x: 1 }, {angle: 135});     
-        }else{
+          runCannon(uberDefaults, {x: 1 }, {angle: 135});
+        } else {
           runCannon(defaults, {x: 0 }, {angle: 45});
           runCannon(defaults, {x: 1 }, {angle: 135});
           runCannon(defaults, {y: 1 }, {angle: 90});
-   
         }
       }, 250);
 
@@ -184,6 +168,23 @@ export default {
         confetti(Object.assign({}, confettiDefaultValues, {origin: originPoint }, launchAngle))
       }
     },
+    ordinalNumber(number=this.currentWinnerLocal.winnerCount) {
+      const dictonary = {
+        1: "første",
+        2: "andre",
+        3: "tredje",
+        4: "fjerde",
+        5: "femte",
+        6: "sjette",
+        7: "syvende",
+        8: "åttende",
+        9: "niende",
+        10: "tiende",
+        11: "ellevte",
+        12: "tolvte"
+      };
+      return number in dictonary ? dictonary[number] : number;
+    }
   }
 };
 
@@ -196,22 +197,27 @@ export default {
 
 h2 {
   text-align: center;
+  text-transform: uppercase;
 }
 
 .current-drawn-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  grid-column: 1 / 5;
+  display: grid;
+  place-items: center;
+  position: relative;
 }
 
 .raffle-element {
-  width: 140px;
-  height: 140px;
-  font-size: 1.2rem;
+  width: 280px;
+  height: 300px;
+  font-size: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.75rem;
   text-align: center;
+
+  -webkit-mask-size: cover;
+  -moz-mask-size: cover;
+  mask-size: cover;
 }
 </style>

@@ -170,7 +170,7 @@ export default {
     flex-direction: column;
     position: relative;
     @include raffle;
-    
+
     .win-percentage {
       margin-left: 30px;
       font-size: 50px;

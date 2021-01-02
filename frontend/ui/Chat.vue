@@ -1,7 +1,7 @@
 <template>
   <div class="chat-container">
-    <hr />
-    <h2>Chat</h2>
+    <span class="logged-in-username" v-if="username">Logget inn som: <span class="username">{{ username }}</span> <button @click="removeUsername">Logg ut</button></span>
+
     <div class="history" ref="history" v-if="chatHistory.length > 0">
       <div class="opaque-skirt"></div>
       <div v-if="hasMorePages" class="fetch-older-history">
@@ -19,11 +19,12 @@
         <span class="message">{{ history.message }}</span>
       </div>
     </div>
-    <div v-if="username" class="input">
+
+    <div v-if="username" class="user-actions">
       <input @keyup.enter="sendMessage" type="text" v-model="message" placeholder="Melding.." />
       <button @click="sendMessage">Send</button>
-      <button @click="removeUsername">Logg ut</button>
     </div>
+
     <div v-else class="username-dialog">
       <input
         type="text"
@@ -53,7 +54,7 @@ export default {
       hasMorePages: true,
       message: "",
       page: 1,
-      pageSize: 10,
+      pageSize: 100,
       temporaryUsername: null,
       username: null,
       validationError: undefined
@@ -206,33 +207,37 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/media-queries.scss";
 @import "@/styles/variables.scss";
-h2 {
-  text-align: center;
-}
 
-hr {
-  display: none;
-
-  @include mobile {
-    display: block;
-    width: 80%;
-  }
-}
 .chat-container {
-  height: 100%;
-  width: 50%;
   position: relative;
-
-  @include mobile {
-    width: 100%;
-  }
+  transform: translate3d(0,0,0);
 }
 
 input {
-  width: 80%;
+  width: 100%;
+  height: 3.25rem;
 }
 
-.input {
+.logged-in-username {
+  position: absolute;
+  top: 0.75rem;
+  left: 1rem;
+  color: $matte-text-color;
+  width: calc(100% - 2rem);
+
+  button {
+    width: unset;
+    padding: 5px 10px;
+    position: absolute;
+    right: 0rem;
+  }
+
+  .username {
+    border-bottom: 2px solid $link-color;
+  }
+}
+
+.user-actions {
   display: flex;
 }
 
@@ -241,6 +246,8 @@ input {
   height: 75%;
   overflow-y: scroll;
   position: relative;
+  max-height: 550px;
+  margin-top: 2rem;
 
   &-message {
     display: flex;
@@ -265,9 +272,9 @@ input {
   }
 
   & .opaque-skirt {
-    width: 100%;
-    position: absolute;
-    height: 1rem;
+    width: calc(100% - 2rem);
+    position: fixed;
+    height: 2rem;
     z-index: 1;
     background: linear-gradient(
       to bottom,
@@ -332,5 +339,9 @@ button {
   transition: transform 0.5s ease;
   -webkit-font-smoothing: antialiased;
   touch-action: manipulation;
+
+  @include mobile {
+    padding: 10px 10px;
+  }
 }
 </style>

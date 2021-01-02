@@ -112,10 +112,9 @@ textarea {
 
 .vin-button {
   font-family: Arial;
-  $color: #b7debd;
   position: relative;
   display: inline-block;
-  background: $color;
+  background: $primary;
   color: #333;
   padding: 10px 30px;
   margin: 0;
@@ -188,7 +187,7 @@ textarea {
 .vin-link {
   font-weight: bold;
   border-bottom: 1px solid $link-color;
-  font-size: 1rem;
+  font-size: inherit;
   cursor: pointer;
 
   text-decoration: none;

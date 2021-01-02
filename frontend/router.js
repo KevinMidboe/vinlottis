@@ -1,9 +1,9 @@
 const VinlottisPage = () => import(
   /* webpackChunkName: "landing-page" */
   "@/components/VinlottisPage");
-const LotteryPage = () => import(
+const VirtualLotteryPage = () => import(
   /* webpackChunkName: "landing-page" */
-  "@/components/LotteryPage");
+  "@/components/VirtualLotteryPage");
 const GeneratePage = () => import(
   /* webpackChunkName: "landing-page" */
   "@/components/GeneratePage");
@@ -54,7 +54,7 @@ const routes = [
   {
     path: "/lottery",
     name: "Lotteri",
-    component: LotteryPage
+    component: VirtualLotteryPage
   },
   {
     path: "/dagens",
@@ -82,8 +82,8 @@ const routes = [
     component: AdminPage
   },
   {
-    path: "/lottery/:tab",
-    component: LotteryPage
+    path: "/generate/",
+    component: GeneratePage
   },
   {
     path: "/winner/:id",
