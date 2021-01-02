@@ -81,7 +81,12 @@ export default {
       socket: null,
       attendeesFetched: false,
       wasDisconnected: false,
-      ticketsBought: {}
+      ticketsBought: {
+        "red": 0,
+        "blue": 0,
+        "green": 0,
+        "yellow": 0
+      }
     };
   },
   mounted() {
