@@ -29,16 +29,20 @@ export default {
       refreshToast: false,
       routes: [
         {
+          name: "Virtuelt lotteri",
+          route: "/lottery"
+        },
+        {
           name: "Dagens viner",
           route: "/dagens/"
         },
         {
-          name: "Historie",
-          route: "/history/"
+          name: "Highscore",
+          route: "/highscore"
         },
         {
-          name: "Lotteriet",
-          route: "/lottery/game/"
+          name: "Historie",
+          route: "/history/"
         },
         {
           name: "Foreslå vin",
@@ -49,8 +53,8 @@ export default {
           route: "/requested-wines"
         },
         {
-          name: "Highscore",
-          route: "/highscore"
+          name: "Login",
+          route: "/login"
         }
       ]
     };
