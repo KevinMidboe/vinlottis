@@ -26,3 +26,15 @@ $desktop-max: 2004px;
     @content;
   }
 }
+
+.desktop-only {
+  @include mobile {
+    display: none;
+  }
+}
+
+.mobile-only {
+  @include tablet {
+    display: none;
+  }
+}
