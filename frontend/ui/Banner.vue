@@ -13,10 +13,11 @@
 
     <nav class="menu" :class="isOpen ? 'open' : 'collapsed'" >
       <router-link v-for="(route, index) in routes" :key="index" :to="route.route" class="menu-item-link" >
-        <a @click="toggleMenu" class="single-route" :class="isOpen ? 'open' : 'collapsed'">{{route.name}}</a>
+        <a @click="toggleMenu" class="single-route" :class="isOpen ? 'open' : 'collapsed'">{{ route.name }}</a>
+        <i class="icon icon--arrow-right"></i>
       </router-link>
     </nav>
-    
+
     <div class="clock">
       <h2 v-if="!fiveMinutesLeft || !tenMinutesOver">
         <span v-if="days > 0">{{ pad(days) }}:</span>
