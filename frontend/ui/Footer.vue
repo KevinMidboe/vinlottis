@@ -3,7 +3,7 @@
     <ul>
       <li>
         <a href="https://github.com/KevinMidboe/vinlottis" class="github">
-          <span>Open-sourced at github</span>
+          <span>Utforsk koden på github</span>
           <img src="/public/assets/images/logo-github.png" alt="github logo">
         </a>
       </li>
