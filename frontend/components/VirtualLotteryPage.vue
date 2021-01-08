@@ -371,10 +371,18 @@ header {
 
 
 .wines-container {
+  display: flex;
+  flex-wrap: wrap;
   margin-bottom: 4rem;
 
   h2 {
+    width: 100%;
     grid-column: 1 / 5;
+  }
+
+  .wine {
+    margin-right: 1rem;
+    margin-bottom: 1rem;
   }
 }
 </style>
