@@ -17,13 +17,15 @@ const virtualRegistrationApi = require(path.join(
 const lottery = require(path.join(__dirname, "/lottery"));
 const chatHistoryApi = require(path.join(__dirname, "/chatHistory"));
 
+const requestController = require(path.join(__dirname, "/controllers/requestController"));
+
 const router = express.Router();
 
 router.get("/wineinfo/search", wineinfo.wineSearch);
 
-router.get("/request/all", setAdminHeaderIfAuthenticated, request.getAllRequestedWines);
-router.post("/request/new-wine", request.requestNewWine);
-router.delete("/request/:id", request.deleteRequestedWineById);
+router.get("/request/all", setAdminHeaderIfAuthenticated, requestController.getAllRequests);
+router.post("/request/new-wine", requestController.addRequest);
+router.delete("/request/:id", requestController.deleteRequest);
 
 router.get("/wineinfo/schema", mustBeAuthenticated, update.schema);
 router.get("/wineinfo/:ean", wineinfo.byEAN);

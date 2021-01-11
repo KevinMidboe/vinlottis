@@ -1,4 +1,3 @@
-const express = require("express");
 const path = require("path");
 const RequestedWine = require(path.join(
   __dirname, "/schemas/RequestedWine"
@@ -7,31 +6,15 @@ const Wine = require(path.join(
   __dirname, "/schemas/Wine"
 ));
 
-const deleteRequestedWineById = async (req, res) => {
-  const { id } = req.params;
-  if(id == null){
-    return res.json({
-      message: "Id er ikke definert",
-      success: false
-    })
+class RequestedWineNotFound extends Error {
+  constructor(message="Wine with this id was not found.") {
+    super(message);
+    this.name = "RequestedWineNotFound";
+    this.statusCode = 404;
   }
-
-  await RequestedWine.deleteOne({wineId: id})
-  return res.json({
-    message: `Slettet vin med id: ${id}`,
-    success: true
-  });
 }
 
-const getAllRequestedWines = async (req, res) => {
-  const allWines = await RequestedWine.find({}).populate("wine");
-
-  return res.json(allWines);
-}
-
-const requestNewWine = async (req, res) => {
-  const {wine} = req.body
-
+const addNew = async (wine) => {
   let thisWineIsLOKO = await Wine.findOne({id: wine.id})
 
   if(thisWineIsLOKO == undefined){
@@ -59,11 +42,31 @@ const requestNewWine = async (req, res) => {
   }
   await requestedWine.save()
 
-  return res.send(requestedWine);
+  return requestedWine;
+}
+
+const getById = (id) => {
+  return RequestedWine.findOne({ wineId: id }).populate("wine")
+    .then(wine => {
+      if (wine == null) {
+        throw new RequestedWineNotFound();
+      }
+
+      return wine;
+    })
+}
+
+const deleteById = (id) => {
+  return getById(id)
+    .then(wine => RequestedWine.deleteOne({ wineId: wine.id }))
+}
+
+const getAll = () => {
+  return RequestedWine.find({}).populate("wine");
 }
 
 module.exports = {
-  requestNewWine,
-  getAllRequestedWines,
-  deleteRequestedWineById
+  addNew,
+  getAll,
+  deleteById
 };
