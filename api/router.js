@@ -16,6 +16,7 @@ const virtualRegistrationApi = require(path.join(
 ));
 const lottery = require(path.join(__dirname, "/lottery"));
 const chatHistoryApi = require(path.join(__dirname, "/chatHistory"));
+const githubController = require(path.join(__dirname, "/controllers/githubController"));
 
 const router = express.Router();
 
@@ -62,6 +63,8 @@ router.post('/winner/:id', virtualRegistrationApi.registerWinnerSelection);
 
 router.get('/chat/history', chatHistoryApi.getAllHistory)
 router.delete('/chat/history', mustBeAuthenticated, chatHistoryApi.deleteHistory)
+
+router.get("/project/contributors", githubController.getProjectContributors);
 
 router.post('/login', userApi.login);
 router.post('/register', mustBeAuthenticated, userApi.register);

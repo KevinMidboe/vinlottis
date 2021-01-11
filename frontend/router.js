@@ -20,6 +20,9 @@ const HistoryPage = () => import(
 const WinnerPage = () => import(
   /* webpackChunkName: "sub-pages" */
   "@/components/WinnerPage");
+const AboutPage = () => import(
+  /* webpackChunkName: "sub-pages" */
+  "@/components/AboutPage");
 
 const LoginPage = () => import(
   /* webpackChunkName: "user" */
@@ -118,6 +121,11 @@ const routes = [
     path: "/requested-wines",
     name: "Etterspurte vin",
     component: AllRequestedWines
+  },
+  {
+    path: "/about",
+    name: "Om oss",
+    component: AboutPage
   }
 ];
 
