@@ -83,7 +83,13 @@ export default {
     },
     request(wine){
       requestNewWine(wine)
-        .then(() => this.showModal = true)
+        .then(resp => {
+          if(resp.success) {
+            this.showModal = true
+          } else {
+            alert("Obs, her oppsto det en feil! Feilen er logget.");
+          }
+        })
     },
     emitFromModalButton(action){
       if(action == "stay"){
