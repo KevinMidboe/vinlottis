@@ -332,6 +332,11 @@ const getWinnerByName = (name) => {
     })
 }
 
+const projectContributors = () => {
+  return fetch("/api/project/contributors")
+    .then(resp => resp.json())
+}
+
 export {
   statistics,
   colorStatistics,
@@ -365,5 +370,6 @@ export {
   postWineChosen,
   historyAll,
   historyByDate,
-  getWinnerByName
+  getWinnerByName,
+  projectContributors
 };
