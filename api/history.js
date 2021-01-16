@@ -3,6 +3,22 @@ const path = require("path");
 const Highscore = require(path.join(__dirname, "/schemas/Highscore"));
 const Wine = require(path.join(__dirname, "/schemas/Wine"));
 
+class HistoryByDateNotFound extends Error {
+  constructor(message = "History for given date not found.") {
+    super(message);
+    this.name = "HistoryByDateNotFound";
+    this.statusCode = 404;
+  }
+}
+
+class HistoryForUserNotFound extends Error {
+  constructor(message = "History for given user not found.") {
+    super(message);
+    this.name = "HistoryForUserNotFound";
+    this.statusCode = 404;
+  }
+}
+
 // Utils
 const epochToDateString = date => new Date(parseInt(date)).toDateString();
 
@@ -56,77 +72,41 @@ const resolveWineReferences = (highscoreObject, key) => {
 // end utils
 
 // Routes
-const all = (req, res) => {
-  return Highscore.find()
-    .then(highscore => groupHighscoreByDate(highscore))
-    .then(lotteries =>
-      res.send({
-        message: "Lotteries by date!",
-        lotteries
-      })
-    );
+const all = () => {
+  return Highscore.find().then(highscore => groupHighscoreByDate(highscore));
 };
 
-const latest = (req, res) => {
+const latest = () => {
   return groupHighscoreByDate()
     .then(lotteries => lotteries.shift()) // first element in list
-    .then(latestLottery => resolveWineReferences(latestLottery, "winners"))
-    .then(lottery =>
-      res.send({
-        message: "Latest lottery!",
-        winners: lottery.winners
-      })
-    );
+    .then(latestLottery => resolveWineReferences(latestLottery, "winners"));
 };
 
-const byEpochDate = (req, res) => {
-  let { date } = req.params;
-  date = new Date(new Date(parseInt(date)).setHours(0, 0, 0, 0)).getTime();
-  const dateString = epochToDateString(date);
-
+const byEpochDate = date => {
   return groupHighscoreByDate()
     .then(lotteries => {
       const lottery = lotteries.filter(lottery => lottery.date == date);
       if (lottery.length > 0) {
         return lottery[0];
       } else {
-        return res.status(404).send({
-          message: `No lottery found for date: ${dateString}`
-        });
+        throw new HistoryByDateNotFound();
       }
     })
     .then(lottery => resolveWineReferences(lottery, "winners"))
-    .then(lottery =>
-      res.send({
-        message: `Lottery for date: ${dateString}`,
-        date,
-        winners: lottery.winners
-      })
-    );
+    .then(lottery => lottery.winners);
 };
 
-const byName = (req, res) => {
-  const { name } = req.params;
-  const regexName = new RegExp(name, "i"); // lowercase regex of the name
-
+const byName = name => {
   return Highscore.find({ name })
     .then(highscore => {
       if (highscore.length > 0) {
         return highscore[0];
       } else {
-        return res.status(404).send({
-          message: `Name: ${name} not found in leaderboards.`
-        });
+        throw new HistoryForUserNotFound();
       }
     })
     .then(highscore => resolveWineReferences(highscore, "wins"))
-    .then(highscore =>
-      res.send({
-        message: `Lottery winnings for name: ${name}.`,
-        name: highscore.name,
-        highscore: sortNewestFirst(highscore.wins)
-      })
-    );
+    .then(highscore => sortNewestFirst(highscore.wins));
 };
 
 module.exports = {
