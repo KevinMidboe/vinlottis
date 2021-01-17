@@ -5,7 +5,7 @@ const sortOptions = ["desc", "asc"];
 const includeWinesOptions = ["true", "false"];
 
 const all = (req, res) => {
-  let { sort, includeWines } = req.query;
+  const { sort, includeWines } = req.query;
 
   if (sort !== undefined && !sortOptions.includes(sort)) {
     return res.status(400).send({
@@ -74,7 +74,7 @@ const byDate = (req, res) => {
 };
 
 const groupedByDate = (req, res) => {
-  let { sort, includeWines } = req.query;
+  const { sort, includeWines } = req.query;
 
   if (sort !== undefined && !sortOptions.includes(sort)) {
     return res.status(400).send({
@@ -91,7 +91,7 @@ const groupedByDate = (req, res) => {
   }
 
   return winnerRepository
-    .groupedByDate(includeWines, sort)
+    .groupedByDate(includeWines == "true", sort)
     .then(lotteries =>
       res.send({
         lotteries: lotteries,
@@ -156,10 +156,39 @@ const byName = (req, res) => {
     });
 };
 
+const byColor = (req, res) => {
+  const { includeWines } = req.query;
+
+  if (includeWines !== undefined && !includeWinesOptions.includes(includeWines)) {
+    return res.status(400).send({
+      message: `includeWines option must be: '${includeWinesOptions.join(", ")}'`,
+      success: false
+    });
+  }
+
+  return winnerRepository
+    .byColor(includeWines == "true")
+    .then(colors =>
+      res.send({
+        colors: colors,
+        success: true
+      })
+    )
+    .catch(error => {
+      const { statusCode, message } = error;
+
+      return res.status(statusCode || 500).send({
+        success: false,
+        message: message || "Unable to fetch winners by color."
+      });
+    });
+};
+
 module.exports = {
   all,
   byDate,
   groupedByDate,
   latest,
-  byName
+  byName,
+  byColor
 };

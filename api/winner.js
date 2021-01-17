@@ -78,8 +78,6 @@ const byDate = date => {
 };
 
 const byName = (name, sort = "desc") => {
-  const populateOptions = { sort: "date" };
-
   return Winner.findOne({ name }, ["name", "wins"])
     .sort("-wins.date")
     .populate("wins.wine")
@@ -183,9 +181,60 @@ const groupedByDate = (includeWines = false, sort = "desc") => {
   return Winner.aggregate(query).then(lotteries => (sort != "asc" ? lotteries : lotteries.reverse()));
 };
 
+const byColor = (includeWines = false) => {
+  const query = [
+    {
+      $unwind: "$wins"
+    },
+    {
+      $group: {
+        _id: "$wins.color",
+        winners: {
+          $push: {
+            _id: "$_id",
+            name: "$name",
+            date: "$wins.date",
+            wine: "$wins.wine"
+          }
+        },
+        count: { $sum: 1 }
+      }
+    },
+    {
+      $project: {
+        color: "$_id",
+        count: "$count",
+        winners: "$winners"
+      }
+    },
+    {
+      $sort: {
+        _id: -1
+      }
+    }
+  ];
+
+  console.log("includeWines:", includeWines);
+  console.log("includeWines:", includeWines == true);
+
+  if (includeWines) {
+    query.splice(1, 0, {
+      $lookup: {
+        from: "wines",
+        localField: "wins.wine",
+        foreignField: "_id",
+        as: "wins.wine"
+      }
+    });
+  }
+
+  return Winner.aggregate(query);
+};
+
 module.exports = {
   all,
   byDate,
   latest,
-  groupedByDate
+  groupedByDate,
+  byColor
 };
