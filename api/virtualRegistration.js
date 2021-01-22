@@ -1,13 +1,13 @@
 const path = require("path");
 
-const _wineFunctions = require(path.join(__dirname + "/../api/wine"));
-const _personFunctions = require(path.join(__dirname + "/../api/person"));
-const Message = require(path.join(__dirname + "/../api/message"));
+const _wineFunctions = require(path.join(__dirname, "/wine"));
+const _personFunctions = require(path.join(__dirname, "/person"));
+const Message = require(path.join(__dirname, "/message"));
 const VirtualWinner = require(path.join(
-  __dirname + "/../schemas/VirtualWinner"
+  __dirname, "/schemas/VirtualWinner"
 ));
 const PreLotteryWine = require(path.join(
-  __dirname + "/../schemas/PreLotteryWine"
+  __dirname, "/schemas/PreLotteryWine"
 ));
 
 

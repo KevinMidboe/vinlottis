@@ -1,13 +1,13 @@
 const path = require("path");
 const crypto = require("crypto");
 
-const config = require(path.join(__dirname + "/../config/defaults/lottery"));
-const Message = require(path.join(__dirname + "/message"));
-const { findAndNotifyNextWinner } = require(path.join(__dirname + "/virtualRegistration"));
+const config = require(path.join(__dirname, "/../config/defaults/lottery"));
+const Message = require(path.join(__dirname, "/message"));
+const { findAndNotifyNextWinner } = require(path.join(__dirname, "/virtualRegistration"));
 
-const Attendee = require(path.join(__dirname + "/../schemas/Attendee"));
-const VirtualWinner = require(path.join(__dirname + "/../schemas/VirtualWinner"));
-const PreLotteryWine = require(path.join(__dirname + "/../schemas/PreLotteryWine"));
+const Attendee = require(path.join(__dirname, "/schemas/Attendee"));
+const VirtualWinner = require(path.join(__dirname, "/schemas/VirtualWinner"));
+const PreLotteryWine = require(path.join(__dirname, "/schemas/PreLotteryWine"));
 
 
 const winners = async (req, res) => {
@@ -166,8 +166,16 @@ const drawWinner = async (req, res) => {
       Math.floor(Math.random() * attendeeListDemocratic.length)
     ];
 
+  let winners = await VirtualWinner.find({ timestamp_sent: undefined }).sort({
+    timestamp_drawn: 1
+  });
+
   var io = req.app.get('socketio');
-  io.emit("winner", { color: colorToChooseFrom, name: winner.name });
+  io.emit("winner", {
+    color: colorToChooseFrom,
+    name: winner.name,
+    winner_count: winners.length + 1
+  });
 
   let newWinnerElement = new VirtualWinner({
     name: winner.name,

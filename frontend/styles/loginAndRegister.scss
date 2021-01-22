@@ -1,0 +1,72 @@
+@import "./media-queries.scss";
+@import "./variables.scss";
+
+.outer {
+  display: flex;
+  flex-direction: column;
+
+  @include desktop {
+    margin-top: 10vh;
+  }
+}
+
+h2 {
+  font-family: knowit, Arial;
+  text-align: center;
+  font-size: 3rem;
+  width: 100vw;
+
+  @include mobile {
+    font-size: 2rem;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 2rem auto 0;
+  width: 80vw;
+  max-width: 1100px;
+
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 90vw;
+  }
+
+  .label-div input {
+    font-size: 2rem;
+    min-height: 2rem;
+    line-height: 2rem;
+    border: none;
+    border-bottom: 1px solid black;
+    max-width: 30vw;
+
+    @include mobile {
+      max-width: unset;
+      font-size: 2rem;
+      min-height: 2rem;
+      line-height: 2rem;
+
+      margin-bottom: 1.5rem;
+    }
+  }
+}
+
+.vin-button {
+  margin-bottom: 0;
+  margin-top: auto;
+}
+
+.error {
+  padding: 1.25rem;
+  margin: 1.25rem;
+  width: calc(100% - 5rem);
+  background-color: $light-red;
+  color: $red;
+  font-size: 1.5rem;
+}

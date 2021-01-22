@@ -1,22 +1,21 @@
 const express = require("express");
 const path = require("path");
 
-// Middleware
-const mustBeAuthenticated = require(__dirname + "/../middleware/mustBeAuthenticated");
-const setAdminHeaderIfAuthenticated = require(__dirname + "/../middleware/setAdminHeaderIfAuthenticated");
+const mustBeAuthenticated = require(path.join(__dirname, "/middleware/mustBeAuthenticated"));
+const setAdminHeaderIfAuthenticated = require(path.join(__dirname, "/middleware/setAdminHeaderIfAuthenticated"));
 
-const update = require(path.join(__dirname + "/update"));
-const retrieve = require(path.join(__dirname + "/retrieve"));
-const request = require(path.join(__dirname + "/request"));
-const subscriptionApi = require(path.join(__dirname + "/subscriptions"));
-const loginApi = require(path.join(__dirname + "/login"));
-const wineinfo = require(path.join(__dirname + "/wineinfo"));
-const virtualApi = require(path.join(__dirname + "/virtualLottery"));
+const update = require(path.join(__dirname, "/update"));
+const retrieve = require(path.join(__dirname, "/retrieve"));
+const request = require(path.join(__dirname, "/request"));
+const subscriptionApi = require(path.join(__dirname, "/subscriptions"));
+const userApi = require(path.join(__dirname, "/user"));
+const wineinfo = require(path.join(__dirname, "/wineinfo"));
+const virtualApi = require(path.join(__dirname, "/virtualLottery"));
 const virtualRegistrationApi = require(path.join(
-  __dirname + "/virtualRegistration"
+  __dirname, "/virtualRegistration"
 ));
-const lottery = require(path.join(__dirname + "/lottery"));
-
+const lottery = require(path.join(__dirname, "/lottery"));
+const chatHistoryApi = require(path.join(__dirname, "/chatHistory"));
 
 const router = express.Router();
 
@@ -61,10 +60,11 @@ router.post('/winner/notify/:id', virtualRegistrationApi.sendNotificationToWinne
 router.get('/winner/:id', virtualRegistrationApi.getWinesToWinnerById);
 router.post('/winner/:id', virtualRegistrationApi.registerWinnerSelection);
 
-// router.use("/api/", updateApi);
-// router.use("/api/", retrieveApi);
-// router.use("/api/", wineinfoApi);
-// router.use("/api/lottery", lottery);
-// router.use("/virtual-registration/", virtualRegistrationApi);
+router.get('/chat/history', chatHistoryApi.getAllHistory)
+router.delete('/chat/history', mustBeAuthenticated, chatHistoryApi.deleteHistory)
+
+router.post('/login', userApi.login);
+router.post('/register', mustBeAuthenticated, userApi.register);
+router.get('/logout', userApi.logout);
 
 module.exports = router;

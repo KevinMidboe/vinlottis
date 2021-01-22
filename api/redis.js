@@ -1,29 +1,40 @@
+const { promisify } = require("util"); // from node
+
 let client;
+let llenAsync;
+let lrangeAsync;
 try {
   const redis = require("redis");
-  console.log("trying to create redis");
+  console.log("Trying to connect with redis..");
   client = redis.createClient();
+
+  client.zcount = promisify(client.zcount).bind(client);
+  client.zadd = promisify(client.zadd).bind(client);
+  client.zrevrange = promisify(client.zrevrange).bind(client);
+  client.del = promisify(client.del).bind(client);
+
+  client.on("connect", () => console.log("Redis connection established!"));
+
   client.on("error", function(err) {
     client.quit();
-    console.error("Missing redis-configurations..");
+    console.error("Unable to connect to redis, setting up redis-mock.");
+
     client = {
-      rpush: function() {
-        console.log("redis-dummy lpush", arguments);
-        if (typeof arguments[arguments.length - 1] == "function") {
-          arguments[arguments.length - 1](null);
-        }
+      zcount: function() {
+        console.log("redis-dummy zcount", arguments);
+        return Promise.resolve()
       },
-      lrange: function() {
-        console.log("redis-dummy lrange", arguments);
-        if (typeof arguments[arguments.length - 1] == "function") {
-          arguments[arguments.length - 1](null);
-        }
+      zadd: function() {
+        console.log("redis-dummy zadd", arguments);
+        return Promise.resolve();
+      },
+      zrevrange: function() {
+        console.log("redis-dummy zrevrange", arguments);
+        return Promise.resolve(null);
       },
       del: function() {
         console.log("redis-dummy del", arguments);
-        if (typeof arguments[arguments.length - 1] == "function") {
-          arguments[arguments.length - 1](null);
-        }
+        return Promise.resolve();
       }
     };
   });
@@ -31,36 +42,46 @@ try {
 
 const addMessage = message => {
   const json = JSON.stringify(message);
-  client.rpush("messages", json);
-
-  return message;
+  return client.zadd("messages", message.timestamp, json)
+    .then(position => {
+      return {
+        success: true
+      }
+    })
 };
 
-const history = (skip = 0, take = 20) => {
-  skip = (1 + skip) * -1; // negate to get FIFO
-  return new Promise((resolve, reject) =>
-    client.lrange("messages", skip * take, skip, (err, data) => {
-      if (err) {
-        console.log(err);
-        reject(err);
-      }
+const history = (page=1, limit=10) => {
+  const start = (page - 1) * limit;
+  const stop = (limit * page) - 1;
 
-      data = data.map(data => JSON.parse(data));
-      resolve(data);
+  const getTotalCount = client.zcount("messages", '-inf', '+inf');
+  const getMessages = client.zrevrange("messages", start, stop);
+
+  return Promise.all([getTotalCount, getMessages])
+    .then(([totalCount, messages]) => {
+      if (messages) {
+        return {
+          messages: messages.map(entry => JSON.parse(entry)).reverse(),
+          count: messages.length,
+          total: totalCount
+        }
+      } else {
+        return {
+          messages: [],
+          count: 0,
+          total: 0
+        }
+      }
     })
-  );
 };
 
 const clearHistory = () => {
-  return new Promise((resolve, reject) =>
-    client.del("messages", (err, success) => {
-      if (err) {
-        console.log(err);
-        reject(err);
+  return client.del("messages")
+    .then(success => {
+      return {
+        success: success == 1 ? true : false
       }
-      resolve(success == 1 ? true : false);
     })
-  );
 };
 
 module.exports = {
