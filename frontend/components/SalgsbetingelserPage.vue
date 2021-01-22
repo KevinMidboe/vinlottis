@@ -25,7 +25,7 @@
     <section class="chapter cf" id="chapter-3">
       <h2 class="h2-title">2. Partene</h2>
       <div class="content-wrap">
-        <p>Selger er KEVIN MIDBØE, Schleppegrells gate 18, questions@vinlottis.no/kevin.midboe@gmail.com, 926432478, og betegnes i det følgende som  selger/selgeren.</p>
+        <p>Selger er Kevin Midbøe, Schleppegrells gate 18, questions@vinlottis.no/kevin.midboe@gmail.com, 926432478, og betegnes i det følgende som  selger/selgeren.</p>
         <p>Kjøper er den forbrukeren som foretar bestillingen, og betegnes i det følgende som  kjøper/kjøperen.</p>
       </div>
     </section>
