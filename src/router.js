@@ -13,6 +13,7 @@ import LotteryPage from "@/components/LotteryPage";
 import HistoryPage from "@/components/HistoryPage";
 import HighscorePage from "@/components/HighscorePage";
 import PersonalHighscorePage from "@/components/PersonalHighscorePage";
+import Salgsbetingelser from "@/components/Salgsbetingelser";
 
 import RequestWine from "@/components/RequestWine";
 import AllRequestedWines from "@/components/AllRequestedWines";
@@ -90,6 +91,11 @@ const routes = [
     path: "/requested-wines",
     name: "Etterspurte vin",
     component: AllRequestedWines
+  },
+  {
+    path: "/salgsbetingelser",
+    name: "Salgsbetingelser",
+    component: Salgsbetingelser
   }
 ];
 
