@@ -2,14 +2,14 @@
 
 const webpack = require("webpack");
 const helpers = require("./helpers");
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 const ServiceWorkerConfig = {
   resolve: {
     extensions: [".js", ".vue"]
   },
   entry: {
-    serviceWorker: [helpers.root("src/service-worker", "service-worker")]
+    serviceWorker: [helpers.root("frontend/service-worker", "service-worker")]
   },
   optimization: {
     minimizer: []
@@ -19,7 +19,7 @@ const ServiceWorkerConfig = {
       {
         test: /\.js$/,
         loader: "babel-loader",
-        include: [helpers.root("src/service-worker", "service-worker")]
+        include: [helpers.root("frontend/service-worker", "service-worker")]
       }
     ]
   },
@@ -31,11 +31,10 @@ const ServiceWorkerConfig = {
     //filename: "js/[name].bundle.js"
   },
   optimization: {
+    minimize: true,
     minimizer: [
-      new UglifyJSPlugin({
-        cache: true,
-        parallel: false,
-        sourceMap: false
+      new TerserPlugin({
+        test: /\.js(\?.*)?$/i,
       })
     ]
   },

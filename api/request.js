@@ -1,10 +1,10 @@
 const express = require("express");
 const path = require("path");
 const RequestedWine = require(path.join(
-  __dirname + "/../schemas/RequestedWine"
+  __dirname, "/schemas/RequestedWine"
 ));
 const Wine = require(path.join(
-  __dirname + "/../schemas/Wine"
+  __dirname, "/schemas/Wine"
 ));
 
 const deleteRequestedWineById = async (req, res) => {

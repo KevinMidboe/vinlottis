@@ -1,7 +1,7 @@
 const path = require('path');
 
-const Highscore = require(path.join(__dirname + '/../schemas/Highscore'));
-const Wine = require(path.join(__dirname + '/../schemas/Wine'));
+const Highscore = require(path.join(__dirname, '/schemas/Highscore'));
+const Wine = require(path.join(__dirname, '/schemas/Wine'));
 
 // Utils
 const epochToDateString = date => new Date(parseInt(date)).toDateString();

@@ -29,7 +29,7 @@ async function sendWineSelectMessage(winnerObject) {
 async function sendWineConfirmation(winnerObject, wineObject, date) {
   date = dateString(date);
   return sendMessageToUser(winnerObject.phoneNumber,
-    `Bekreftelse på din vin ${ winnerObject.name }.\nDato vunnet: ${ date }.\nVin valgt: ${ wineObject.name }.\nKan hentes hos ${ config.name } på kontoret. Ha en ellers fin helg!`)
+    `Bekreftelse på din vin ${ winnerObject.name }.\nDato vunnet: ${ date }.\nVin valgt: ${ wineObject.name }.\nDu vil bli kontaktet av ${ config.name } ang henting. Ha en ellers fin helg!`)
 }
 
 async function sendLastWinnerMessage(winnerObject, wineObject) {
@@ -40,7 +40,7 @@ async function sendLastWinnerMessage(winnerObject, wineObject) {
 
   return sendMessageToUser(
     winnerObject.phoneNumber,
-    `Gratulerer som heldig vinner av vinlotteriet ${winnerObject.name}! Du har vunnet vinen ${wineObject.name}, vinen kan hentes hos ${ config.name } på kontoret. Ha en ellers fin helg!`
+    `Gratulerer som heldig vinner av vinlotteriet ${winnerObject.name}! Du har vunnet vinen ${wineObject.name}, du vil bli kontaktet av ${ config.name } ang henting. Ha en ellers fin helg!`
   );
 }
 

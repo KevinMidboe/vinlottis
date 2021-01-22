@@ -1,14 +1,14 @@
 const express = require("express");
 const path = require("path");
 
-const sub = require(path.join(__dirname + "/../api/subscriptions"));
+const sub = require(path.join(__dirname, "/subscriptions"));
 
-const _wineFunctions = require(path.join(__dirname + "/../api/wine"));
-const _personFunctions = require(path.join(__dirname + "/../api/person"));
-const Subscription = require(path.join(__dirname + "/../schemas/Subscription"));
-const Lottery = require(path.join(__dirname + "/../schemas/Purchase"));
+const _wineFunctions = require(path.join(__dirname, "/wine"));
+const _personFunctions = require(path.join(__dirname, "/person"));
+const Subscription = require(path.join(__dirname, "/schemas/Subscription"));
+const Lottery = require(path.join(__dirname, "/schemas/Purchase"));
 const PreLotteryWine = require(path.join(
-  __dirname + "/../schemas/PreLotteryWine"
+  __dirname, "/schemas/PreLotteryWine"
 ));
 
 const submitWines = async (req, res) => {

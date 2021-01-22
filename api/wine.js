@@ -1,5 +1,5 @@
 const path = require("path");
-const Wine = require(path.join(__dirname + "/../schemas/Wine"));
+const Wine = require(path.join(__dirname, "/schemas/Wine"));
 
 async function findSaveWine(prelotteryWine) {
   let wonWine = await Wine.findOne({ name: prelotteryWine.name });
