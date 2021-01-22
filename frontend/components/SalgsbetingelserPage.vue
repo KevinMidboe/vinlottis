@@ -199,9 +199,9 @@
 
 .container {
   margin: 3rem;
-}
-
-a {
-
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  width: 80%;
 }
 </style>
