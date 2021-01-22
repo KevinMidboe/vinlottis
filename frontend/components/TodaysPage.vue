@@ -42,10 +42,10 @@ h1 {
 }
 
 .wines-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  margin: 0 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 2rem;
+  gap: 2rem;
 
   @media (min-width: 1500px) {
     max-width: 1500px;
