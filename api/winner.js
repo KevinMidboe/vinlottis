@@ -136,7 +136,7 @@ const latest = () => {
   return Winner.aggregate(query).then(winners => winners[0]);
 };
 
-const groupedByDate = (includeWines = false, sort = "desc") => {
+const groupByDate = (includeWines = false, sort = "desc") => {
   const query = [
     {
       $unwind: "$wins"
@@ -181,7 +181,7 @@ const groupedByDate = (includeWines = false, sort = "desc") => {
   return Winner.aggregate(query).then(lotteries => (sort != "asc" ? lotteries : lotteries.reverse()));
 };
 
-const byColor = (includeWines = false) => {
+const groupByColor = (includeWines = false) => {
   const query = [
     {
       $unwind: "$wins"
@@ -214,9 +214,6 @@ const byColor = (includeWines = false) => {
     }
   ];
 
-  console.log("includeWines:", includeWines);
-  console.log("includeWines:", includeWines == true);
-
   if (includeWines) {
     query.splice(1, 0, {
       $lookup: {
@@ -231,10 +228,60 @@ const byColor = (includeWines = false) => {
   return Winner.aggregate(query);
 };
 
+const orderByWins = (includeWines = false) => {
+  let query = [
+    {
+      $project: {
+        name: "$name",
+        wins: "$wins",
+        totalWins: { $size: "$wins" }
+      }
+    },
+    {
+      $sort: {
+        totalWins: -1,
+        "wins.date": -1
+      }
+    }
+  ];
+
+  if (includeWines) {
+    const includeWinesSubQuery = [
+      {
+        $unwind: "$wins"
+      },
+      {
+        $lookup: {
+          from: "wines",
+          localField: "wins.wine",
+          foreignField: "_id",
+          as: "wins.wine"
+        }
+      },
+      {
+        $unwind: "$wins._id"
+      },
+      {
+        $group: {
+          _id: "$_id",
+          name: { $first: "$name" },
+          totalWins: { $first: "$totalWins" },
+          wins: { $push: "$wins" }
+        }
+      }
+    ];
+
+    query = includeWinesSubQuery.concat(query);
+  }
+
+  return Winner.aggregate(query);
+};
+
 module.exports = {
   all,
   byDate,
   latest,
-  groupedByDate,
-  byColor
+  groupByDate,
+  groupByColor,
+  orderByWins
 };

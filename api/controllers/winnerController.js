@@ -73,7 +73,7 @@ const byDate = (req, res) => {
     });
 };
 
-const groupedByDate = (req, res) => {
+const groupByDate = (req, res) => {
   const { sort, includeWines } = req.query;
 
   if (sort !== undefined && !sortOptions.includes(sort)) {
@@ -156,7 +156,7 @@ const byName = (req, res) => {
     });
 };
 
-const byColor = (req, res) => {
+const groupByColor = (req, res) => {
   const { includeWines } = req.query;
 
   if (includeWines !== undefined && !includeWinesOptions.includes(includeWines)) {
@@ -167,7 +167,7 @@ const byColor = (req, res) => {
   }
 
   return winnerRepository
-    .byColor(includeWines == "true")
+    .groupByColor(includeWines == "true")
     .then(colors =>
       res.send({
         colors: colors,
@@ -184,11 +184,40 @@ const byColor = (req, res) => {
     });
 };
 
+const orderByWins = (req, res) => {
+  const { includeWines } = req.query;
+
+  if (includeWines !== undefined && !includeWinesOptions.includes(includeWines)) {
+    return res.status(400).send({
+      message: `includeWines option must be: '${includeWinesOptions.join(", ")}'`,
+      success: false
+    });
+  }
+
+  return winnerRepository
+    .orderByWins(includeWines == "true")
+    .then(winners =>
+      res.send({
+        winners: winners,
+        success: true
+      })
+    )
+    .catch(error => {
+      const { statusCode, message } = error;
+
+      return res.status(statusCode || 500).send({
+        success: false,
+        message: message || "Unable to fetch winners by color."
+      });
+    });
+};
+
 module.exports = {
   all,
   byDate,
-  groupedByDate,
+  groupByDate,
   latest,
   byName,
-  byColor
+  groupByColor,
+  orderByWins
 };
