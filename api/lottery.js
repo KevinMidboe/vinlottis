@@ -1,10 +1,21 @@
 const path = require("path");
 const Attendee = require(path.join(__dirname, "/schemas/Attendee"));
+const PreLotteryWine = require(path.join(__dirname, "/schemas/PreLotteryWine"));
 
 class UserNotFound extends Error {
   constructor(message = "User not found.") {
     super(message);
     this.name = "UserNotFound";
+    this.statusCode = 404;
+  }
+
+  // TODO log missing user
+}
+
+class WineNotFound extends Error {
+  constructor(message = "Wine not found.") {
+    super(message);
+    this.name = "WineNotFound";
     this.statusCode = 404;
   }
 
@@ -79,10 +90,71 @@ const deleteAttendees = () => {
   return Attendee.deleteMany();
 };
 
+const allWines = () => {
+  return PreLotteryWine.find();
+};
+
+const addWines = wines => {
+  const prelotteryWines = wines.map(wine => {
+    let newPrelotteryWine = new PreLotteryWine({
+      name: wine.name,
+      vivinoLink: wine.vivinoLink,
+      rating: wine.rating,
+      image: wine.image,
+      price: wine.price,
+      country: wine.country,
+      id: wine.id
+    });
+
+    return newPrelotteryWine.save();
+  });
+
+  return Promise.all(prelotteryWines);
+};
+
+const updateWineById = (id, updateModel) => {
+  return PreLotteryWine.findOne({ _id: id }).then(wine => {
+    if (wine == null) {
+      throw new WineNotFound();
+    }
+
+    const updatedWine = {
+      name: updateModel.name || wine.name,
+      vivinoLink: updateModel.vivinoLink || wine.vivinoLink,
+      rating: updateModel.rating || wine.rating,
+      image: updateModel.image || wine.image,
+      price: updateModel.price || wine.price,
+      country: updateModel.country || wine.country,
+      id: updateModel.id || wine.id
+    };
+
+    return PreLotteryWine.updateOne({ _id: id }, updatedWine).then(_ => updatedWine);
+  });
+};
+
+const deleteWineById = id => {
+  return PreLotteryWine.findOne({ _id: id }).then(wine => {
+    if (wine == null) {
+      throw new WineNotFound();
+    }
+
+    return PreLotteryWine.deleteOne({ _id: id }).then(_ => wine);
+  });
+};
+
+const deleteWines = () => {
+  return PreLotteryWine.deleteMany();
+};
+
 module.exports = {
   allAttendees,
   addAttendee,
   updateAttendeeById,
   deleteAttendeeById,
-  deleteAttendees
+  deleteAttendees,
+  allWines,
+  addWines,
+  updateWineById,
+  deleteWineById,
+  deleteWines
 };
