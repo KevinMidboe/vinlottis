@@ -128,16 +128,24 @@ const deleteWineById = (req, res) => {
 const deleteWines = (req, res) => {
   return lotteryRepository
     .deleteWines()
-    .then(removedWine => {
+    .then(_ => {
       var io = req.app.get("socketio");
       io.emit("refresh_data", {});
     })
     .then(_ =>
       res.send({
-        message: "Removed all wines",
+        message: "Removed all wines.",
         success: true
       })
-    );
+    )
+    .catch(error => {
+      const { statusCode, message } = error;
+
+      return res.status(statusCode || 500).send({
+        message: message || "Unexpected error occured while deleting wines",
+        success: false
+      });
+    });
 };
 
 module.exports = {
