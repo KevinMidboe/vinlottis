@@ -17,14 +17,22 @@ const convertToOurWineObject = wine => {
   }
 };
 
-const searchByQuery = async (query, page = 1) => {
+const convertToOurStoreObject = store => {
+  return {
+    id: store.storeId,
+    name: store.storeName,
+    ...store.address
+  };
+};
+
+const searchWinesByName = async (name, page = 1) => {
   const pageSize = 15;
   let url = new URL(
     `https://apis.vinmonopolet.no/products/v0/details-normal?productShortNameContains=gato&maxResults=15`
   );
   url.searchParams.set("maxResults", pageSize);
   url.searchParams.set("start", pageSize * (page - 1));
-  url.searchParams.set("productShortNameContains", query);
+  url.searchParams.set("productShortNameContains", name);
 
   const vinmonopoletResponse = await fetch(url, {
     headers: {
@@ -50,14 +58,14 @@ const searchByQuery = async (query, page = 1) => {
   return winesConverted;
 };
 
-const searchByEAN = ean => {
+const wineByEAN = ean => {
   const url = `https://app.vinmonopolet.no/vmpws/v2/vmp/products/barCodeSearch/${ean}`;
   return fetch(url)
     .then(resp => resp.json())
     .then(response => response.map(convertToOurWineObject));
 };
 
-const searchById = id => {
+const wineById = id => {
   const url = `https://apis.vinmonopolet.no/products/v0/details-normal?productId=${id}`;
   const options = {
     headers: {
@@ -70,8 +78,36 @@ const searchById = id => {
     .then(response => response.map(convertToOurWineObject));
 };
 
+const allStores = () => {
+  const url = `https://apis.vinmonopolet.no/stores/v0/details`;
+  const options = {
+    headers: {
+      "Ocp-Apim-Subscription-Key": config.vinmonopoletToken
+    }
+  };
+
+  return fetch(url, options)
+    .then(resp => resp.json())
+    .then(response => response.map(convertToOurStoreObject));
+};
+
+const searchStoresByName = name => {
+  const url = `https://apis.vinmonopolet.no/stores/v0/details?storeNameContains=${name}`;
+  const options = {
+    headers: {
+      "Ocp-Apim-Subscription-Key": config.vinmonopoletToken
+    }
+  };
+
+  return fetch(url, options)
+    .then(resp => resp.json())
+    .then(response => response.map(convertToOurStoreObject));
+};
+
 module.exports = {
-  searchByQuery,
-  searchByEAN,
-  searchById
+  searchWinesByName,
+  wineByEAN,
+  wineById,
+  allStores,
+  searchStoresByName
 };
