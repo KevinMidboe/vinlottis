@@ -78,9 +78,10 @@ const allWinners = (req, res) => {
 
 const winnerById = (req, res) => {
   const { id } = req.params;
+  const isAdmin = req.isAuthenticated();
 
   return lotteryRepository
-    .winnerById(id)
+    .winnerById(id, isAdmin)
     .then(winner =>
       res.send({
         winner,
@@ -98,7 +99,7 @@ const winnerById = (req, res) => {
 };
 
 const deleteWinnerById = (req, res) => {
-  const isAdmin = req.isAuthenticated() || true;
+  const isAdmin = req.isAuthenticated();
   const { id } = req.params;
 
   return lotteryRepository

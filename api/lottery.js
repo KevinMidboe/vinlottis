@@ -71,7 +71,7 @@ const redactWinnerInfoMapper = winner => {
   };
 };
 
-const allAttendees = isAdmin => {
+const allAttendees = (isAdmin = false) => {
   if (!isAdmin) {
     return Attendee.find().then(attendees => attendees.map(redactAttendeeInfoMapper));
   } else {
@@ -101,8 +101,6 @@ const updateAttendeeById = (id, updateModel) => {
       throw new UserNotFound();
     }
 
-    console.log(updateModel);
-
     const updatedAttendee = {
       name: updateModel.name != null ? updateModel.name : attendee.name,
       green: updateModel.green != null ? updateModel.green : attendee.green,
@@ -112,8 +110,6 @@ const updateAttendeeById = (id, updateModel) => {
       phoneNumber: updateModel.phoneNumber != null ? updateModel.phoneNumber : attendee.phoneNumber,
       winner: updateModel.winner != null ? updateModel.winner : attendee.winner
     };
-
-    console.log(updatedAttendee);
 
     return Attendee.updateOne({ _id: id }, updatedAttendee).then(_ => updatedAttendee);
   });
@@ -211,7 +207,7 @@ const allWinners = (isAdmin = false) => {
   }
 };
 
-const winnerById = (id, isAdmin) => {
+const winnerById = (id, isAdmin = false) => {
   return VirtualWinner.findOne({ _id: id }).then(winner => {
     if (winner == null) {
       throw new WinnerNotFound();
