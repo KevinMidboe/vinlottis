@@ -189,7 +189,21 @@ const deleteWines = () => {
   return PreLotteryWine.deleteMany();
 };
 
-const allWinners = isAdmin => {
+const addWinners = winners => {
+  return Promise.all(
+    winners.map(winner => {
+      let newWinnerElement = new VirtualWinner({
+        name: winner.name,
+        color: winner.color,
+        timestamp_drawn: new Date().getTime()
+      });
+
+      return newWinnerElement.save();
+    })
+  );
+};
+
+const allWinners = (isAdmin = false) => {
   if (!isAdmin) {
     return VirtualWinner.find().then(winners => winners.map(redactWinnerInfoMapper));
   } else {
@@ -360,6 +374,7 @@ module.exports = {
   updateWineById,
   deleteWineById,
   deleteWines,
+  addWinners,
   allWinners,
   winnerById,
   deleteWinnerById,
