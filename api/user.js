@@ -83,14 +83,8 @@ const login = (req, user) => {
   });
 };
 
-const logout = (req, res) => {
-  req.logout();
-  res.redirect("/");
-};
-
 module.exports = {
   register,
   authenticate,
-  login,
-  logout
+  login
 };

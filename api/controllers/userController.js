@@ -43,7 +43,13 @@ const login = (req, res, next) => {
     });
 };
 
+const logout = (req, res) => {
+  req.logout();
+  res.redirect("/");
+};
+
 module.exports = {
   register,
-  login
+  login,
+  logout
 };
