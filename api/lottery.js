@@ -1,6 +1,16 @@
 const path = require("path");
 const Attendee = require(path.join(__dirname, "/schemas/Attendee"));
 
+class UserNotFound extends Error {
+  constructor(message = "User not found.") {
+    super(message);
+    this.name = "UserNotFound";
+    this.statusCode = 404;
+  }
+
+  // TODO log missing user
+}
+
 const redactAttendeeInfoMapper = attendee => {
   return {
     name: attendee.name,
@@ -20,16 +30,59 @@ const allAttendees = isAdmin => {
   }
 };
 
-const deleteAttendees = () => {
-  const io = req.app.get("socketio");
+const addAttendee = attendee => {
+  const { name, red, blue, green, yellow, phoneNumber } = attendee;
 
-  return Attendee.deleteMany().then(_ => {
-    io.emit("refresh_data", {});
-    return true;
+  let newAttendee = new Attendee({
+    name,
+    red,
+    blue,
+    green,
+    yellow,
+    phoneNumber,
+    winner: false
   });
+
+  return newAttendee.save();
+};
+
+const updateAttendeeById = (id, updateModel) => {
+  return Attendee.findOne({ _id: id }).then(attendee => {
+    if (attendee == null) {
+      throw new UserNotFound();
+    }
+
+    const updatedAttendee = {
+      name: updateModel.name || attendee.name,
+      green: updateModel.green || attendee.green,
+      red: updateModel.red || attendee.red,
+      blue: updateModel.blue || attendee.blue,
+      yellow: updateModel.yellow || attendee.yellow,
+      phoneNumber: updateModel.phoneNumber || attendee.phoneNumber
+    };
+
+    return Attendee.updateOne({ _id: id }, updatedAttendee).then(_ => updatedAttendee);
+  });
+};
+
+const deleteAttendeeById = id => {
+  return Attendee.findOne({ _id: id }).then(attendee => {
+    if (attendee == null) {
+      throw new UserNotFound();
+    }
+
+    return Attendee.deleteOne({ _id: id }).then(_ => attendee);
+  });
+};
+
+const deleteAttendees = () => {
+  return Attendee.deleteMany();
 };
 
 module.exports = {
   allAttendees,
+  addAttendee,
+  updateAttendeeById,
+  deleteAttendeeById,
   deleteAttendees
 };
