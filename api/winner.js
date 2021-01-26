@@ -19,6 +19,33 @@ class HistoryForUserNotFound extends Error {
   }
 }
 
+// highscore
+const addWinnerWithWine = async (winner, wine) => {
+  const exisitingWinner = await Winner.findOne({
+    name: winner.name
+  });
+
+  const date = new Date();
+  date.setHours(5, 0, 0, 0);
+  const winObject = { date, wine, color: winner.color };
+
+  if (exisitingWinner == undefined) {
+    const newWinner = new Winner({
+      name: winner.name,
+      wins: [winObject]
+    });
+
+    await newWinner.save();
+  } else {
+    exisitingWinner.wins.push(winObject);
+    exisitingWinner.markModified("wins");
+    await exisitingWinner.save();
+  }
+
+  return exisitingWinner;
+};
+
+// lottery
 const all = (includeWines = false) => {
   if (includeWines === false) {
     return Winner.find().sort("-wins.date");
@@ -278,6 +305,7 @@ const orderByWins = (includeWines = false) => {
 };
 
 module.exports = {
+  addWinnerWithWine,
   all,
   byDate,
   latest,
