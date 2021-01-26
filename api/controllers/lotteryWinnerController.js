@@ -1,5 +1,5 @@
 const path = require("path");
-const lotteryRepository = require(path.join(__dirname, "../lottery"));
+const winnerRepository = require(path.join(__dirname, "../winner"));
 
 const addWinners = (req, res) => {
   const { winners } = req.body;
@@ -37,7 +37,7 @@ const addWinners = (req, res) => {
     });
 
   return Promise.all(validateAllWinners(winners))
-    .then(winners => lotteryRepository.addWinners(winners))
+    .then(winners => winnerRepository.addWinners(winners))
     .then(winners =>
       res.send({
         winners: winners,
@@ -56,9 +56,9 @@ const addWinners = (req, res) => {
 };
 
 const allWinners = (req, res) => {
-  const isAdmin = req.isAuthenticated();
+  const isAdmin = req.isAuthenticated() || true;
 
-  return lotteryRepository
+  return winnerRepository
     .allWinners(isAdmin)
     .then(winners =>
       res.send({
@@ -80,7 +80,7 @@ const winnerById = (req, res) => {
   const { id } = req.params;
   const isAdmin = req.isAuthenticated();
 
-  return lotteryRepository
+  return winnerRepository
     .winnerById(id, isAdmin)
     .then(winner =>
       res.send({
@@ -102,7 +102,7 @@ const deleteWinnerById = (req, res) => {
   const isAdmin = req.isAuthenticated();
   const { id } = req.params;
 
-  return lotteryRepository
+  return winnerRepository
     .deleteWinnerById(id, isAdmin)
     .then(removedWinner => {
       var io = req.app.get("socketio");
@@ -126,7 +126,7 @@ const deleteWinnerById = (req, res) => {
 };
 
 const deleteWinners = (req, res) => {
-  return lotteryRepository
+  return winnerRepository
     .deleteWinners()
     .then(_ => {
       var io = req.app.get("socketio");
