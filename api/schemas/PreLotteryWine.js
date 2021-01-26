@@ -6,6 +6,7 @@ const PreLotteryWine = new Schema({
   vivinoLink: String,
   rating: Number,
   id: String,
+  year: Number,
   image: String,
   price: String,
   country: String

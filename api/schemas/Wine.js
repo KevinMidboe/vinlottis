@@ -7,6 +7,7 @@ const Wine = new Schema({
   rating: Number,
   occurences: Number,
   id: String,
+  year: Number,
   image: String,
   price: String,
   country: String
