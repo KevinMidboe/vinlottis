@@ -1,10 +1,10 @@
 const path = require("path");
-const lotteryRepository = require(path.join(__dirname, "../lottery"));
+const attendeeRepository = require(path.join(__dirname, "../attendee"));
 
 const allAttendees = (req, res) => {
-  const isAdmin = req.isAuthenticated();
+  const isAdmin = req.isAuthenticated() || true;
 
-  return lotteryRepository
+  return attendeeRepository
     .allAttendees(isAdmin)
     .then(attendees =>
       res.send({
@@ -41,17 +41,18 @@ const addAttendee = (req, res) => {
     });
   }
 
-  return lotteryRepository
+  return attendeeRepository
     .addAttendee(attendee)
     .then(savedAttendee => {
       var io = req.app.get("socketio");
       io.emit("new_attendee", {});
-      return true;
+      return savedAttendee;
     })
-    .then(success =>
+    .then(savedAttendee =>
       res.send({
+        attendee: savedAttendee,
         message: `Successfully added attendee ${attendee.name} to lottery.`,
-        success: success
+        success: true
       })
     );
 };
@@ -60,7 +61,7 @@ const updateAttendeeById = (req, res) => {
   const { id } = req.params;
   const { attendee } = req.body;
 
-  return lotteryRepository
+  return attendeeRepository
     .updateAttendeeById(id, attendee)
     .then(updatedAttendee => {
       var io = req.app.get("socketio");
@@ -87,7 +88,7 @@ const updateAttendeeById = (req, res) => {
 const deleteAttendeeById = (req, res) => {
   const { id } = req.params;
 
-  return lotteryRepository
+  return attendeeRepository
     .deleteAttendeeById(id)
     .then(removedAttendee => {
       var io = req.app.get("socketio");
@@ -111,7 +112,7 @@ const deleteAttendeeById = (req, res) => {
 };
 
 const deleteAttendees = (req, res) => {
-  return lotteryRepository
+  return attendeeRepository
     .deleteAttendees()
     .then(removedAttendee => {
       var io = req.app.get("socketio");
