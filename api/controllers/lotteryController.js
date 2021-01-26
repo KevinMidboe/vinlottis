@@ -97,7 +97,7 @@ const lotteryByDate = (req, res) => {
 };
 
 const allLotteries = (req, res) => {
-  const isAdmin = req.isAuthenticated() || true;
+  const isAdmin = req.isAuthenticated();
 
   return lotteryRepository
     .allLotteries(isAdmin)

@@ -56,7 +56,7 @@ const addWinners = (req, res) => {
 };
 
 const allWinners = (req, res) => {
-  const isAdmin = req.isAuthenticated() || true;
+  const isAdmin = req.isAuthenticated();
 
   return winnerRepository
     .allWinners(isAdmin)

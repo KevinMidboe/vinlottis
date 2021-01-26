@@ -2,7 +2,7 @@ const path = require("path");
 const attendeeRepository = require(path.join(__dirname, "../attendee"));
 
 const allAttendees = (req, res) => {
-  const isAdmin = req.isAuthenticated() || true;
+  const isAdmin = req.isAuthenticated();
 
   return attendeeRepository
     .allAttendees(isAdmin)
