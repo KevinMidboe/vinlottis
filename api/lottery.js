@@ -1,245 +1,83 @@
 const path = require("path");
+const crypto = require("crypto");
 
 const Attendee = require(path.join(__dirname, "/schemas/Attendee"));
 const PreLotteryWine = require(path.join(__dirname, "/schemas/PreLotteryWine"));
 const VirtualWinner = require(path.join(__dirname, "/schemas/VirtualWinner"));
+const Lottery = require(path.join(__dirname, "/schemas/Purchase"));
 
-const crypto = require("crypto");
+const Message = require(path.join(__dirname, "/message"));
+const {
+  WinnerNotFound,
+  NoMoreAttendeesToWin,
+  CouldNotFindNewWinnerAfterNTries,
+  LotteryByDateNotFound
+} = require(path.join(__dirname, "/vinlottisErrors"));
 
-class UserNotFound extends Error {
-  constructor(message = "User not found.") {
-    super(message);
-    this.name = "UserNotFound";
-    this.statusCode = 404;
-  }
+const archive = (date, raffles, stolen, wines) => {
+  const { blue, red, yellow, green } = raffles;
+  const bought = blue + red + yellow + green;
+  date = date.setHours(0, 0, 0, 0);
 
-  // TODO log missing user
-}
-
-class WineNotFound extends Error {
-  constructor(message = "Wine not found.") {
-    super(message);
-    this.name = "WineNotFound";
-    this.statusCode = 404;
-  }
-
-  // TODO log missing user
-}
-
-class WinnerNotFound extends Error {
-  constructor(message = "Winner not found.") {
-    super(message);
-    this.name = "WinnerNotFound";
-    this.statusCode = 404;
-  }
-
-  // TODO log missing user
-}
-
-class NoMoreAttendeesToWinError extends Error {
-  constructor(message = "No more attendees left to drawn from.") {
-    super(message);
-    this.name = "NoMoreAttendeesToWinError";
-    this.statusCode = 404;
-  }
-}
-
-class CouldNotFindNewWinnerAfterNTriesError extends Error {
-  constructor(tries) {
-    let message = `Could not a new winner after ${tries} tries.`;
-    super(message);
-    this.name = "CouldNotFindNewWinnerAfterNTriesError";
-    this.statusCode = 404;
-  }
-}
-
-const redactAttendeeInfoMapper = attendee => {
-  return {
-    name: attendee.name,
-    raffles: attendee.red + attendee.blue + attendee.yellow + attendee.green,
-    red: attendee.red,
-    blue: attendee.blue,
-    green: attendee.green,
-    yellow: attendee.yellow
-  };
-};
-
-const redactWinnerInfoMapper = winner => {
-  return {
-    name: winner.name,
-    color: winner.color
-  };
-};
-
-const allAttendees = (isAdmin = false) => {
-  if (!isAdmin) {
-    return Attendee.find().then(attendees => attendees.map(redactAttendeeInfoMapper));
-  } else {
-    return Attendee.find();
-  }
-};
-
-const addAttendee = attendee => {
-  const { name, red, blue, green, yellow, phoneNumber } = attendee;
-
-  let newAttendee = new Attendee({
-    name,
-    red,
-    blue,
-    green,
-    yellow,
-    phoneNumber,
-    winner: false
-  });
-
-  return newAttendee.save();
-};
-
-const updateAttendeeById = (id, updateModel) => {
-  return Attendee.findOne({ _id: id }).then(attendee => {
-    if (attendee == null) {
-      throw new UserNotFound();
-    }
-
-    const updatedAttendee = {
-      name: updateModel.name != null ? updateModel.name : attendee.name,
-      green: updateModel.green != null ? updateModel.green : attendee.green,
-      red: updateModel.red != null ? updateModel.red : attendee.red,
-      blue: updateModel.blue != null ? updateModel.blue : attendee.blue,
-      yellow: updateModel.yellow != null ? updateModel.yellow : attendee.yellow,
-      phoneNumber: updateModel.phoneNumber != null ? updateModel.phoneNumber : attendee.phoneNumber,
-      winner: updateModel.winner != null ? updateModel.winner : attendee.winner
-    };
-
-    return Attendee.updateOne({ _id: id }, updatedAttendee).then(_ => updatedAttendee);
-  });
-};
-
-const deleteAttendeeById = id => {
-  return Attendee.findOne({ _id: id }).then(attendee => {
-    if (attendee == null) {
-      throw new UserNotFound();
-    }
-
-    return Attendee.deleteOne({ _id: id }).then(_ => attendee);
-  });
-};
-
-const deleteAttendees = () => {
-  return Attendee.deleteMany();
-};
-
-const allWines = () => {
-  return PreLotteryWine.find();
-};
-
-const addWines = wines => {
-  const prelotteryWines = wines.map(wine => {
-    let newPrelotteryWine = new PreLotteryWine({
-      name: wine.name,
-      vivinoLink: wine.vivinoLink,
-      rating: wine.rating,
-      image: wine.image,
-      price: wine.price,
-      country: wine.country,
-      id: wine.id
-    });
-
-    return newPrelotteryWine.save();
-  });
-
-  return Promise.all(prelotteryWines);
-};
-
-const updateWineById = (id, updateModel) => {
-  return PreLotteryWine.findOne({ _id: id }).then(wine => {
-    if (wine == null) {
-      throw new WineNotFound();
-    }
-
-    const updatedWine = {
-      name: updateModel.name != null ? updateModel.name : wine.name,
-      vivinoLink: updateModel.vivinoLink != null ? updateModel.vivinoLink : wine.vivinoLink,
-      rating: updateModel.rating != null ? updateModel.rating : wine.rating,
-      image: updateModel.image != null ? updateModel.image : wine.image,
-      price: updateModel.price != null ? updateModel.price : wine.price,
-      country: updateModel.country != null ? updateModel.country : wine.country,
-      id: updateModel.id != null ? updateModel.id : wine.id
-    };
-
-    return PreLotteryWine.updateOne({ _id: id }, updatedWine).then(_ => updatedWine);
-  });
-};
-
-const deleteWineById = id => {
-  return PreLotteryWine.findOne({ _id: id }).then(wine => {
-    if (wine == null) {
-      throw new WineNotFound();
-    }
-
-    return PreLotteryWine.deleteOne({ _id: id }).then(_ => wine);
-  });
-};
-
-const deleteWines = () => {
-  return PreLotteryWine.deleteMany();
-};
-
-const addWinners = winners => {
-  return Promise.all(
-    winners.map(winner => {
-      let newWinnerElement = new VirtualWinner({
-        name: winner.name,
-        color: winner.color,
-        timestamp_drawn: new Date().getTime()
-      });
-
-      return newWinnerElement.save();
-    })
+  return Lottery.findOneAndUpdate(
+    { date },
+    {
+      date,
+      blue,
+      red,
+      yellow,
+      green,
+      bought,
+      stolen,
+      wines
+    },
+    { upsert: true }
   );
 };
 
-const allWinners = (isAdmin = false) => {
-  if (!isAdmin) {
-    return VirtualWinner.find().then(winners => winners.map(redactWinnerInfoMapper));
-  } else {
-    return VirtualWinner.find();
-  }
-};
+const lotteryByDate = date => {
+  const startOfDay = new Date(date.setHours(0, 0, 0, 0));
+  const endOfDay = new Date(date.setHours(24, 59, 59, 99));
 
-const winnerById = (id, isAdmin = false) => {
-  return VirtualWinner.findOne({ _id: id }).then(winner => {
-    if (winner == null) {
-      throw new WinnerNotFound();
+  const query = [
+    {
+      $match: {
+        date: {
+          $gte: startOfDay,
+          $lte: endOfDay
+        }
+      }
+    },
+    {
+      $lookup: {
+        from: "wines",
+        localField: "wines",
+        foreignField: "_id",
+        as: "wines"
+      }
     }
+  ];
 
-    if (!isAdmin) {
-      return redactWinnerInfoMapper(winner);
-    } else {
-      return winner;
+  const aggregateLottery = Lottery.aggregate(query);
+  return aggregateLottery.project("-_id -__v").then(lotteries => {
+    if (lotteries.length == 0) {
+      throw new LotteryByDateNotFound(date);
     }
+    return lotteries[0];
   });
 };
 
-const deleteWinnerById = id => {
-  return VirtualWinner.findOne({ _id: id }).then(winner => {
-    if (winner == null) {
-      throw new WinnerNotFound();
-    }
-
-    return VirtualWinner.deleteOne({ _id: id }).then(_ => winner);
-  });
-};
-
-const deleteWinners = () => {
-  return VirtualWinner.deleteMany();
+const allLotteries = () => {
+  return Lottery.find()
+    .select("-_id -__v")
+    .populate("wines");
 };
 
 const drawWinner = async () => {
   let allContestants = await Attendee.find({ winner: false });
 
   if (allContestants.length == 0) {
-    throw new NoMoreAttendeesToWinError();
+    throw new NoMoreAttendeesToWin();
   }
 
   let raffleColors = [];
@@ -278,7 +116,7 @@ const drawWinner = async () => {
     tries++;
   }
   if (contestantsToChooseFrom == undefined) {
-    throw new CouldNotFindNewWinnerAfterNTriesError(maxTries);
+    throw new CouldNotFindNewWinnerAfterNTries(maxTries);
   }
 
   let attendeeListDemocratic = [];
@@ -360,20 +198,8 @@ function shuffle(array) {
 }
 
 module.exports = {
-  allAttendees,
-  addAttendee,
-  updateAttendeeById,
-  deleteAttendeeById,
-  deleteAttendees,
-  allWines,
-  addWines,
-  updateWineById,
-  deleteWineById,
-  deleteWines,
-  addWinners,
-  allWinners,
-  winnerById,
-  deleteWinnerById,
-  deleteWinners,
-  drawWinner
+  drawWinner,
+  archive,
+  lotteryByDate,
+  allLotteries
 };
