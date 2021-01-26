@@ -1,5 +1,6 @@
 const path = require("path");
-const { history, clearHistory } = require(path.join(__dirname + "/../api/redis"));
+const { history, clearHistory } = require(path.join(__dirname + "/../redis"));
+console.log("loading chat");
 
 const getAllHistory = (req, res) => {
   let { page, limit } = req.query;
