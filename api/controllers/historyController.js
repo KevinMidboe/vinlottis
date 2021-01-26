@@ -1,5 +1,5 @@
 const path = require("path");
-const winnerRepository = require(path.join(__dirname, "../winner"));
+const historyRepository = require(path.join(__dirname, "../history"));
 
 const sortOptions = ["desc", "asc"];
 const includeWinesOptions = ["true", "false"];
@@ -21,7 +21,7 @@ const all = (req, res) => {
     });
   }
 
-  return winnerRepository
+  return historyRepository
     .all(includeWines == "true")
     .then(winners =>
       res.send({
@@ -54,7 +54,7 @@ const byDate = (req, res) => {
     });
   }
 
-  return winnerRepository
+  return historyRepository
     .byDate(date)
     .then(winners =>
       res.send({
@@ -90,7 +90,7 @@ const groupByDate = (req, res) => {
     });
   }
 
-  return winnerRepository
+  return historyRepository
     .groupedByDate(includeWines == "true", sort)
     .then(lotteries =>
       res.send({
@@ -109,7 +109,7 @@ const groupByDate = (req, res) => {
 };
 
 const latest = (req, res) => {
-  return winnerRepository
+  return historyRepository
     .latest()
     .then(winners =>
       res.send({
@@ -138,7 +138,7 @@ const byName = (req, res) => {
     });
   }
 
-  return winnerRepository
+  return historyRepository
     .byName(name, sort)
     .then(winner =>
       res.send({
@@ -166,7 +166,7 @@ const groupByColor = (req, res) => {
     });
   }
 
-  return winnerRepository
+  return historyRepository
     .groupByColor(includeWines == "true")
     .then(colors =>
       res.send({
@@ -194,7 +194,7 @@ const orderByWins = (req, res) => {
     });
   }
 
-  return winnerRepository
+  return historyRepository
     .orderByWins(includeWines == "true")
     .then(winners =>
       res.send({

@@ -56,6 +56,7 @@ const all = (includeWines = false) => {
   }
 };
 
+// lottery
 const byDate = date => {
   const startQueryDate = new Date(date.setHours(0, 0, 0, 0));
   const endQueryDate = new Date(date.setHours(24, 59, 59, 99));
@@ -104,6 +105,7 @@ const byDate = date => {
   });
 };
 
+// highscore
 const byName = (name, sort = "desc") => {
   return Winner.findOne({ name }, ["name", "wins"])
     .sort("-wins.date")
@@ -118,6 +120,7 @@ const byName = (name, sort = "desc") => {
     });
 };
 
+// lottery
 const latest = () => {
   const query = [
     {
@@ -163,6 +166,7 @@ const latest = () => {
   return Winner.aggregate(query).then(winners => winners[0]);
 };
 
+// lottery - byDate
 const groupByDate = (includeWines = false, sort = "desc") => {
   const query = [
     {
@@ -208,6 +212,7 @@ const groupByDate = (includeWines = false, sort = "desc") => {
   return Winner.aggregate(query).then(lotteries => (sort != "asc" ? lotteries : lotteries.reverse()));
 };
 
+// highscore - byColor
 const groupByColor = (includeWines = false) => {
   const query = [
     {
@@ -255,6 +260,9 @@ const groupByColor = (includeWines = false) => {
   return Winner.aggregate(query);
 };
 
+// highscore - byWineOccurences
+
+// highscore - byWinCount
 const orderByWins = (includeWines = false) => {
   let query = [
     {
@@ -303,6 +311,13 @@ const orderByWins = (includeWines = false) => {
 
   return Winner.aggregate(query);
 };
+
+// highscore - deleteWinner : remove for GDPR purpose
+
+// lottery - deleteWinner : remove for GDPR purpose
+// lottery - update : manual lottery
+// lottery - add : manual lottery
+// lottery - archive
 
 module.exports = {
   addWinnerWithWine,
