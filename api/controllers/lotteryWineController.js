@@ -1,8 +1,8 @@
 const path = require("path");
-const lotteryRepository = require(path.join(__dirname, "../lottery"));
+const prelotteryWineRepository = require(path.join(__dirname, "../prelotteryWine"));
 
 const allWines = (req, res) => {
-  return lotteryRepository
+  return prelotteryWineRepository
     .allWines()
     .then(wines =>
       res.send({
@@ -49,7 +49,7 @@ const addWines = (req, res) => {
     });
 
   return Promise.all(validateAllWines(wines))
-    .then(wines => lotteryRepository.addWines(wines))
+    .then(wines => prelotteryWineRepository.addWines(wines))
     .then(savedWines => {
       var io = req.app.get("socketio");
       io.emit("new_wine", {});
@@ -71,11 +71,32 @@ const addWines = (req, res) => {
     });
 };
 
+const wineById = (req, res) => {
+  const { id } = req.params;
+
+  return prelotteryWineRepository
+    .wineById(id)
+    .then(wine =>
+      res.send({
+        wine,
+        success: true
+      })
+    )
+    .catch(error => {
+      const { statusCode, message } = error;
+
+      return res.status(statusCode || 500).send({
+        message: message || "Unexpected error occured while fetching wine by id.",
+        success: false
+      });
+    });
+};
+
 const updateWineById = (req, res) => {
   const { id } = req.params;
   const { wine } = req.body;
 
-  return lotteryRepository
+  return prelotteryWineRepository
     .updateWineById(id, wine)
     .then(updatedWine => {
       var io = req.app.get("socketio");
@@ -102,7 +123,7 @@ const updateWineById = (req, res) => {
 const deleteWineById = (req, res) => {
   const { id } = req.params;
 
-  return lotteryRepository
+  return prelotteryWineRepository
     .deleteWineById(id)
     .then(removedWine => {
       var io = req.app.get("socketio");
@@ -126,7 +147,7 @@ const deleteWineById = (req, res) => {
 };
 
 const deleteWines = (req, res) => {
-  return lotteryRepository
+  return prelotteryWineRepository
     .deleteWines()
     .then(_ => {
       var io = req.app.get("socketio");
@@ -151,6 +172,7 @@ const deleteWines = (req, res) => {
 module.exports = {
   allWines,
   addWines,
+  wineById,
   updateWineById,
   deleteWineById,
   deleteWines
