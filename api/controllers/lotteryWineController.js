@@ -32,7 +32,7 @@ const addWines = (req, res) => {
 
   const validateAllWines = wines =>
     wines.map(wine => {
-      const requiredAttributes = ["name", "vivinoLink", "rating", "image", "country", "id", "price"];
+      const requiredAttributes = ["name", "vivinoLink", "image", "id", "price"];
 
       return Promise.all(
         requiredAttributes.map(attr => {
