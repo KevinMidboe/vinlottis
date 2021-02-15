@@ -169,11 +169,32 @@ const deleteWines = (req, res) => {
     });
 };
 
+const wineSchema = (req, res) => {
+  return prelotteryWineRepository
+    .wineSchema()
+    .then(schema =>
+      res.send({
+        schema: schema,
+        message: `Wine schema template.`,
+        success: true
+      })
+    )
+    .catch(error => {
+      const { statusCode, message } = error;
+
+      return res.status(statusCode || 500).send({
+        success: false,
+        message: message || "Unable to fetch wine schema template."
+      });
+    });
+};
+
 module.exports = {
   allWines,
   addWines,
   wineById,
   updateWineById,
   deleteWineById,
-  deleteWines
+  deleteWines,
+  wineSchema
 };

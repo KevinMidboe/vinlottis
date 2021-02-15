@@ -70,11 +70,22 @@ const deleteWines = () => {
   return PreLotteryWine.deleteMany();
 };
 
+const wineSchema = () => {
+  let schema = { ...PreLotteryWine.schema.obj };
+  let nulledSchema = Object.keys(schema).reduce((accumulator, current) => {
+    accumulator[current] = "";
+    return accumulator;
+  }, {});
+
+  return Promise.resolve(nulledSchema);
+};
+
 module.exports = {
   allWines,
   addWines,
   wineById,
   updateWineById,
   deleteWineById,
-  deleteWines
+  deleteWines,
+  wineSchema
 };

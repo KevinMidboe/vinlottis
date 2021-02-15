@@ -40,6 +40,7 @@ router.get("/history/by-date/", historyController.groupByDate);
 // router.delete("/highscore/:id", highscoreController.deletePersonById);
 
 router.get("/lottery/wines", prelotteryWineController.allWines);
+router.get("/lottery/wine/schema", mustBeAuthenticated, prelotteryWineController.wineSchema);
 router.get("/lottery/wine/:id", mustBeAuthenticated, prelotteryWineController.wineById);
 router.post("/lottery/wines", mustBeAuthenticated, prelotteryWineController.addWines);
 router.delete("/lottery/wines", mustBeAuthenticated, prelotteryWineController.deleteWines);
