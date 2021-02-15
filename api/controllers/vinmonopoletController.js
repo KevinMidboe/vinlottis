@@ -28,7 +28,7 @@ function wineByEAN(req, res) {
 function wineById(req, res) {
   const { id } = req.params;
 
-  return vinmonopoletRepository.searchById(id).then(wines =>
+  return vinmonopoletRepository.wineById(id).then(wines =>
     res.json({
       wine: wines[0],
       success: true
