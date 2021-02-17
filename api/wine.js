@@ -25,6 +25,11 @@ const addWine = async wine => {
   }
 };
 
+const allWines = () => {
+  return Wine.find();
+};
+
 module.exports = {
-  addWine
+  addWine,
+  allWines
 };
