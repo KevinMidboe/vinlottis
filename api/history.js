@@ -125,6 +125,18 @@ const byName = (name, sort = "desc") => {
     });
 };
 
+// highscore
+const search = (query, sort = "desc") => {
+  return Winner.find({ name: { $regex: query, $options: "i" } }, ["name"]).then(winners => {
+    if (winners) {
+      winners = sort === "desc" ? winners.reverse() : winners;
+      return winners;
+    } else {
+      throw new HistoryForUserNotFound();
+    }
+  });
+};
+
 // lottery
 const latest = () => {
   const query = [
@@ -328,6 +340,8 @@ module.exports = {
   addWinnerWithWine,
   all,
   byDate,
+  byName,
+  search,
   latest,
   groupByDate,
   groupByColor,
