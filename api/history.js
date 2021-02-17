@@ -269,7 +269,7 @@ const groupByColor = (includeWines = false) => {
 // highscore - byWineOccurences
 
 // highscore - byWinCount
-const orderByWins = (includeWines = false) => {
+const orderByWins = (includeWines = false, limit = undefined) => {
   let query = [
     {
       $project: {
@@ -315,15 +315,14 @@ const orderByWins = (includeWines = false) => {
     query = includeWinesSubQuery.concat(query);
   }
 
-  return Winner.aggregate(query);
+  return Winner.aggregate(query).then(winners => {
+    if (limit == null) {
+      return winners;
+    }
+
+    return winners.slice(0, limit);
+  });
 };
-
-// highscore - deleteWinner : remove for GDPR purpose
-
-// lottery - deleteWinner : remove for GDPR purpose
-// lottery - update : manual lottery
-// lottery - add : manual lottery
-// lottery - archive
 
 module.exports = {
   addWinnerWithWine,
