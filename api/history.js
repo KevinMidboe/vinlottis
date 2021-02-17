@@ -172,7 +172,8 @@ const latest = () => {
 };
 
 // lottery - byDate
-const groupByDate = (includeWines = false, sort = "desc") => {
+const groupByDate = (includeWines = false, sort = "asc") => {
+  const sortDirection = sort == "asc" ? -1 : 1;
   const query = [
     {
       $unwind: "$wins"
@@ -198,7 +199,7 @@ const groupByDate = (includeWines = false, sort = "desc") => {
     },
     {
       $sort: {
-        _id: -1
+        date: sortDirection
       }
     }
   ];
@@ -214,7 +215,7 @@ const groupByDate = (includeWines = false, sort = "desc") => {
     });
   }
 
-  return Winner.aggregate(query).then(lotteries => (sort != "asc" ? lotteries : lotteries.reverse()));
+  return Winner.aggregate(query);
 };
 
 // highscore - byColor
