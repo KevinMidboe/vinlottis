@@ -156,6 +156,34 @@ const byName = (req, res) => {
     });
 };
 
+const search = (req, res) => {
+  const { name, sort } = req.query;
+
+  if (sort !== undefined && !sortOptions.includes(sort)) {
+    return res.status(400).send({
+      message: `Sort option must be: '${sortOptions.join(", ")}'`,
+      success: false
+    });
+  }
+
+  return historyRepository
+    .search(name, sort)
+    .then(winners =>
+      res.send({
+        winners: winners || [],
+        success: true
+      })
+    )
+    .catch(error => {
+      const { statusCode, message } = error;
+
+      return res.status(statusCode || 500).send({
+        success: false,
+        message: message || "Unable to fetch winner by name."
+      });
+    });
+};
+
 const groupByColor = (req, res) => {
   const { includeWines } = req.query;
 
@@ -218,6 +246,7 @@ module.exports = {
   groupByDate,
   latest,
   byName,
+  search,
   groupByColor,
   orderByWins
 };
