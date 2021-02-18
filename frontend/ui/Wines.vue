@@ -140,31 +140,61 @@ export default {
   justify-content: space-between;
 }
 
-.wine-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-gap: 2rem;
+.requested-count {
+  display: flex;
+  align-items: center;
+  margin-top: -0.5rem;
+  background-color: rgb(244, 244, 244);
+  border-radius: 1.1rem;
+  padding: 0.25rem 1rem;
+  font-size: 1.25em;
 
-  .requested-count {
-    display: flex;
-    align-items: center;
-    margin-top: -0.5rem;
-    background-color: rgb(244,244,244);
-    border-radius: 1.1rem;
-    padding: 0.25rem 1rem;
-    font-size: 1.25em;
-
-    span {
-      padding-right: 0.5rem;
-      line-height: 1.25em;
-    }
-    .icon--heart{
-      font-size: 1.5rem;
-      color: $link-color;
-    }
+  span {
+    padding-right: 0.5rem;
+    line-height: 1.25em;
+  }
+  .icon--heart {
+    font-size: 1.5rem;
+    color: var(--link-color);
   }
 }
 
+// Call for help
+.wines-container {
+  @media (max-width: 1643px) {
+    *:nth-child(n + 7) {
+      display: none;
+    }
+  }
 
+  @media (max-width: 2066px) {
+    *:nth-child(n + 9) {
+      display: none;
+    }
+  }
 
+  @media (max-width: 2490px) {
+    *:nth-child(n + 11) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 2915px) {
+    *:nth-child(n + 13) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 3335px) {
+    *:nth-child(n + 15) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 3758px) {
+    *:nth-child(n + 17) {
+      display: none;
+    }
+  }
+}
 </style>
