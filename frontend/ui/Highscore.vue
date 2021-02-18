@@ -42,7 +42,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/variables.scss";
+@import "@/styles/variables.scss";
 .heading {
   display: flex;
   justify-content: space-between;
@@ -69,8 +69,8 @@ ol {
 
 .winner-list-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12.5em, 1fr));
-  gap: 5%;
+  grid-template-columns: repeat(auto-fit, minmax(12em, 1fr));
+  gap: 2rem;
 
   .single-winner {
     box-sizing: border-box;
@@ -79,7 +79,7 @@ ol {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
-    padding: 1em; 
+    padding: 1em;
 
     i {
       font-size: 3em;
@@ -98,10 +98,70 @@ ol {
       grid-column: 1 / -1;
     }
 
+    .winner-count {
+      grid-row: 3;
+      grid-column: 1 / -1;
+      margin: 0;
+    }
 
     .winner-icon {
       grid-row: 1;
       grid-column: 3;
+    }
+  }
+
+  // I'm sorry mama
+  @media (max-width: 550px) {
+    *:nth-child(n + 7) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1295px) {
+    *:nth-child(n + 7) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1630px) {
+    *:nth-child(n + 9) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1968px) {
+    *:nth-child(n + 11) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 2300px) {
+    *:nth-child(n + 13) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 2645px) {
+    *:nth-child(n + 15) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 2975px) {
+    *:nth-child(n + 17) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 3311px) {
+    *:nth-child(n + 19) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 3647px) {
+    *:nth-child(n + 21) {
+      display: none;
     }
   }
 }
