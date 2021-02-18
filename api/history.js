@@ -1,7 +1,7 @@
 const path = require("path");
 
 const Winner = require(path.join(__dirname, "/schemas/Highscore"));
-const WineRepository = require(path.join(__dirname, "/wine"));
+const wineRepository = require(path.join(__dirname, "/wine"));
 
 class HistoryByDateNotFound extends Error {
   constructor(message = "History for given date not found.") {
@@ -24,7 +24,7 @@ const addWinnerWithWine = async (winner, wine) => {
   const exisitingWinner = await Winner.findOne({
     name: winner.name
   });
-  const savedWine = await WineRepository.addWine(wine);
+  const savedWine = await wineRepository.addWine(wine);
 
   const date = new Date();
   date.setHours(5, 0, 0, 0);
