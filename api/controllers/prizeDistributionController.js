@@ -65,15 +65,25 @@ const submitPrizeForWinnerById = async (req, res) => {
   const { id } = req.params;
   const { wine } = req.body;
 
-  const winner = await prizeDistribution.verifyWinnerNextInLine(id);
-  const prelotteryWine = await lottery.wineById(wine.id);
+  let prelotteryWine, winner;
+  try {
+    prelotteryWine = await prelotteryWineRepository.wineById(wine._id);
+    winner = await winnerRepository.winnerById(id, true);
+  } catch (error) {
+    const { statusCode, message } = error;
+
+    return res.status(statusCode || 500).send({
+      message: message || "Unexpected error occured while claiming prize.",
+      success: false
+    });
+  }
 
   return prizeDistribution
-    .claimPrize(winner, prelotteryWine)
+    .claimPrize(prelotteryWine, winner)
     .then(_ => prizeDistribution.notifyNextWinner())
     .then(_ =>
       res.send({
-        message: `${winner.name} successfully claimed prize: ${wine.name}`,
+        message: `${winner.name} successfully claimed prize: ${prelotteryWine.name}`,
         success: true
       })
     )
