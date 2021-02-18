@@ -1,158 +1,144 @@
 <template>
   <div class="page-container">
-    <h1 class="title">Virtuelt lotteri registrering</h1>
-    <br />
-    <div class="draw-winner-container" v-if="attendees.length > 0">
-      <div v-if="drawingWinner">
-        <span>
-          Trekker {{ currentWinners }} av {{ numberOfWinners }} vinnere.
-          {{ secondsLeft }} sekunder av {{ drawTime }} igjen
-        </span>
-        <button class="vin-button no-margin" @click="stopDraw">Stopp trekning</button>
-      </div>
-      <div class="draw-container" v-if="!drawingWinner">
-        <button class="vin-button no-margin" @click="drawWinner">Trekk vinnere</button>
-        <input type="number" v-model="numberOfWinners" />
-      </div>
-    </div>
-    <h2 v-if="winners.length > 0">Vinnere</h2>
-    <div class="winners" v-if="winners.length > 0">
-      <div class="winner" v-for="(winner, index) in winners" :key="index">
-        <div :class="winner.color + '-raffle'" class="raffle-element">
-          <span>{{ winner.name }}</span>
-          <span>{{ winner.phoneNumber }}</span>
-          <span>Rød: {{ winner.red }}</span>
-          <span>Blå: {{ winner.blue }}</span>
-          <span>Grønn: {{ winner.green }}</span>
-          <span>Gul: {{ winner.yellow }}</span>
-        </div>
-      </div>
-    </div>
-    <div class="delete-buttons" v-if="attendees.length > 0 || winners.length > 0">
-      <button
-        class="vin-button"
-        v-if="winners.length > 0"
-        @click="deleteAllWinners"
-      >Slett virtuelle vinnere</button>
-      <button
-        class="vin-button"
-        v-if="attendees.length > 0"
-        @click="deleteAllAttendees"
-      >Slett virtuelle deltakere</button>
-    </div>
-    <div class="attendees" v-if="attendees.length > 0">
-      <h2>Deltakere ({{ attendees.length }})</h2>
-      <div class="attendee" v-for="(attendee, index) in attendees" :key="index">
-        <div class="name-and-phone">
-          <span class="name">{{ attendee.name }}</span>
-          <span class="phoneNumber">{{ attendee.phoneNumber }}</span>
-        </div>
-        <div class="raffles-container">
-          <div class="red-raffle raffle-element small">{{ attendee.red }}</div>
-          <div class="blue-raffle raffle-element small">{{ attendee.blue }}</div>
-          <div class="green-raffle raffle-element small">{{ attendee.green }}</div>
-          <div class="yellow-raffle raffle-element small">{{ attendee.yellow }}</div>
-        </div>
-      </div>
-    </div>
-    <div class="attendee-registration-container">
-      <h2>Legg til deltaker</h2>
-      <div class="label-div">
-        <label for="name">Navn</label>
-        <input id="name" type="text" placeholder="Navn" v-model="name" />
-      </div>
-      <br />
-      <div class="label-div">
-        <label for="phoneNumber">Telefonnummer</label>
-        <input id="phoneNumber" type="text" placeholder="Telefonnummer" v-model="phoneNumber" />
-      </div>
-      <br />
-      <br />
-      <div class="label-div">
-        <label for="randomColors">Tilfeldig farger?</label>
-        <input
-          id="randomColors"
-          type="checkbox"
-          placeholder="Tilfeldig farger"
-          v-model="randomColors"
-        />
-      </div>
-      <div v-if="!randomColors">
-        <br />
-        <br />
-        <div class="label-div">
-          <label for="red">Rød</label>
-          <input id="red" type="number" placeholder="Rød" v-model="red" />
-        </div>
-        <br />
-        <div class="label-div">
-          <label for="blue">Blå</label>
-          <input id="blue" type="number" placeholder="Blå" v-model="blue" />
-        </div>
-        <br />
-        <div class="label-div">
-          <label for="green">Grønn</label>
-          <input id="green" type="number" placeholder="Grønn" v-model="green" />
-        </div>
-        <br />
-        <div class="label-div">
-          <label for="yellow">Gul</label>
-          <input id="yellow" type="number" placeholder="Gul" v-model="yellow" />
-        </div>
-      </div>
-      <div v-else>
-        <RaffleGenerator @colors="setWithRandomColors" :generateOnInit="true" />
-      </div>
-    </div>
-    <br />
-    <button class="vin-button" @click="sendAttendee">Send deltaker</button>
+    <h1>Legg til deltaker</h1>
 
-    <TextToast v-if="showToast" :text="toastText" v-on:closeToast="showToast = false" />
+    <div class="attendee-registration-container">
+      <div class="row flex">
+        <div class="label-div">
+          <label for="name" ref="name">Navn</label>
+          <input id="name" type="text" placeholder="Navn" v-model="name" />
+
+          <ul class="autocomplete" v-if="autocompleteAttendees.length">
+            <a
+              v-for="attendee in autocompleteAttendees"
+              tabindex="0"
+              @keydown.enter="setName(attendee)"
+              @keydown.space="setName(attendee)"
+            >
+              <li @click="setName(attendee)">
+                {{ attendee }}
+              </li>
+            </a>
+          </ul>
+        </div>
+
+        <div class="label-div">
+          <label for="phoneNumber">Telefonnummer</label>
+          <input
+            id="phoneNumber"
+            ref="phone"
+            type="phone"
+            pattern="[0-9]"
+            placeholder="Telefonnummer"
+            v-model="phoneNumber"
+          />
+        </div>
+
+        <div class="label-div">
+          <label for="randomColors">Tilfeldig farger?</label>
+          <input id="randomColors" type="checkbox" placeholder="Tilfeldig farger" v-model="randomColors" />
+        </div>
+      </div>
+
+      <div v-if="!randomColors">
+        <div class="row flex">
+          <div class="label-div" v-for="color in colors">
+            <label :for="color.key">{{ color.name }}</label>
+            <input :id="color.key" type="number" :placeholder="color.name" v-model="color.value" />
+          </div>
+        </div>
+      </div>
+
+      <button class="vin-button" @click="sendAttendee">Send deltaker</button>
+
+      <div v-if="randomColors">
+        <RaffleGenerator @colors="setWithRandomColors" :generateOnInit="true" :compact="true" />
+      </div>
+    </div>
+
+    <Attendees :attendees="attendees" :admin="isAdmin" />
+
+    <div v-if="attendees.length" class="button-container" style="margin-top: 2rem;">
+      <button class="vin-button danger" @click="deleteAllAttendees">
+        Slett alle deltakere
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import io from "socket.io-client";
-import {
-  addAttendee,
-  getVirtualWinner,
-  attendeesSecure,
-  attendees,
-  winnersSecure,
-  deleteWinners,
-  deleteAttendees,
-  finishedDraw,
-  prelottery
-} from "@/api";
-import TextToast from "@/ui/TextToast";
+import Attendees from "@/ui/Attendees";
 import RaffleGenerator from "@/ui/RaffleGenerator";
 
 export default {
   components: {
-    RaffleGenerator,
-    TextToast
+    Attendees,
+    RaffleGenerator
   },
   data() {
     return {
+      red: {
+        name: "Rød",
+        key: "red",
+        value: 0
+      },
+      blue: {
+        name: "Blå",
+        key: "blue",
+        value: 0
+      },
+      green: {
+        name: "Grønn",
+        key: "green",
+        value: 0
+      },
+      yellow: {
+        name: "Gul",
+        key: "yellow",
+        value: 0
+      },
+      isAdmin: false,
       name: null,
       phoneNumber: null,
-      red: 0,
-      blue: 0,
-      green: 0,
-      yellow: 0,
       raffles: 0,
       randomColors: false,
       attendees: [],
-      winners: [],
-      drawingWinner: false,
-      secondsLeft: 20,
-      drawTime: 20,
-      currentWinners: 1,
-      numberOfWinners: 4,
+      autocompleteAttendees: [],
       socket: null,
-      toastText: undefined,
-      showToast: false
+      previousAttendees: []
     };
+  },
+  watch: {
+    attendees() {
+      this.$emit("counter", this.attendees.length || 0);
+    },
+    randomColors(val) {
+      if (val == false) {
+        this.colors.map(color => (color.value = 0));
+      }
+    },
+    name(newVal, oldVal) {
+      if (newVal == "" || newVal == null) {
+        this.autocompleteAttendees = [];
+        return;
+      }
+
+      if (this.autocompleteAttendees.includes(newVal)) {
+        this.autocompleteAttendees = [];
+        return;
+      }
+
+      if (this.previousAttendees.length == 0) {
+        fetch(`/api/history`)
+          .then(resp => resp.json())
+          .then(response => (this.previousAttendees = response.winners));
+      }
+
+      this.autocompleteAttendees = this.previousAttendees
+        .filter(attendee => attendee.name.toLowerCase().includes(newVal))
+        .map(attendee => attendee.name);
+    }
   },
   mounted() {
     this.getAttendees();
@@ -176,160 +162,157 @@ export default {
 
     window.finishedDraw = finishedDraw;
   },
+  computed: {
+    colors() {
+      return [this.red, this.blue, this.green, this.yellow];
+    }
+  },
   methods: {
+    setName(name) {
+      this.name = name;
+      this.$refs.phone.focus();
+    },
     setWithRandomColors(colors) {
-      Object.keys(colors).forEach(color => (this[color] = colors[color]));
+      Object.keys(colors).forEach(color => (this[color].value = colors[color]));
+    },
+    checkIfAdmin(resp) {
+      this.isAdmin = resp.headers.get("vinlottis-admin") == "true" || false;
+      return resp;
+    },
+    getAttendees: async function() {
+      return fetch("/api/lottery/attendees")
+        .then(resp => this.checkIfAdmin(resp))
+        .then(resp => resp.json())
+        .then(response => (this.attendees = response.attendees));
     },
     sendAttendee: async function() {
-      if (this.red == 0 && this.blue == 0 && this.green == 0 && this.yellow == 0) {
-        alert('Ingen farger valgt!')
+      const { red, blue, green, yellow } = this;
+
+      if (red.value == 0 && blue.value == 0 && green.value == 0 && yellow.value == 0) {
+        this.$toast.error({ title: "Ingen farger valgt!" });
         return;
       }
       if (this.name == 0 && this.phoneNumber) {
-        alert('Ingen navn eller tlf satt!')
+        this.$toast.error({ title: "Ingen navn eller tlf satt!" });
         return;
       }
 
-      let response = await addAttendee({
+      const attendee = {
         name: this.name,
-        phoneNumber: this.phoneNumber,
-        red: this.red,
-        blue: this.blue,
-        green: this.green,
-        yellow: this.yellow,
-        raffles: this.raffles
-      });
+        phoneNumber: Number(this.phoneNumber),
+        red: Number(red.value),
+        blue: Number(blue.value),
+        green: Number(green.value),
+        yellow: Number(yellow.value),
+        raffles: Number(this.raffles)
+      };
 
-      if (response == true) {
-        this.toastText = `Sendt inn deltaker: ${this.name}`;
-        this.showToast = true;
+      const options = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ attendee })
+      };
 
-        this.name = null;
-        this.phoneNumber = null;
-        this.yellow = 0;
-        this.green = 0;
-        this.red = 0;
-        this.blue = 0;
+      return fetch("/api/lottery/attendee", options)
+        .then(resp => resp.json())
+        .then(response => {
+          if (response.success == true) {
+            this.$toast.info({
+              title: `Sendt inn deltaker: ${this.name}`,
+              timeout: 4000
+            });
 
-        this.getAttendees();
-      } else {
-        alert("Klarte ikke sende inn.. Er du logget inn?");
-      }
-    },
-    getAttendees: async function() {
-      let response = await attendeesSecure();
-      this.attendees = response;
-    },
-    stopDraw: function() {
-      this.drawingWinner = false;
-      this.secondsLeft = this.drawTime;
-    },
-    drawWinner: async function() {
-      if (window.confirm("Er du sikker på at du vil trekke vinnere?")) {
-        this.drawingWinner = true;
-        let response = await getVirtualWinner();
+            this.name = "";
+            this.phoneNumber = null;
+            this.yellow.value = 0;
+            this.green.value = 0;
+            this.red.value = 0;
+            this.blue.value = 0;
+            this.randomColors = false;
 
-        if (response.success) {
-          console.log("Winner:", response.winner);
-          if (this.currentWinners < this.numberOfWinners) {
-            this.countdown();
+            this.$refs.name.focus();
+            this.getAttendees();
           } else {
-            this.drawingWinner = false;
-            let finished = await finishedDraw();
-            if(finished) {
-              alert("SMS'er er sendt ut!");
-            } else {
-              alert("Noe gikk galt under SMS utsendelser.. Sjekk logg og database for id'er.");
-            }
+            this.$toast.error({
+              title: `Klarte ikke sende deltaker`,
+              description: response.message,
+              timeout: 4000
+            });
           }
-          this.getWinners();
-          this.getAttendees();
-        } else {
-          this.drawingWinner = false;
-          alert("Noe gikk galt under trekningen..! " + response["message"]);
-        }
-      }
+        });
     },
-    countdown: function() {
-      this.secondsLeft -= 1;
-      if (!this.drawingWinner) {
-        return;
-      }
-      if (this.secondsLeft <= 0) {
-        this.secondsLeft = this.drawTime;
-        this.currentWinners += 1;
-        if (this.currentWinners <= this.numberOfWinners) {
-          this.drawWinner();
-        } else {
-          this.drawingWinner = false;
-        }
-        return;
-      }
-      setTimeout(() => {
-        this.countdown();
-      }, 1000);
-    },
-    deleteAllWinners: async function() {
-      if (window.confirm("Er du sikker på at du vil slette vinnere?")) {
-        let response = await deleteWinners();
-        if (response) {
-          this.getWinners();
-        } else {
-          alert("Klarte ikke hente ut vinnere");
-        }
-      }
-    },
-    deleteAllAttendees: async function() {
+    deleteAllAttendees() {
       if (window.confirm("Er du sikker på at du vil slette alle deltakere?")) {
-        let response = await deleteAttendees();
-        if (response) {
-          this.getAttendees();
-        } else {
-          alert("Klarte ikke hente ut vinnere");
-        }
-      }
-    },
-    getWinners: async function() {
-      let response = await winnersSecure();
-      if (response) {
-        this.winners = response;
-      } else {
-        alert("Klarte ikke hente ut vinnere");
+        const options = { method: "DELETE" };
+
+        fetch("/api/lottery/attendees", options)
+          .then(resp => resp.json())
+          .then(response => {
+            if (response.success) {
+              this.attendees = [];
+              this.$toast.info({
+                title: "Slettet alle deltakere."
+              });
+            } else {
+              this.$toast.error({
+                title: "Klarte ikke slette deltakere",
+                description: response.message
+              });
+            }
+          });
       }
     }
   }
 };
 </script>
+<style lang="scss">
+// global styling for disabling height of attendee class
+@import "@/styles/media-queries.scss";
+
+.attendee {
+  max-height: unset;
+
+  .raffle-element {
+    margin: 0;
+
+    @include mobile {
+      margin: 10px 0;
+    }
+  }
+}
+</style>
 
 <style lang="scss" scoped>
-@import "../styles/global.scss";
-@import "../styles/media-queries.scss";
+@import "@/styles/global.scss";
+@import "@/styles/media-queries.scss";
 
-.draw-container {
-  display: flex;
-  justify-content: space-around;
+.attendee-registration-container {
+  margin-bottom: 2rem;
 }
 
-.draw-winner-container,
-.delete-buttons {
-  margin-bottom: 20px;
+.row.flex .label-div {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
 }
 
-.delete-buttons {
-  display: flex;
-}
+.autocomplete {
+  position: absolute;
+  top: 100%;
+  margin: 0;
+  list-style: none;
+  padding: 0;
+  z-index: 10;
+  background-color: white;
+  border: 1px solid #e1e4e8;
 
-h1 {
-  width: 100%;
-  text-align: center;
-  font-family: knowit, Arial;
-}
+  & li {
+    padding: 1rem;
+    font-size: 1.1rem;
 
-h2 {
-  width: 100%;
-  text-align: center;
-  font-size: 1.6rem;
-  font-family: knowit, Arial;
+    &:hover {
+      background-color: #e1e4e8;
+    }
+  }
 }
 
 hr {
@@ -350,90 +333,16 @@ hr {
 #randomColors {
   width: 40px;
   height: 40px;
-  &:checked {
-    background: green;
-  }
-}
+  border: none;
+  cursor: pointer;
 
-.raffle-element {
-  width: 140px;
-  height: 150px;
-  margin: 20px 0;
-  -webkit-mask-image: url(/public/assets/images/lodd.svg);
-  background-repeat: no-repeat;
-  mask-image: url(/public/assets/images/lodd.svg);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  color: #333333;
-  font-size: 0.75rem;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  flex-direction: column;
-
-  &.small {
-    width: 45px;
-    height: 45px;
-    font-size: 1rem;
+  &:checked::after {
+    content: "✅";
   }
 
-  &.green-raffle {
-    background-color: $light-green;
-  }
-
-  &.blue-raffle {
-    background-color: $light-blue;
-  }
-
-  &.yellow-raffle {
-    background-color: $light-yellow;
-  }
-
-  &.red-raffle {
-    background-color: $light-red;
-  }
-}
-
-button {
-  display: flex !important;
-  margin: auto !important;
-}
-
-.winners {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.attendees {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.attendee {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 50%;
-  margin: 0 auto;
-
-  & .name-and-phone,
-  & .raffles-container {
-    display: flex;
-    justify-content: center;
-  }
-
-  & .name-and-phone {
-    flex-direction: column;
-  }
-
-  & .raffles-container {
-    flex-direction: row;
+  &::after {
+    font-size: 2.1rem;
+    content: "❌";
   }
 }
 </style>
