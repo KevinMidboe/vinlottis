@@ -14,6 +14,8 @@ const prelotteryWineController = require(path.join(__dirname, "/controllers/lott
 const winnerController = require(path.join(__dirname, "/controllers/lotteryWinnerController"));
 const lotteryController = require(path.join(__dirname, "/controllers/lotteryController"));
 const prizeDistributionController = require(path.join(__dirname, "/controllers/prizeDistributionController"));
+const wineController = require(path.join(__dirname, "/controllers/wineController"));
+const messageController = require(path.join(__dirname, "/controllers/messageController"));
 
 const router = express.Router();
 
@@ -37,8 +39,14 @@ router.get("/history/by-wins/", historyController.orderByWins);
 router.get("/history/by-color/", historyController.groupByColor);
 router.get("/history/by-date/:date", historyController.byDate);
 router.get("/history/by-name/:name", historyController.byName);
+router.get("/history/search/", historyController.search);
 router.get("/history/by-date/", historyController.groupByDate);
-// router.delete("/highscore/:id", highscoreController.deletePersonById);
+
+// router.get("/purchases", purchaseController.lotteryPurchases);
+// // returns list per date and count of each colors that where bought
+// router.get("/purchases/summary", purchaseController.lotteryPurchases);
+// // returns total, wins?, stolen
+// router.get("/purchase/:date", purchaseController.lotteryPurchaseByDate);
 
 router.get("/lottery/wines", prelotteryWineController.allWines);
 router.get("/lottery/wine/schema", mustBeAuthenticated, prelotteryWineController.wineSchema);
@@ -48,7 +56,7 @@ router.delete("/lottery/wines", mustBeAuthenticated, prelotteryWineController.de
 router.put("/lottery/wine/:id", mustBeAuthenticated, prelotteryWineController.updateWineById);
 router.delete("/lottery/wine/:id", mustBeAuthenticated, prelotteryWineController.deleteWineById);
 
-router.get("/lottery/attendees", attendeeController.allAttendees);
+router.get("/lottery/attendees", setAdminHeaderIfAuthenticated, attendeeController.allAttendees);
 router.delete("/lottery/attendees", mustBeAuthenticated, attendeeController.deleteAttendees);
 router.post("/lottery/attendee", mustBeAuthenticated, attendeeController.addAttendee);
 router.put("/lottery/attendee/:id", mustBeAuthenticated, attendeeController.updateAttendeeById);
@@ -58,18 +66,21 @@ router.get("/lottery/winners", winnerController.allWinners);
 router.get("/lottery/winner/:id", winnerController.winnerById);
 router.post("/lottery/winners", mustBeAuthenticated, winnerController.addWinners);
 router.delete("/lottery/winners", mustBeAuthenticated, winnerController.deleteWinners);
+router.put("/lottery/winner/:id", mustBeAuthenticated, winnerController.updateWinnerById);
 router.delete("/lottery/winner/:id", mustBeAuthenticated, winnerController.deleteWinnerById);
 
 router.get("/lottery/draw", mustBeAuthenticated, lotteryController.drawWinner);
 router.post("/lottery/archive", mustBeAuthenticated, lotteryController.archiveLottery);
 router.get("/lottery/:epoch", lotteryController.lotteryByDate);
-router.get("/lottery/", lotteryController.allLotteries);
+router.get("/lotteries/", lotteryController.allLotteries);
 
 // router.get("/lottery/prize-distribution/status", mustBeAuthenticated, prizeDistributionController.status);
 router.post("/lottery/prize-distribution/start", mustBeAuthenticated, prizeDistributionController.start);
 // router.post("/lottery/prize-distribution/stop", mustBeAuthenticated, prizeDistributionController.stop);
 router.get("/lottery/prize-distribution/prizes/:id", prizeDistributionController.getPrizesForWinnerById);
 router.post("/lottery/prize-distribution/prize/:id", prizeDistributionController.submitPrizeForWinnerById);
+
+router.post("/lottery/messages/winner/:id", mustBeAuthenticated, messageController.notifyWinnerById);
 
 router.get("/chat/history", chatController.getAllHistory);
 router.delete("/chat/history", mustBeAuthenticated, chatController.deleteHistory);
