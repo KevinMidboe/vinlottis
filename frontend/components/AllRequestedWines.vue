@@ -2,7 +2,7 @@
   <main class="container">
     <h1>Alle foreslåtte viner</h1>
 
-    <section class="requested-wines-container">
+    <section class="wines-container">
       <p v-if="wines == undefined || wines.length == 0">Ingen har foreslått noe enda!</p>
 
       <RequestedWineCard
@@ -64,11 +64,5 @@ h1 {
   font-family: "knowit";
   color: $matte-text-color;
   font-weight: normal;
-}
-
-.requested-wines-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-gap: 2rem;
 }
 </style>
