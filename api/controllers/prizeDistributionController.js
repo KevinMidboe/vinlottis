@@ -39,10 +39,13 @@ const getPrizesForWinnerById = (req, res) => {
 
   return prizeDistribution
     .verifyWinnerNextInLine(id)
-    .then(_ => lottery.allWines())
-    .then(wines =>
+    .then(winner => {
+      return prelotteryWineRepository.allWinesWithoutWinner().then(wines => [wines, winner]);
+    })
+    .then(([wines, winner]) =>
       res.send({
         wines: wines,
+        winner: winner,
         message: "Wines to select from",
         success: true
       })
