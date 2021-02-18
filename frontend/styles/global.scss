@@ -53,8 +53,10 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
 
   label {
+    margin-top: 0.7rem;
     margin-bottom: 0.25rem;
     font-weight: 600;
     text-transform: uppercase;
