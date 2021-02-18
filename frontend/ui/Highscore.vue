@@ -1,54 +1,42 @@
 <template>
   <div class="highscores" v-if="highscore.length > 0">
-
     <section class="heading">
       <h3>
-        Topp 5 vinnere
+        Topp vinnere
       </h3>
       <router-link to="highscore" class="">
         <span class="vin-link">Se alle vinnere</span>
       </router-link>
     </section>
+
     <ol class="winner-list-container">
-      <li v-for="(person, index) in highscore" :key="person._id" class="single-winner">
-        <span class="placement">{{index + 1}}.</span>
-        <i class="icon icon--medal"></i>
-        <p class="winner-name">{{ person.name }}</p>
+      <li v-for="(person, index) in highscore" :key="person._id">
+        <router-link :to="`/highscore/${person.name}`" class="single-winner">
+          <span class="placement">{{ index + 1 }}.</span>
+          <i class="icon icon--medal"></i>
+          <p class="winner-name">{{ person.name }}</p>
+        </router-link>
       </li>
     </ol>
   </div>
 </template>
 
 <script>
-
 import { highscoreStatistics } from "@/api";
 
 export default {
   data() {
-    return { highscore: [] };
+    return {
+      highscore: [],
+      limit: 22
+    };
   },
   async mounted() {
-    let response = await highscoreStatistics();
-    response.sort((a, b) => a.wins.length < b.wins.length ? 1 : -1)
-    this.highscore = this.generateScoreBoard(response.slice(0, 5));
-  },
-  methods: {
-    generateScoreBoard(highscore=this.highscore) {
-      let place = 0;
-      let highestWinCount = -1;
-
-      return highscore.map(win => {
-        const wins = win.wins.length
-        if (wins != highestWinCount) {
-          place += 1
-          highestWinCount = wins
-        }
-
-        const placeString = place.toString().padStart(2, "0");
-        win.rank = placeString;
-        return win
-      })
-    }
+    return fetch(`/api/history/by-wins?limit=${limit}`)
+      .then(resp => resp.json())
+      .then(response => {
+        this.highscore = response.winners;
+      });
   }
 };
 </script>
