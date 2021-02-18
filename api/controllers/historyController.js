@@ -91,7 +91,7 @@ const groupByDate = (req, res) => {
   }
 
   return historyRepository
-    .groupedByDate(includeWines == "true", sort)
+    .groupByDate(includeWines == "true", sort)
     .then(lotteries =>
       res.send({
         lotteries: lotteries,
