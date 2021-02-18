@@ -3,6 +3,13 @@ const path = require("path");
 const VirtualWinner = require(path.join(__dirname, "/schemas/VirtualWinner"));
 const { WinnerNotFound } = require(path.join(__dirname, "/vinlottisErrors"));
 
+const redactWinnerInfoMapper = winner => {
+  return {
+    name: winner.name,
+    color: winner.color
+  };
+};
+
 const addWinners = winners => {
   return Promise.all(
     winners.map(winner => {
@@ -30,16 +37,15 @@ const allWinners = (isAdmin = false) => {
 };
 
 const winnerById = (id, isAdmin = false) => {
-  return VirtualWinner.findOne({ _id: id }).then(winner => {
+  return VirtualWinner.findOne({ id: id }).then(winner => {
     if (winner == null) {
       throw new WinnerNotFound();
     }
 
     if (!isAdmin) {
       return redactWinnerInfoMapper(winner);
-    } else {
-      return winner;
     }
+    return winner;
   });
 };
 
@@ -66,12 +72,12 @@ const updateWinnerById = (id, updateModel) => {
 };
 
 const deleteWinnerById = id => {
-  return VirtualWinner.findOne({ _id: id }).then(winner => {
+  return VirtualWinner.findOne({ id: id }).then(winner => {
     if (winner == null) {
       throw new WinnerNotFound();
     }
 
-    return VirtualWinner.deleteOne({ _id: id }).then(_ => winner);
+    return VirtualWinner.deleteOne({ id: id }).then(_ => winner);
   });
 };
 

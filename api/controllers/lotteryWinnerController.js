@@ -1,6 +1,9 @@
 const path = require("path");
 const winnerRepository = require(path.join(__dirname, "../winner"));
+const { WinnerNotFound } = require(path.join(__dirname, "../vinlottisErrors"));
+const prizeDistributionRepository = require(path.join(__dirname, "../prizeDistribution"));
 
+// should not be used, is done through POST /lottery/prize-distribution/prize/:id - claimPrize.
 const addWinners = (req, res) => {
   const { winners } = req.body;
 
@@ -11,7 +14,7 @@ const addWinners = (req, res) => {
     });
   }
 
-  const requiredAttributes = ["name", "color"];
+  const requiredAttributes = ["name", "color", "wine"];
   const validColors = ["red", "blue", "green", "yellow"];
   const validateAllWinners = winners =>
     winners.map(winner => {
@@ -37,7 +40,11 @@ const addWinners = (req, res) => {
     });
 
   return Promise.all(validateAllWinners(winners))
-    .then(winners => winnerRepository.addWinners(winners))
+    .then(winners =>
+      winners.map(winner => {
+        return prizeDistributionRepository.claimPrize(winner, winner.wine);
+      })
+    )
     .then(winners =>
       res.send({
         winners: winners,
