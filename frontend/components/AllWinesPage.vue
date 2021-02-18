@@ -2,10 +2,9 @@
   <div class="container">
     <h1 class="">Alle viner</h1>
 
-    <div id="wines-container">
+    <div class="wines-container">
       <Wine :wine="wine" v-for="(wine, _, index) in wines" :key="wine._id">
         <div class="winners-container">
-
           <span class="label">Vinnende lodd:</span>
           <div class="flex row">
             <span class="raffle-element blue-raffle">{{ wine.blue == null ? 0 : wine.blue }}</span>
@@ -19,43 +18,44 @@
             <ul class="names">
               <li v-for="(winner, index) in wine.winners">
                 <router-link class="vin-link" :to="`/highscore/` + winner">{{ winner }}</router-link>
-                 -&nbsp;
-                <router-link class="vin-link" :to="winDateUrl(wine.dates[index])">{{ dateString(wine.dates[index]) }}</router-link>
+                -&nbsp;
+                <router-link class="vin-link" :to="winDateUrl(wine.dates[index])">{{
+                  dateString(wine.dates[index])
+                }}</router-link>
               </li>
             </ul>
           </div>
         </div>
       </Wine>
-
     </div>
   </div>
 </template>
 
 <script>
-import Banner from "@/ui/Banner";
 import Wine from "@/ui/Wine";
-import { overallWineStatistics } from "@/api";
 import { dateString } from "@/utils";
 
 export default {
-  components: {
-    Banner,
-    Wine
-  },
+  components: { Wine },
   data() {
     return {
       wines: []
     };
   },
+  mounted() {
+    this.overallWineStatistics();
+  },
   methods: {
     winDateUrl(date) {
       const timestamp = new Date(date).getTime();
-      return `/history/${timestamp}`
+      return `/history/${timestamp}`;
+    },
+    overallWineStatistics() {
+      return fetch("/api/wines")
+        .then(resp => resp.json())
+        .then(response => (this.wines = response.wines));
     },
     dateString: dateString
-  },
-  async mounted() {
-    this.wines = await overallWineStatistics();
   }
 };
 </script>
@@ -82,18 +82,6 @@ h1 {
 
 .label {
   font-weight: 600;
-}
-
-#wines-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-gap: 2rem;
-
-
-  > div {
-    justify-content: flex-start;
-    margin-bottom: 2rem;
-  }
 }
 
 .name-wins {
