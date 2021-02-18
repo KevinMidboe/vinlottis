@@ -12,7 +12,12 @@
     <p class="highscore-header margin-bottom-md"><b>Plassering.</b> Navn - Antall vinn</p>
 
     <ol v-if="highscore.length > 0" class="highscore-list">
-      <li v-for="person in filteredResults" @click="selectWinner(person)" @keydown.enter="selectWinner(person)" tabindex="0">
+      <li
+        v-for="person in filteredResults"
+        @click="goToWinner(person)"
+        @keydown.enter="goToWinner(person)"
+        tabindex="0"
+      >
         <b>{{ person.rank }}.</b>&nbsp;&nbsp;&nbsp;{{ person.name }} - {{ person.wins.length }}
       </li>
     </ol>
@@ -24,8 +29,6 @@
 </template>
 
 <script>
-
-import { highscoreStatistics } from "@/api";
 import { humanReadableDate, daysAgo } from "@/utils";
 import Wine from "@/ui/Wine";
 
@@ -34,18 +37,12 @@ export default {
   data() {
     return {
       highscore: [],
-      filterInput: ''
-    }
+      filterInput: ""
+    };
   },
   async mounted() {
-    let response = await highscoreStatistics();
-    response.sort((a, b) => {
-      return a.wins.length > b.wins.length ? -1 : 1;
-    });
-    response = response.filter(
-      person => person.name != null && person.name != ""
-    );
-    this.highscore = this.generateScoreBoard(response);
+    const winners = await this.highscoreStatistics();
+    this.highscore = this.generateScoreBoard(winners);
   },
   computed: {
     filteredResults() {
@@ -53,37 +50,42 @@ export default {
       let val = this.filterInput;
 
       if (val.length) {
-        val = val.toLowerCase()
-        const nameIncludesString = (person) => person.name.toLowerCase().includes(val);
-        highscore = highscore.filter(nameIncludesString)
+        val = val.toLowerCase();
+        const nameIncludesString = person => person.name.toLowerCase().includes(val);
+        highscore = highscore.filter(nameIncludesString);
       }
 
-      return highscore
+      return highscore;
     }
   },
   methods: {
-    generateScoreBoard(highscore=this.highscore) {
+    highscoreStatistics() {
+      return fetch("/api/history/by-wins")
+        .then(resp => resp.json())
+        .then(response => response.winners);
+    },
+    generateScoreBoard(highscore = this.highscore) {
       let place = 0;
       let highestWinCount = -1;
 
       return highscore.map(win => {
-        const wins = win.wins.length
+        const wins = win.wins.length;
         if (wins != highestWinCount) {
-          place += 1
-          highestWinCount = wins
+          place += 1;
+          highestWinCount = wins;
         }
 
         const placeString = place.toString().padStart(2, "0");
         win.rank = placeString;
-        return win
-      })
+        return win;
+      });
     },
     resetFilter() {
-      this.filterInput = '';
-      document.getElementsByTagName('input')[0].focus();
+      this.filterInput = "";
+      document.getElementsByTagName("input")[0].focus();
     },
-    selectWinner(winner) {
-      const path = "/highscore/" + encodeURIComponent(winner.name)
+    goToWinner(winner) {
+      const path = "/highscore/" + encodeURIComponent(winner.name);
       this.$router.push(path);
     },
     humanReadableDate: humanReadableDate,
@@ -152,7 +154,8 @@ h1 {
     cursor: pointer;
 
     border-bottom: 2px solid transparent;
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       border-color: $link-color;
     }
   }
