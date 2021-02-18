@@ -125,6 +125,7 @@ textarea {
   color: #333;
   padding: 10px 30px;
   margin: 0;
+  border: 0;
   width: fit-content;
   font-size: 1.3rem;
   line-height: 1.3rem;
@@ -228,6 +229,17 @@ textarea {
   }
 }
 
+.margin {
+  &-md {
+    margin: 3rem;
+  }
+  &-sm {
+    margin: 1rem;
+  }
+  &-0 {
+    margin: 0;
+  }
+}
 
 .margin-top {
   &-md {
@@ -299,14 +311,29 @@ textarea {
   margin: 0 !important;
 }
 
+.wines-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 2rem;
+}
+
 .raffle-element {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+
   margin: 20px 0;
+  color: #333333;
+
   -webkit-mask-image: url(/public/assets/images/lodd.svg);
   background-repeat: no-repeat;
   mask-image: url(/public/assets/images/lodd.svg);
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  color: #333333;
 
   &.green-raffle {
     background-color: $light-green;
@@ -323,11 +350,16 @@ textarea {
   &.red-raffle {
     background-color: $light-red;
   }
+
+  &:not(:last-of-type) {
+    margin-right: 1rem;
+  }
 }
 
 @mixin raffle {
   padding-bottom: 50px;
-  &::before, &::after {
+  &::before,
+  &::after {
     content: "";
     position: absolute;
     left: 0;
@@ -339,11 +371,11 @@ textarea {
     background-position: 0 25px;
     background-repeat: repeat-x;
   }
-  &::after{
+  &::after {
     background: radial-gradient(closest-side, transparent, transparent 50%, #fff 50%);
     background-size: 50px 50px;
     background-position: 25px -25px;
-    bottom: -25px
+    bottom: -25px;
   }
 }
 
