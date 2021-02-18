@@ -21,7 +21,7 @@ const allWines = (req, res) => {
 };
 
 const addWines = (req, res) => {
-  const { wines } = req.body;
+  let { wines } = req.body;
 
   if (!(wines instanceof Array)) {
     return res.status(400).send({
@@ -36,7 +36,7 @@ const addWines = (req, res) => {
 
       return Promise.all(
         requiredAttributes.map(attr => {
-          if (typeof wine[attr] === "undefined") {
+          if (typeof wine[attr] === "undefined" || wine[attr] == "") {
             return Promise.reject({
               message: `Incorrect or missing attribute: ${attr}.`,
               statusCode: 400,
@@ -95,6 +95,13 @@ const wineById = (req, res) => {
 const updateWineById = (req, res) => {
   const { id } = req.params;
   const { wine } = req.body;
+
+  if (id == null || id == "undefined") {
+    return res.status(400).send({
+      message: "Unable to update without id.",
+      success: false
+    });
+  }
 
   return prelotteryWineRepository
     .updateWineById(id, wine)
