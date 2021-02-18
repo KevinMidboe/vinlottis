@@ -42,20 +42,27 @@ const archiveLottery = (req, res) => {
 
   let { stolen, date, raffles, wines } = lottery;
   stolen = stolen !== undefined ? stolen : 0; // default = 0
-  date = date !== undefined ? date : new Date(); // default
 
   const validDateFormat = new RegExp("d{4}-d{2}-d{2}");
-  if (!validDateFormat.test(date) || isNaN(date)) {
+  if (date != undefined && (!validDateFormat.test(date) || isNaN(date))) {
     return res.status(400).send({
       message: "Date must be defined as 'yyyy-mm-dd'.",
       success: false
     });
-  } else {
+  } else if (date != undefined) {
     date = Date.parse(date, "yyyy-MM-dd");
+  } else {
+    date = new Date();
   }
 
   return verifyLotteryPayload(raffles, stolen, wines)
-    .then(_ => lottery.archive(date, raffles, stolen, wines))
+    .then(_ => lotteryRepository.archive(date, raffles, stolen, wines))
+    .then(_ =>
+      res.send({
+        message: "Successfully archive lottery",
+        success: true
+      })
+    )
     .catch(error => {
       const { statusCode, message } = error;
 
