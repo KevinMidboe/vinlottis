@@ -34,7 +34,7 @@ const addAttendee = (req, res) => {
     });
   }
 
-  if (typeof attendee["name"] !== "string" && typeof attendee["phoneNumber"] !== "number") {
+  if (typeof attendee["name"] !== "string" || typeof attendee["phoneNumber"] !== "number") {
     return res.status(400).send({
       message: "Incorrect or missing attendee keys 'name' or 'phoneNumber'.",
       success: false
