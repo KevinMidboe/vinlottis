@@ -7,17 +7,14 @@
 <script>
 import Tabs from "@/ui/Tabs";
 import RegisterWinePage from "@/components/admin/RegisterWinePage";
-import RegisterPage from "@/components/RegisterPage";
-import VirtualLotteryRegistrationPage from "@/components/VirtualLotteryRegistrationPage";
+import archiveLotteryPage from "@/components/admin/archiveLotteryPage";
+import registerAttendeePage from "@/components/admin/registerAttendeePage";
 import DrawWinnerPage from "@/components/admin/DrawWinnerPage";
 import PushPage from "@/components/admin/PushPage";
 
 export default {
   components: {
-    Tabs,
-    RegisterPage,
-    VirtualLotteryRegistrationPage,
-    DrawWinnerPage
+    Tabs
   },
   data() {
     return {
@@ -30,7 +27,7 @@ export default {
         },
         {
           name: "Legg til deltakere",
-          component: VirtualLotteryRegistrationPage,
+          component: registerAttendeePage,
           slug: "attendees",
           counter: null
         },
@@ -42,7 +39,7 @@ export default {
         },
         {
           name: "Arkiver lotteri",
-          component: RegisterPage,
+          component: archiveLotteryPage,
           slug: "reg",
           counter: null
         },
