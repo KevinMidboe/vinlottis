@@ -185,7 +185,7 @@ const groupByColor = (req, res) => {
 };
 
 const orderByWins = (req, res) => {
-  const { includeWines } = req.query;
+  const { includeWines, limit } = req.query;
 
   if (includeWines !== undefined && !includeWinesOptions.includes(includeWines)) {
     return res.status(400).send({
@@ -195,7 +195,7 @@ const orderByWins = (req, res) => {
   }
 
   return historyRepository
-    .orderByWins(includeWines == "true")
+    .orderByWins(includeWines == "true", limit)
     .then(winners =>
       res.send({
         winners: winners,
