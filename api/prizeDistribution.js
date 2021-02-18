@@ -5,9 +5,10 @@ const PreLotteryWine = require(path.join(__dirname, "/schemas/PreLotteryWine"));
 const VirtualWinner = require(path.join(__dirname, "/schemas/VirtualWinner"));
 
 const message = require(path.join(__dirname, "/message"));
-const highscoreRepository = require(path.join(__dirname, "/winner"));
+const historyRepository = require(path.join(__dirname, "/history"));
+const winnerRepository = require(path.join(__dirname, "/winner"));
 const wineRepository = require(path.join(__dirname, "/wine"));
-const lottery = require(path.join(__dirname, "/lottery"));
+const prelotteryWineRepository = require(path.join(__dirname, "/prelotteryWine"));
 
 const { WinnerNotFound, WineSelectionWinnerNotNextInLine, WinnersTimelimitExpired } = require(path.join(
   __dirname,
@@ -36,12 +37,11 @@ const verifyWinnerNextInLine = async id => {
   return Promise.resolve(foundWinner);
 };
 
-const claimPrize = (winner, wine) => {
+const claimPrize = (wine, winner) => {
   return wineRepository
     .addWine(wine)
-    .then(_ => lottery.deleteWineById(wine.id)) // prelotteryWine.deleteById
-    .then(_ => highscoreRepository.addWinnerWithWine(winner, wine)) // wines.js : addWine
-    .then(_ => lottery.addWinnerWithWine(winner, wine))
+    .then(_ => prelotteryWineRepository.addWinnerToWine(wine, winner)) // prelotteryWine.deleteById
+    .then(_ => historyRepository.addWinnerWithWine(winner, wine)) // wines.js : addWine
     .then(_ => message.sendWineConfirmation(winner, wine));
 };
 
