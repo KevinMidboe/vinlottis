@@ -2,18 +2,18 @@
   <div v-if="wines.length > 0" class="wines-main-container">
     <div class="info-and-link">
       <h3>
-        Topp 5 viner
+        Topp viner
       </h3>
       <router-link to="viner">
         <span class="vin-link">Se alle viner </span>
       </router-link>
     </div>
-    <div class="wine-container">
+    <div class="wines-container">
       <Wine v-for="wine in wines" :key="wine" :wine="wine">
         <template v-slot:top>
           <div class="flex justify-end">
             <div class="requested-count cursor-pointer">
-              <span> {{ wine.occurences }} </span>
+              <span> {{ wine.occurences }} </span>
               <i class="icon icon--heart" />
             </div>
           </div>
@@ -32,32 +32,36 @@ export default {
     Wine
   },
   data() {
-    return { 
-      wines: [], 
-      clickedWine: null, 
+    return {
+      wines: [],
+      clickedWine: null,
+      limit: 18
     };
   },
   async mounted() {
-    let response = await overallWineStatistics();
-
-    response.sort();
-    response = response
-      .filter(wine => wine.name != null && wine.name != "")
-      .sort(
-        this.predicate(
-          {
-            name: "occurences",
-            reverse: true
-          },
-          {
-            name: "rating",
-            reverse: true
-          }
-        )
-      );
-    this.wines = response.slice(0, 5);
+    this.getAllWines();
   },
   methods: {
+    getAllWines() {
+      return fetch(`/api/wines?limit=${this.limit}`)
+        .then(resp => resp.json())
+        .then(response => {
+          let { wines, success } = response;
+
+          this.wines = wines.sort(
+            this.predicate(
+              {
+                name: "occurences",
+                reverse: true
+              },
+              {
+                name: "rating",
+                reverse: true
+              }
+            )
+          );
+        });
+    },
     predicate: function() {
       var fields = [],
         n_fields = arguments.length,
@@ -125,13 +129,13 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/variables.scss";
 @import "@/styles/global.scss";
-@import "../styles/media-queries.scss";
+@import "@/styles/media-queries.scss";
 
 .wines-main-container {
   margin-bottom: 10em;
 }
 
-.info-and-link{
+.info-and-link {
   display: flex;
   justify-content: space-between;
 }
