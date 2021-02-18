@@ -24,10 +24,11 @@ const verifyWinnerNextInLine = async id => {
   }
 
   let allWinners = await VirtualWinner.find().sort({ timestamp_drawn: 1 });
+
   if (
-    allWinners[0].id != foundWinner.id ||
     foundWinner.timestamp_limit == undefined ||
-    foundWinner.timestamp_sent == undefined
+    foundWinner.timestamp_sent == undefined ||
+    foundWinner.prize_selected == true
   ) {
     throw new WineSelectionWinnerNotNextInLine();
   }
@@ -47,8 +48,8 @@ const claimPrize = (winner, wine) => {
 const notifyNextWinner = async () => {
   let nextWinner = undefined;
 
-  const winnersLeft = await VirtualWinner.find().sort({ timestamp_drawn: 1 });
-  const winesLeft = await PreLotteryWine.find();
+  const winnersLeft = await VirtualWinner.find({ prize_selected: false }).sort({ timestamp_drawn: 1 });
+  const winesLeft = await PreLotteryWine.find({ winner: { $exists: false } });
 
   if (winnersLeft.length > 1) {
     console.log("multiple winners left, choose next in line");
@@ -60,7 +61,7 @@ const notifyNextWinner = async () => {
     console.log("one winner and one wine left, choose for user");
     nextWinner = winnersLeft[0]; // one winner and one wine left, choose for user
     wine = winesLeft[0];
-    return claimPrize(nextWinner, wine);
+    return claimPrize(wine, nextWinner);
   }
 
   if (nextWinner) {
@@ -82,7 +83,7 @@ function startTimeout(id) {
   console.log(`Starting timeout for user ${id}.`);
   console.log(`Timeout duration: ${minutesForTimeout * minute}`);
   setTimeout(async () => {
-    let virtualWinner = await VirtualWinner.findOne({ id: id });
+    let virtualWinner = await VirtualWinner.findOne({ id: id, prize_selected: false });
     if (!virtualWinner) {
       console.log(`Timeout done for user ${id}, but user has already sent data.`);
       return;
@@ -96,7 +97,7 @@ function startTimeout(id) {
     virtualWinner.timestamp_sent = null;
     await virtualWinner.save();
 
-    findAndNotifyNextWinner();
+    notifyNextWinner();
   }, minutesForTimeout * minute);
 
   return Promise.resolve();

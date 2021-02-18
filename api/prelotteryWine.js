@@ -4,7 +4,11 @@ const PreLotteryWine = require(path.join(__dirname, "/schemas/PreLotteryWine"));
 const { WineNotFound } = require(path.join(__dirname, "/vinlottisErrors"));
 
 const allWines = () => {
-  return PreLotteryWine.find();
+  return PreLotteryWine.find().populate("winner");
+};
+
+const allWinesWithoutWinner = () => {
+  return PreLotteryWine.find({ winner: { $exists: false } });
 };
 
 const addWines = wines => {
@@ -56,6 +60,12 @@ const updateWineById = (id, updateModel) => {
   });
 };
 
+const addWinnerToWine = (wine, winner) => {
+  wine.winner = winner;
+  winner.prize_selected = true;
+  return Promise.all(wine.save(), winner.save());
+};
+
 const deleteWineById = id => {
   return PreLotteryWine.findOne({ _id: id }).then(wine => {
     if (wine == null) {
@@ -82,8 +92,10 @@ const wineSchema = () => {
 
 module.exports = {
   allWines,
+  allWinesWithoutWinner,
   addWines,
   wineById,
+  addWinnerToWine,
   updateWineById,
   deleteWineById,
   deleteWines,
