@@ -3,10 +3,15 @@ import VueRouter from "vue-router";
 import { routes } from "@/router.js";
 import Vinlottis from "@/Vinlottis";
 
+import Toast from "@/plugins/Toast";
+
 import * as Sentry from "@sentry/browser";
 import { Vue as VueIntegration } from "@sentry/integrations";
 
 Vue.use(VueRouter);
+
+// Plugins
+Vue.use(Toast);
 
 const ENV = window.location.href.includes("localhost") ? "development" : "production";
 if (ENV !== "development") {
