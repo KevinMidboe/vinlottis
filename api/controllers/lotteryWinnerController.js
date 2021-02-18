@@ -98,6 +98,36 @@ const winnerById = (req, res) => {
     });
 };
 
+const updateWinnerById = (req, res) => {
+  const { id } = req.params;
+  const { winner } = req.body;
+
+  if (id == null || id == "undefined") {
+    return res.status(400).send({
+      message: "Unable to update without id.",
+      success: false
+    });
+  }
+
+  return winnerRepository
+    .updateWinnerById(id, winner)
+    .then(winner =>
+      res.send({
+        winner,
+        message: `Updated winner: ${winner.name}`,
+        success: true
+      })
+    )
+    .catch(error => {
+      const { statusCode, message } = error;
+
+      return res.status(statusCode || 500).send({
+        message: message || "Unexpected error occured while updating winner by id.",
+        success: false
+      });
+    });
+};
+
 const deleteWinnerById = (req, res) => {
   const isAdmin = req.isAuthenticated();
   const { id } = req.params;
@@ -152,6 +182,7 @@ module.exports = {
   addWinners,
   allWinners,
   winnerById,
+  updateWinnerById,
   deleteWinnerById,
   deleteWinners
 };
