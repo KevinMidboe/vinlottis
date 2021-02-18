@@ -39,6 +39,16 @@ const setupHeaders = require(path.join(__dirname, "/api/middleware/setupHeaders"
 app.use(setupCORS);
 app.use(setupHeaders);
 
+if (process.env.NODE_ENV == "development") {
+  console.info(`NODE_ENV=development set, your are now always an authenticated user.`);
+  const alwaysAuthenticatedWhenLocalhost = require(path.join(
+    __dirname,
+    "/api/middleware/alwaysAuthenticatedWhenLocalhost"
+  ));
+
+  app.use(alwaysAuthenticatedWhenLocalhost);
+}
+
 // parse application/json
 app.use(express.json());
 
