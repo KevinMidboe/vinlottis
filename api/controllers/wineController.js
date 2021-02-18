@@ -3,9 +3,19 @@ const wineRepository = require(path.join(__dirname, "../wine"));
 
 const allWines = (req, res) => {
   // TODO add "includeWinners"
+  let { limit } = req.query;
+
+  if (limit && isNaN(limit)) {
+    return res.status(400).send({
+      message: "If limit query parameter is provided it must be a number",
+      success: false
+    });
+  } else if (!!!isNaN(limit)) {
+    limit = Number(limit);
+  }
 
   return wineRepository
-    .allWines()
+    .allWines(limit)
     .then(wines =>
       res.send({
         wines: wines,

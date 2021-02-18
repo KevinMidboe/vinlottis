@@ -27,8 +27,12 @@ const addWine = async wine => {
   }
 };
 
-const allWines = () => {
-  return Wine.find();
+const allWines = (limit = undefined) => {
+  if (limit) {
+    return Wine.find().limit(limit);
+  } else {
+    return Wine.find();
+  }
 };
 
 const wineById = id => {

@@ -222,6 +222,15 @@ const orderByWins = (req, res) => {
     });
   }
 
+  if (limit && isNaN(limit)) {
+    return res.status(400).send({
+      message: "If limit query parameter is provided it must be a number",
+      success: false
+    });
+  } else if (!!!isNaN(limit)) {
+    limit = Number(limit);
+  }
+
   return historyRepository
     .orderByWins(includeWines == "true", limit)
     .then(winners =>
