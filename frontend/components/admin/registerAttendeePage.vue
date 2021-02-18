@@ -140,27 +140,8 @@ export default {
         .map(attendee => attendee.name);
     }
   },
-  mounted() {
+  created() {
     this.getAttendees();
-    this.getWinners();
-
-    this.socket = io(`${window.location.hostname}:${window.location.port}`);
-
-    this.socket.on("winner", async msg => {
-      this.getWinners();
-      this.getAttendees();
-    });
-
-    this.socket.on("refresh_data", async msg => {
-      this.getAttendees();
-      this.getWinners();
-    });
-
-    this.socket.on("new_attendee", async msg => {
-      this.getAttendees();
-    });
-
-    window.finishedDraw = finishedDraw;
   },
   computed: {
     colors() {
