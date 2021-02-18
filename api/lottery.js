@@ -7,6 +7,9 @@ const VirtualWinner = require(path.join(__dirname, "/schemas/VirtualWinner"));
 const Lottery = require(path.join(__dirname, "/schemas/Purchase"));
 
 const Message = require(path.join(__dirname, "/message"));
+const historyRepository = require(path.join(__dirname, "/history"));
+const wineRepository = require(path.join(__dirname, "/wine"));
+
 const {
   WinnerNotFound,
   NoMoreAttendeesToWin,
@@ -17,11 +20,9 @@ const {
 const archive = (date, raffles, stolen, wines) => {
   const { blue, red, yellow, green } = raffles;
   const bought = blue + red + yellow + green;
-  date = date.setHours(0, 0, 0, 0);
 
-  return Lottery.findOneAndUpdate(
-    { date },
-    {
+  return Promise.all(wines.map(wine => wineRepository.findWine(wine))).then(resolvedWines => {
+    const lottery = new Lottery({
       date,
       blue,
       red,
@@ -29,10 +30,11 @@ const archive = (date, raffles, stolen, wines) => {
       green,
       bought,
       stolen,
-      wines
-    },
-    { upsert: true }
-  );
+      wines: resolvedWines
+    });
+
+    return lottery.save();
+  });
 };
 
 const lotteryByDate = date => {
@@ -67,10 +69,65 @@ const lotteryByDate = date => {
   });
 };
 
-const allLotteries = () => {
-  return Lottery.find()
-    .select("-_id -__v")
-    .populate("wines");
+const allLotteries = (sort = "asc", yearFilter = undefined) => {
+  const sortDirection = sort == "asc" ? 1 : -1;
+
+  let startQueryDate = new Date("1970-01-01");
+  let endQueryDate = new Date("2999-01-01");
+  if (yearFilter) {
+    startQueryDate = new Date(`${yearFilter}-01-01`);
+    endQueryDate = new Date(`${Number(yearFilter) + 1}-01-01`);
+  }
+
+  const query = [
+    {
+      $match: {
+        date: {
+          $gte: startQueryDate,
+          $lte: endQueryDate
+        }
+      }
+    },
+    {
+      $sort: {
+        date: sortDirection
+      }
+    },
+    {
+      $unset: ["_id", "__v"]
+    },
+    {
+      $lookup: {
+        from: "wines",
+        localField: "wines",
+        foreignField: "_id",
+        as: "wines"
+      }
+    }
+  ];
+
+  return Lottery.aggregate(query);
+};
+
+const allLotteriesIncludingWinners = async (sort = "asc", yearFilter = undefined) => {
+  const lotteries = await allLotteries(sort, yearFilter);
+  const allWinners = await historyRepository.groupByDate(false, sort);
+
+  return lotteries.map(lottery => {
+    const { winners } = allWinners.pop();
+
+    return {
+      wines: lottery.wines,
+      date: lottery.date,
+      blue: lottery.blue,
+      green: lottery.green,
+      yellow: lottery.yellow,
+      red: lottery.red,
+      bought: lottery.bought,
+      stolen: lottery.stolen,
+      winners: winners
+    };
+  });
 };
 
 const drawWinner = async () => {
@@ -140,10 +197,6 @@ const drawWinner = async () => {
 
   let winner = attendeeListDemocratic[Math.floor(Math.random() * attendeeListDemocratic.length)];
 
-  let winners = await VirtualWinner.find({ timestamp_sent: undefined }).sort({
-    timestamp_drawn: 1
-  });
-
   let newWinnerElement = new VirtualWinner({
     name: winner.name,
     phoneNumber: winner.phoneNumber,
@@ -158,6 +211,10 @@ const drawWinner = async () => {
 
   await newWinnerElement.save();
   await Attendee.updateOne({ name: winner.name, phoneNumber: winner.phoneNumber }, { $set: { winner: true } });
+
+  let winners = await VirtualWinner.find({ timestamp_sent: undefined }).sort({
+    timestamp_drawn: 1
+  });
 
   return { winner, color: colorToChooseFrom, winners };
 };
@@ -201,5 +258,6 @@ module.exports = {
   drawWinner,
   archive,
   lotteryByDate,
-  allLotteries
+  allLotteries,
+  allLotteriesIncludingWinners
 };
