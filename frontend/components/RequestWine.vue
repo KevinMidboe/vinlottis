@@ -1,26 +1,29 @@
 <template>
   <section class="main-container">
-    <Modal 
-      v-if="showModal" 
-      modalText="Ønsket ditt har blitt lagt til" 
+    <Modal
+      v-if="showModal"
+      modalText="Ønsket ditt har blitt lagt til"
       :buttons="modalButtons"
       @click="emitFromModalButton"
     ></Modal>
     <h1>
       Foreslå en vin!
     </h1>
+
     <section class="search-container">
       <section class="search-section">
-        <input type="text" v-model="searchString" @keyup.enter="fetchWineFromVin()" placeholder="Søk etter en vin du liker her!🍷" class="search-input-field">
-        <button :disabled="!searchString" @click="fetchWineFromVin()" class="vin-button">Søk</button>
-      </section>
-      <section v-for="(wine, index) in this.wines" :key="index" class="single-result">
-        <img
-          v-if="wine.image"
-          :src="wine.image"
-          class="wine-image"
-          :class="{ 'fullscreen': fullscreen }"
+        <input
+          type="text"
+          v-model="searchString"
+          @keyup.enter="searchWines()"
+          placeholder="Søk etter en vin du liker her!🍷"
+          class="search-input-field"
         />
+        <button :disabled="!searchString" @click="searchWines()" class="vin-button">Søk</button>
+      </section>
+
+      <section v-for="(wine, index) in wines" :key="index" class="single-result">
+        <img v-if="wine.image" :src="wine.image" class="wine-image" :class="{ fullscreen: fullscreen }" />
         <img v-else class="wine-placeholder" alt="Wine image" />
         <section class="wine-info">
           <h2 v-if="wine.name">{{ wine.name }}</h2>
@@ -29,37 +32,38 @@
             <span v-if="wine.rating">{{ wine.rating }}%</span>
             <span v-if="wine.price">{{ wine.price }} NOK</span>
             <span v-if="wine.country">{{ wine.country }}</span>
+            <span v-if="wine.year">{{ wine.year }}</span>
           </div>
         </section>
-          <button class="vin-button" @click="request(wine)">Foreslå denne</button>
-          <a
-          v-if="wine.vivinoLink"
-          :href="wine.vivinoLink"
-          class="wine-link"
-        >Les mer</a>
+        <button class="vin-button" @click="requestWine(wine)">Foreslå denne</button>
+        <a v-if="wine.vivinoLink" :href="wine.vivinoLink" class="wine-link">Les mer</a>
       </section>
-      <p v-if="this.wines && this.wines.length == 0">
+      <p v-if="loading == false && wines && wines.length == 0">
         Fant ingen viner med det navnet!
       </p>
+      <p v-else-if="loading">Loading...</p>
     </section>
   </section>
 </template>
 
 <script>
-import { searchForWine, requestNewWine } from "@/api";
+import { searchForWine } from "@/api";
 import Wine from "@/ui/Wine";
 import Modal from "@/ui/Modal";
+import RequestedWineCard from "@/ui/RequestedWineCard";
 
 export default {
   components: {
     Wine,
-    Modal
+    Modal,
+    RequestedWineCard
   },
   data() {
     return {
       searchString: undefined,
       wines: undefined,
       showModal: false,
+      loading: false,
       modalButtons: [
         {
           text: "Legg til flere viner",
@@ -70,36 +74,59 @@ export default {
           action: "move"
         }
       ]
-    }
+    };
   },
   methods: {
-    fetchWineFromVin(){
-      if(this.searchString){
-        this.wines = []
-        let localSearchString = this.searchString.replace(/ /g,"_");
-        searchForWine(localSearchString)
-          .then(res => this.wines = res)
+    fetchWinesByQuery(query) {
+      let url = new URL("/api/vinmonopolet/wine/search", window.location);
+      url.searchParams.set("name", query);
+
+      this.wines = [];
+      this.loading = true;
+
+      return fetch(url.href)
+        .then(resp => resp.json())
+        .then(response => (this.wines = response.wines))
+        .finally(wines => (this.loading = false));
+    },
+    searchWines() {
+      if (this.searchString) {
+        let localSearchString = this.searchString.replace(/ /g, "_");
+        this.fetchWinesByQuery(localSearchString);
       }
     },
-    request(wine){
-      requestNewWine(wine)
-        .then(resp => {
-          if(resp.success) {
-            this.showModal = true
+    requestWine(wine) {
+      const options = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ wine: wine })
+      };
+
+      return fetch("/api/request", options)
+        .then(resp => resp.json())
+        .then(response => {
+          if (response.success) {
+            this.showModal = true;
+            this.$toast.info({
+              title: `Vinen ${wine.name} har blitt foreslått!`
+            });
           } else {
-            alert("Obs, her oppsto det en feil! Feilen er logget.");
+            this.$toast.error({
+              title: "Obs, her oppsto det en feil! Feilen er logget.",
+              description: response.message
+            });
           }
-        })
+        });
     },
-    emitFromModalButton(action){
-      if(action == "stay"){
-        this.showModal = false
+    emitFromModalButton(action) {
+      if (action == "stay") {
+        this.showModal = false;
       } else {
         this.$router.push("/requested-wines");
       }
     }
-  },
-}
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -107,12 +134,11 @@ export default {
 @import "@/styles/global";
 @import "@/styles/variables";
 
-
-h1{
+h1 {
   text-align: center;
 }
 
-.main-container{
+.main-container {
   margin: auto;
   max-width: 1200px;
 }
@@ -126,66 +152,63 @@ input[type="text"] {
   max-width: 90%;
 }
 
-
-.search-container{
+.search-container {
   margin: 1rem;
 }
 
-.search-section{
+.search-section {
   display: grid;
-  grid: 1fr / 1fr .2fr;
+  grid: 1fr / 1fr 0.2fr;
 
-  @include mobile{
-    .vin-button{
+  @include mobile {
+    .vin-button {
       display: none;
     }
-    .search-input-field{
+    .search-input-field {
       grid-column: 1 / -1;
     }
   }
 }
 
-.single-result{
+.single-result {
   margin-top: 1rem;
   display: grid;
-  grid: 1fr / .5fr 2fr .5fr .5fr;
+  grid: 1fr / 0.5fr 2fr 0.5fr 0.5fr;
   grid-template-areas: "picture details button-left button-right";
   justify-items: center;
   align-items: center;
   grid-gap: 1em;
   padding-bottom: 1em;
   margin-bottom: 1em;
-  box-shadow: 0 1px 0 0 rgba(0,0,0,0.2);
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2);
 
-  @include mobile{
+  @include mobile {
+    grid: 1fr 0.5fr / 0.5fr 1fr;
+    grid-template-areas:
+      "picture details"
+      "button-left button-right";
+    grid-gap: 0.5em;
 
-    grid: 1fr .5fr / .5fr 1fr;
-    grid-template-areas: "picture details"
-                         "button-left button-right";
-    grid-gap: .5em;
-
-    .vin-button{
+    .vin-button {
       grid-area: button-right;
-      padding: .5em;
+      padding: 0.5em;
       font-size: 1em;
       line-height: 1em;
       height: 2em;
     }
 
-    .wine-link{
+    .wine-link {
       grid-area: button-left;
     }
 
-    h2{
+    h2 {
       font-size: 1em;
       max-width: 80%;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis
+      text-overflow: ellipsis;
     }
-
   }
- 
 
   .wine-image {
     height: 100px;
@@ -198,14 +221,14 @@ input[type="text"] {
     grid-area: picture;
   }
 
-  .wine-info{
+  .wine-info {
     grid-area: details;
     width: 100%;
-    
-    h2{
+
+    h2 {
       margin: 0;
     }
-    .details{
+    .details {
       top: 0;
       display: flex;
       flex-direction: column;
@@ -222,22 +245,20 @@ input[type="text"] {
     width: max-content;
   }
 
-  .vin-button{
+  .vin-button {
     grid-area: button-right;
   }
-  
-  @include tablet{
-    h2{
+
+  @include tablet {
+    h2 {
       font-size: 1.2em;
     }
   }
-  
-  @include desktop{
-    h2{
+
+  @include desktop {
+    h2 {
       font-size: 1.6em;
     }
   }
 }
-
-
 </style>
