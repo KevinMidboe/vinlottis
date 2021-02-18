@@ -80,6 +80,7 @@ a {
 
   > *:not(:last-child) {
     margin-right: 2rem;
+    margin-bottom: 0.75rem;
   }
 
   &.column {
@@ -92,6 +93,10 @@ a {
     }
   }
 
+  &.small > button {
+    height: min-content;
+  }
+
   @include mobile {
     &:not(.row) {
       flex-direction: column;
@@ -99,7 +104,7 @@ a {
 
       > *:not(:last-child) {
         margin-right: unset;
-        margin-bottom: .75rem;
+        margin-bottom: 0.75rem;
       }
     }
   }
