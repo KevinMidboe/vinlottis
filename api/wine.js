@@ -1,6 +1,8 @@
 const path = require("path");
 const Wine = require(path.join(__dirname, "/schemas/Wine"));
 
+const { WineNotFound } = require(path.join(__dirname, "/vinlottisErrors"));
+
 const addWine = async wine => {
   let existingWine = await Wine.findOne({ name: wine.name, id: wine.id, year: wine.year });
 
@@ -29,7 +31,29 @@ const allWines = () => {
   return Wine.find();
 };
 
+const wineById = id => {
+  return Wine.findOne({ _id: id }).then(wine => {
+    if (wine == null) {
+      throw new WineNotFound();
+    }
+
+    return wine;
+  });
+};
+
+const findWine = wine => {
+  return Wine.findOne({ name: wine.name, id: wine.id, year: wine.year }).then(wine => {
+    if (wine == null) {
+      throw new WineNotFound();
+    }
+
+    return wine;
+  });
+};
+
 module.exports = {
   addWine,
-  allWines
+  allWines,
+  wineById,
+  findWine
 };

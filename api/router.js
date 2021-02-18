@@ -27,7 +27,8 @@ router.get("/requests", setAdminHeaderIfAuthenticated, requestController.allRequ
 router.post("/request", requestController.addRequest);
 router.delete("/request/:id", mustBeAuthenticated, requestController.deleteRequest);
 
-// router.get("/wines", wineController.all); // sort = by-date, by-name, by-occurences
+router.get("/wines", wineController.allWines); // sort = by-date, by-name, by-occurences
+router.get("/wine/:id", wineController.wineById); // sort = by-date, by-name, by-occurences
 // router.update("/wine/:id", mustBeAuthenticated, wineController.update);
 
 router.get("/history", historyController.all);
