@@ -30,7 +30,7 @@ const addWines = wines => {
   return Promise.all(prelotteryWines);
 };
 
-const wineById = (id, updateModel) => {
+const wineById = id => {
   return PreLotteryWine.findOne({ _id: id }).then(wine => {
     if (wine == null) {
       throw new WineNotFound();
