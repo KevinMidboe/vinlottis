@@ -103,11 +103,25 @@ const lotteryByDate = (req, res) => {
     });
 };
 
+const sortOptions = ["desc", "asc"];
 const allLotteries = (req, res) => {
-  const isAdmin = req.isAuthenticated();
+  let { includeWinners, year, sort } = req.query;
 
-  return lotteryRepository
-    .allLotteries(isAdmin)
+  if (sort !== undefined && !sortOptions.includes(sort)) {
+    return res.status(400).send({
+      message: `Sort option must be: '${sortOptions.join(", ")}'`,
+      success: false
+    });
+  } else if (sort === undefined) {
+    sort = "asc";
+  }
+
+  let allLotteriesFunction = lotteryRepository.allLotteries;
+  if (includeWinners === "true") {
+    allLotteriesFunction = lotteryRepository.allLotteriesIncludingWinners;
+  }
+
+  return allLotteriesFunction(sort, year)
     .then(lotteries =>
       res.send({
         lotteries,
