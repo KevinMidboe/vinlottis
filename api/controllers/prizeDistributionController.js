@@ -6,7 +6,7 @@ const winnerRepository = require(path.join(__dirname, "../winner"));
 const message = require(path.join(__dirname, "../message"));
 
 const start = async (req, res) => {
-  const allWinners = await winnerRepository.allWinners();
+  const allWinners = await winnerRepository.allWinners(true);
   if (allWinners.length === 0) {
     return res.status(503).send({
       message: "No winners found to distribute prizes to.",
