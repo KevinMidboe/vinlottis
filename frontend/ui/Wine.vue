@@ -2,10 +2,7 @@
   <div class="wine">
     <slot name="top"></slot>
     <div class="wine-image">
-      <img
-        v-if="wine.image && loadImage"
-        :src="wine.image"
-      />
+      <img v-if="wine.image && loadImage" :src="wine.image" />
       <img v-else class="wine-placeholder" alt="Wine image" />
     </div>
 
@@ -38,7 +35,7 @@ export default {
   data() {
     return {
       loadImage: false
-    }
+    };
   },
   methods: {
     setImage(entries) {
@@ -53,7 +50,7 @@ export default {
     this.observer = new IntersectionObserver(this.setImage, {
       root: this.$el,
       threshold: 0
-    })
+    });
   },
   mounted() {
     this.observer.observe(this.$el);
@@ -66,16 +63,17 @@ export default {
 @import "@/styles/variables";
 
 .wine {
+  align-self: flex-start;
   padding: 1rem;
   box-sizing: border-box;
   position: relative;
   -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
+  width: 100%;
 
   @include tablet {
-    width: 250px;
-    height: 100%;
+    max-width: 280px;
   }
 }
 
@@ -85,18 +83,17 @@ export default {
   margin-top: 10px;
 
   img {
-    height: 250px;
+    height: 280px;
     @include mobile {
       object-fit: cover;
       max-width: 90px;
     }
   }
   .wine-placeholder {
-    height: 250px;
+    height: 280px;
     width: 70px;
   }
 }
-
 
 .wine-details {
   display: flex;
@@ -107,7 +104,7 @@ export default {
   }
 }
 
-.wine-name{
+.wine-name {
   font-size: 20px;
   margin: 1em 0;
 }
@@ -120,6 +117,7 @@ export default {
 .bottom-section {
   width: 100%;
   margin-top: 1rem;
+  align-self: flex-end;
 
   .link {
     color: $matte-text-color;

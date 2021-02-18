@@ -1,6 +1,9 @@
 <template>
   <div class="chat-container">
-    <span class="logged-in-username" v-if="username">Logget inn som: <span class="username">{{ username }}</span> <button @click="removeUsername">Logg ut</button></span>
+    <span class="logged-in-username" v-if="username"
+      >Logget inn som: <span class="username">{{ username }}</span>
+      <button @click="removeUsername">Logg ut</button></span
+    >
 
     <div class="history" ref="history" v-if="chatHistory.length > 0">
       <div class="opaque-skirt"></div>
@@ -8,7 +11,8 @@
         <button @click="loadMoreHistory">Hent eldre meldinger</button>
       </div>
 
-      <div class="history-message"
+      <div
+        class="history-message"
         v-for="(history, index) in chatHistory"
         :key="`${history.username}-${history.timestamp}-${index}`"
       >
@@ -61,12 +65,11 @@ export default {
     };
   },
   created() {
-    getChatHistory(1, this.pageSize)
-      .then(resp => {
-        this.chatHistory = resp.messages;
-        this.hasMorePages = resp.total != resp.messages.length;
-      });
-    const username = window.localStorage.getItem('username');
+    getChatHistory(1, this.pageSize).then(resp => {
+      this.chatHistory = resp.messages;
+      this.hasMorePages = resp.total != resp.messages.length;
+    });
+    const username = window.localStorage.getItem("username");
     if (username) {
       this.username = username;
       this.emitUsernameOnConnect = true;
@@ -77,8 +80,7 @@ export default {
       handler: function(newVal, oldVal) {
         if (oldVal.length == 0) {
           this.scrollToBottomOfHistory();
-        }
-        else if (newVal && newVal.length == oldVal.length) {
+        } else if (newVal && newVal.length == oldVal.length) {
           if (this.isScrollPositionAtBottom()) {
             this.scrollToBottomOfHistory();
           }
@@ -105,10 +107,7 @@ export default {
     });
 
     this.socket.on("connect", msg => {
-      if (
-        this.emitUsernameOnConnect ||
-        (this.wasDisconnected && this.username != null)
-      ) {
+      if (this.emitUsernameOnConnect || (this.wasDisconnected && this.username != null)) {
         this.setUsername(this.username);
       }
     });
@@ -133,12 +132,11 @@ export default {
       let { page, pageSize } = this;
       page = page + 1;
 
-      getChatHistory(page, pageSize)
-        .then(resp => {
-          this.chatHistory = resp.messages.concat(this.chatHistory);
-          this.page = page;
-          this.hasMorePages = resp.total != this.chatHistory.length;
-        });
+      getChatHistory(page, pageSize).then(resp => {
+        this.chatHistory = resp.messages.concat(this.chatHistory);
+        this.page = page;
+        this.hasMorePages = resp.total != this.chatHistory.length;
+      });
     },
     pad(num) {
       if (num > 9) return num;
@@ -146,9 +144,7 @@ export default {
     },
     getTime(timestamp) {
       let date = new Date(timestamp);
-      const timeString = `${this.pad(date.getHours())}:${this.pad(
-        date.getMinutes()
-      )}:${this.pad(date.getSeconds())}`;
+      const timeString = `${this.pad(date.getHours())}:${this.pad(date.getMinutes())}:${this.pad(date.getSeconds())}`;
 
       if (date.getDate() == new Date().getDate()) {
         return timeString;
@@ -158,10 +154,10 @@ export default {
     sendMessage() {
       const message = { message: this.message };
       this.socket.emit("chat", message);
-      this.message = '';
+      this.message = "";
       this.scrollToBottomOfHistory();
     },
-    setUsername(username=undefined) {
+    setUsername(username = undefined) {
       if (this.temporaryUsername) {
         username = this.temporaryUsername;
       }
@@ -178,7 +174,7 @@ export default {
       if (history) {
         return history.offsetHeight + history.scrollTop >= history.scrollHeight;
       }
-      return false
+      return false;
     },
     scrollToBottomOfHistory() {
       setTimeout(() => {
@@ -189,15 +185,15 @@ export default {
     scrollToMessageElement(message) {
       const elemTimestamp = this.getTime(message.timestamp);
       const self = this;
-      const getTimeStamp = (elem) => elem.getElementsByClassName('timestamp')[0].innerText;
-      const prevOldestMessageInNewList = (elem) => getTimeStamp(elem) == elemTimestamp;
+      const getTimeStamp = elem => elem.getElementsByClassName("timestamp")[0].innerText;
+      const prevOldestMessageInNewList = elem => getTimeStamp(elem) == elemTimestamp;
 
       setTimeout(() => {
         const { history } = self.$refs;
-        const childrenElements = Array.from(history.getElementsByClassName('history-message'));
+        const childrenElements = Array.from(history.getElementsByClassName("history-message"));
 
         const elemInNewList = childrenElements.find(prevOldestMessageInNewList);
-        history.scrollTop = elemInNewList.offsetTop - 70
+        history.scrollTop = elemInNewList.offsetTop - 70;
       }, 1);
     }
   }
@@ -210,7 +206,7 @@ export default {
 
 .chat-container {
   position: relative;
-  transform: translate3d(0,0,0);
+  transform: translate3d(0, 0, 0);
 }
 
 input {
@@ -240,7 +236,6 @@ input {
 .user-actions {
   display: flex;
 }
-
 
 .history {
   height: 75%;
@@ -276,11 +271,7 @@ input {
     position: fixed;
     height: 2rem;
     z-index: 1;
-    background: linear-gradient(
-      to bottom,
-      white,
-      rgba(255, 255, 255, 0)
-    );
+    background: linear-gradient(to bottom, white, rgba(255, 255, 255, 0));
   }
 
   & .fetch-older-history {
@@ -310,7 +301,7 @@ input {
     border-radius: 4px;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 2.1rem;
       left: 2rem;

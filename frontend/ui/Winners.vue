@@ -1,9 +1,9 @@
 <template>
   <section>
-    <h2>{{ title ? title : 'Vinnere' }}</h2>
+    <h2>{{ title ? title : "Vinnere" }}</h2>
     <div class="winning-raffles" v-if="winners.length > 0">
       <div v-for="(winner, index) in winners" :key="index">
-        <router-link :to="`/highscore/${ encodeURIComponent(winner.name) }`">
+        <router-link :to="`/highscore/${winner.name}`">
           <div :class="winner.color + '-raffle'" class="raffle-element">{{ winner.name }}</div>
         </router-link>
       </div>
@@ -26,7 +26,7 @@ export default {
       type: Array
     },
     drawing: {
-      type: Boolean,
+      type: Boolean
     },
     title: {
       type: String,

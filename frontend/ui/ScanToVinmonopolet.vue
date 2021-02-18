@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="camera-stream">
     <h2 v-if="errorMessage">{{ errorMessage }}</h2>
     <video playsinline autoplay class="hidden"></video>
   </div>
@@ -47,13 +47,8 @@ export default {
       this.searchVideoForBarcode(this.video);
     },
     handleError(error) {
-      console.log(
-        "navigator.MediaDevices.getUserMedia error: ",
-        error.message,
-        error.name
-      );
-      this.errorMessage =
-        "Feil ved oppstart av kamera! Feilmelding: " + error.message;
+      console.log("navigator.MediaDevices.getUserMedia error: ", error.message, error.name);
+      this.errorMessage = "Feil ved oppstart av kamera! Feilmelding: " + error.message;
     },
     searchVideoForBarcode(video) {
       const codeReader = new BrowserBarcodeReader();
@@ -84,10 +79,7 @@ export default {
       this.errorMessage = "Feil! " + error.message || error;
     },
     scrollIntoView() {
-      window.scrollTo(
-        0,
-        document.getElementById("addwine-title").offsetTop - 10
-      );
+      window.scrollTo(0, document.getElementById("camera-stream").offsetTop - 10);
     }
   }
 };

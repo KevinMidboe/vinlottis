@@ -85,9 +85,7 @@ export default {
         this.startConfetti(this.currentName);
         return;
       }
-      this.currentName = this.attendees[
-        this.nameRounds % this.attendees.length
-      ].name;
+      this.currentName = this.attendees[this.nameRounds % this.attendees.length].name;
       this.nameRounds += 1;
       clearTimeout(this.nameTimeout);
       this.nameTimeout = setTimeout(() => {
@@ -136,8 +134,8 @@ export default {
       //duration is computed as x * 1000 miliseconds, in this case 7*1000 = 7000 miliseconds ==> 7 seconds.
       var duration = 7 * 1000;
       var animationEnd = Date.now() + duration;
-      var defaults = { startVelocity: 50, spread: 160, ticks: 50, zIndex: 0, particleCount: 20};
-      var uberDefaults = { startVelocity: 65, spread: 75, zIndex: 0, particleCount: 35}
+      var defaults = { startVelocity: 50, spread: 160, ticks: 50, zIndex: 0, particleCount: 20 };
+      var uberDefaults = { startVelocity: 65, spread: 75, zIndex: 0, particleCount: 35 };
 
       function randomInRange(min, max) {
         return Math.random() * (max - min) + min;
@@ -148,27 +146,27 @@ export default {
         var timeLeft = animationEnd - Date.now();
         if (timeLeft <= 0) {
           self.drawing = false;
-          console.time("drawing finished")
+          console.time("drawing finished");
           return clearInterval(interval);
         }
         if (currentName == "Amund Brandsrud") {
-          runCannon(uberDefaults, {x: 1, y: 1 }, {angle: 135});
-          runCannon(uberDefaults, {x: 0, y: 1 }, {angle: 45});
-          runCannon(uberDefaults, {y: 1 }, {angle: 90});
-          runCannon(uberDefaults, {x: 0 }, {angle: 45});
-          runCannon(uberDefaults, {x: 1 }, {angle: 135});
+          runCannon(uberDefaults, { x: 1, y: 1 }, { angle: 135 });
+          runCannon(uberDefaults, { x: 0, y: 1 }, { angle: 45 });
+          runCannon(uberDefaults, { y: 1 }, { angle: 90 });
+          runCannon(uberDefaults, { x: 0 }, { angle: 45 });
+          runCannon(uberDefaults, { x: 1 }, { angle: 135 });
         } else {
-          runCannon(defaults, {x: 0 }, {angle: 45});
-          runCannon(defaults, {x: 1 }, {angle: 135});
-          runCannon(defaults, {y: 1 }, {angle: 90});
+          runCannon(defaults, { x: 0 }, { angle: 45 });
+          runCannon(defaults, { x: 1 }, { angle: 135 });
+          runCannon(defaults, { y: 1 }, { angle: 90 });
         }
       }, 250);
 
-      function runCannon(confettiDefaultValues, originPoint, launchAngle){
-        confetti(Object.assign({}, confettiDefaultValues, {origin: originPoint }, launchAngle))
+      function runCannon(confettiDefaultValues, originPoint, launchAngle) {
+        confetti(Object.assign({}, confettiDefaultValues, { origin: originPoint }, launchAngle));
       }
     },
-    ordinalNumber(number=this.currentWinnerLocal.winnerCount) {
+    ordinalNumber(number = this.currentWinnerLocal.winnerCount) {
       const dictonary = {
         1: "første",
         2: "andre",
@@ -187,7 +185,6 @@ export default {
     }
   }
 };
-
 </script>
 
 <style lang="scss" scoped>
