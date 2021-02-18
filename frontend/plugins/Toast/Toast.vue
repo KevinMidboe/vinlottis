@@ -35,8 +35,11 @@ export default {
     this.show = true;
     const timeout = setTimeout(() => {
       console.log("Your toast time is up 👋");
-      if (this.mouseover !== true) {
+
+      if (this.mouseover === false) {
         this.show = false;
+      } else {
+        this.timedOut = true;
       }
     }, this.timeout);
 
@@ -45,47 +48,22 @@ export default {
 
       if (toast) {
         toast.addEventListener("mouseenter", _ => {
-          if (timeout != null) {
-            clearTimeout(timeout);
-          }
-
           this.mouseover = true;
         });
 
         toast.addEventListener("mouseleave", _ => {
-          console.log("leaving", timeout, this.timeout);
-          this.show = false;
+          this.mouseover = false;
+
+          if (this.timedOut === true) {
+            this.show = false;
+          }
         });
       }
-    }, 400);
+    }, 10);
   },
   methods: {
-    clicked() {
-      if (this.link) {
-        let resolved = this.$root.router.resolve(this.link);
-
-        if (resolved && resolved.route.name !== "404") {
-          this.$root.router.push(this.link);
-        } else {
-          console.error("Found a link but it resolved to 404. Link:", this.link);
-        }
-      } else {
-        this.show = false;
-      }
-    },
     dismiss() {
       this.show = false;
-    },
-    move(e) {
-      console.log("moving", e);
-      let target = e.target;
-
-      console.log("target", target);
-
-      var div = document.getElementById("target");
-      div.style.position = "absolute";
-      div.style.top = e.clientY + "px";
-      div.style.left = e.clientX + "px";
     }
   }
 };
