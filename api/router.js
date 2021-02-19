@@ -86,7 +86,7 @@ router.get("/chat/history", chatController.getAllHistory);
 router.delete("/chat/history", mustBeAuthenticated, chatController.deleteHistory);
 
 router.post("/login", userController.login);
-router.post("/register", userController.register);
+router.post("/register", mustBeAuthenticated, userController.register);
 router.get("/logout", userController.logout);
 
 // router.get("/", documentation.apiInfo);
