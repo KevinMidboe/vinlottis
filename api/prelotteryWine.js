@@ -63,7 +63,7 @@ const updateWineById = (id, updateModel) => {
 const addWinnerToWine = (wine, winner) => {
   wine.winner = winner;
   winner.prize_selected = true;
-  return Promise.all(wine.save(), winner.save());
+  return Promise.all([wine.save(), winner.save()]);
 };
 
 const deleteWineById = id => {
