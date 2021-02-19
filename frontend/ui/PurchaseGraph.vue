@@ -168,9 +168,12 @@ export default {
 @import "@/styles/media-queries.scss";
 
 .chart {
-  height: 40vh;
-  max-height: 500px;
   width: 100%;
+
+  @include desktop {
+    height: 40vh;
+    max-height: 500px;
+  }
 }
 
 .year-select {
