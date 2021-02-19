@@ -32,7 +32,7 @@ export default {
     };
   },
   async mounted() {
-    return fetch(`/api/history/by-wins?limit=${limit}`)
+    return fetch(`/api/history/by-wins?limit=${this.limit}`)
       .then(resp => resp.json())
       .then(response => {
         this.highscore = response.winners;
