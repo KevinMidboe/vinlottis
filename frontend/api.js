@@ -26,7 +26,8 @@ const allRequestedWines = () => {;
   return fetch("/api/request/all")
     .then(resp => {
       const isAdmin = resp.headers.get("vinlottis-admin") == "true";
-      return Promise.all([resp.json(), isAdmin]);
+      const getWinesFromBody = (resp) => resp.json().then(body => body.wines);
+      return Promise.all([getWinesFromBody(resp), isAdmin]);
     });
 };
 
@@ -109,8 +110,7 @@ const deleteRequestedWine = wineToBeDeleted => {
     headers: {
       "Content-Type": "application/json"
     },
-    method: "DELETE",
-    body: JSON.stringify(wineToBeDeleted)
+    method: "DELETE"
   };
 
   return fetch("api/request/" + wineToBeDeleted.id, options)
@@ -148,14 +148,12 @@ const attendees = () => {
 
 const requestNewWine = (wine) => {
   const options = {
-    body: JSON.stringify({
-      wine: wine
-    }),
+    method: "POST",
      headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    method: "post"
+    body: JSON.stringify({ wine })
   }
 
   return fetch("/api/request/new-wine", options)

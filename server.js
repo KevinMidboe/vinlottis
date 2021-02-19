@@ -18,24 +18,36 @@ const MongoStore = require("connect-mongo")(session);
 // mongoose / database
 console.log("Trying to connect with mongodb..");
 mongoose.promise = global.Promise;
-mongoose.connect("mongodb://localhost/vinlottis", {
-  useCreateIndex: true,
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 10000 // initial connection timeout
-}).then(_ => console.log("Mongodb connection established!"))
-.catch(err => {
-  console.log(err);
-  console.error("ERROR! Mongodb required to run.");
-  process.exit(1);
-})
+mongoose
+  .connect("mongodb://localhost/vinlottis", {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 10000 // initial connection timeout
+  })
+  .then(_ => console.log("Mongodb connection established!"))
+  .catch(err => {
+    console.log(err);
+    console.error("ERROR! Mongodb required to run.");
+    process.exit(1);
+  });
 mongoose.set("debug", false);
 
 // middleware
 const setupCORS = require(path.join(__dirname, "/api/middleware/setupCORS"));
 const setupHeaders = require(path.join(__dirname, "/api/middleware/setupHeaders"));
-app.use(setupCORS)
-app.use(setupHeaders)
+app.use(setupCORS);
+app.use(setupHeaders);
+
+if (process.env.NODE_ENV == "development") {
+  console.info(`NODE_ENV=development set, your are now always an authenticated user.`);
+  const alwaysAuthenticatedWhenLocalhost = require(path.join(
+    __dirname,
+    "/api/middleware/alwaysAuthenticatedWhenLocalhost"
+  ));
+
+  app.use(alwaysAuthenticatedWhenLocalhost);
+}
 
 // parse application/json
 app.use(express.json());
@@ -52,7 +64,7 @@ app.use(
   })
 );
 
-app.set('socketio', io);  // set io instance to key "socketio"
+app.set("socketio", io); // set io instance to key "socketio"
 
 const passport = require("passport");
 const LocalStrategy = require("passport-local");

@@ -1,27 +1,63 @@
 const path = require("path");
 const Wine = require(path.join(__dirname, "/schemas/Wine"));
 
-async function findSaveWine(prelotteryWine) {
-  let wonWine = await Wine.findOne({ name: prelotteryWine.name });
-  if (wonWine == undefined) {
-    let newWonWine = new Wine({
-      name: prelotteryWine.name,
-      vivinoLink: prelotteryWine.vivinoLink,
-      rating: prelotteryWine.rating,
+const { WineNotFound } = require(path.join(__dirname, "/vinlottisErrors"));
+
+const addWine = async wine => {
+  let existingWine = await Wine.findOne({ name: wine.name, id: wine.id, year: wine.year });
+
+  if (existingWine == undefined) {
+    let newWine = new Wine({
+      name: wine.name,
+      vivinoLink: wine.vivinoLink,
+      rating: wine.rating,
       occurences: 1,
-      image: prelotteryWine.image,
-      id: prelotteryWine.id
+      id: wine.id,
+      year: wine.year,
+      image: wine.image,
+      price: wine.price,
+      country: wine.country
     });
-    await newWonWine.save();
-    wonWine = newWonWine;
+    await newWine.save();
+    return newWine;
   } else {
-    wonWine.occurences += 1;
-    wonWine.image = prelotteryWine.image;
-    wonWine.id = prelotteryWine.id;
-    await wonWine.save();
+    existingWine.occurences += 1;
+    await existingWine.save();
+    return existingWine;
   }
+};
 
-  return wonWine;
-}
+const allWines = (limit = undefined) => {
+  if (limit) {
+    return Wine.find().limit(limit);
+  } else {
+    return Wine.find();
+  }
+};
 
-module.exports.findSaveWine = findSaveWine;
+const wineById = id => {
+  return Wine.findOne({ _id: id }).then(wine => {
+    if (wine == null) {
+      throw new WineNotFound();
+    }
+
+    return wine;
+  });
+};
+
+const findWine = wine => {
+  return Wine.findOne({ name: wine.name, id: wine.id, year: wine.year }).then(wine => {
+    if (wine == null) {
+      throw new WineNotFound();
+    }
+
+    return wine;
+  });
+};
+
+module.exports = {
+  addWine,
+  allWines,
+  wineById,
+  findWine
+};

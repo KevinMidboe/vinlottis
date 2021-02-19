@@ -5,13 +5,17 @@
 </template>
 
 <script>
-import { chartWinsByColor } from "@/api";
-
 export default {
+  methods: {
+    fetchWinsByColor() {
+      return fetch("/api/history/by-color").then(resp => resp.json());
+    }
+  },
   async mounted() {
     let canvas = this.$refs["win-chart"].getContext("2d");
 
-    let response = await chartWinsByColor();
+    let response = await this.fetchWinsByColor();
+    const { colors } = response;
     let labels = ["Vunnet"];
     let blue = {
       label: "Blå",
@@ -42,23 +46,26 @@ export default {
       data: []
     };
 
-    blue.data.push(response.blue.win);
-    yellow.data.push(response.yellow.win);
-    red.data.push(response.red.win);
-    green.data.push(response.green.win);
+    const findColorWinners = (colorSelect, colors) => {
+      return colors.filter(color => color.color == colorSelect)[0].count;
+    };
+
+    const blueWinCount = findColorWinners("blue", colors);
+    const redWinCount = findColorWinners("red", colors);
+    const greenWinCount = findColorWinners("green", colors);
+    const yellowWinCount = findColorWinners("yellow", colors);
+
+    blue.data.push(blueWinCount);
+    red.data.push(redWinCount);
+    green.data.push(greenWinCount);
+    yellow.data.push(yellowWinCount);
+
     let highestNumber = 0;
-    if (response.blue.win > highestNumber) {
-      highestNumber = response.blue.win;
-    }
-    if (response.red.win > highestNumber) {
-      highestNumber = response.red.win;
-    }
-    if (response.green.win > highestNumber) {
-      highestNumber = response.green.win;
-    }
-    if (response.yellow.win > highestNumber) {
-      highestNumber = response.yellow.win;
-    }
+    [blueWinCount, redWinCount, greenWinCount, greenWinCount].forEach(winCount => {
+      if (winCount > highestNumber) {
+        highestNumber = winCount;
+      }
+    });
 
     let datasets = [blue, yellow, green, red];
     let chartdata = {
@@ -102,8 +109,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/media-queries.scss";
-
 .chart {
   height: 40vh;
   max-height: 500px;

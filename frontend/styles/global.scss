@@ -20,6 +20,8 @@ body {
 
 a {
   text-decoration: none;
+  cursor: pointer;
+  color: inherit;
 }
 
 .title {
@@ -51,8 +53,10 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
 
   label {
+    margin-top: 0.7rem;
     margin-bottom: 0.25rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -76,6 +80,7 @@ a {
 
   > *:not(:last-child) {
     margin-right: 2rem;
+    margin-bottom: 0.75rem;
   }
 
   &.column {
@@ -95,7 +100,7 @@ a {
 
       > *:not(:last-child) {
         margin-right: unset;
-        margin-bottom: .75rem;
+        margin-bottom: 0.75rem;
       }
     }
   }
@@ -105,6 +110,8 @@ input,
 textarea {
   border-radius: 0;
   box-shadow: none;
+  padding: 0;
+  margin: 0;
   -webkit-appearance: none;
   font-size: 1.1rem;
   border: 1px solid rgba(#333333, 0.3);
@@ -136,6 +143,11 @@ textarea {
     height: auto;
   }
 
+  &.warning {
+    background-color: #f9826c;
+    color: white;
+  }
+
   &.danger {
     background-color: $red;
     color: white;
@@ -151,9 +163,12 @@ textarea {
     top: 0;
     left: 0;
     opacity: 0;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.07),
-      0 4px 8px rgba(0, 0, 0, 0.07), 0 8px 16px rgba(0, 0, 0, 0.07),
-      0 16px 32px rgba(0, 0, 0, 0.07), 0 32px 64px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.07), 0 4px 8px rgba(0, 0, 0, 0.07),
+      0 8px 16px rgba(0, 0, 0, 0.07), 0 16px 32px rgba(0, 0, 0, 0.07), 0 32px 64px rgba(0, 0, 0, 0.07);
+  }
+
+  &.active {
+    font-weight: bold;
   }
 
   &:hover:not(:disabled) {
@@ -163,7 +178,7 @@ textarea {
       opacity: 1;
     }
   }
-  &:disabled{
+  &:disabled {
     opacity: 0.25;
     cursor: not-allowed;
   }
@@ -173,6 +188,21 @@ textarea {
   }
 }
 
+.pulse-button:not(:hover) {
+  animation: pulse 1.5s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+  to {
+    transform: scale(1);
+  }
+}
 
 .cursor {
   &-pointer {
@@ -193,11 +223,23 @@ textarea {
   text-decoration: none;
   color: $matte-text-color;
 
-  &:focus, &:hover {
+  &:focus,
+  &:hover {
     border-color: $link-color;
   }
 }
 
+.margin {
+  &-md {
+    margin: 3rem;
+  }
+  &-sm {
+    margin: 1rem;
+  }
+  &-0 {
+    margin: 0;
+  }
+}
 
 .margin-top {
   &-md {
@@ -269,14 +311,29 @@ textarea {
   margin: 0 !important;
 }
 
+.wines-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 2rem;
+}
+
 .raffle-element {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+
   margin: 20px 0;
+  color: #333333;
+
   -webkit-mask-image: url(/public/assets/images/lodd.svg);
   background-repeat: no-repeat;
   mask-image: url(/public/assets/images/lodd.svg);
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  color: #333333;
 
   &.green-raffle {
     background-color: $light-green;
@@ -293,11 +350,16 @@ textarea {
   &.red-raffle {
     background-color: $light-red;
   }
+
+  &:not(:last-of-type) {
+    margin-right: 1rem;
+  }
 }
 
 @mixin raffle {
   padding-bottom: 50px;
-  &::before, &::after {
+  &::before,
+  &::after {
     content: "";
     position: absolute;
     left: 0;
@@ -309,11 +371,11 @@ textarea {
     background-position: 0 25px;
     background-repeat: repeat-x;
   }
-  &::after{
+  &::after {
     background: radial-gradient(closest-side, transparent, transparent 50%, #fff 50%);
     background-size: 50px 50px;
     background-position: 25px -25px;
-    bottom: -25px
+    bottom: -25px;
   }
 }
 

@@ -5,7 +5,7 @@
       Velg hvilke farger du vil ha, fyll inn antall lodd og klikk 'generer'
     </p>
 
-    <RaffleGenerator @numberOfRaffles="val => this.numberOfRaffles = val" />
+    <RaffleGenerator @numberOfRaffles="val => (this.numberOfRaffles = val)" />
 
     <Vipps class="vipps" :amount="numberOfRaffles" />
     <Countdown :hardEnable="hardStart" @countdown="changeEnabled" />
@@ -43,16 +43,16 @@ export default {
       this.hardStart = true;
     },
     track() {
-      window.ga('send', 'pageview', '/lottery/generate');
+      window.ga("send", "pageview", "/lottery/generate");
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/variables.scss";
-@import "../styles/global.scss";
-@import "../styles/media-queries.scss";
+@import "@/styles/variables.scss";
+@import "@/styles/global.scss";
+@import "@/styles/media-queries.scss";
 h1 {
   cursor: pointer;
 }
@@ -67,7 +67,9 @@ p {
 }
 
 .vipps {
-  margin: 5rem auto 2.5rem auto;
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
 
   @include mobile {
     margin-top: 2rem;
@@ -75,7 +77,6 @@ p {
 }
 
 .container {
-  margin: auto;
   display: flex;
   flex-direction: column;
 }

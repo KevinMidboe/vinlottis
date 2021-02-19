@@ -1,41 +1,20 @@
-const express = require("express");
 const path = require("path");
-const RequestedWine = require(path.join(
-  __dirname, "/schemas/RequestedWine"
-));
-const Wine = require(path.join(
-  __dirname, "/schemas/Wine"
-));
+const RequestedWine = require(path.join(__dirname, "/schemas/RequestedWine"));
+const Wine = require(path.join(__dirname, "/schemas/Wine"));
 
-const deleteRequestedWineById = async (req, res) => {
-  const { id } = req.params;
-  if(id == null){
-    return res.json({
-      message: "Id er ikke definert",
-      success: false
-    })
+class RequestedWineNotFound extends Error {
+  constructor(message = "Wine with this id was not found.") {
+    super(message);
+    this.name = "RequestedWineNotFound";
+    this.statusCode = 404;
   }
-
-  await RequestedWine.deleteOne({wineId: id})
-  return res.json({
-    message: `Slettet vin med id: ${id}`,
-    success: true
-  });
 }
 
-const getAllRequestedWines = async (req, res) => {
-  const allWines = await RequestedWine.find({}).populate("wine");
+const addNew = async wine => {
+  let foundWine = await Wine.findOne({ id: wine.id });
 
-  return res.json(allWines);
-}
-
-const requestNewWine = async (req, res) => {
-  const {wine} = req.body
-
-  let thisWineIsLOKO = await Wine.findOne({id: wine.id})
-
-  if(thisWineIsLOKO == undefined){
-    thisWineIsLOKO = new Wine({
+  if (foundWine == undefined) {
+    foundWine = new Wine({
       name: wine.name,
       vivinoLink: wine.vivinoLink,
       rating: null,
@@ -43,27 +22,47 @@ const requestNewWine = async (req, res) => {
       image: wine.image,
       id: wine.id
     });
-    await thisWineIsLOKO.save()
+    await foundWine.save();
   }
 
-  let requestedWine = await RequestedWine.findOne({ "wineId": wine.id})
+  let requestedWine = await RequestedWine.findOne({ wineId: wine.id });
 
-  if(requestedWine == undefined){
+  if (requestedWine == undefined) {
     requestedWine = new RequestedWine({
       count: 1,
       wineId: wine.id,
-      wine: thisWineIsLOKO
-    })
+      wine: foundWine
+    });
   } else {
     requestedWine.count += 1;
   }
-  await requestedWine.save()
+  await requestedWine.save();
 
-  return res.send(requestedWine);
-}
+  return requestedWine;
+};
+
+const getById = id => {
+  return RequestedWine.findOne({ wineId: id })
+    .populate("wine")
+    .then(wine => {
+      if (wine == null) {
+        throw new RequestedWineNotFound();
+      }
+
+      return wine;
+    });
+};
+
+const deleteById = id => {
+  return getById(id).then(requestedWine => RequestedWine.deleteOne({ _id: requestedWine._id }));
+};
+
+const getAll = () => {
+  return RequestedWine.find({}).populate("wine");
+};
 
 module.exports = {
-  requestNewWine,
-  getAllRequestedWines,
-  deleteRequestedWineById
+  addNew,
+  getAll,
+  deleteById
 };

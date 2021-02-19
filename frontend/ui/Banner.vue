@@ -5,14 +5,14 @@
       <img src="/public/assets/images/knowit.svg" alt="knowit logo" />
     </router-link>
 
-    <a class="menu-toggle-container" aria-label="show-menu" @click="toggleMenu" :class="isOpen ? 'open' : 'collapsed'" >
+    <a class="menu-toggle-container" aria-label="show-menu" @click="toggleMenu" :class="isOpen ? 'open' : 'collapsed'">
       <span class="menu-toggle"></span>
       <span class="menu-toggle"></span>
       <span class="menu-toggle"></span>
     </a>
 
-    <nav class="menu" :class="isOpen ? 'open' : 'collapsed'" >
-      <router-link v-for="(route, index) in routes" :key="index" :to="route.route" class="menu-item-link" >
+    <nav class="menu" :class="isOpen ? 'open' : 'collapsed'">
+      <router-link v-for="(route, index) in routes" :key="index" :to="route.route" class="menu-item-link">
         <a @click="toggleMenu" class="single-route" :class="isOpen ? 'open' : 'collapsed'">{{ route.name }}</a>
         <i class="icon icon--arrow-right"></i>
       </router-link>
@@ -21,8 +21,9 @@
     <div class="clock">
       <h2 v-if="!fiveMinutesLeft || !tenMinutesOver">
         <span v-if="days > 0">{{ pad(days) }}:</span>
-        <span>{{ pad(hours) }}</span>:
-        <span>{{ pad(minutes) }}</span>:
+        <span>{{ pad(hours) }}</span
+        >: <span>{{ pad(minutes) }}</span
+        >:
         <span>{{ pad(seconds) }}</span>
       </h2>
       <h2 v-if="twoMinutesLeft || tenMinutesOver">Lotteriet er i gang!</h2>
@@ -41,7 +42,7 @@ export default {
       minutes: 0,
       seconds: 0,
       distance: 0,
-      interval: null,
+      interval: null
     };
   },
   props: {
@@ -68,7 +69,7 @@ export default {
     }
   },
   methods: {
-    toggleMenu(){
+    toggleMenu() {
       this.isOpen = this.isOpen ? false : true;
     },
     pad: function(num) {
@@ -91,10 +92,7 @@ export default {
       let nowDate = new Date();
       let now = nowDate.getTime();
       if (nextDayOfLottery.getTimezoneOffset() != nowDate.getTimezoneOffset()) {
-        let _diff =
-          (nextDayOfLottery.getTimezoneOffset() - nowDate.getTimezoneOffset()) *
-          60 *
-          -1;
+        let _diff = (nextDayOfLottery.getTimezoneOffset() - nowDate.getTimezoneOffset()) * 60 * -1;
         nextDayOfLottery.setSeconds(nextDayOfLottery.getSeconds() + _diff);
       }
       this.nextLottery = nextDayOfLottery;
@@ -110,12 +108,8 @@ export default {
 
       // Time calculations for days, hours, minutes and seconds
       this.days = Math.floor(this.distance / (1000 * 60 * 60 * 24));
-      this.hours = Math.floor(
-        (this.distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      this.minutes = Math.floor(
-        (this.distance % (1000 * 60 * 60)) / (1000 * 60)
-      );
+      this.hours = Math.floor((this.distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      this.minutes = Math.floor((this.distance % (1000 * 60 * 60)) / (1000 * 60));
       this.seconds = Math.floor((this.distance % (1000 * 60)) / 1000);
       if (this.days == 7) {
         this.days = 0;
@@ -124,7 +118,7 @@ export default {
         this.initialize();
       }
       this.interval = setTimeout(this.countdown, 500);
-    },
+    }
   }
 };
 </script>

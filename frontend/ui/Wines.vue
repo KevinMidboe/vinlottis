@@ -2,18 +2,18 @@
   <div v-if="wines.length > 0" class="wines-main-container">
     <div class="info-and-link">
       <h3>
-        Topp 5 viner
+        Topp viner
       </h3>
       <router-link to="viner">
         <span class="vin-link">Se alle viner </span>
       </router-link>
     </div>
-    <div class="wine-container">
+    <div class="wines-container">
       <Wine v-for="wine in wines" :key="wine" :wine="wine">
         <template v-slot:top>
           <div class="flex justify-end">
             <div class="requested-count cursor-pointer">
-              <span> {{ wine.occurences }} </span>
+              <span> {{ wine.occurences }} </span>
               <i class="icon icon--heart" />
             </div>
           </div>
@@ -32,32 +32,36 @@ export default {
     Wine
   },
   data() {
-    return { 
-      wines: [], 
-      clickedWine: null, 
+    return {
+      wines: [],
+      clickedWine: null,
+      limit: 18
     };
   },
   async mounted() {
-    let response = await overallWineStatistics();
-
-    response.sort();
-    response = response
-      .filter(wine => wine.name != null && wine.name != "")
-      .sort(
-        this.predicate(
-          {
-            name: "occurences",
-            reverse: true
-          },
-          {
-            name: "rating",
-            reverse: true
-          }
-        )
-      );
-    this.wines = response.slice(0, 5);
+    this.getAllWines();
   },
   methods: {
+    getAllWines() {
+      return fetch(`/api/wines?limit=${this.limit}`)
+        .then(resp => resp.json())
+        .then(response => {
+          let { wines, success } = response;
+
+          this.wines = wines.sort(
+            this.predicate(
+              {
+                name: "occurences",
+                reverse: true
+              },
+              {
+                name: "rating",
+                reverse: true
+              }
+            )
+          );
+        });
+    },
     predicate: function() {
       var fields = [],
         n_fields = arguments.length,
@@ -125,42 +129,72 @@ export default {
 <style lang="scss" scoped>
 @import "@/styles/variables.scss";
 @import "@/styles/global.scss";
-@import "../styles/media-queries.scss";
+@import "@/styles/media-queries.scss";
 
 .wines-main-container {
   margin-bottom: 10em;
 }
 
-.info-and-link{
+.info-and-link {
   display: flex;
   justify-content: space-between;
 }
 
-.wine-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-gap: 2rem;
+.requested-count {
+  display: flex;
+  align-items: center;
+  margin-top: -0.5rem;
+  background-color: rgb(244, 244, 244);
+  border-radius: 1.1rem;
+  padding: 0.25rem 1rem;
+  font-size: 1.25em;
 
-  .requested-count {
-    display: flex;
-    align-items: center;
-    margin-top: -0.5rem;
-    background-color: rgb(244,244,244);
-    border-radius: 1.1rem;
-    padding: 0.25rem 1rem;
-    font-size: 1.25em;
-
-    span {
-      padding-right: 0.5rem;
-      line-height: 1.25em;
-    }
-    .icon--heart{
-      font-size: 1.5rem;
-      color: $link-color;
-    }
+  span {
+    padding-right: 0.5rem;
+    line-height: 1.25em;
+  }
+  .icon--heart {
+    font-size: 1.5rem;
+    color: var(--link-color);
   }
 }
 
+// Call for help
+.wines-container {
+  @media (max-width: 1643px) {
+    *:nth-child(n + 7) {
+      display: none;
+    }
+  }
 
+  @media (max-width: 2066px) {
+    *:nth-child(n + 9) {
+      display: none;
+    }
+  }
 
+  @media (max-width: 2490px) {
+    *:nth-child(n + 11) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 2915px) {
+    *:nth-child(n + 13) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 3335px) {
+    *:nth-child(n + 15) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 3758px) {
+    *:nth-child(n + 17) {
+      display: none;
+    }
+  }
+}
 </style>

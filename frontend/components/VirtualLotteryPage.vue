@@ -5,7 +5,10 @@
         <div class="instructions">
           <h1 class="title">Virtuelt lotteri</h1>
           <ol>
-            <li>Vurder om du ønsker å bruke <router-link to="/generate" class="vin-link">loddgeneratoren</router-link>, eller sjekke ut <router-link to="/dagens" class="vin-link">dagens fangst.</router-link></li>
+            <li>
+              Vurder om du ønsker å bruke <router-link to="/generate" class="vin-link">loddgeneratoren</router-link>,
+              eller sjekke ut <router-link to="/dagens" class="vin-link">dagens fangst.</router-link>
+            </li>
             <li>Send vipps med melding "Vinlotteri" for å bli registrert til lotteriet.</li>
             <li>Send gjerne melding om fargeønske også.</li>
           </ol>
@@ -15,18 +18,16 @@
 
         <VippsPill class="vipps-pill mobile-only" />
 
-         <p class="call-to-action">
-            <span class="vin-link">Følg med på utviklingen</span> og <span class="vin-link">chat om trekningen</span>
-            <i class="icon icon--arrow-left" @click="scrollToContent"></i></p>
+        <p class="call-to-action">
+          <span class="vin-link" @click="scrollToContent">Følg med på utviklingen</span> og
+          <span class="vin-link" @click="scrollToContent">chat om trekningen</span>
+          <i class="icon icon--arrow-left" @click="scrollToContent"></i>
+        </p>
       </div>
     </header>
 
     <div class="container" ref="content">
-      <WinnerDraw
-        :currentWinnerDrawn="currentWinnerDrawn"
-        :currentWinner="currentWinner"
-        :attendees="attendees"
-      />
+      <WinnerDraw :currentWinnerDrawn="currentWinnerDrawn" :currentWinner="currentWinner" :attendees="attendees" />
 
       <div class="todays-raffles">
         <h2>Liste av lodd kjøpt i dag</h2>
@@ -51,15 +52,16 @@
       </div>
     </div>
 
-    <div class="container wines-container">
+    <div class="todays-wines">
       <h2>Dagens fangst ({{ wines.length }})</h2>
-      <Wine :wine="wine" v-for="wine in wines" :key="wine" />
+      <div class="wines-container">
+        <Wine :wine="wine" v-for="wine in wines" :key="wine" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { attendees, winners, prelottery } from "@/api";
 import Chat from "@/ui/Chat";
 import Vipps from "@/ui/Vipps";
 import VippsPill from "@/ui/VippsPill";
@@ -74,18 +76,18 @@ export default {
   data() {
     return {
       attendees: [],
+      attendeesFetched: false,
       winners: [],
       wines: [],
       currentWinnerDrawn: false,
       currentWinner: null,
       socket: null,
-      attendeesFetched: false,
       wasDisconnected: false,
       ticketsBought: {
-        "red": 0,
-        "blue": 0,
-        "green": 0,
-        "yellow": 0
+        red: 0,
+        blue: 0,
+        green: 0,
+        yellow: 0
       }
     };
   },
@@ -129,42 +131,45 @@ export default {
     this.socket = null;
   },
   methods: {
-    getWinners: async function() {
-      let response = await winners();
-      if (response) {
-        this.winners = response;
-      }
+    getWinners() {
+      fetch("/api/lottery/winners")
+        .then(resp => resp.json())
+        .then(response => (this.winners = response.winners));
     },
     getTodaysWines() {
-      prelottery()
+      fetch("/api/lottery/wines")
+        .then(resp => resp.json())
+        .then(response => response.wines)
         .then(wines => {
           this.wines = wines;
           this.todayExists = wines.length > 0;
         })
-        .catch(_ => this.todayExists = false)
+        .catch(_ => (this.todayExists = false));
     },
-    getAttendees: async function() {
-      let response = await attendees();
-      if (response) {
-        this.attendees = response;
-        if (this.attendees == undefined || this.attendees.length == 0) {
-          this.attendeesFetched = true;
-          return;
-        }
-        const addValueOfListObjectByKey = (list, key) =>
-          list.map(object => object[key]).reduce((a, b) => a + b);
+    getAttendees() {
+      fetch("/api/lottery/attendees")
+        .then(resp => resp.json())
+        .then(response => {
+          const { attendees } = response;
+          this.attendees = attendees || [];
 
-        this.ticketsBought = {
-          red: addValueOfListObjectByKey(response, "red"),
-          blue: addValueOfListObjectByKey(response, "blue"),
-          green: addValueOfListObjectByKey(response, "green"),
-          yellow: addValueOfListObjectByKey(response, "yellow")
-        };
-      }
-      this.attendeesFetched = true;
+          if (attendees == undefined || attendees.length == 0) {
+            return;
+          }
+
+          const addValueOfListObjectByKey = (list, key) => list.map(object => object[key]).reduce((a, b) => a + b);
+
+          this.ticketsBought = {
+            red: addValueOfListObjectByKey(attendees, "red"),
+            blue: addValueOfListObjectByKey(attendees, "blue"),
+            green: addValueOfListObjectByKey(attendees, "green"),
+            yellow: addValueOfListObjectByKey(attendees, "yellow")
+          };
+        })
+        .finally(_ => (this.attendeesFetched = true));
     },
     scrollToContent() {
-      console.log(window.scrollY)
+      console.log(window.scrollY);
       const intersectingHeaderHeight = this.$refs.header.getBoundingClientRect().bottom - 50;
       const { scrollY } = window;
       let scrollHeight = intersectingHeaderHeight;
@@ -178,14 +183,13 @@ export default {
       });
     },
     track() {
-      window.ga('send', 'pageview', '/lottery/game');
+      window.ga("send", "pageview", "/lottery/game");
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-
 @import "../styles/variables.scss";
 @import "../styles/media-queries.scss";
 
@@ -201,7 +205,8 @@ export default {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 
-  > div, > section {
+  > div,
+  > section {
     @include mobile {
       grid-column: span 5;
     }
@@ -343,6 +348,8 @@ header {
 
   > div {
     padding: 1rem;
+    max-height: 638px;
+    overflow-y: scroll;
 
     -webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
     -moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
@@ -369,11 +376,14 @@ header {
   }
 }
 
+.todays-wines {
+  width: 80vw;
+  padding: 0 10vw;
 
-.wines-container {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 4rem;
+  @include mobile {
+    width: 90vw;
+    padding: 0 5vw;
+  }
 
   h2 {
     width: 100%;

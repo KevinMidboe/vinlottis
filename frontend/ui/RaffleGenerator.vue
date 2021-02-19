@@ -2,28 +2,28 @@
   <div class="container">
     <div class="input-line">
       <label for="redCheckbox">
-        <input type="checkbox" id="redCheckbox" v-model="redCheckbox" @click="generateColors"/>
+        <input type="checkbox" id="redCheckbox" v-model="redCheckbox" @click="generateColors" />
         <span class="border">
           <span class="checkmark"></span>
         </span>
         <span class="text">Rød</span>
       </label>
       <label for="blueCheckbox">
-        <input type="checkbox" id="blueCheckbox" v-model="blueCheckbox" @click="generateColors"/>
+        <input type="checkbox" id="blueCheckbox" v-model="blueCheckbox" @click="generateColors" />
         <span class="border">
           <span class="checkmark"></span>
         </span>
         <span class="text">Blå</span>
       </label>
       <label for="yellowCheckbox">
-        <input type="checkbox" id="yellowCheckbox" v-model="yellowCheckbox" @click="generateColors"/>
+        <input type="checkbox" id="yellowCheckbox" v-model="yellowCheckbox" @click="generateColors" />
         <span class="border">
           <span class="checkmark"></span>
         </span>
         <span class="text">Gul</span>
       </label>
       <label for="greenCheckbox">
-        <input type="checkbox" id="greenCheckbox" v-model="greenCheckbox" @click="generateColors"/>
+        <input type="checkbox" id="greenCheckbox" v-model="greenCheckbox" @click="generateColors" />
         <span class="border">
           <span class="checkmark"></span>
         </span>
@@ -31,28 +31,16 @@
       </label>
     </div>
     <div class="input-line">
-      <input
-        type="number"
-        placeholder="Antall lodd"
-        @keyup.enter="generateColors"
-        v-model="numberOfRaffles"
-      />
+      <input type="number" placeholder="Antall lodd" @keyup.enter="generateColors" v-model="numberOfRaffles" />
       <button class="vin-button" @click="generateColors">Generer</button>
     </div>
-    <div class="colors">
+    <div class="colors" :class="{ compact }">
       <div
         v-for="color in colors"
         :class="getColorClass(color)"
         class="color-box"
         :style="{ transform: 'rotate(' + getRotation() + 'deg)' }"
       ></div>
-    </div>
-
-    <div class="color-count-container" v-if="generated">
-      <span>Rød: {{ red }}</span>
-      <span>Blå: {{ blue }}</span>
-      <span>Gul: {{ yellow }}</span>
-      <span>Grønn: {{ green }}</span>
     </div>
   </div>
 </template>
@@ -64,11 +52,15 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    compact: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      numberOfRaffles: 4,
+      numberOfRaffles: 6,
       colors: [],
       blue: 0,
       red: 0,
@@ -101,18 +93,21 @@ export default {
       if (time == 5) {
         this.generating = false;
         this.generated = true;
-        if (this.numberOfRaffles > 1 &&
-          [this.redCheckbox, this.greenCheckbox, this.yellowCheckbox, this.blueCheckbox].filter(value => value == true).length == 1) {
-          return
+        if (
+          this.numberOfRaffles > 1 &&
+          [this.redCheckbox, this.greenCheckbox, this.yellowCheckbox, this.blueCheckbox].filter(value => value == true)
+            .length == 1
+        ) {
+          return;
         }
 
         if (new Set(this.colors).size == 1) {
           alert("BINGO");
         }
 
-        this.emitColors()
+        this.emitColors();
 
-        window.ga('send', {
+        window.ga("send", {
           hitType: "event",
           eventCategory: "Raffles",
           eventAction: "Generate",
@@ -147,8 +142,7 @@ export default {
       }
       if (this.numberOfRaffles > 0) {
         for (let i = 0; i < this.numberOfRaffles; i++) {
-          let color =
-            randomArray[Math.floor(Math.random() * randomArray.length)];
+          let color = randomArray[Math.floor(Math.random() * randomArray.length)];
           this.colors.push(color);
           if (color == 1) {
             this.red += 1;
@@ -201,12 +195,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/variables.scss";
-@import "../styles/global.scss";
-@import "../styles/media-queries.scss";
+@import "@/styles/variables.scss";
+@import "@/styles/global.scss";
+@import "@/styles/media-queries.scss";
 
 .container {
-  margin: auto;
+  // margin: auto;
   display: flex;
   flex-direction: column;
 }
@@ -282,6 +276,15 @@ label .text {
   max-width: 1400px;
   margin: 3rem auto 0;
 
+  &.compact {
+    margin-top: 0.5rem;
+
+    > .color-box {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
   @include mobile {
     margin: 1.8rem auto 0;
   }
@@ -307,20 +310,6 @@ label .text {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-}
-
-.color-count-container {
-  margin: auto;
-  width: 300px;
-  justify-content: space-around;
-  align-items: center;
-  display: flex;
-  font-family: Arial;
-  margin-top: 35px;
-
-  @include mobile {
-    width: 80vw;
-  }
 }
 
 .green {

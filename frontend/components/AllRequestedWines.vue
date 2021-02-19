@@ -2,40 +2,50 @@
   <main class="container">
     <h1>Alle foreslåtte viner</h1>
 
-    <section class="requested-wines-container">
+    <section class="wines-container">
       <p v-if="wines == undefined || wines.length == 0">Ingen har foreslått noe enda!</p>
 
-      <RequestedWineCard v-for="requestedEl in wines" :key="requestedEl.wine._id" :requestedElement="requestedEl" @wineDeleted="filterOutDeletedWine" :showDeleteButton="isAdmin"/>
+      <RequestedWineCard
+        v-for="requestedWine in wines"
+        :key="requestedWine.wine._id"
+        :requestedElement="requestedWine"
+        @wineDeleted="filterOutDeletedWine"
+        :showDeleteButton="isAdmin"
+      />
     </section>
   </main>
 </template>
 
 <script>
-import { allRequestedWines } from "@/api";
 import RequestedWineCard from "@/ui/RequestedWineCard";
 export default {
   components: {
     RequestedWineCard
   },
-  data(){
-    return{
+  data() {
+    return {
       wines: undefined,
-      canRequest: true,
       isAdmin: false
-    }
-  },
-  methods: {
-    filterOutDeletedWine(wine){
-      this.wines = this.wines.filter(item => item.wine._id !== wine._id)
-    },
-    async refreshData(){
-      [this.wines, this.isAdmin] = await allRequestedWines() || [[], false]
-    }
+    };
   },
   mounted() {
-    this.refreshData()
+    this.fetchRequestedWines();
+  },
+  methods: {
+    filterOutDeletedWine(wine) {
+      this.wines = this.wines.filter(item => item.wine._id !== wine._id);
+    },
+    fetchRequestedWines() {
+      return fetch("/api/requests")
+        .then(resp => {
+          this.isAdmin = resp.headers.get("vinlottis-admin") == "true";
+          return resp;
+        })
+        .then(resp => resp.json())
+        .then(response => (this.wines = response.wines));
+    }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -54,11 +64,5 @@ h1 {
   font-family: "knowit";
   color: $matte-text-color;
   font-weight: normal;
-}
-
-.requested-wines-container{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-gap: 2rem;
 }
 </style>

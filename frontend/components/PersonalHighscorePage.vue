@@ -14,20 +14,25 @@
 
         <h4 class="margin-bottom-0">Vinnende farger:</h4>
         <div class="raffle-container el-spacing">
-          <div class="raffle-element" :class="color + `-raffle`" v-for="[color, occurences] in Object.entries(winningColors)" :key="color">
+          <div
+            class="raffle-element"
+            :class="color + `-raffle`"
+            v-for="[color, occurences] in Object.entries(winningColors)"
+            :key="color"
+          >
             {{ occurences }}
           </div>
         </div>
 
         <h4 class="el-spacing">Flasker vunnet:</h4>
 
-        <div v-for="win in winner.highscore" :key="win._id">
+        <div v-for="win in winner.wins" :key="win._id">
           <router-link :to="winDateUrl(win.date)" class="days-ago">
-            {{ humanReadableDate(win.date) }} - {{ daysAgo(win.date) }} dager siden
+            {{ humanReadableDate(win.date) }} - {{ daysAgo(win.date) }} dager siden
           </router-link>
-          
-          <div class="won-wine">
-            <img :src="smallerWineImage(win.wine.image)">
+
+          <div class="won-wine" v-if="win.wine">
+            <img :src="smallerWineImage(win.wine.image)" />
 
             <div class="won-wine-details">
               <h3>{{ win.wine.name }}</h3>
@@ -37,6 +42,11 @@
             </div>
 
             <div class="raffle-element small" :class="win.color + `-raffle`"></div>
+          </div>
+          <div class="won-wine" v-else>
+            <div class="won-wine-details">
+              <h3>Oisann! Klarte ikke finne vin.</h3>
+            </div>
           </div>
         </div>
       </section>
@@ -49,67 +59,71 @@
 </template>
 
 <script>
-import { getWinnerByName } from "@/api";
-import { humanReadableDate, daysAgo } from "@/utils";
+import { dateString, humanReadableDate, daysAgo } from "@/utils";
 
 export default {
   data() {
     return {
       winner: undefined,
+      name: undefined,
       error: undefined,
       previousRoute: {
         default: true,
         name: "topplisten",
         path: "/highscore"
       }
-    }
+    };
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      if (from.name != null)
-        vm.previousRoute = from
-    })
+      if (from.name != null) vm.previousRoute = from;
+    });
   },
   computed: {
     numberOfWins() {
-      return this.winner.highscore.length
+      return this.winner.wins.length;
     }
   },
   created() {
-    const nameFromURL = this.$route.params.name;
-    getWinnerByName(nameFromURL)
+    this.name = this.$route.params.name;
+    this.getWinnerByName(this.name)
       .then(winner => this.setWinner(winner))
-      .catch(err => this.error = `Ingen med navn: "${nameFromURL}" funnet.`)
+      .catch(err => (this.error = `Ingen med navn: "${nameFromURL}" funnet.`));
   },
   methods: {
+    getWinnerByName(name) {
+      return fetch(`/api/history/by-name/${name}`)
+        .then(resp => resp.json())
+        .then(response => response.winner);
+    },
     setWinner(winner) {
       this.winner = {
         name: winner.name,
         highscore: [],
         ...winner
-      }
-      this.winningColors = this.findWinningColors()
+      };
+      this.winningColors = this.findWinningColors();
     },
     smallerWineImage(image) {
-      if (image && image.includes(`515x515`))
-        return image.replace(`515x515`, `175x175`)
-      return image
+      if (image && image.includes(`515x515`)) return image.replace(`515x515`, `175x175`);
+      if (image && image.includes(`500x500`)) return image.replace(`500x500`, `175x175`);
+      return image;
     },
     findWinningColors() {
-      const colors = this.winner.highscore.map(win => win.color)
-      const colorOccurences = {}
+      const colors = this.winner.wins.map(win => win.color);
+      const colorOccurences = {};
       colors.forEach(color => {
         if (colorOccurences[color] == undefined) {
-          colorOccurences[color] = 1
+          colorOccurences[color] = 1;
         } else {
-          colorOccurences[color] += 1
+          colorOccurences[color] += 1;
         }
-      })
-      return colorOccurences
+      });
+      return colorOccurences;
     },
     winDateUrl(date) {
-      const timestamp = new Date(date).getTime();
-      return `/history/${timestamp}`
+      const dateParameter = dateString(new Date(date));
+      return `/history/${dateParameter}`;
     },
     navigateBack() {
       if (this.previousRoute.default) {
@@ -121,7 +135,7 @@ export default {
     humanReadableDate: humanReadableDate,
     daysAgo: daysAgo
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -142,7 +156,7 @@ $elementSpacing: 3rem;
 }
 
 .container {
-  width: 90vw;  
+  width: 90vw;
   margin: 3rem auto;
   margin-bottom: 0;
   padding-bottom: 3rem;
@@ -233,7 +247,7 @@ h1 {
     @include tablet {
       width: calc(100% - 160px - 80px);
     }
-    
+
     & > * {
       width: 100%;
     }
@@ -259,10 +273,9 @@ h1 {
   }
 }
 
-
 .backdrop {
-  $background: rgb(244,244,244);
-  
+  $background: rgb(244, 244, 244);
+
   --padding: 2rem;
   @include desktop {
     --padding: 5rem;

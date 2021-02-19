@@ -7,6 +7,7 @@
         <input
           type="text"
           v-model="username"
+          ref="username"
           placeholder="Brukernavn"
           autocapitalize="none"
           @keyup.enter="submit"
@@ -33,6 +34,9 @@ export default {
       password: undefined,
       error: undefined
     };
+  },
+  mounted() {
+    this.$refs.username.focus();
   },
   methods: {
     submit() {

@@ -4,7 +4,7 @@
       <div class="flex justify-end">
         <div class="requested-count cursor-pointer" @click="request">
           <span>{{ requestedElement.count }}</span>
-          <i class="icon icon--heart" :class="{ 'active': locallyRequested }" />
+          <i class="icon icon--heart" :class="{ active: locallyRequested }" />
         </div>
       </div>
     </template>
@@ -17,10 +17,9 @@
 
     <template v-slot:bottom>
       <div class="float-left request">
-        <i class="icon icon--heart request-icon" :class="{ 'active': locallyRequested }"></i>
-        <a aria-role="button" tabindex="0" class="link" @click="request"
-           :class="{ 'active': locallyRequested }">
-          {{ locallyRequested ? 'Anbefalt' : 'Anbefal' }}
+        <i class="icon icon--heart request-icon" :class="{ active: locallyRequested }"></i>
+        <a aria-role="button" tabindex="0" class="link" @click="request" :class="{ active: locallyRequested }">
+          {{ locallyRequested ? "Anbefalt" : "Anbefal" }}
         </a>
       </div>
     </template>
@@ -35,14 +34,14 @@ export default {
   components: {
     Wine
   },
-  data(){
+  data() {
     return {
       wine: this.requestedElement.wine,
       locallyRequested: false
-    }
+    };
   },
   props: {
-    requestedElement: {
+    requestedElement: {
       required: true,
       type: Object
     },
@@ -53,27 +52,26 @@ export default {
     }
   },
   methods: {
-    request(){
-      if (this.locallyRequested)
-        return
-      console.log("requesting", this.wine)
-      this.locallyRequested = true
-      this.requestedElement.count = this.requestedElement.count +1
-      requestNewWine(this.wine)
+    request() {
+      if (this.locallyRequested) return;
+
+      this.locallyRequested = true;
+      this.requestedElement.count = this.requestedElement.count + 1;
+      requestNewWine(this.wine);
     },
     async deleteWine() {
-      const wine = this.wine
+      const wine = this.wine;
       if (window.confirm("Er du sikker på at du vil slette vinen?")) {
         let response = await deleteRequestedWine(wine);
-        if (response['success'] == true) {
-          this.$emit('wineDeleted', wine);
+        if (response["success"] == true) {
+          this.$emit("wineDeleted", wine);
         } else {
           alert("Klarte ikke slette vinen");
         }
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -83,7 +81,7 @@ export default {
   display: flex;
   align-items: center;
   margin-top: -0.5rem;
-  background-color: rgb(244,244,244);
+  background-color: rgb(244, 244, 244);
   border-radius: 1.1rem;
   padding: 0.25rem 1rem;
   font-size: 1.25em;
@@ -93,14 +91,14 @@ export default {
     line-height: 1.25em;
   }
 
-  .icon--heart{
+  .icon--heart {
     color: grey;
   }
 }
 
 .active {
   &.link {
-    border-color: $link-color
+    border-color: $link-color;
   }
 
   &.icon--heart {

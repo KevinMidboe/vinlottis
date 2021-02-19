@@ -1,8 +1,6 @@
 <template>
   <main class="main-container">
-
     <section class="top-container">
-
       <div class="want-to-win">
         <h1>
           Vil du også vinne?
@@ -18,8 +16,8 @@
       </div>
 
       <router-link to="/lottery" class="participate-button">
-          <i class="icon icon--arrow-right"></i>
-          <p>Trykk her for å delta</p>
+        <i class="icon icon--arrow-right"></i>
+        <p>Trykk her for å delta</p>
       </router-link>
 
       <router-link to="/generate" class="see-details-link">
@@ -38,17 +36,16 @@
         <i class="icon icon--bottle"></i>
         <i class="icon icon--bottle"></i>
       </div>
-
     </section>
 
     <section class="content-container">
-
       <div class="scroll-info">
-        <i class ="icon icon--arrow-long-right"></i>
+        <i class="icon icon--arrow-long-right"></i>
         <p>Scroll for å se vinnere og annen gøy statistikk</p>
       </div>
 
-      <Highscore class="highscore"/>
+      <Highscore class="highscore" />
+
       <TotalBought class="total-bought" />
 
       <section class="chart-container">
@@ -56,12 +53,10 @@
         <WinGraph class="win" />
       </section>
 
-      <Wines class="wines-container" />
-
+      <Wines class="wine-container" />
     </section>
 
     <Countdown :hardEnable="hardStart" @countdown="changeEnabled" />
-
   </main>
 </template>
 
@@ -96,11 +91,7 @@ export default {
       if (!("PushManager" in window)) {
         return false;
       }
-      return (
-        Notification.permission !== "granted" ||
-        !this.pushAllowed ||
-        localStorage.getItem("push") == null
-      );
+      return Notification.permission !== "granted" || !this.pushAllowed || localStorage.getItem("push") == null;
     }
   },
   async mounted() {
@@ -120,7 +111,7 @@ export default {
       this.hardStart = way;
     },
     track() {
-      window.ga('send', 'pageview', '/');
+      window.ga("send", "pageview", "/");
     },
     startCountdown() {
       this.hardStart = true;
@@ -145,7 +136,7 @@ export default {
   align-items: center;
   justify-items: start;
 
-  @include mobile{
+  @include mobile {
     padding-bottom: 2em;
     height: 15em;
     grid-template-rows: repeat(7, 1fr);
@@ -156,13 +147,13 @@ export default {
     grid-column: 2 / -1;
     display: flex;
 
-    h1{
+    h1 {
       font-size: 2em;
       font-weight: 400;
     }
 
     @include tablet {
-      h1{
+      h1 {
         font-size: 3em;
       }
       grid-row: 2 / 4;
@@ -170,7 +161,7 @@ export default {
     }
   }
 
-  .notification-request-button{
+  .notification-request-button {
     cursor: pointer;
   }
 
@@ -229,7 +220,7 @@ export default {
   .icons-container {
     grid-column: 1 / -1;
     grid-row: 7 / -1;
-    @include mobile{
+    @include mobile {
       margin-top: 2em;
       display: none;
     }
@@ -239,7 +230,7 @@ export default {
       grid-column: 7 / -1;
     }
 
-    @include desktop{
+    @include desktop {
       grid-row: 4 / -3;
       grid-column: 7 / 11;
     }
@@ -257,30 +248,27 @@ export default {
     i {
       font-size: 5em;
 
-      &.icon--heart-sparks{
+      &.icon--heart-sparks {
         grid-column: 2 / 4;
         grid-row: 2 / 4;
         align-self: center;
         justify-self: center;
-
       }
-      &.icon--face-1{
+      &.icon--face-1 {
         grid-column: 4 / 7;
         grid-row: 2 / 4;
         justify-self: center;
-
       }
-      &.icon--face-3{
+      &.icon--face-3 {
         grid-column: 7 / 10;
         grid-row: 1 / 4;
         align-self: center;
       }
-      &.icon--ballon{
+      &.icon--ballon {
         grid-column: 9 / 11;
         grid-row: 3 / 5;
-
       }
-      &.icon--bottle{
+      &.icon--bottle {
         grid-row: 4 / -1;
 
         &:nth-of-type(5) {
@@ -297,14 +285,13 @@ export default {
         &:nth-of-type(8) {
           grid-column: 7 / 8;
         }
-        &:nth-of-type(9){
+        &:nth-of-type(9) {
           grid-column: 8 / 9;
           align-self: center;
         }
       }
     }
   }
-
 }
 
 h1 {
@@ -312,12 +299,12 @@ h1 {
   font-family: "knowit";
 }
 
-.to-lottery{
-    color: #333;
-    text-decoration: none;
-    display: block;
-    text-align: center;
-    margin-bottom: 0;
+.to-lottery {
+  color: #333;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  margin-bottom: 0;
 }
 
 .content-container {
@@ -326,10 +313,10 @@ h1 {
   row-gap: 5em;
 
   .scroll-info {
-      display: flex;
-      align-items: center;
-      column-gap: 10px;
-      grid-column: 2 / -2;
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    grid-column: 2 / -2;
   }
 
   .chart-container {
@@ -346,8 +333,8 @@ h1 {
     grid-column: 2 / -2;
   }
 
-  .wines-container {
-    grid-column: 2 / -2;
+  .wine-container {
+    grid-column: 3 / -3;
   }
 
   .icon--arrow-long-right {
@@ -356,8 +343,7 @@ h1 {
   }
 
   @include tablet {
-
-    .scroll-info{
+    .scroll-info {
       grid-column: 3 / -3;
     }
 

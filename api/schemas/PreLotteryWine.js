@@ -6,9 +6,14 @@ const PreLotteryWine = new Schema({
   vivinoLink: String,
   rating: Number,
   id: String,
+  year: Number,
   image: String,
   price: String,
-  country: String
+  country: String,
+  winner: {
+    type: Schema.Types.ObjectId,
+    ref: "VirtualWinner"
+  }
 });
 
 module.exports = mongoose.model("PreLotteryWine", PreLotteryWine);

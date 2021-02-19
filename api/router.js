@@ -4,67 +4,97 @@ const path = require("path");
 const mustBeAuthenticated = require(path.join(__dirname, "/middleware/mustBeAuthenticated"));
 const setAdminHeaderIfAuthenticated = require(path.join(__dirname, "/middleware/setAdminHeaderIfAuthenticated"));
 
-const update = require(path.join(__dirname, "/update"));
-const retrieve = require(path.join(__dirname, "/retrieve"));
-const request = require(path.join(__dirname, "/request"));
-const subscriptionApi = require(path.join(__dirname, "/subscriptions"));
-const userApi = require(path.join(__dirname, "/user"));
-const wineinfo = require(path.join(__dirname, "/wineinfo"));
-const virtualApi = require(path.join(__dirname, "/virtualLottery"));
-const virtualRegistrationApi = require(path.join(
-  __dirname, "/virtualRegistration"
-));
-const lottery = require(path.join(__dirname, "/lottery"));
-const chatHistoryApi = require(path.join(__dirname, "/chatHistory"));
+const requestController = require(path.join(__dirname, "/controllers/requestController"));
+const vinmonopoletController = require(path.join(__dirname, "/controllers/vinmonopoletController"));
+const chatController = require(path.join(__dirname, "/controllers/chatController"));
+const userController = require(path.join(__dirname, "/controllers/userController"));
+const historyController = require(path.join(__dirname, "/controllers/historyController"));
+const attendeeController = require(path.join(__dirname, "/controllers/lotteryAttendeeController"));
+const prelotteryWineController = require(path.join(__dirname, "/controllers/lotteryWineController"));
+const winnerController = require(path.join(__dirname, "/controllers/lotteryWinnerController"));
+const lotteryController = require(path.join(__dirname, "/controllers/lotteryController"));
+const prizeDistributionController = require(path.join(__dirname, "/controllers/prizeDistributionController"));
+const wineController = require(path.join(__dirname, "/controllers/wineController"));
+const messageController = require(path.join(__dirname, "/controllers/messageController"));
 
 const router = express.Router();
 
-router.get("/wineinfo/search", wineinfo.wineSearch);
+router.get("/vinmonopolet/wine/search", vinmonopoletController.searchWines);
+router.get("/vinmonopolet/wine/by-ean/:ean", vinmonopoletController.wineByEAN);
+router.get("/vinmonopolet/wine/by-id/:id", vinmonopoletController.wineById);
+router.get("/vinmonopolet/stores/", vinmonopoletController.allStores);
+router.get("/vinmonopolet/stores/search", vinmonopoletController.searchStores);
 
-router.get("/request/all", setAdminHeaderIfAuthenticated, request.getAllRequestedWines);
-router.post("/request/new-wine", request.requestNewWine);
-router.delete("/request/:id", request.deleteRequestedWineById);
+router.get("/requests", setAdminHeaderIfAuthenticated, requestController.allRequests);
+router.post("/request", requestController.addRequest);
+router.delete("/request/:id", mustBeAuthenticated, requestController.deleteRequest);
 
-router.get("/wineinfo/schema", mustBeAuthenticated, update.schema);
-router.get("/wineinfo/:ean", wineinfo.byEAN);
+router.get("/wines", wineController.allWines); // sort = by-date, by-name, by-occurences
+router.get("/wine/:id", wineController.wineById); // sort = by-date, by-name, by-occurences
+// router.update("/wine/:id", mustBeAuthenticated, wineController.update);
 
-router.post("/log/wines", mustBeAuthenticated, update.submitWines);
-router.post("/lottery", update.submitLottery);
-router.post("/lottery/wines", update.submitWinesToLottery);
-// router.delete("/lottery/wine/:id", update.deleteWineFromLottery);
-router.post("/lottery/winners", update.submitWinnersToLottery);
+router.get("/history", historyController.all);
+router.get("/history/latest", historyController.latest);
+router.get("/history/by-wins/", historyController.orderByWins);
+router.get("/history/by-color/", historyController.groupByColor);
+router.get("/history/by-date/:date", historyController.byDate);
+router.get("/history/by-name/:name", historyController.byName);
+router.get("/history/search/", historyController.search);
+router.get("/history/by-date/", historyController.groupByDate);
 
-router.get("/wines/prelottery", retrieve.prelotteryWines);
-router.get("/purchase/statistics", retrieve.allPurchase);
-router.get("/purchase/statistics/color", retrieve.purchaseByColor);
-router.get("/highscore/statistics", retrieve.highscore)
-router.get("/wines/statistics", retrieve.allWines);
-router.get("/wines/statistics/overall", retrieve.allWinesSummary);
+// router.get("/purchases", purchaseController.lotteryPurchases);
+// // returns list per date and count of each colors that where bought
+// router.get("/purchases/summary", purchaseController.lotteryPurchases);
+// // returns total, wins?, stolen
+// router.get("/purchase/:date", purchaseController.lotteryPurchaseByDate);
 
-router.get("/lottery/all", lottery.all);
-router.get("/lottery/latest", lottery.latest);
-router.get("/lottery/by-date/:date", lottery.byEpochDate);
-router.get("/lottery/by-name/:name", lottery.byName);
+router.get("/lottery/wines", prelotteryWineController.allWines);
+router.get("/lottery/wine/schema", mustBeAuthenticated, prelotteryWineController.wineSchema);
+router.get("/lottery/wine/:id", mustBeAuthenticated, prelotteryWineController.wineById);
+router.post("/lottery/wines", mustBeAuthenticated, prelotteryWineController.addWines);
+router.delete("/lottery/wines", mustBeAuthenticated, prelotteryWineController.deleteWines);
+router.put("/lottery/wine/:id", mustBeAuthenticated, prelotteryWineController.updateWineById);
+router.delete("/lottery/wine/:id", mustBeAuthenticated, prelotteryWineController.deleteWineById);
 
-router.delete('/virtual/winner/all', mustBeAuthenticated, virtualApi.deleteWinners);
-router.delete('/virtual/attendee/all', mustBeAuthenticated, virtualApi.deleteAttendees);
-router.get('/virtual/winner/draw', virtualApi.drawWinner);
-router.get('/virtual/winner/all', virtualApi.winners);
-router.get('/virtual/winner/all/secure', mustBeAuthenticated, virtualApi.winnersSecure);
-router.post('/virtual/finish', mustBeAuthenticated, virtualApi.finish);
-router.get('/virtual/attendee/all', virtualApi.attendees);
-router.get('/virtual/attendee/all/secure', mustBeAuthenticated, virtualApi.attendeesSecure);
-router.post('/virtual/attendee/add', mustBeAuthenticated, virtualApi.addAttendee);
+router.get("/lottery/attendees", setAdminHeaderIfAuthenticated, attendeeController.allAttendees);
+router.delete("/lottery/attendees", mustBeAuthenticated, attendeeController.deleteAttendees);
+router.post("/lottery/attendee", mustBeAuthenticated, attendeeController.addAttendee);
+router.put("/lottery/attendee/:id", mustBeAuthenticated, attendeeController.updateAttendeeById);
+router.delete("/lottery/attendee/:id", mustBeAuthenticated, attendeeController.deleteAttendeeById);
 
-router.post('/winner/notify/:id', virtualRegistrationApi.sendNotificationToWinnerById);
-router.get('/winner/:id', virtualRegistrationApi.getWinesToWinnerById);
-router.post('/winner/:id', virtualRegistrationApi.registerWinnerSelection);
+router.get("/lottery/winners", winnerController.allWinners);
+router.get("/lottery/winner/:id", winnerController.winnerById);
+router.post("/lottery/winners", mustBeAuthenticated, winnerController.addWinners);
+router.delete("/lottery/winners", mustBeAuthenticated, winnerController.deleteWinners);
+router.put("/lottery/winner/:id", mustBeAuthenticated, winnerController.updateWinnerById);
+router.delete("/lottery/winner/:id", mustBeAuthenticated, winnerController.deleteWinnerById);
 
-router.get('/chat/history', chatHistoryApi.getAllHistory)
-router.delete('/chat/history', mustBeAuthenticated, chatHistoryApi.deleteHistory)
+router.get("/lottery/draw", mustBeAuthenticated, lotteryController.drawWinner);
+router.post("/lottery/archive", mustBeAuthenticated, lotteryController.archiveLottery);
+router.get("/lottery/:epoch", lotteryController.lotteryByDate);
+router.get("/lotteries/", lotteryController.allLotteries);
 
-router.post('/login', userApi.login);
-router.post('/register', mustBeAuthenticated, userApi.register);
-router.get('/logout', userApi.logout);
+// router.get("/lottery/prize-distribution/status", mustBeAuthenticated, prizeDistributionController.status);
+router.post("/lottery/prize-distribution/start", mustBeAuthenticated, prizeDistributionController.start);
+// router.post("/lottery/prize-distribution/stop", mustBeAuthenticated, prizeDistributionController.stop);
+router.get("/lottery/prize-distribution/prizes/:id", prizeDistributionController.getPrizesForWinnerById);
+router.post("/lottery/prize-distribution/prize/:id", prizeDistributionController.submitPrizeForWinnerById);
+
+router.post("/lottery/messages/winner/:id", mustBeAuthenticated, messageController.notifyWinnerById);
+
+router.get("/chat/history", chatController.getAllHistory);
+router.delete("/chat/history", mustBeAuthenticated, chatController.deleteHistory);
+
+router.post("/login", userController.login);
+router.post("/register", mustBeAuthenticated, userController.register);
+router.get("/logout", userController.logout);
+
+// router.get("/", documentation.apiInfo);
+
+// router.get("/wine/schema", mustBeAuthenticated, update.schema);
+// router.get("/purchase/statistics", retrieve.allPurchase);
+// router.get("/highscore/statistics", retrieve.highscore);
+// router.get("/wines/statistics", retrieve.allWines);
+// router.get("/wines/statistics/overall", retrieve.allWinesSummary);
 
 module.exports = router;

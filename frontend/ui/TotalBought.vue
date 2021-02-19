@@ -1,37 +1,30 @@
 <template>
-  <section class="outer-bought">
+  <div>
     <h3>Loddstatistikk</h3>
 
     <div class="total-raffles">
-        Totalt&nbsp;
-        <span class="total">{{ total }}</span>
-        &nbsp;kjøpte,&nbsp;
-        <span>{{ totalWin }}&nbsp;vinn og&nbsp;</span>
-        <span> {{ stolen }} stjålet </span>
+      Totalt&nbsp;
+      <span class="total">{{ total }}</span>
+      &nbsp;kjøpte,&nbsp;
+      <span>{{ totalWin }}&nbsp;vinn og&nbsp;</span>
+      <span> {{ stolen }} stjålet </span>
     </div>
-
 
     <div class="bought-container">
       <div
         v-for="color in colors"
-        :class="
-          color.name +
-            '-container ' +
-            color.name +
-            '-raffle raffle-element-local'
-        "
+        :class="color.name + '-container ' + color.name + '-raffle raffle-element-local'"
         :key="color.name"
-        >
-        <p class="winner-chance">
-          {{translate(color.name)}} vinnersjanse
-        </p>
+      >
+        <p class="winner-chance">{{ translate(color.name) }} vinnersjanse</p>
         <span class="win-percentage">{{ color.totalPercentage }}% </span>
         <p class="total-bought-color">{{ color.total }} kjøpte</p>
-        <p class="amount-of-wins"> {{ color.win }} vinn </p>
+        <p class="amount-of-wins">{{ color.win }} vinn</p>
       </div>
     </div>
-  </section>
+  </div>
 </template>
+
 <script>
 import { colorStatistics } from "@/api";
 
@@ -45,109 +38,128 @@ export default {
       green: 0,
       total: 0,
       totalWin: 0,
-      stolen: 0,
-      wins: 0,
-      redPercentage: 0,
-      yellowPercentage: 0,
-      greenPercentage: 0,
-      bluePercentage: 0
+      stolen: 0
     };
   },
   async mounted() {
-    let response = await colorStatistics();
-
-    this.red = response.red;
-    this.blue = response.blue;
-    this.green = response.green;
-    this.yellow = response.yellow;
-    this.total = response.total;
-
-    this.totalWin =
-      this.red.win + this.yellow.win + this.blue.win + this.green.win;
-    this.stolen = response.stolen;
-
-    this.redPercentage = this.round(
-      this.red.win == 0 ? 0 : (this.red.win / this.totalWin) * 100
-    );
-    this.greenPercentage = this.round(
-      this.green.win == 0 ? 0 : (this.green.win / this.totalWin) * 100
-    );
-    this.bluePercentage = this.round(
-      this.blue.win == 0 ? 0 : (this.blue.win / this.totalWin) * 100
-    );
-    this.yellowPercentage = this.round(
-      this.yellow.win == 0 ? 0 : (this.yellow.win / this.totalWin) * 100
-    );
-
-    this.colors.push({
-      name: "red",
-      total: this.red.total,
-      win: this.red.win,
-      totalPercentage: this.getPercentage(this.red.win, this.totalWin),
-      percentage: this.getPercentage(this.red.win, this.red.total)
-    });
-    this.colors.push({
-      name: "blue",
-      total: this.blue.total,
-      win: this.blue.win,
-      totalPercentage: this.getPercentage(this.blue.win, this.totalWin),
-      percentage: this.getPercentage(this.blue.win, this.blue.total)
-    });
-    this.colors.push({
-      name: "yellow",
-      total: this.yellow.total,
-      win: this.yellow.win,
-      totalPercentage: this.getPercentage(this.yellow.win, this.totalWin),
-      percentage: this.getPercentage(this.yellow.win, this.yellow.total)
-    });
-    this.colors.push({
-      name: "green",
-      total: this.green.total,
-      win: this.green.win,
-      totalPercentage: this.getPercentage(this.green.win, this.totalWin),
-      percentage: this.getPercentage(this.green.win, this.green.total)
-    });
-
-    this.colors = this.colors.sort((a, b) => (a.win > b.win ? -1 : 1));
+    this.allLotteries().then(this.computeColors);
   },
   methods: {
-    translate(color){
-      switch(color) {
+    allLotteries() {
+      return fetch("/api/lotteries?includeWinners=true")
+        .then(resp => resp.json())
+        .then(response => response.lotteries);
+    },
+    translate(color) {
+      switch (color) {
         case "blue":
-          return "Blå"
+          return "Blå";
           break;
         case "red":
-          return "Rød"
+          return "Rød";
           break;
         case "green":
-          return "Grønn"
+          return "Grønn";
           break;
         case "yellow":
-          return "Gul"
+          return "Gul";
           break;
-        break;
+          break;
       }
     },
     getPercentage: function(win, total) {
       return this.round(win == 0 ? 0 : (win / total) * 100);
     },
     round: function(number) {
-
       //this can make the odds added together more than 100%, maybe rework?
       let actualPercentage = Math.round(number * 100) / 100;
       let rounded = actualPercentage.toFixed(0);
       return rounded;
+    },
+    computeColors(lotteries) {
+      let totalRed = 0;
+      let totalGreen = 0;
+      let totalYellow = 0;
+      let totalBlue = 0;
+      let total = 0;
+      let stolen = 0;
+
+      const colorAccumulatedWins = {
+        blue: 0,
+        green: 0,
+        red: 0,
+        yellow: 0
+      };
+
+      const accumelatedColors = (winners, colorAccumulatedWins) => {
+        winners.forEach(winner => {
+          const winnerColor = winner.color;
+          colorAccumulatedWins[winnerColor] += 1;
+        });
+      };
+
+      lotteries.forEach(lottery => {
+        totalRed += lottery.red;
+        totalGreen += lottery.green;
+        totalYellow += lottery.yellow;
+        totalBlue += lottery.blue;
+        total += lottery.bought;
+        stolen += lottery.stolen;
+
+        accumelatedColors(lottery.winners, colorAccumulatedWins);
+      });
+
+      this.red = totalRed;
+      this.yellow = totalYellow;
+      this.green = totalGreen;
+      this.blue = totalBlue;
+      this.total = total;
+
+      this.totalWin =
+        colorAccumulatedWins.red + colorAccumulatedWins.yellow + colorAccumulatedWins.blue + colorAccumulatedWins.green;
+      this.stolen = stolen;
+
+      this.colors.push({
+        name: "red",
+        total: totalRed,
+        win: colorAccumulatedWins.red,
+        totalPercentage: this.getPercentage(colorAccumulatedWins.red, this.totalWin),
+        percentage: this.getPercentage(colorAccumulatedWins.red, this.red.total)
+      });
+      this.colors.push({
+        name: "blue",
+        total: totalBlue,
+        win: colorAccumulatedWins.blue,
+        totalPercentage: this.getPercentage(colorAccumulatedWins.blue, this.totalWin),
+        percentage: this.getPercentage(colorAccumulatedWins.blue, this.blue.total)
+      });
+      this.colors.push({
+        name: "yellow",
+        total: totalYellow,
+        win: colorAccumulatedWins.yellow,
+        totalPercentage: this.getPercentage(colorAccumulatedWins.yellow, this.totalWin),
+        percentage: this.getPercentage(colorAccumulatedWins.yellow, this.yellow.total)
+      });
+      this.colors.push({
+        name: "green",
+        total: totalGreen,
+        win: colorAccumulatedWins.green,
+        totalPercentage: this.getPercentage(colorAccumulatedWins.green, this.totalWin),
+        percentage: this.getPercentage(colorAccumulatedWins.green, this.green.total)
+      });
+
+      this.colors = this.colors.sort((a, b) => (a.win > b.win ? -1 : 1));
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/variables.scss";
-@import "../styles/media-queries.scss";
-@import "../styles/global.scss";
+@import "@/styles/variables.scss";
+@import "@/styles/media-queries.scss";
+@import "@/styles/global.scss";
 
-@include mobile{
+@include mobile {
   section {
     margin-top: 5em;
   }
@@ -182,7 +194,7 @@ export default {
         margin-top: 40px;
       }
 
-      &.total-bought-color{
+      &.total-bought-color {
         font-weight: bold;
         margin-top: 25px;
       }

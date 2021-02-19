@@ -23,7 +23,9 @@ export default {
     };
   },
   async mounted() {
-    prelottery().then(wines => this.wines = wines);
+    fetch("/api/lottery/wines")
+      .then(resp => resp.json())
+      .then(response => (this.wines = response.wines));
   }
 };
 </script>
@@ -42,18 +44,17 @@ h1 {
 }
 
 .wines-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-gap: 2rem;
-  gap: 2rem;
+  width: 90vw;
+  padding: 5vw;
+
+  @include desktop {
+    width: 80vw;
+    padding: 0 10vw;
+  }
 
   @media (min-width: 1500px) {
     max-width: 1500px;
     margin: 0 auto;
-  }
-
-  @include mobile {
-    flex-direction: column;
   }
 }
 
@@ -62,23 +63,6 @@ h3 {
 
   @include mobile {
     max-width: 50vw;
-  }
-}
-
-.inner-wine-container {
-  display: flex;
-  flex-direction: row;
-  margin: auto;
-  width: 500px;
-  font-family: Arial;
-  margin-bottom: 30px;
-
-  @include desktop {
-    justify-content: center;
-  }
-
-  @include mobile {
-    width: auto;
   }
 }
 

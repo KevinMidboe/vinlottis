@@ -1,132 +1,263 @@
-const path = require('path');
+const path = require("path");
+const crypto = require("crypto");
 
-const Highscore = require(path.join(__dirname, '/schemas/Highscore'));
-const Wine = require(path.join(__dirname, '/schemas/Wine'));
+const Attendee = require(path.join(__dirname, "/schemas/Attendee"));
+const PreLotteryWine = require(path.join(__dirname, "/schemas/PreLotteryWine"));
+const VirtualWinner = require(path.join(__dirname, "/schemas/VirtualWinner"));
+const Lottery = require(path.join(__dirname, "/schemas/Purchase"));
 
-// Utils
-const epochToDateString = date => new Date(parseInt(date)).toDateString();
+const Message = require(path.join(__dirname, "/message"));
+const historyRepository = require(path.join(__dirname, "/history"));
+const wineRepository = require(path.join(__dirname, "/wine"));
 
-const sortNewestFirst = (lotteries) => {
-  return lotteries.sort((a, b) => parseInt(a.date) < parseInt(b.date) ? 1 : -1)
-}
+const {
+  WinnerNotFound,
+  NoMoreAttendeesToWin,
+  CouldNotFindNewWinnerAfterNTries,
+  LotteryByDateNotFound
+} = require(path.join(__dirname, "/vinlottisErrors"));
 
-const groupHighscoreByDate = async (highscore=undefined) => {
-  if (highscore == undefined)
-    highscore = await Highscore.find();
+const archive = (date, raffles, stolen, wines) => {
+  const { blue, red, yellow, green } = raffles;
+  const bought = blue + red + yellow + green;
 
-  const highscoreByDate = [];
-
-  highscore.forEach(person => {
-    person.wins.map(win => {
-      const epochDate = new Date(win.date).setHours(0,0,0,0);
-      const winnerObject = {
-        name: person.name,
-        color: win.color,
-        wine: win.wine,
-        date: epochDate
-      }
-
-      const existingDateIndex = highscoreByDate.findIndex(el => el.date == epochDate)
-      if (existingDateIndex > -1)
-        highscoreByDate[existingDateIndex].winners.push(winnerObject);
-      else
-        highscoreByDate.push({
-          date: epochDate,
-          winners: [winnerObject]
-        })
-    })
-  })
-
-  return sortNewestFirst(highscoreByDate);
-}
-
-const resolveWineReferences = (highscoreObject, key) => {
-  const listWithWines = highscoreObject[key]
-
-  return Promise.all(listWithWines.map(element =>
-      Wine.findById(element.wine)
-        .then(wine => {
-          element.wine = wine
-          return element
-        }))
-    )
-    .then(resolvedListWithWines => {
-      highscoreObject[key] = resolvedListWithWines;
-      return highscoreObject
-    })
-}
-// end utils
-
-// Routes
-const all = (req, res) => {
-  return Highscore.find()
-    .then(highscore => groupHighscoreByDate(highscore))
-    .then(lotteries => res.send({
-      message: "Lotteries by date!",
-      lotteries
-    }))
-}
-
-const latest = (req, res) => {
-  return groupHighscoreByDate()
-    .then(lotteries => lotteries.shift()) // first element in list
-    .then(latestLottery => resolveWineReferences(latestLottery, "winners"))
-    .then(lottery => res.send({
-        message: "Latest lottery!",
-        winners: lottery.winners
-      })
-    )
-}
-
-const byEpochDate = (req, res) => {
-  let { date } = req.params;
-  date = new Date(new Date(parseInt(date)).setHours(0,0,0,0)).getTime()
-  const dateString = epochToDateString(date);
-
-  return groupHighscoreByDate()
-    .then(lotteries => {
-      const lottery = lotteries.filter(lottery => lottery.date == date)
-      if (lottery.length > 0) {
-        return lottery[0]
-      } else {
-        return res.status(404).send({
-          message: `No lottery found for date: ${ dateString }`
-        })
-      }
-    })
-    .then(lottery => resolveWineReferences(lottery, "winners"))
-    .then(lottery => res.send({
-      message: `Lottery for date: ${ dateString}`,
+  return Promise.all(wines.map(wine => wineRepository.findWine(wine))).then(resolvedWines => {
+    const lottery = new Lottery({
       date,
-      winners: lottery.winners
-    }))
-}
+      blue,
+      red,
+      yellow,
+      green,
+      bought,
+      stolen,
+      wines: resolvedWines
+    });
 
-const byName = (req, res) => {
-  const { name } = req.params;
-  const regexName = new RegExp(name, "i"); // lowercase regex of the name
+    return lottery.save();
+  });
+};
 
-  return Highscore.find({ name })
-    .then(highscore => {
-      if (highscore.length > 0) {
-        return highscore[0]
-      } else {
-        return res.status(404).send({
-          message: `Name: ${ name } not found in leaderboards.`
-        })
+const lotteryByDate = date => {
+  const startOfDay = new Date(date.setHours(0, 0, 0, 0));
+  const endOfDay = new Date(date.setHours(24, 59, 59, 99));
+
+  const query = [
+    {
+      $match: {
+        date: {
+          $gte: startOfDay,
+          $lte: endOfDay
+        }
       }
-    })
-    .then(highscore => resolveWineReferences(highscore, "wins"))
-    .then(highscore => res.send({
-      message: `Lottery winnings for name: ${ name }.`,
-      name: highscore.name,
-      highscore: sortNewestFirst(highscore.wins)
-    }))
+    },
+    {
+      $lookup: {
+        from: "wines",
+        localField: "wines",
+        foreignField: "_id",
+        as: "wines"
+      }
+    }
+  ];
+
+  const aggregateLottery = Lottery.aggregate(query);
+  return aggregateLottery.project("-_id -__v").then(lotteries => {
+    if (lotteries.length == 0) {
+      throw new LotteryByDateNotFound(date);
+    }
+    return lotteries[0];
+  });
+};
+
+const allLotteries = (sort = "asc", yearFilter = undefined) => {
+  const sortDirection = sort == "asc" ? 1 : -1;
+
+  let startQueryDate = new Date("1970-01-01");
+  let endQueryDate = new Date("2999-01-01");
+  if (yearFilter) {
+    startQueryDate = new Date(`${yearFilter}-01-01`);
+    endQueryDate = new Date(`${Number(yearFilter) + 1}-01-01`);
+  }
+
+  const query = [
+    {
+      $match: {
+        date: {
+          $gte: startQueryDate,
+          $lte: endQueryDate
+        }
+      }
+    },
+    {
+      $sort: {
+        date: sortDirection
+      }
+    },
+    {
+      $unset: ["_id", "__v"]
+    },
+    {
+      $lookup: {
+        from: "wines",
+        localField: "wines",
+        foreignField: "_id",
+        as: "wines"
+      }
+    }
+  ];
+
+  return Lottery.aggregate(query);
+};
+
+const allLotteriesIncludingWinners = async (sort = "asc", yearFilter = undefined) => {
+  const lotteries = await allLotteries(sort, yearFilter);
+  const allWinners = await historyRepository.groupByDate(false, sort);
+
+  return lotteries.map(lottery => {
+    const { winners } = allWinners.pop();
+
+    return {
+      wines: lottery.wines,
+      date: lottery.date,
+      blue: lottery.blue,
+      green: lottery.green,
+      yellow: lottery.yellow,
+      red: lottery.red,
+      bought: lottery.bought,
+      stolen: lottery.stolen,
+      winners: winners
+    };
+  });
+};
+
+const drawWinner = async () => {
+  let allContestants = await Attendee.find({ winner: false });
+
+  if (allContestants.length == 0) {
+    throw new NoMoreAttendeesToWin();
+  }
+
+  let raffleColors = [];
+  for (let i = 0; i < allContestants.length; i++) {
+    let currentContestant = allContestants[i];
+    for (let blue = 0; blue < currentContestant.blue; blue++) {
+      raffleColors.push("blue");
+    }
+    for (let red = 0; red < currentContestant.red; red++) {
+      raffleColors.push("red");
+    }
+    for (let green = 0; green < currentContestant.green; green++) {
+      raffleColors.push("green");
+    }
+    for (let yellow = 0; yellow < currentContestant.yellow; yellow++) {
+      raffleColors.push("yellow");
+    }
+  }
+
+  raffleColors = shuffle(raffleColors);
+
+  let colorToChooseFrom = raffleColors[Math.floor(Math.random() * raffleColors.length)];
+  let findObject = { winner: false };
+
+  findObject[colorToChooseFrom] = { $gt: 0 };
+
+  let tries = 0;
+  const maxTries = 3;
+  let contestantsToChooseFrom = undefined;
+  while (contestantsToChooseFrom == undefined && tries < maxTries) {
+    const hit = await Attendee.find(findObject);
+    if (hit && hit.length) {
+      contestantsToChooseFrom = hit;
+      break;
+    }
+    tries++;
+  }
+  if (contestantsToChooseFrom == undefined) {
+    throw new CouldNotFindNewWinnerAfterNTries(maxTries);
+  }
+
+  let attendeeListDemocratic = [];
+
+  let currentContestant;
+  for (let i = 0; i < contestantsToChooseFrom.length; i++) {
+    currentContestant = contestantsToChooseFrom[i];
+    for (let y = 0; y < currentContestant[colorToChooseFrom]; y++) {
+      attendeeListDemocratic.push({
+        name: currentContestant.name,
+        phoneNumber: currentContestant.phoneNumber,
+        red: currentContestant.red,
+        blue: currentContestant.blue,
+        green: currentContestant.green,
+        yellow: currentContestant.yellow
+      });
+    }
+  }
+
+  attendeeListDemocratic = shuffle(attendeeListDemocratic);
+
+  let winner = attendeeListDemocratic[Math.floor(Math.random() * attendeeListDemocratic.length)];
+
+  let newWinnerElement = new VirtualWinner({
+    name: winner.name,
+    phoneNumber: winner.phoneNumber,
+    color: colorToChooseFrom,
+    red: winner.red,
+    blue: winner.blue,
+    green: winner.green,
+    yellow: winner.yellow,
+    id: sha512(winner.phoneNumber, genRandomString(10)),
+    timestamp_drawn: new Date().getTime()
+  });
+
+  await newWinnerElement.save();
+  await Attendee.updateOne({ name: winner.name, phoneNumber: winner.phoneNumber }, { $set: { winner: true } });
+
+  let winners = await VirtualWinner.find({ timestamp_sent: undefined }).sort({
+    timestamp_drawn: 1
+  });
+
+  return { winner, color: colorToChooseFrom, winners };
+};
+
+/** - - UTILS - - **/
+const genRandomString = function(length) {
+  return crypto
+    .randomBytes(Math.ceil(length / 2))
+    .toString("hex") /** convert to hexadecimal format */
+    .slice(0, length); /** return required number of characters */
+};
+
+const sha512 = function(password, salt) {
+  var hash = crypto.createHmac("md5", salt); /** Hashing algorithm sha512 */
+  hash.update(password);
+  var value = hash.digest("hex");
+  return value;
+};
+
+function shuffle(array) {
+  let currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
 }
 
 module.exports = {
-  all,
-  latest,
-  byEpochDate,
-  byName
+  drawWinner,
+  archive,
+  lotteryByDate,
+  allLotteries,
+  allLotteriesIncludingWinners
 };
