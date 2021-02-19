@@ -213,7 +213,7 @@ const groupByColor = (req, res) => {
 };
 
 const orderByWins = (req, res) => {
-  const { includeWines, limit } = req.query;
+  let { includeWines, limit } = req.query;
 
   if (includeWines !== undefined && !includeWinesOptions.includes(includeWines)) {
     return res.status(400).send({
