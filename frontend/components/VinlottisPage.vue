@@ -335,6 +335,10 @@ h1 {
 
   .wine-container {
     grid-column: 3 / -3;
+
+    @include mobile {
+      grid-column: 2 / -2;
+    }
   }
 
   .icon--arrow-long-right {
