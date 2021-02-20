@@ -130,6 +130,10 @@ const allLotteriesIncludingWinners = async (sort = "asc", yearFilter = undefined
   });
 };
 
+const latestLottery = async () => {
+  return Lottery.findOne().sort({ date: -1 });
+};
+
 const drawWinner = async () => {
   let allContestants = await Attendee.find({ winner: false });
 
@@ -259,5 +263,6 @@ module.exports = {
   archive,
   lotteryByDate,
   allLotteries,
-  allLotteriesIncludingWinners
+  allLotteriesIncludingWinners,
+  latestLottery
 };

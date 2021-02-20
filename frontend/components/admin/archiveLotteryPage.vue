@@ -67,7 +67,14 @@
     </div>
 
     <div v-if="wines.length > 0" class="button-container column">
-      <button class="vin-button" @click="archiveLottery">Send inn og arkiver</button>
+      <p v-if="todaysAlreadySubmitted" class="info-message">
+        Lotteriet er arkivert!<br />Du kan nå slette dagens viner, deltakere & vinnere for å tilbakestille til neste
+        ukes lotteri.
+      </p>
+
+      <button class="vin-button" @click="archiveLottery" :disabled="todaysAlreadySubmitted">
+        {{ todaysAlreadySubmitted == false ? "Send inn og arkiver" : "Dagens lotteri er allerede arkivert" }}
+      </button>
     </div>
   </div>
 </template>
@@ -81,6 +88,7 @@ export default {
   data() {
     return {
       payed: undefined,
+      todaysAlreadySubmitted: false,
       wines: [],
       winners: [],
       attendees: [],
@@ -97,6 +105,7 @@ export default {
     this.fetchLotteryWines();
     this.fetchLotteryWinners();
     this.fetchLotteryAttendees();
+    this.checkIfAlreadySubmittedForToday();
   },
   watch: {
     lotteryColors: {
@@ -162,6 +171,19 @@ export default {
           }
         });
     },
+    checkIfAlreadySubmittedForToday() {
+      return fetch("/api/lottery/latest")
+        .then(resp => resp.json())
+        .then(response => {
+          const getDay = d => new Date(d).getDate();
+
+          if (response.lottery.date && (getDay(response.lottery.date) == getDay(new Date()))) {
+            this.todaysAlreadySubmitted = true;
+          } else {
+            this.todaysAlreadySubmitted = false;
+          }
+        })
+    },
     updateLotteryColorsWithAttendees(attendees) {
       this.attendees.map(attendee => {
         this.lotteryColors.map(color => (color.value += attendee[color.key]));
@@ -222,6 +244,7 @@ export default {
         .then(resp => resp.json())
         .then(response => {
           if (response.success) {
+            this.todaysAlreadySubmitted = true;
             this.$toast.info({
               title: "Lotteriet er sendt inn og arkivert! Du kan nå slette viner, deltakere & vinnere slettes.",
               timeout: 10000
@@ -276,6 +299,17 @@ select {
   .button-container {
     width: 100%;
   }
+}
+
+.info-message {
+  padding: 0.75rem;
+  text-align: center;
+  background-color: var(--light-blue);
+  color: var(--matte-text-color);
+  border-radius: 4px;
+
+  font-size: 1.1rem;
+  line-height: 1.5rem;
 }
 
 .winner-element {
