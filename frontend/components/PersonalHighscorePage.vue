@@ -28,7 +28,7 @@
 
         <div v-for="win in winner.wins" :key="win._id">
           <router-link :to="winDateUrl(win.date)" class="days-ago">
-            {{ humanReadableDate(win.date) }} - {{ daysAgo(win.date) }} dager siden
+            {{ humanReadableDate(win.date) }} - {{ daysAgo(win.date) }}
           </router-link>
 
           <div class="won-wine" v-if="win.wine">
@@ -133,7 +133,14 @@ export default {
       }
     },
     humanReadableDate: humanReadableDate,
-    daysAgo: daysAgo
+    daysAgo(date) {
+      const days = daysAgo(date);
+      if (days == 0) {
+        return "i dag";
+      } else {
+        return `${days} dager siden`;
+      }
+    }
   }
 };
 </script>
