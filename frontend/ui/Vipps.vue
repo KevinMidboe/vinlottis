@@ -1,15 +1,7 @@
 <template>
-  <div>
-    <div
-      class="vipps-container"
-      :class="isMobile ? 'clickable' : null"
-      @click="openVipps"
-    >
-      <img
-        src="/public/assets/images/vipps-logo.svg"
-        class="vipps-logo"
-        alt="vipps logo"
-      />
+  <div class="page-container">
+    <div class="vipps-container" :class="isMobile ? 'clickable' : null" @click="openVipps">
+      <img src="/public/assets/images/vipps-logo.svg" class="vipps-logo" alt="vipps logo" />
       <span v-if="amount * price > price">
         kr.
         <span class="big-money">{{ amount * price }},-</span>
@@ -20,11 +12,7 @@
         <span class="big-money">{{ amount * price }},-</span>
         pr. lodd
       </span>
-      <ing
-        src="/public/assets/images/vipps-qr.png"
-        class="qr-logo"
-        v-if="qrFailed"
-      />
+      <ing src="/public/assets/images/vipps-qr.png" class="qr-logo" v-if="qrFailed" />
       <canvas v-if="!qrFailed" ref="canvas" class="qr-logo"></canvas>
       <span class="phone-number">{{ phone }}</span>
       <span class="name">{{ name }}</span>
@@ -72,38 +60,24 @@ export default {
       return this.amount * (this.price * 100);
     },
     vippsUrlBasedOnUserAgent: function() {
-      if (navigator.userAgent.includes("iPhone")) {
-        return (
-          "https://qr.vipps.no/28/2/01/031/47" +
-          this.phone.replace(/ /g, "") +
-          "?v=1&m=" +
-          this.message +
-          "&a=" +
-          this.priceToPay
-        );
-      }
-
       return (
         "https://qr.vipps.no/28/2/01/031/47" +
         this.phone.replace(/ /g, "") +
         "?v=1&m=" +
-        this.message
+        this.message +
+        "&a=" +
+        this.priceToPay
       );
     }
   },
   methods: {
     calculateQr: function() {
       let canvas = this.$refs["canvas"];
-      QRCode.toCanvas(
-        canvas,
-        this.vippsUrlBasedOnUserAgent,
-        { errorCorrectionLevel: "Q" },
-        (err, url) => {
-          if (err != null) {
-            this.qrFailed = true;
-          }
+      QRCode.toCanvas(canvas, this.vippsUrlBasedOnUserAgent, { errorCorrectionLevel: "Q" }, (err, url) => {
+        if (err != null) {
+          this.qrFailed = true;
         }
-      );
+      });
 
       this.drawLogoOverCanvas(canvas);
     },
@@ -148,8 +122,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/global.scss";
-@import "../styles/media-queries.scss";
+@import "@/styles/global.scss";
+@import "@/styles/media-queries.scss";
+
+.page-container {
+  @include mobile {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+  }
+}
+
 .vipps-container {
   font-family: Arial;
   border-radius: 10px;
