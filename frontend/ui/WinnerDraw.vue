@@ -146,7 +146,6 @@ export default {
         var timeLeft = animationEnd - Date.now();
         if (timeLeft <= 0) {
           self.drawing = false;
-          console.time("drawing finished");
           return clearInterval(interval);
         }
         if (currentName == "Amund Brandsrud") {

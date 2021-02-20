@@ -9,7 +9,7 @@ const drawWinner = (req, res) => {
       io.emit("winner", {
         color: color,
         name: winner.name,
-        winner_count: winners.length + 1
+        winner_count: winners.length
       });
 
       return { winner, color, winners };
