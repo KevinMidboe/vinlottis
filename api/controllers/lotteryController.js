@@ -139,6 +139,26 @@ const allLotteries = (req, res) => {
     });
 };
 
+const latestLottery = (req, res) => {
+  return lotteryRepository
+    .latestLottery()
+    .then(lottery =>
+      res.send({
+        lottery,
+        message: "Latest lottery.",
+        success: true
+      })
+    )
+    .catch(error => {
+      const { statusCode, message } = error;
+
+      return res.status(statusCode || 500).send({
+        message: message || "Unexpected error occured while fetching all lotteries.",
+        success: false
+      });
+    });
+};
+
 function verifyLotteryPayload(raffles, stolen, wines) {
   return new Promise((resolve, reject) => {
     if (raffles == undefined || !raffles instanceof Array) {
@@ -188,5 +208,6 @@ module.exports = {
   drawWinner,
   archiveLottery,
   lotteryByDate,
-  allLotteries
+  allLotteries,
+  latestLottery
 };

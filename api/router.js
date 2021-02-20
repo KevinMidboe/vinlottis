@@ -71,6 +71,7 @@ router.delete("/lottery/winner/:id", mustBeAuthenticated, winnerController.delet
 
 router.get("/lottery/draw", mustBeAuthenticated, lotteryController.drawWinner);
 router.post("/lottery/archive", mustBeAuthenticated, lotteryController.archiveLottery);
+router.get("/lottery/latest", lotteryController.latestLottery);
 router.get("/lottery/:epoch", lotteryController.lotteryByDate);
 router.get("/lotteries/", lotteryController.allLotteries);
 
