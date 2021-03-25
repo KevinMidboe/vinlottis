@@ -10,17 +10,19 @@ const redactWinnerInfoMapper = winner => {
   };
 };
 
+const addWinner = winner => {
+  let newWinner = new VirtualWinner({
+    name: winner.name,
+    color: winner.color,
+    timestamp_drawn: new Date().getTime()
+  });
+  
+  return newWinner.save()
+}
+
 const addWinners = winners => {
   return Promise.all(
-    winners.map(winner => {
-      let newWinnerElement = new VirtualWinner({
-        name: winner.name,
-        color: winner.color,
-        timestamp_drawn: new Date().getTime()
-      });
-
-      return newWinnerElement.save();
-    })
+    winners.map(winner => addWinner(winner))
   );
 };
 
@@ -48,6 +50,14 @@ const winnerById = (id, isAdmin = false) => {
     return winner;
   });
 };
+
+const setWinnerChosenById = (id) => {
+  return VirtualWinner.findOne({id: id}).then(winner => {
+    winner.prize_selected = true
+    winner.markModified("wins")
+    return winner.save()
+  })
+}
 
 const updateWinnerById = (id, updateModel) => {
   return VirtualWinner.findOne({ id: id }).then(winner => {
@@ -86,10 +96,12 @@ const deleteWinners = () => {
 };
 
 module.exports = {
+  addWinner,
   addWinners,
   allWinners,
   winnerById,
   updateWinnerById,
   deleteWinnerById,
-  deleteWinners
+  deleteWinners,
+  setWinnerChosenById
 };
