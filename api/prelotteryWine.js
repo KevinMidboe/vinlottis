@@ -23,7 +23,7 @@ const addWines = wines => {
       country: wine.country,
       id: wine.id
     });
-
+    console.log(newPrelotteryWine)
     return newPrelotteryWine.save();
   });
 
