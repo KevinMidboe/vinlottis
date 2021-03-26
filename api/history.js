@@ -33,7 +33,6 @@ const addWinnerWithWine = async (winner, wine) => {
     wine: savedWine,
     color: winner.color
   };
-
   if (exisitingWinner == undefined) {
     const newWinner = new Winner({
       name: winner.name,

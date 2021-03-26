@@ -5,10 +5,13 @@ const Attendee = require(path.join(__dirname, "/schemas/Attendee"));
 const PreLotteryWine = require(path.join(__dirname, "/schemas/PreLotteryWine"));
 const VirtualWinner = require(path.join(__dirname, "/schemas/VirtualWinner"));
 const Lottery = require(path.join(__dirname, "/schemas/Purchase"));
+const { WineNotFound } = require(path.join(__dirname, "/vinlottisErrors"));
 
 const Message = require(path.join(__dirname, "/message"));
 const historyRepository = require(path.join(__dirname, "/history"));
 const wineRepository = require(path.join(__dirname, "/wine"));
+const winnerRepository = require(path.join(__dirname, "/winner"));
+const prelotteryWineRepository = require(path.join(__dirname, "/prelotteryWine"));
 
 const {
   WinnerNotFound,
@@ -17,11 +20,36 @@ const {
   LotteryByDateNotFound
 } = require(path.join(__dirname, "/vinlottisErrors"));
 
+const moveUnfoundPrelotteryWineToWines = async (error, tempWine) => {
+  if(!(error instanceof WineNotFound)) {
+    throw error
+  }
+
+  if(!tempWine.winner) {
+    throw new WinnerNotFound()
+  }
+
+  const prelotteryWine = await prelotteryWineRepository.wineById(tempWine._id);
+  const winner = await winnerRepository.winnerById(tempWine.winner.id, true);
+
+  return wineRepository
+    .addWine(prelotteryWine)
+    .then(_ => prelotteryWineRepository.addWinnerToWine(prelotteryWine, winner)) // prelotteryWine.deleteById
+    .then(_ => historyRepository.addWinnerWithWine(winner, prelotteryWine))
+    .then(_ => winnerRepository.setWinnerChosenById(winner.id))
+}
+
 const archive = (date, raffles, stolen, wines) => {
   const { blue, red, yellow, green } = raffles;
   const bought = blue + red + yellow + green;
 
-  return Promise.all(wines.map(wine => wineRepository.findWine(wine))).then(resolvedWines => {
+  return Promise.all(
+    wines.map(wine => wineRepository
+      .findWine(wine)
+      .catch(error => moveUnfoundPrelotteryWineToWines(error, wine)
+          .then(_ => wineRepository.findWine(wine))
+      ))
+  ).then(resolvedWines => {
     const lottery = new Lottery({
       date,
       blue,
