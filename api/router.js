@@ -87,6 +87,9 @@ router.get("/chat/history", chatController.getAllHistory);
 router.delete("/chat/history", mustBeAuthenticated, chatController.deleteHistory);
 
 router.post("/login", userController.login);
+
+// We should have a check here if we are dev/prod, 
+// and disable the mustBeAuthentacted for the register
 router.post("/register", mustBeAuthenticated, userController.register);
 router.get("/logout", userController.logout);
 
