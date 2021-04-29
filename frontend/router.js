@@ -113,9 +113,19 @@ const routes = [
     component: HighscorePage
   },
   {
+    path: "/anbefal",
+    name: "Anbefal ny vin",
+    component: RequestWine
+  },
+  {
     path: "/request",
     name: "Etterspør vin",
     component: RequestWine
+  },
+  {
+    path: "/anbefalte",
+    name: "Anbefalte viner",
+    component: AllRequestedWines
   },
   {
     path: "/requested-wines",

@@ -87,7 +87,6 @@ router.get("/chat/history", chatController.getAllHistory);
 router.delete("/chat/history", mustBeAuthenticated, chatController.deleteHistory);
 
 router.post("/login", userController.login);
-
 router.get("/logout", userController.logout);
 if(process.env !== "production") {
     // We don't want to hide registering behind a

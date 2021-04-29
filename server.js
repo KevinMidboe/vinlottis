@@ -95,3 +95,4 @@ app.use("/subscription", subscriptionApi);
 app.use("/", (req, res) => res.sendFile(path.join(__dirname + "/public/dist/index.html")));
 
 server.listen(30030);
+console.log("Server listening on :30030")
