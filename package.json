@@ -8,11 +8,11 @@
     "build-report": "cross-env NODE_ENV=production BUILD_REPORT=true webpack --progress",
     "watch": "yarn webpack serve --mode development --env development",
     "start": "node server.js",
-    "dev": "cross-env NODE_ENV=development node server.js",
+    "dev": "cross-env NODE_ENV=development nodemon --exec node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed:single": "node db/seedSingleDay.js"
   },
-  "author": "",
+  "author": "Kevin Midbøe & Kasper Rynning-Tønnesen",
   "license": "ISC",
   "dependencies": {
     "@sentry/browser": "^6.2.0",
@@ -52,6 +52,7 @@
     "google-maps-api-loader": "^1.1.1",
     "html-webpack-plugin": "5.2.0",
     "mini-css-extract-plugin": "~1.3.2",
+    "nodemon": "2.0.7",
     "optimize-css-assets-webpack-plugin": "~5.0.4",
     "redis": "^3.0.2",
     "sass-loader": "~11.0.1",
