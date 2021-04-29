@@ -9,7 +9,7 @@
     "watch": "yarn webpack serve --mode development --env development",
     "start": "node server.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
     "seed:single": "node db/seedSingleDay.js"
   },
   "author": "Kevin Midbøe & Kasper Rynning-Tønnesen",
