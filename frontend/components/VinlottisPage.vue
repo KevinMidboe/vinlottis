@@ -94,7 +94,11 @@ export default {
       return Notification.permission !== "granted" || !this.pushAllowed || localStorage.getItem("push") == null;
     }
   },
-  async mounted() {
+  mounted() {
+    setTimeout(() => {
+      document.getElementsByClassName("participate-button")[0].classList.add("pulse");
+    }, 1800);
+
     this.$on("push-allowed", () => {
       this.pushAllowed = true;
     });
@@ -121,8 +125,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/media-queries.scss";
-@import "../styles/variables.scss";
+@import "@/styles/media-queries.scss";
+@import "@/styles/variables.scss";
+@import "@/styles/animations.scss";
 
 .top-container {
   height: 30em;
