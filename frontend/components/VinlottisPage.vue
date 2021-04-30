@@ -178,18 +178,20 @@ export default {
     border: 4px solid black;
     padding: 0 1em 0 1em;
     display: flex;
-    width: 12.5em;
+    width: 17.5em;
     align-items: center;
     text-decoration: none;
     color: black;
 
     i {
       color: $link-color;
+      font-size: 1.2rem;
       margin-left: 5px;
     }
 
     p {
-      font-size: 16px;
+      font-size: 1.4rem;
+      margin: 1rem;
       margin-left: 15px;
     }
 
