@@ -32,7 +32,7 @@
             <span v-if="wine.rating">{{ wine.rating }}%</span>
             <span v-if="wine.price">{{ wine.price }} NOK</span>
             <span v-if="wine.country">{{ wine.country }}</span>
-            <span v-if="wine.year">{{ wine.year }}</span>
+            <span v-if="wine.year && wine.year !== '0000'">{{ wine.year }}</span>
           </div>
         </section>
         <button class="vin-button" @click="requestWine(wine)">Foreslå denne</button>
