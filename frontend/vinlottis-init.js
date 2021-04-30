@@ -46,7 +46,8 @@ ga("send", "pageview");
 if (ENV == "development") window[`ga-disable-${__GA_TRACKINGID__}`] = true;
 
 const router = new VueRouter({
-  routes: routes
+  routes: routes,
+  mode: 'history'
 });
 
 new Vue({
