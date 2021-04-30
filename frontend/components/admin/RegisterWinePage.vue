@@ -53,15 +53,15 @@
 
           <template v-slot:bottom>
             <div class="button-container row small">
-              <button v-if="editingWine == wine && wine._id" class="vin-button warning" @click="updateWine(wine)">
+              <button v-if="editingWine == wine && wine._id" class="vin-button small warning" @click="updateWine(wine)">
                 Oppdater vin
               </button>
 
-              <button class="vin-button" @click="editingWine = editingWine == wine ? false : wine">
+              <button class="vin-button small" @click="editingWine = editingWine == wine ? false : wine">
                 {{ editingWine == wine ? "Lukk" : "Rediger" }}
               </button>
 
-              <button class="danger vin-button" @click="deleteWine(wine)">
+              <button class="danger vin-button small" @click="deleteWine(wine)">
                 Slett
               </button>
             </div>
