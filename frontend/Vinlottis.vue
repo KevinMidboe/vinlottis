@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <banner :routes="routes"/>
+    <banner :routes="routes" />
     <router-view />
     <Footer />
     <UpdateToast
@@ -30,33 +30,33 @@ export default {
       routes: [
         {
           name: "Virtuelt lotteri",
-          route: "/lottery"
+          route: "/lottery",
         },
         {
           name: "Dagens viner",
-          route: "/dagens/"
+          route: "/dagens/",
         },
         {
           name: "Highscore",
-          route: "/highscore"
+          route: "/highscore",
         },
         {
           name: "Historie",
-          route: "/history/"
+          route: "/history/",
         },
         {
           name: "Foreslå vin",
-          route: "/request"
+          route: "/request",
         },
         {
           name: "Foreslåtte viner",
-          route: "/requested-wines"
+          route: "/requested-wines",
         },
         {
           name: "Login",
-          route: "/login"
-        }
-      ]
+          route: "/login",
+        },
+      ],
     };
   },
   mounted() {
@@ -78,7 +78,7 @@ export default {
     closeToast: function() {
       this.showToast = false;
     },
-  }
+  },
 };
 </script>
 
@@ -99,7 +99,7 @@ body {
   display: grid;
   grid-template-rows: 80px auto 100px;
 
-  .main-container{
+  .main-container {
     height: 100%;
     width: 100%;
   }

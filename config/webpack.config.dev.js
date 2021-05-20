@@ -15,20 +15,20 @@ let webpackConfig = merge(commonConfig(true), {
   output: {
     path: helpers.root("dist"),
     publicPath: "/",
-    filename: "js/[name].bundle.js"
+    filename: "js/[name].bundle.js",
   },
   optimization: {
     concatenateModules: true,
     splitChunks: {
-      chunks: "initial"
-    }
+      chunks: "initial",
+    },
   },
   plugins: [
     new webpack.EnvironmentPlugin(environment),
     new FriendlyErrorsPlugin(),
     new MiniCSSExtractPlugin({
-      filename: "css/[name].css"
-    })
+      filename: "css/[name].css",
+    }),
   ],
   devServer: {
     compress: true,
@@ -37,29 +37,29 @@ let webpackConfig = merge(commonConfig(true), {
     hot: true,
     overlay: true,
     stats: {
-      normal: true
+      normal: true,
     },
     proxy: {
       "/api": {
         target: "http://localhost:30030",
-        changeOrigin: true
+        changeOrigin: true,
       },
       "/socket.io": {
         target: "ws://localhost:30030",
         changeOrigin: false,
-        ws: true
-      }
+        ws: true,
+      },
     },
-    writeToDisk: false
-  }
+    writeToDisk: false,
+  },
 });
 
 webpackConfig = merge(webpackConfig, {
   plugins: [
     new HtmlWebpackPlugin({
-      template: "frontend/templates/Index.html"
-    })
-  ]
+      template: "frontend/templates/Index.html",
+    }),
+  ],
 });
 
 module.exports = webpackConfig;

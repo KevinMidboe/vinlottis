@@ -21,7 +21,7 @@ if (ENV !== "development") {
     beforeSend: event => {
       console.error(event);
       return event;
-    }
+    },
   });
 }
 
@@ -38,7 +38,7 @@ ga.l = 1 * new Date();
 ga("create", __GA_TRACKINGID__, {
   allowAnchor: false,
   cookieExpires: __GA_COOKIELIFETIME__, // Time in seconds
-  cookieFlags: "SameSite=Strict; Secure"
+  cookieFlags: "SameSite=Strict; Secure",
 });
 ga("set", "anonymizeIp", true); // Enable IP Anonymization/IP masking
 ga("send", "pageview");
@@ -47,7 +47,7 @@ if (ENV == "development") window[`ga-disable-${__GA_TRACKINGID__}`] = true;
 
 const router = new VueRouter({
   routes: routes,
-  mode: 'history'
+  mode: "history",
 });
 
 new Vue({
