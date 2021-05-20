@@ -34,6 +34,7 @@ let webpackConfig = merge(commonConfig(true), {
     compress: true,
     historyApiFallback: true,
     host: "0.0.0.0",
+    disableHostCheck: true,
     hot: true,
     overlay: true,
     stats: {
