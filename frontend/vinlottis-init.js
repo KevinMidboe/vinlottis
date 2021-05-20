@@ -2,6 +2,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import { routes } from "@/router.js";
 import Vinlottis from "@/Vinlottis";
+import AccessCodePage from "@/components/AccessCodePage";
+import { readCookie } from "@/utils";
 
 import Toast from "@/plugins/Toast";
 
@@ -50,10 +52,21 @@ const router = new VueRouter({
   mode: "history",
 });
 
+function redirectIfHasAccessCodeAndOnIncorrectDomain(accessCode) {
+  const site = __sites__.find(site => site.code == accessCode);
+  if (accessCode && site && !!!site.domain.includes(window.location.hostname)) {
+    window.location.href = `${window.location.protocol}//${site.domain}`;
+  }
+}
+
+const accessCode = readCookie("accesscode");
+redirectIfHasAccessCodeAndOnIncorrectDomain(1);
+const component = accessCode ? Vinlottis : AccessCodePage;
+
 new Vue({
   el: "#app",
   router,
-  components: { Vinlottis },
-  template: "<Vinlottis/>",
-  render: h => h(Vinlottis)
+  components: { component },
+  template: "<Vinlottis />",
+  render: h => h(component),
 });
