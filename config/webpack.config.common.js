@@ -83,9 +83,10 @@ const webpackConfig = function(isDev) {
         __HOURS__: env.hours,
         __PUSHENABLED__: JSON.stringify(require("./defaults/push") != false),
         __GA_TRACKINGID__: JSON.stringify(env.googleanalytics_trackingId),
-        __GA_COOKIELIFETIME__: env.googleanalytics_cookieLifetime
-      })
-    ]
+        __GA_COOKIELIFETIME__: env.googleanalytics_cookieLifetime,
+        __sites__: JSON.stringify(env.sites),
+      }),
+    ],
   };
 };
 

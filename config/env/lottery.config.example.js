@@ -8,5 +8,6 @@ module.exports = {
   gatewayToken: undefined,
   vinmonopoletToken: undefined,
   googleanalytics_trackingId: undefined,
-  googleanalytics_cookieLifetime: 60 * 60 * 24 * 14
+  googleanalytics_cookieLifetime: 60 * 60 * 24 * 14,
+  sites: [],
 };
