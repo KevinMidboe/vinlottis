@@ -18,8 +18,9 @@ async function sendInitialMessageToWinners(winners) {
 
   const body = {
     sender: "Vinlottis",
-    message: "Gratulerer som vinner av vinlottisen! Du vil snart få en SMS med oppdatering om hvordan gangen går!",
-    recipients: numbers
+    message:
+      "Gratulerer som vinner av vinlottisen! Du vil snart få en SMS med oppdatering om hvordan gangen går!",
+    recipients: numbers,
   };
 
   return gatewayRequest(body);
@@ -31,7 +32,7 @@ async function sendPrizeSelectionLink(winner) {
   await winner.save();
 
   const { id, name, phoneNumber } = winner;
-  const url = new URL(`/#/winner/${id}`, "https://lottis.vin");
+  const url = new URL(`/winner/${id}`, `https://${config.domain}`);
   const message = `Gratulerer som heldig vinner av vinlotteriet ${name}! Her er linken for \
 å velge hva slags vin du vil ha, du har 10 minutter på å velge ut noe før du blir lagt bakerst \
 i køen. ${url.href}. (Hvis den siden kommer opp som tom må du prøve å refreshe siden noen ganger.`;
@@ -75,7 +76,7 @@ async function sendMessageToNumber(phoneNumber, message) {
   const body = {
     sender: "Vinlottis",
     message: message,
-    recipients: [{ msisdn: `47${phoneNumber}` }]
+    recipients: [{ msisdn: `47${phoneNumber}` }],
   };
 
   return gatewayRequest(body);
@@ -89,8 +90,8 @@ async function gatewayRequest(body) {
       path: `/rest/mtsms?token=${config.gatewayToken}`,
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     };
 
     const req = https.request(options, res => {
@@ -128,5 +129,5 @@ module.exports = {
   sendPrizeSelectionLink,
   sendWineConfirmation,
   sendLastWinnerMessage,
-  sendWineSelectMessageTooLate
+  sendWineSelectMessageTooLate,
 };

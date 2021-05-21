@@ -23,7 +23,7 @@ mongoose
     useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 10000 // initial connection timeout
+    serverSelectionTimeoutMS: 10000, // initial connection timeout
   })
   .then(_ => console.log("Mongodb connection established!"))
   .catch(err => {
@@ -59,8 +59,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({
-      mongooseConnection: mongoose.connection
-    })
+      mongooseConnection: mongoose.connection,
+    }),
   })
 );
 
@@ -84,10 +84,6 @@ app.use("/service-worker.js", express.static(path.join(__dirname, "public/sw/ser
 // api endpoints
 app.use("/api/", apiRouter);
 
-// redirects
-app.get("/dagens", (req, res) => res.redirect("/#/dagens"));
-app.get("/winner/:id", (req, res) => res.redirect("/#/winner/" + req.params.id));
-
 // push-notifications
 app.use("/subscription", subscriptionApi);
 
@@ -95,4 +91,4 @@ app.use("/subscription", subscriptionApi);
 app.use("/", (req, res) => res.sendFile(path.join(__dirname + "/public/dist/index.html")));
 
 server.listen(30030);
-console.log("Server listening on :30030")
+console.log("Server listening on :30030");
