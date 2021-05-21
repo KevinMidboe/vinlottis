@@ -33,7 +33,7 @@ steps:
       - drone-test
     status: success
   settings:
-    host: 10.0.0.52
+    host: vinlottis.schleppe
     username: root
     key:
       from_secret: ssh_key
