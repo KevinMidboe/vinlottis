@@ -102,7 +102,7 @@ export default {
         }
 
         if (new Set(this.colors).size == 1) {
-          alert("BINGO");
+          this.$toast.info({ title: "BINGO" });
         }
 
         this.emitColors();

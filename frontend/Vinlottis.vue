@@ -1,14 +1,9 @@
 <template>
   <div class="app-container">
-    <banner :routes="routes"/>
+    <banner :routes="routes" />
     <router-view />
     <Footer />
-    <UpdateToast
-      v-if="showToast"
-      :text="toastText"
-      :refreshButton="refreshToast"
-      v-on:closeToast="closeToast"
-    />
+    <UpdateToast v-if="showToast" :text="toastText" :refreshButton="refreshToast" v-on:closeToast="closeToast" />
   </div>
 </template>
 
@@ -99,7 +94,7 @@ body {
   display: grid;
   grid-template-rows: 80px auto 100px;
 
-  .main-container{
+  .main-container {
     height: 100%;
     width: 100%;
   }
