@@ -5,15 +5,27 @@
       <img src="/public/assets/images/knowit.svg" alt="knowit logo" />
     </router-link>
 
-    <a class="menu-toggle-container" aria-label="show-menu" @click="toggleMenu" :class="isOpen ? 'open' : 'collapsed'">
+    <a
+      class="menu-toggle-container"
+      aria-label="show-menu"
+      @click="toggleMenu"
+      :class="isOpen ? 'open' : 'collapsed'"
+    >
       <span class="menu-toggle"></span>
       <span class="menu-toggle"></span>
       <span class="menu-toggle"></span>
     </a>
 
     <nav class="menu" :class="isOpen ? 'open' : 'collapsed'">
-      <router-link v-for="(route, index) in routes" :key="index" :to="route.route" class="menu-item-link">
-        <a @click="toggleMenu" class="single-route" :class="isOpen ? 'open' : 'collapsed'">{{ route.name }}</a>
+      <router-link
+        v-for="(route, index) in routes"
+        :key="index"
+        :to="route.route"
+        class="menu-item-link"
+      >
+        <a @click="toggleMenu" class="single-route" :class="isOpen ? 'open' : 'collapsed'">{{
+          route.name
+        }}</a>
         <i class="icon icon--arrow-right"></i>
       </router-link>
     </nav>
@@ -42,14 +54,14 @@ export default {
       minutes: 0,
       seconds: 0,
       distance: 0,
-      interval: null
+      interval: null,
     };
   },
   props: {
     routes: {
       required: true,
-      type: Array
-    }
+      type: Array,
+    },
   },
   mounted() {
     this.initialize(), this.countdown();
@@ -66,7 +78,7 @@ export default {
         return true;
       }
       return false;
-    }
+    },
   },
   methods: {
     toggleMenu() {
@@ -118,8 +130,8 @@ export default {
         this.initialize();
       }
       this.interval = setTimeout(this.countdown, 500);
-    }
-  }
+    },
+  },
 };
 </script>
 

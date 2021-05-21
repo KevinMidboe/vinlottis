@@ -11,15 +11,15 @@ const webpackConfig = function(isDev) {
     resolve: {
       extensions: [".js", ".vue"],
       alias: {
-        vue$: "vue/dist/vue.min.js",
-        "@": helpers.root("frontend")
-      }
+        "vue$": "vue/dist/vue.min.js",
+        "@": helpers.root("frontend"),
+      },
     },
     entry: {
-      vinlottis: helpers.root("frontend", "vinlottis-init")
+      vinlottis: helpers.root("frontend", "vinlottis-init"),
     },
     externals: {
-        moment: 'moment' // comes with chart.js
+      moment: "moment", // comes with chart.js
     },
     module: {
       rules: [
@@ -31,45 +31,45 @@ const webpackConfig = function(isDev) {
               options: {
                 loaders: {
                   scss: "vue-style-loader!css-loader!sass-loader",
-                  sass: "vue-style-loader!css-loader!sass-loader?indentedSyntax"
-                }
-              }
-            }
-          ]
+                  sass: "vue-style-loader!css-loader!sass-loader?indentedSyntax",
+                },
+              },
+            },
+          ],
         },
         {
           test: /\.js$/,
-          use: [ "babel-loader" ],
-          include: [helpers.root("frontend")]
+          use: ["babel-loader"],
+          include: [helpers.root("frontend")],
         },
         {
           test: /\.css$/,
           use: [
             MiniCSSExtractPlugin.loader,
-            { loader: "css-loader", options: { sourceMap: isDev } }
-          ]
+            { loader: "css-loader", options: { sourceMap: isDev } },
+          ],
         },
         {
           test: /\.scss$/,
           use: [
             MiniCSSExtractPlugin.loader,
             { loader: "css-loader", options: { sourceMap: isDev } },
-            { loader: "sass-loader", options: { sourceMap: isDev } }
-          ]
+            { loader: "sass-loader", options: { sourceMap: isDev } },
+          ],
         },
         {
           test: /\.woff(2)?(\?[a-z0-9]+)?$/,
           loader: "url-loader",
           options: {
             limit: 10000,
-            mimetype: "application/font-woff"
-          }
+            mimetype: "application/font-woff",
+          },
         },
         {
           test: /\.(ttf|eot|svg)(\?[a-z0-9]+)?$/,
-          loader: "file-loader"
-        }
-      ]
+          loader: "file-loader",
+        },
+      ],
     },
     plugins: [
       new VueLoaderPlugin(),
@@ -83,9 +83,10 @@ const webpackConfig = function(isDev) {
         __HOURS__: env.hours,
         __PUSHENABLED__: JSON.stringify(require("./defaults/push") != false),
         __GA_TRACKINGID__: JSON.stringify(env.googleanalytics_trackingId),
-        __GA_COOKIELIFETIME__: env.googleanalytics_cookieLifetime
-      })
-    ]
+        __GA_COOKIELIFETIME__: env.googleanalytics_cookieLifetime,
+        __sites__: JSON.stringify(env.sites),
+      }),
+    ],
   };
 };
 
