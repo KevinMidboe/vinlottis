@@ -1,6 +1,7 @@
 const fetch = require("node-fetch");
 const path = require("path");
 const config = require(path.join(__dirname + "/../config/env/lottery.config"));
+const vinmonopoletCache = require(path.join(__dirname, "vinmonopoletCache"));
 
 const convertToOurWineObject = wine => {
   if (wine.basic.ageLimit === "18") {
@@ -18,6 +19,20 @@ const convertToOurWineObject = wine => {
   }
 };
 
+const convertVinmonopoletProductResponseToWineObject = wine => {
+  return {
+    name: wine.name,
+    vivinoLink: "https://www.vinmonopolet.no" + wine.url,
+    rating: null,
+    occurences: 0,
+    id: wine.code,
+    year: wine.year,
+    image: wine.images[1].url,
+    price: wine.price.value,
+    country: wine.main_country.name
+  }
+};
+
 const convertToOurStoreObject = store => {
   return {
     id: store.storeId,
@@ -26,37 +41,32 @@ const convertToOurStoreObject = store => {
   };
 };
 
-const searchWinesByName = async (name, page = 1) => {
-  const pageSize = 15;
-  let url = new URL(
-    `https://apis.vinmonopolet.no/products/v0/details-normal?productShortNameContains=gato&maxResults=15`
-  );
-  url.searchParams.set("maxResults", pageSize);
-  url.searchParams.set("start", pageSize * (page - 1));
-  url.searchParams.set("productShortNameContains", name);
+const searchWinesByName = (name, page = 1) => {
+  const pageSize = 25;
 
-  const vinmonopoletResponse = await fetch(url, {
-    headers: {
-      "Ocp-Apim-Subscription-Key": config.vinmonopoletToken
-    }
-  })
-    .then(resp => resp.json())
-    .catch(err => console.error(err));
+  return vinmonopoletCache.wineByQueryName(name, page, pageSize)
+    .catch(_ => {
+      console.log(`No wines matching query: ${name} at page ${page} found in elastic index, searching vinmonopolet..`)
 
-  if (vinmonopoletResponse.errors != null) {
-    return vinmonopoletResponse.errors.map(error => {
-      if (error.type == "UnknownProductError") {
-        return res.status(404).json({
-          message: error.message
-        });
-      } else {
-        return next();
-      }
-    });
-  }
-  const winesConverted = vinmonopoletResponse.map(convertToOurWineObject).filter(Boolean);
+      const url = `https://www.vinmonopolet.no/api/search?q=${name}:relevance:visibleInSearch:true&searchType=product&pageSize=${pageSize}&currentPage=${page-1}`
+      const options = {
+        headers: { "Content-Type": 'application/json' }
+      };
 
-  return winesConverted;
+      return fetch(url, options)
+        .then(resp => {
+          if (resp.ok == false) {
+            return Promise.reject({
+              statusCode: 404,
+              message: `No wines matching query ${name} at page ${page} found in local cache or at vinmonopolet.`,
+            })
+          }
+
+          return resp.json()
+            .then(response => response?.productSearchResult?.products)
+        })
+    })
+    .then(wines => wines.map(convertVinmonopoletProductResponseToWineObject))
 };
 
 const wineByEAN = ean => {
@@ -67,16 +77,30 @@ const wineByEAN = ean => {
 };
 
 const wineById = id => {
-  const url = `https://apis.vinmonopolet.no/products/v0/details-normal?productId=${id}`;
-  const options = {
-    headers: {
-      "Ocp-Apim-Subscription-Key": config.vinmonopoletToken
-    }
-  };
+  return vinmonopoletCache.wineById(id)
+    .catch(_ => {
+      console.log(`Wine id: ${id} not found in elastic index, searching vinmonopolet..`)
 
-  return fetch(url, options)
-    .then(resp => resp.json())
-    .then(response => response.map(convertToOurWineObject));
+      const url = `https://www.vinmonopolet.no/api/products/${id}?fields=FULL`
+      const options = {
+        headers: {
+          "Content-Type": 'application/json'
+        }
+      };
+
+      return fetch(url, options)
+        .then(resp => {
+          if (resp.ok == false) {
+            return Promise.reject({
+              statusCode: 404,
+              message: `Wine with id ${id} not found in local cache or at vinmonopolet.`,
+            })
+          }
+
+          return resp.json()
+        })
+    })
+    .then(wine => convertVinmonopoletProductResponseToWineObject(wine))
 };
 
 const allStores = () => {

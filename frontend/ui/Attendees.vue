@@ -20,8 +20,12 @@
       </div>
 
       <div v-if="admin" class="attendee-admin">
-        <button class="vin-button small" @click="editingAttendee = editingAttendee == attendee ? false : attendee">
+        <button class="vin-button edit small" @click="editingAttendee = editingAttendee == attendee ? false : attendee">
           {{ editingAttendee == attendee ? "Lukk" : "Rediger" }}
+        </button>
+
+        <button class="vin-button small danger" @click="deleteAttendee(attendee)">
+          Slett deltaker
         </button>
       </div>
 

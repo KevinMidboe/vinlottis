@@ -11,7 +11,15 @@ function searchWines(req, res) {
       page: page,
       success: true
     })
-  );
+  )
+  .catch(error => {
+    const { statusCode, message } = error;
+
+    return res.status(statusCode || 500).send({
+      message: message || `Unexpected error occured trying to search for wine: ${name} at page: ${page}`,
+      success: false
+    });
+  });
 }
 
 function wineByEAN(req, res) {
@@ -28,12 +36,20 @@ function wineByEAN(req, res) {
 function wineById(req, res) {
   const { id } = req.params;
 
-  return vinmonopoletRepository.wineById(id).then(wines =>
+  return vinmonopoletRepository.wineById(id).then(wine =>
     res.json({
-      wine: wines[0],
+      wine: wine,
       success: true
     })
-  );
+  )
+  .catch(error => {
+      const { statusCode, message } = error;
+
+      return res.status(statusCode || 500).send({
+        message: message || `Unexpected error occured trying to fetch wine with id: ${id}`,
+        success: false
+      });
+    });
 }
 
 function allStores(req, res) {

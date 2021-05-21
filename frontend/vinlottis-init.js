@@ -2,6 +2,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import { routes } from "@/router.js";
 import Vinlottis from "@/Vinlottis";
+import AccessCodePage from "@/components/AccessCodePage";
+import { readCookie } from "@/utils";
 
 import Toast from "@/plugins/Toast";
 
@@ -21,7 +23,7 @@ if (ENV !== "development") {
     beforeSend: event => {
       console.error(event);
       return event;
-    }
+    },
   });
 }
 
@@ -38,7 +40,7 @@ ga.l = 1 * new Date();
 ga("create", __GA_TRACKINGID__, {
   allowAnchor: false,
   cookieExpires: __GA_COOKIELIFETIME__, // Time in seconds
-  cookieFlags: "SameSite=Strict; Secure"
+  cookieFlags: "SameSite=Strict; Secure",
 });
 ga("set", "anonymizeIp", true); // Enable IP Anonymization/IP masking
 ga("send", "pageview");
@@ -46,13 +48,25 @@ ga("send", "pageview");
 if (ENV == "development") window[`ga-disable-${__GA_TRACKINGID__}`] = true;
 
 const router = new VueRouter({
-  routes: routes
+  routes: routes,
+  mode: "history",
 });
+
+function redirectIfHasAccessCodeAndOnIncorrectDomain(accessCode) {
+  const site = __sites__.find(site => site.code == accessCode);
+  if (accessCode && site && !!!site.domain.includes(window.location.hostname)) {
+    window.location.href = `${window.location.protocol}//${site.domain}`;
+  }
+}
+
+const accessCode = readCookie("accesscode");
+redirectIfHasAccessCodeAndOnIncorrectDomain(1);
+const component = accessCode ? Vinlottis : AccessCodePage;
 
 new Vue({
   el: "#app",
   router,
-  components: { Vinlottis },
-  template: "<Vinlottis/>",
-  render: h => h(Vinlottis)
+  components: { component },
+  template: "<Vinlottis />",
+  render: h => h(component),
 });

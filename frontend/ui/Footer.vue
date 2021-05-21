@@ -4,7 +4,7 @@
       <li>
         <a href="https://github.com/KevinMidboe/vinlottis" class="github">
           <span>Utforsk koden på github</span>
-          <img src="/public/assets/images/logo-github.png" alt="github logo">
+          <img src="/public/assets/images/logo-github.png" alt="github logo" />
         </a>
       </li>
 
@@ -16,15 +16,15 @@
     </ul>
 
     <router-link to="/" class="company-logo">
-      <img src="/public/assets/images/knowit.svg" alt="knowit logo">
+      <img src="/public/assets/images/knowit.svg" alt="knowit logo" />
     </router-link>
   </footer>
 </template>
 
 <script>
 export default {
-  name: 'WineFooter'
-}
+  name: "WineFooter",
+};
 </script>
 
 <style lang="scss" scoped>
@@ -57,7 +57,6 @@ footer {
     display: flex;
     align-items: center;
 
-
     img {
       margin-left: 0.5rem;
       height: 30px;
@@ -74,7 +73,7 @@ footer {
     }
   }
 
-  .company-logo{
+  .company-logo {
     margin-right: 5em;
 
     img {
@@ -93,5 +92,4 @@ footer {
     }
   }
 }
-
 </style>

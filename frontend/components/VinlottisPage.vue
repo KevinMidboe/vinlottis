@@ -94,7 +94,11 @@ export default {
       return Notification.permission !== "granted" || !this.pushAllowed || localStorage.getItem("push") == null;
     }
   },
-  async mounted() {
+  mounted() {
+    setTimeout(() => {
+      document.getElementsByClassName("participate-button")[0].classList.add("pulse");
+    }, 1800);
+
     this.$on("push-allowed", () => {
       this.pushAllowed = true;
     });
@@ -121,8 +125,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/media-queries.scss";
-@import "../styles/variables.scss";
+@import "@/styles/media-queries.scss";
+@import "@/styles/variables.scss";
+@import "@/styles/animations.scss";
 
 .top-container {
   height: 30em;
@@ -173,18 +178,20 @@ export default {
     border: 4px solid black;
     padding: 0 1em 0 1em;
     display: flex;
-    width: 12.5em;
+    width: 17.5em;
     align-items: center;
     text-decoration: none;
     color: black;
 
     i {
       color: $link-color;
+      font-size: 1.2rem;
       margin-left: 5px;
     }
 
     p {
-      font-size: 16px;
+      font-size: 1.4rem;
+      margin: 1rem;
       margin-left: 15px;
     }
 

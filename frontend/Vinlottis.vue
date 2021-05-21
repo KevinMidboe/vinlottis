@@ -25,33 +25,33 @@ export default {
       routes: [
         {
           name: "Virtuelt lotteri",
-          route: "/lottery"
+          route: "/lottery",
         },
         {
           name: "Dagens viner",
-          route: "/dagens/"
+          route: "/dagens/",
         },
         {
           name: "Highscore",
-          route: "/highscore"
+          route: "/highscore",
         },
         {
           name: "Historie",
-          route: "/history/"
+          route: "/history/",
         },
         {
           name: "Foreslå vin",
-          route: "/request"
+          route: "/request",
         },
         {
           name: "Foreslåtte viner",
-          route: "/requested-wines"
+          route: "/requested-wines",
         },
         {
           name: "Login",
-          route: "/login"
-        }
-      ]
+          route: "/login",
+        },
+      ],
     };
   },
   mounted() {
@@ -73,7 +73,7 @@ export default {
     closeToast: function() {
       this.showToast = false;
     },
-  }
+  },
 };
 </script>
 
