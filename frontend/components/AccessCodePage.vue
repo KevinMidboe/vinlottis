@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="floating-video">
-      <video autoplay loop muted id="office-party" ref="video">
+      <video autoplay loop muted playsinline id="office-party" ref="video">
         <source src="/public/assets/videos/office-party.mp4" type="video/mp4" />
       </video>
     </div>
