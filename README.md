@@ -10,7 +10,7 @@
 
 <br/>
 
-[**Vinlottis**](https://vinlottis.no) is the unofficial website for Knowit's wine-lottery, usually happening every friday at around 15:00.
+[**Vinlottis**](https://vinlottis.no) is a home-brewed solution for wine-lottery.
 
 
 ### Prerequisites
