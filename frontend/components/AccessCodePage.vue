@@ -11,7 +11,7 @@
         <label>Din vinlottis kode:</label>
       </div>
 
-      <div class="codeinput-container">
+      <div id="code-container" class="codeinput-container">
         <input v-model="code" placeholder="KODE" @keyup.enter="submit" />
         <button class="vin-button" @click="submit">ENTER</button>
       </div>
@@ -56,6 +56,13 @@ export default {
       const { video } = this.$refs;
       video.paused ? video.play() : video.pause();
     },
+    smh() {
+      let inputContainer = document.getElementById('code-container')
+      inputContainer.classList.add('shake')
+      if (this.timeout)
+        clearTimeout(this.timeout)
+      this.timeout = setTimeout(() => inputContainer.classList.remove('shake'), 600);
+    },
     submit() {
       const site = __sites__.find(site => site.code?.toLowerCase() == this.code?.toLowerCase());
 
@@ -67,8 +74,6 @@ export default {
       } else {
         this.smh()
       }
-
-      return;
     },
   },
 };
@@ -129,6 +134,11 @@ video {
 
   @include mobile {
     width: 80%;
+  }
+
+  &.shake {
+    animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    animation-iteration-count: infinite;
   }
 
   input {
@@ -208,5 +218,28 @@ video {
 
 .button-container {
   margin-top: 4rem;
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 </style>
