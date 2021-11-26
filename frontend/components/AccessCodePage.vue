@@ -57,7 +57,7 @@ export default {
       video.paused ? video.play() : video.pause();
     },
     submit() {
-      const site = __sites__.find(site => site.code == this.code);
+      const site = __sites__.find(site => site.code?.toLowerCase() == this.code?.toLowerCase());
 
       if (site) {
         createCookie("accesscode", site.code, 14);
