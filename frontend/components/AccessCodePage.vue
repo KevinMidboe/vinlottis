@@ -159,6 +159,7 @@ video {
   button {
     height: 100%;
     max-height: unset;
+    font-weight: bold;
   }
 }
 
@@ -194,6 +195,7 @@ video {
 
     label {
       color: rgba(255, 255, 255, 0.82);
+      text-shadow: 1px 1px black;
       font-size: 1.5rem;
       font-weight: 500;
     }
