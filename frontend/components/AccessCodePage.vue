@@ -61,7 +61,11 @@ export default {
 
       if (site) {
         createCookie("accesscode", site.code, 14);
-        window.location.href = `${window.location.protocol}//${site.domain}`;
+        const path = (location.pathname+location.search).substr(1)
+        const redirectUrl = `${window.location.protocol}//${site.domain}/${path}`
+        window.location.href = redirectUrl;
+      } else {
+        this.smh()
       }
 
       return;
