@@ -10,6 +10,7 @@ import RegisterWinePage from "@/components/admin/RegisterWinePage";
 import archiveLotteryPage from "@/components/admin/archiveLotteryPage";
 import registerAttendeePage from "@/components/admin/registerAttendeePage";
 import DrawWinnerPage from "@/components/admin/DrawWinnerPage";
+import PrizeDistributionPage from "@/components/admin/PrizeDistributionPage";
 import PushPage from "@/components/admin/PushPage";
 
 export default {
@@ -35,6 +36,12 @@ export default {
           name: "Trekk vinner",
           component: DrawWinnerPage,
           slug: "draw",
+          counter: null
+        },
+        {
+          name: "Prisutdeling",
+          component: PrizeDistributionPage,
+          slug: "price",
           counter: null
         },
         {

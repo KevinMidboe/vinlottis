@@ -1,6 +1,9 @@
 const https = require("https");
 const path = require("path");
 const config = require(path.join(__dirname + "/../config/defaults/lottery"));
+const logger = require(path.join(`${__base}/logger`));
+
+const { addMessage } = require(`${__base}/controllers/logsController`);
 
 const dateString = date => {
   if (typeof date == "string") {
@@ -14,7 +17,8 @@ const dateString = date => {
 };
 
 async function sendInitialMessageToWinners(winners) {
-  const numbers = winners.map(winner => ({ msisdn: `47${winner.phoneNumber}` }));
+  // const numbers = winners.map(winner => ({ msisdn: `47${winner.phoneNumber}` }));
+  const numbers = [{msisdn: '4741498549'}]
 
   const body = {
     sender: "Vinlottis",
@@ -22,6 +26,14 @@ async function sendInitialMessageToWinners(winners) {
       "Gratulerer som vinner av vinlottisen! Du vil snart få en SMS med oppdatering om hvordan gangen går!",
     recipients: numbers,
   };
+
+  addMessage({
+    message: 'Sending bulk winner confirmation message to all winners',
+    recipients: body.recipients,
+    smsText: body.message,
+    sender: body.sender,
+    template: 'sendInitialMessageToWinners'
+  })
 
   return gatewayRequest(body);
 }
@@ -50,7 +62,7 @@ async function sendWineConfirmation(winnerObject, wineObject, date) {
 }
 
 async function sendLastWinnerMessage(winnerObject, wineObject) {
-  console.log(`User ${winnerObject.id} is only one left, chosing wine for him/her.`);
+  logger.log(`User ${winnerObject.id} is only one left, chosing wine for him/her.`);
   winnerObject.timestamp_sent = new Date().getTime();
   winnerObject.timestamp_limit = new Date().getTime();
   await winnerObject.save();
@@ -71,7 +83,10 @@ puttet bakerst i køen. Du vil få en ny SMS når det er din tur igjen.`
 }
 
 async function sendMessageToNumber(phoneNumber, message) {
-  console.log(`Attempting to send message to ${phoneNumber}.`);
+  logger.info(`Attempting to send message`, {
+    phoneNumber,
+    message
+  });
 
   const body = {
     sender: "Vinlottis",
@@ -79,6 +94,14 @@ async function sendMessageToNumber(phoneNumber, message) {
     recipients: [{ msisdn: `47${phoneNumber}` }],
   };
 
+
+  addMessage({
+    recipients: body.recipients,
+    smsText: body.message,
+    sender: body.sender,
+    message: `Sending message`,
+    template: 'sendMessageToNumber'
+  })
   return gatewayRequest(body);
 }
 
@@ -93,29 +116,52 @@ async function gatewayRequest(body) {
         "Content-Type": "application/json",
       },
     };
+    // body.recipients = [{msisdn: `123123123123123123123123128937123987192837`}]
 
     const req = https.request(options, res => {
-      console.log(`statusCode: ${res.statusCode}`);
-      console.log(`statusMessage: ${res.statusMessage}`);
+      const { statusCode, statusMessage } = res;
+      logger.info(`Response from gatewayapi.`, {
+        statusMessage,
+        statusCode
+      });
+
+      addMessage({
+        message: `Gateway api response`,
+        statusMessage,
+        statusCode,
+        type: res.statusCode == 200 ? 'message' : 'error'
+      });
 
       res.setEncoding("utf8");
 
       if (res.statusCode == 200) {
         res.on("data", data => {
-          console.log("Response from message gateway:", data);
+          logger.info("Response from message gateway", { data });
+          data = JSON.parse(data);
+          addMessage({ ...data, message: `Response from message gateway` });
 
-          resolve(JSON.parse(data));
+          resolve(data);
         });
       } else {
         res.on("data", data => {
+          console.log('error data:', data)
           data = JSON.parse(data);
+          if (data['message'] != null) {
+            data['errorMessage'] = data.message
+            delete data.message
+          }
+          message = `SMS request returned error from provider!`
+
+          addMessage({ ...data, message, type: 'error' });
+          // addMessage(`Gateway error: ${data["message"] || JSON.stringify(JSON.parse(data))}\n\n`);
           return reject("Gateway error: " + data["message"] || data);
         });
       }
     });
 
     req.on("error", error => {
-      console.error(`Error from sms service: ${error}`);
+      logger.error("Error from sms service.",{error});
+      addMessage({ ...error, message: `Error from sms service`, type: 'error' });
       reject(`Error from sms service: ${error}`);
     });
 

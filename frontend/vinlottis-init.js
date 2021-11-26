@@ -60,7 +60,7 @@ function redirectIfHasAccessCodeAndOnIncorrectDomain(accessCode) {
 }
 
 const accessCode = readCookie("accesscode");
-redirectIfHasAccessCodeAndOnIncorrectDomain(1);
+redirectIfHasAccessCodeAndOnIncorrectDomain(accessCode);
 const component = accessCode ? Vinlottis : AccessCodePage;
 
 new Vue({

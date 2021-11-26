@@ -19,6 +19,14 @@ function daysAgo(date) {
   return Math.round(Math.abs((new Date() - new Date(date)) / day));
 }
 
+function minimalHumanDateResolution(seconds) {
+  if (seconds < 999) {
+    return `${seconds}s`;
+  } else if (seconds) {
+    return true
+  }
+}
+
 export function createCookie(name, value, days) {
   if (days) {
     var date = new Date();

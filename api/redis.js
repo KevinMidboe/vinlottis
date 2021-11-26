@@ -6,14 +6,18 @@ let lrangeAsync;
 try {
   const redis = require("redis");
   console.log("Trying to connect with redis..");
-  client = redis.createClient();
+  client = redis.createClient({
+    host: '127.0.0.1',
+    no_ready_check: true,
+    auth_pass: 'sOmE_sEcUrE_pAsS'
+  });
 
   client.zcount = promisify(client.zcount).bind(client);
   client.zadd = promisify(client.zadd).bind(client);
   client.zrevrange = promisify(client.zrevrange).bind(client);
   client.del = promisify(client.del).bind(client);
 
-  client.on("connect", () => console.log("Redis connection established!"));
+  client.on("connect", console.log("Redis connection established!"));
 
   client.on("error", function(err) {
     client.quit();

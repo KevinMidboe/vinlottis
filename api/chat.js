@@ -22,6 +22,7 @@ const validateUsername = (username) => {
 
 const io = (io) => {
   io.on("connection", socket => {
+    console.log("does this happend first")
     let username = null;
 
     socket.on("username", msg => {

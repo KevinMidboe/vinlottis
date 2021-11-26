@@ -16,6 +16,7 @@ const lotteryController = require(path.join(__dirname, "/controllers/lotteryCont
 const prizeDistributionController = require(path.join(__dirname, "/controllers/prizeDistributionController"));
 const wineController = require(path.join(__dirname, "/controllers/wineController"));
 const messageController = require(path.join(__dirname, "/controllers/messageController"));
+const logsController = require(path.join(__dirname, "/controllers/logsController"));
 
 const router = express.Router();
 
@@ -74,6 +75,11 @@ router.post("/lottery/archive", mustBeAuthenticated, lotteryController.archiveLo
 router.get("/lottery/latest", lotteryController.latestLottery);
 router.get("/lottery/:epoch", lotteryController.lotteryByDate);
 router.get("/lotteries/", lotteryController.allLotteries);
+
+router.get("/logs/sms", logsController.subscribeToLogs);
+router.get("/logs/sms/:message", logsController.addMessageFromApi);
+router.get("/logs/status", logsController.state);
+router.get("/logs/kick/:id", logsController.kickClient);
 
 // router.get("/lottery/prize-distribution/status", mustBeAuthenticated, prizeDistributionController.status);
 router.post("/lottery/prize-distribution/start", mustBeAuthenticated, prizeDistributionController.start);

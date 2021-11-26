@@ -4,6 +4,7 @@ const prizeDistribution = require(path.join(__dirname, "../prizeDistribution"));
 const prelotteryWineRepository = require(path.join(__dirname, "../prelotteryWine"));
 const winnerRepository = require(path.join(__dirname, "../winner"));
 const message = require(path.join(__dirname, "../message"));
+const logger = require(`${__base}/logger`);
 
 const start = async (req, res) => {
   const allWinners = await winnerRepository.allWinners(true);
@@ -28,6 +29,7 @@ const start = async (req, res) => {
     .catch(error => {
       const { statusCode, message } = error;
 
+      logger.error(error)
       return res.status(statusCode || 500).send({
         message: message || "Unexpected error occured while starting prize distribution.",
         success: false

@@ -5,12 +5,18 @@ const io = require("socket.io")(server);
 const path = require("path");
 const session = require("express-session");
 const User = require(path.join(__dirname + "/api/schemas/User"));
+global.__base = path.join(__dirname, "/api/");
+global.__middleware = path.join(__dirname, "/api/middleware");
+global.__controllers = path.join(__dirname, "/api/controllers");
 
 const apiRouter = require(path.join(__dirname + "/api/router.js"));
 const subscriptionApi = require(path.join(__dirname + "/api/subscriptions"));
 
 //This is required for the chat to work
 const chat = require(path.join(__dirname + "/api/chat"))(io);
+const smsGatewayLogs = require(path.join(__dirname + "/api/smsGatewayLogs"))(io);
+io.of('/chat', chat)
+io.of('/logs/sms-gateway', smsGatewayLogs)
 
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo")(session);
@@ -51,6 +57,9 @@ if (process.env.NODE_ENV == "development") {
 
 // parse application/json
 app.use(express.json());
+
+const addIdToRequest = require(`${__middleware}/addIdToRequest`);
+app.use(addIdToRequest);
 
 app.use(
   session({

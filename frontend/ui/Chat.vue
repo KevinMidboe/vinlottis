@@ -97,7 +97,7 @@ export default {
     this.socket = null;
   },
   mounted() {
-    this.socket = io(window.location.origin);
+    this.socket = io('/chat');
     this.socket.on("chat", msg => {
       this.chatHistory.push(msg);
     });

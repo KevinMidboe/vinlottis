@@ -32,14 +32,6 @@
       </div>
     </div>
 
-    <div class="prize-distribution">
-      <h2>Prisutdeling</h2>
-
-      <div class="button-container">
-        <button class="vin-button" @click="startPrizeDistribution">Start automatisk prisutdeling med SMS</button>
-      </div>
-    </div>
-
     <h2 v-if="winners.length > 0">Vinnere</h2>
     <div class="winners" v-if="winners.length > 0">
       <div :class="winner.color + '-raffle'" class="raffle-element" v-for="(winner, index) in winners" :key="index">
@@ -181,29 +173,7 @@ export default {
       this.drawingWinner = false;
       this.secondsLeft = this.drawTime;
     },
-    startPrizeDistribution() {
-      if (!window.confirm("Er du sikker på at du vil starte prisutdeling?")) {
-        return;
-      }
 
-      this.drawingWinner = false;
-
-      const options = { method: "POST" };
-      fetch(`/api/lottery/prize-distribution/start`, options)
-        .then(resp => resp.json())
-        .then(response => {
-          if (response.success) {
-            this.$toast.info({
-              title: `Startet prisutdeling. SMS'er sendt ut!`
-            });
-          } else {
-            this.$toast.error({
-              title: `Klarte ikke starte prisutdeling`,
-              description: response.message
-            });
-          }
-        });
-    },
     notifyWinner(winner) {
       const options = { method: "POST" };
 
